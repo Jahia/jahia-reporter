@@ -36,7 +36,7 @@ class JahiaTestrailReporter extends Command {
     projectName: flags.string({
       char: 'n',
       description: 'TestRail Project name',
-      default: 'Augmented Search',
+      default: 'Jahia',
     }),
     milestone: flags.string({
       char: 'm',
