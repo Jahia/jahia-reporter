@@ -17,36 +17,13 @@ Testrail reporter that accepts mocha json and jest xml reports
 <!-- usage -->
 ```sh-session
 $ npm install -g jahia-testrail-reporter
+$ jahia-testrail-reporter COMMAND
+running command...
+$ jahia-testrail-reporter (-v|--version|version)
+jahia-testrail-reporter/0.1.1 darwin-x64 node-v14.3.0
+$ jahia-testrail-reporter --help [COMMAND]
 USAGE
-  $ jahia-testrail-reporter FILE USERNAME PASSWORD [TESTRAILURL]
-
-ARGUMENTS
-  FILE         A json/xml report or a folder containing one or multiple json/xml reports
-  USERNAME     TestRail username
-  PASSWORD     TestRail password
-  TESTRAILURL  [default: https://jahia.testrail.net] TestRail url to submit the results from the report to
-
-OPTIONS
-  -d, --defaultRunDescription=defaultRunDescription  [default: This test run was manually triggered] TestRail
-                                                     default run description
-
-  -h, --help                                         show CLI help
-
-  -j, --jahiaVersion=jahiaVersion                    [default: 8.0.1.0] Jahia/Module version
-
-  -m, --milestone=milestone                          [default: Default] TestRail milestone
-
-  -n, --projectName=projectName                      [default: Jahia] TestRail Project name
-
-  -p, --parentSection=parentSection                  TestRail default run description
-
-  -r, --runName=runName                              [default: Automated Execution] TestRail run name
-
-  -s, --suiteName=suiteName                          [default: Master] TestRail suite name
-
-  -t, --type=xml|json                                report file type
-
-  -v, --version                                      show CLI version
+  $ jahia-testrail-reporter COMMAND
 ...
 ```
 <!-- usagestop -->
