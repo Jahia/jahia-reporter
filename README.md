@@ -20,7 +20,7 @@ $ npm install -g jahia-testrail-reporter
 $ jahia-testrail-reporter COMMAND
 running command...
 $ jahia-testrail-reporter (-v|--version|version)
-jahia-testrail-reporter/0.0.0 darwin-x64 node-v14.3.0
+jahia-testrail-reporter/0.1.0 darwin-x64 node-v14.3.0
 $ jahia-testrail-reporter --help [COMMAND]
 USAGE
   $ jahia-testrail-reporter COMMAND
