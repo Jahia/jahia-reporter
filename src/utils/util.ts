@@ -34,7 +34,7 @@ export function parseXML(files: string[]): Test[] {
           const title = testCase.attributes.name.includes(sectionName) ?
             testCase.attributes.name.substring(sectionName.length + 1) :
             testCase.attributes.name
-          const test: Test = {section: sectionName, title: title, time: testCase.attributes.time}
+          const test: Test = {section: sectionName, title: title, time: testCase.attributes.time.replace('.', '')}
           if (testCase.elements) {
             let comment = ''
             for (const failure of testCase.elements) {

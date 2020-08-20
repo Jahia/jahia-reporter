@@ -12,10 +12,11 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@types/node": "^10",
+    "date-fns-timezone": "^0.1.4",
     "glob": "^7.1.6",
-    "tslib": "^1",
     "ts-node": "^8",
     "ts-sync-request": "^1.4.1",
+    "tslib": "^1",
     "typescript": "^3.3",
     "xml-js": "^1.6.11"
   },

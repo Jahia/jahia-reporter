@@ -4,6 +4,7 @@ import * as glob from 'glob'
 import {TestRailClient} from './utils/testrail'
 import {Project, Section, Suite, Test, AddCase, AddRun, Status, TestRailResult} from './utils/testrail.interface'
 import {parseJson, parseXML} from './utils/util'
+import {formatToTimeZone} from 'date-fns-timezone'
 
 class JahiaTestrailReporter extends Command {
   static description = 'describe the command here'
@@ -51,7 +52,7 @@ class JahiaTestrailReporter extends Command {
     runName: flags.string({
       char: 'r',
       description: 'TestRail run name',
-      default: 'Automated Execution',
+      default: 'Automated Execution - ',
     }),
     suiteName: flags.string({
       char: 's',
@@ -73,6 +74,13 @@ class JahiaTestrailReporter extends Command {
   // eslint-disable-next-line complexity
   async run() {
     const {args, flags} = this.parse(JahiaTestrailReporter)
+
+    if (flags.runName === 'Automated Execution - ') {
+      const date = new Date()
+      const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)'
+      const output = formatToTimeZone(date, format, {timeZone: 'Europe/Paris'})
+      flags.runName += output
+    }
 
     const type: string = flags.type === undefined ? 'json/xml' : flags.type
     let jsonFilesList: string[] = []
