@@ -4,9 +4,9 @@ import {SyncRequestClient} from 'ts-sync-request/dist'
 import ingestReport from '../utils/ingest'
 
 import * as crypto from 'crypto'
+import {v5 as uuidv5} from 'uuid'
 
-import {StateNode} from '@bit/zencrepes.zindexer.junit-states'
-import {Dependency} from '@bit/zencrepes.zindexer.junit-states/dist/node.type'
+import {StateNode, Dependency} from '@bit/zencrepes.zindexer.junit-states'
 
 const prepString = (s: string) => {
   return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
@@ -30,7 +30,9 @@ const getId = (name: string, version: string, dependencies: Dependency[]) => {
     idStr = idStr + prepString(d.name) + prepString(d.version)
   })
 
-  return idStr
+  const UUID_NAMESPACE = 'c72d8f12-1818-4cb9-bead-44634c441c11'
+
+  return uuidv5(idStr, UUID_NAMESPACE)
 }
 
 class JahiaTestrailReporter extends Command {
