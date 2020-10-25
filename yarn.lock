@@ -93,10 +93,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bit/zencrepes.zindexer.junit-states@^0.0.4":
-  version "0.0.4"
-  resolved "https://node.bit.dev/zencrepes.zindexer.junit-states/-/zencrepes.zindexer.junit-states-0.0.4.tgz#c6ebba2c6c97cc8777f241f10abc93c1de1a16f5"
-  integrity sha1-xuu6LGyXzId38kHxCryTwd4aFvU=
+"@bit/zencrepes.zindexer.testing-states@^0.0.1":
+  version "0.0.1"
+  resolved "https://node.bit.dev/zencrepes.zindexer.testing-states/-/zencrepes.zindexer.testing-states-0.0.1.tgz#213bcbbf38f1752b224dfbf9509874d2b37e09ea"
+  integrity sha1-ITvLvzjxdSsiTfv5UJh00rN+Ceo=
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
