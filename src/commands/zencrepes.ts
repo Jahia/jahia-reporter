@@ -90,7 +90,7 @@ class JahiaTestrailReporter extends Command {
       id: getId(flags.name, flags.version, JSON.parse(flags.dependencies)),
       name: flags.name,
       version: flags.version,
-      dependency: JSON.parse(flags.dependencies),
+      dependencies: JSON.parse(flags.dependencies),
       createdAt: new Date().toISOString(),
       state: report.failures === 0 ? 'PASS' : 'FAIL',
       url: flags.url,
