@@ -6,7 +6,7 @@ import ingestReport from '../utils/ingest'
 import * as crypto from 'crypto'
 import {v5 as uuidv5} from 'uuid'
 
-import {StateNode, Dependency} from '@bit/zencrepes.zindexer.testing-states'
+import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type.ts'
 
 const prepString = (s: string) => {
   return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
@@ -15,10 +15,10 @@ const prepString = (s: string) => {
 // This generate an unique id based on the combination the component and its dependencies
 // The ID is simply a UUID genreated from the concatenation of all elements
 // Note that the dependencies are sorted and all string are cleaned (lower case and stripped from non alphanumerical characters)
-const getId = (name: string, version: string, dependencies: Dependency[]) => {
+const getId = (name: string, version: string, dependencies: ZenCrepesDependency[]) => {
   let idStr = prepString(name) + prepString(version)
 
-  dependencies.sort((a: Dependency, b: Dependency) => {
+  dependencies.sort((a: ZenCrepesDependency, b: ZenCrepesDependency) => {
     // Sort by name
     if (a.name > b.name) return 1
     if (a.name < b.name) return -1
@@ -26,7 +26,7 @@ const getId = (name: string, version: string, dependencies: Dependency[]) => {
     if (a.version > b.version) return 1
     if (a.version < b.version) return -1
     return 0
-  }).forEach((d: Dependency) => {
+  }).forEach((d: ZenCrepesDependency) => {
     idStr = idStr + prepString(d.name) + prepString(d.version)
   })
 
@@ -86,7 +86,7 @@ class JahiaTestrailReporter extends Command {
     const report = await ingestReport(flags.type, args.file, this.log)
 
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
-    const zcPayload: StateNode = {
+    const zcPayload: ZenCrepesStateNode = {
       id: getId(flags.name, flags.version, JSON.parse(flags.dependencies)),
       name: flags.name,
       version: flags.version,
