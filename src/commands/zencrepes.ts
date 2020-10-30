@@ -6,7 +6,7 @@ import ingestReport from '../utils/ingest'
 import * as crypto from 'crypto'
 import {v5 as uuidv5} from 'uuid'
 
-import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type.ts'
+import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type'
 
 const prepString = (s: string) => {
   return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
