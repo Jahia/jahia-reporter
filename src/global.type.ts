@@ -48,8 +48,8 @@ export interface ZenCrepesStateNode {
   id: string;
   name: string;
   version: string;
-  full: string;
-  dependencies: Dependency[]
+  full?: string;
+  dependencies: ZenCrepesDependency[]
   createdAt: string;
   state: string;
   url: string;
