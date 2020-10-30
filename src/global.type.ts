@@ -35,3 +35,26 @@ export interface JunitRun {
   time: number;
   reports: JunitReport[];
 }
+
+export interface ZenCrepesDependency {
+  id: string;
+  name: string;
+  version: string;
+  full: string;
+  url?: string;
+}
+
+export interface ZenCrepesStateNode {
+  id: string;
+  name: string;
+  version: string;
+  full: string;
+  dependencies: Dependency[]
+  createdAt: string;
+  state: string;
+  url: string;
+  runTotal: number
+  runSuccess: number
+  runFailure: number
+  runDuration: number
+}
