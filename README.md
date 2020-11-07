@@ -16,29 +16,29 @@ Testrail reporter that accepts mocha json and jest xml reports
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g jahia-testrail-reporter
-$ jahia-testrail-reporter COMMAND
+$ npm install -g jahia-reporter
+$ jahia-reporter COMMAND
 running command...
-$ jahia-testrail-reporter (-v|--version|version)
-jahia-testrail-reporter/0.1.9 darwin-x64 node-v14.3.0
-$ jahia-testrail-reporter --help [COMMAND]
+$ jahia-reporter (-v|--version|version)
+jahia-reporter/0.0.1 darwin-x64 node-v14.3.0
+$ jahia-reporter --help [COMMAND]
 USAGE
-  $ jahia-testrail-reporter COMMAND
+  $ jahia-reporter COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`jahia-testrail-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]`](#jahia-testrail-reporter-testrail-file-username-password-testrailurl)
-* [`jahia-testrail-reporter zencrepes FILE PAYLOADURL SECRET`](#jahia-testrail-reporter-zencrepes-file-payloadurl-secret)
+* [`jahia-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]`](#jahia-reporter-testrail-file-username-password-testrailurl)
+* [`jahia-reporter zencrepes FILE PAYLOADURL SECRET`](#jahia-reporter-zencrepes-file-payloadurl-secret)
 
-## `jahia-testrail-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]`
+## `jahia-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]`
 
 Submit data about a junit report to TestRail
 
 ```
 USAGE
-  $ jahia-testrail-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]
+  $ jahia-reporter testrail FILE USERNAME PASSWORD [TESTRAILURL]
 
 ARGUMENTS
   FILE         A json/xml report or a folder containing one or multiple json/xml reports
@@ -69,15 +69,15 @@ OPTIONS
   -v, --version                                      show CLI version
 ```
 
-_See code: [lib/commands/testrail.js](https://github.com/VladRadan/jahia-testrail-reporter/blob/v0.1.9/lib/commands/testrail.js)_
+_See code: [lib/commands/testrail.js](https://github.com/VladRadan/jahia-reporter/blob/v0.0.1/lib/commands/testrail.js)_
 
-## `jahia-testrail-reporter zencrepes FILE PAYLOADURL SECRET`
+## `jahia-reporter zencrepes FILE PAYLOADURL SECRET`
 
 Submit data about a junit report to ZenCrepes
 
 ```
 USAGE
-  $ jahia-testrail-reporter zencrepes FILE PAYLOADURL SECRET
+  $ jahia-reporter zencrepes FILE PAYLOADURL SECRET
 
 ARGUMENTS
   FILE        A json/xml report or a folder containing one or multiple json/xml reports
@@ -99,5 +99,5 @@ OPTIONS
   -v, --version=version            [default: SNAPSHOT] Version of the element being tested
 ```
 
-_See code: [lib/commands/zencrepes.js](https://github.com/VladRadan/jahia-testrail-reporter/blob/v0.1.9/lib/commands/zencrepes.js)_
+_See code: [lib/commands/zencrepes.js](https://github.com/VladRadan/jahia-reporter/blob/v0.0.1/lib/commands/zencrepes.js)_
 <!-- commandsstop -->
