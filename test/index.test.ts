@@ -2,7 +2,7 @@ import {expect, test} from '@oclif/test'
 
 import cmd = require('../src')
 
-describe('jahia-testrail-reporter', () => {
+describe('jahia-reporter', () => {
   test
   .stdout()
   .do(() => cmd.run([]))
