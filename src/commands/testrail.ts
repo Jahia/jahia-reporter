@@ -7,7 +7,7 @@ import {parseJson, parseXML} from '../utils/util'
 import {formatToTimeZone} from 'date-fns-timezone'
 
 class JahiaTestrailReporter extends Command {
-  static description = 'Submit data about a junit report to TestRail'
+  static description = 'Submit data about a junit/mocha report to TestRail'
 
   static args = [
     {name: 'file',
