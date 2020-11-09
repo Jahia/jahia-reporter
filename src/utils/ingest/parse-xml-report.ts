@@ -11,7 +11,7 @@ const buildTest = (xmlTests: any) => {
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),
-      status: t.elements === undefined ? 'success' : 'failure',
+      status: t.elements === undefined ? 'PASS' : 'FAIL',
       failures: t.elements === undefined ? [] : t.elements.map((f: any) => {
         return {text: f.elements[0].text}
       }),

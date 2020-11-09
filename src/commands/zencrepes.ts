@@ -35,7 +35,7 @@ const getId = (name: string, version: string, dependencies: ZenCrepesDependency[
 }
 
 class JahiaTestrailReporter extends Command {
-  static description = 'Submit data about a junit report to ZenCrepes'
+  static description = 'Submit data about a junit/mocha report to ZenCrepes'
 
   static args = [
     {name: 'file',
