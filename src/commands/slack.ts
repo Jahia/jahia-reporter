@@ -26,7 +26,11 @@ class JahiaSlackReporter extends Command {
     skip: flags.boolean({
       char: 's',
       description: 'Skip slack submission',
-    }),    
+    }),
+    skipSuccessful: flags.boolean({
+      char: 'g',
+      description: 'Do not send slack notifications if all tests are passing',
+    }),     
     module: flags.string({
       char: 'm',
       description: 'Name of the element being tested (for example, name of the module)',
@@ -42,11 +46,16 @@ class JahiaSlackReporter extends Command {
       description: 'List of people to notify, separated by <>, for example: <MyUsername>',
       default: '',
     }),
-    webhookicon: flags.string({
+    iconfailure: flags.string({
       char: 'i',
-      description: 'Icon attached to the notification',
+      description: 'Icon attached to the notification if tests are failing',
       default: ':x:',
     }),
+    iconsuccess: flags.string({
+      char: 'o',
+      description: 'Icon attached to the notification if tests are successful',
+      default: ':white_check_mark:',
+    }),    
     webhookusername: flags.string({
       char: 'w',
       description: 'Webhook username',
@@ -80,7 +89,7 @@ class JahiaSlackReporter extends Command {
       msg = msg + '```\n'
     }    
 
-    if (flags.notifications.length !== 0) {
+    if (flags.notifications.length !== 0 && report.failures > 0) {
       msg = msg + `${flags.notifications}`
 
     }
@@ -89,10 +98,10 @@ class JahiaSlackReporter extends Command {
       text: msg,
       type: 'mrkdwn',
       username: flags.webhookusername,
-      icon_emoji: flags.webhookicon
+      icon_emoji: report.failures === 0 ? flags.iconsuccess : flags.iconfailure
     }
 
-    if (flags.skip) {
+    if (flags.skip || (flags.skipSuccessful && report.failures === 0)) {
       console.log(JSON.stringify(slackPayload))
     } else {
       new SyncRequestClient()
