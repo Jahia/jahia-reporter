@@ -78,7 +78,7 @@ class JahiaSlackReporter extends Command {
     failedReports.forEach(failedReport => {
       const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
       failedSuites.forEach(failedSuite => {
-        msg += `Report: ${failedReport.name}, suite: ${failedSuite.name} - Failures: ${report.failures}/${report.tests}\n`
+        msg += `Suite: ${failedSuite.name} - Failures: ${failedSuite.failures}/${failedSuite.tests.length}\n`
         const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
         failedTests.forEach(failedTest => {
           msg += ` |-- ${failedTest.name} (${failedTest.time}s) \n`
