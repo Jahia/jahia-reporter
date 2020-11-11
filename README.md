@@ -9,11 +9,12 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
 
 ## Available Commands
 
-| Command   | Description                                                                                                                                                   |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| testrail  | Sends content of the report to a given testrail project (by name, project must be created in advance). Automatically creates milestones, runs and test cases. |
-| slack     | Sends slack notification based on the content of a report                                                                                                     |
-| zencrepes | Sends testing status to ZenCrepes with the objective of building a testing matrix for dependencies                                                            |
+| Command       | Description                                                                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| testrail      | Sends content of the report to a given testrail project (by name, project must be created in advance). Automatically creates milestones, runs and test cases. |
+| slack         | Sends slack notification based on the content of a report                                                                                                     |
+| zencrepes     | Sends testing status to ZenCrepes with the objective of building a testing matrix for dependencies                                                            |
+| utils:modules | Returns details about current Jahia version and installed modules                                                                                             |
 
 ## Development
 
