@@ -49,12 +49,12 @@ export interface ZenCrepesStateNode {
   name: string;
   version: string;
   full?: string;
-  dependencies: ZenCrepesDependency[]
+  dependencies: ZenCrepesDependency[];
   createdAt: string;
   state: string;
   url: string;
-  runTotal: number
-  runSuccess: number
-  runFailure: number
-  runDuration: number
+  runTotal: number;
+  runSuccess: number;
+  runFailure: number;
+  runDuration: number;
 }
