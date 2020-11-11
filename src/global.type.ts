@@ -58,3 +58,19 @@ export interface ZenCrepesStateNode {
   runFailure: number;
   runDuration: number;
 }
+
+export interface JahiaModule {
+    id: string;
+    name: string;
+    version: string;
+}
+
+export interface UtilsVersions {
+  jahia: {
+    version: string;
+    build: string;
+    fullVersion: string;
+  };
+  module: JahiaModule;
+  allModules: JahiaModule[];
+}

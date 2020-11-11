@@ -1,7 +1,9 @@
 import {Command, flags} from '@oclif/command'
 import {SyncRequestClient} from 'ts-sync-request/dist'
+import * as fs from 'fs'
 
 import ingestReport from '../utils/ingest'
+import {UtilsVersions} from '../global.type'
 
 import * as crypto from 'crypto'
 import {v5 as uuidv5} from 'uuid'
@@ -59,7 +61,7 @@ class JahiaTestrailReporter extends Command {
     }),
     name: flags.string({
       char: 'n',
-      description: 'Name of the element being tested (for example, name of the module)',
+      description: 'Name of the element being tested (for example, module ID)',
       default: 'Jahia',
     }),
     version: flags.string({
@@ -77,6 +79,9 @@ class JahiaTestrailReporter extends Command {
       description: 'Url associated with the run',
       default: '',
     }),
+    versionFilepath: flags.string({
+      description: 'Fetch version details from a version JSON generated with utiles:modules',
+    }),
   }
 
   async run() {
@@ -85,12 +90,22 @@ class JahiaTestrailReporter extends Command {
     // Extract a report object from the actual report files (either XML or JSON)
     const report = await ingestReport(flags.type, args.file, this.log)
 
+    // If dependencies were previously fetched, use those for the module
+    const dependencies = JSON.parse(flags.dependencies)
+    let elementVersion = flags.version
+    if (flags.versionFilepath !== undefined) {
+      const versionFile: any = fs.readFileSync(flags.versionFilepath)
+      const version: UtilsVersions = JSON.parse(versionFile)
+      dependencies.push({name: 'Jahia', version: `${version.jahia.version}-${version.jahia.build}`})
+      elementVersion = version.module.version
+    }
+
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
     const zcPayload: ZenCrepesStateNode = {
-      id: getId(flags.name, flags.version, JSON.parse(flags.dependencies)),
+      id: getId(flags.name, flags.version, dependencies),
       name: flags.name,
-      version: flags.version,
-      dependencies: JSON.parse(flags.dependencies),
+      version: elementVersion,
+      dependencies: dependencies,
       createdAt: new Date().toISOString(),
       state: report.failures === 0 ? 'PASS' : 'FAIL',
       url: flags.url,
@@ -98,7 +113,6 @@ class JahiaTestrailReporter extends Command {
       runSuccess: report.tests - report.failures,
       runFailure: report.failures,
       runDuration: report.time,
-
     }
 
     // Prepare the payload signature, is used by ZenCrepes (zqueue)
@@ -109,6 +123,8 @@ class JahiaTestrailReporter extends Command {
       'utf8',
     )
     const xHubSignature = digest.toString()
+
+    this.log(JSON.stringify(zcPayload))
 
     new SyncRequestClient()
     .addHeader('x-hub-signature', xHubSignature)
