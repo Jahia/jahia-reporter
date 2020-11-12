@@ -28,6 +28,12 @@ export interface Suite {
   name: string;
 }
 
+export interface Milestone {
+  id: number;
+  name: string;
+  project_id: number;
+}
+
 export interface Section {
   id: number;
   name: string;
@@ -59,6 +65,7 @@ export interface AddRun {
   suite_id: number;
   name: string;
   description: string;
+  milestone_id?: number;
   include_all?: boolean;
   case_ids?: (number | undefined)[];
 }

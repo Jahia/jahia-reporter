@@ -122,11 +122,12 @@ class JahiaTestrailReporter extends Command {
         this.error(`Failed to find ${type} reports in the folder ${args.file}`)
       }
     } else if (lstatSync(args.file).isFile()) {
+      this.log(`${args.file} is a file.`)
       const fileExtension: string = args.file.split('.').pop()
       if (type !== 'xml' && fileExtension === 'json') {
-        jsonFilesList.push(fileExtension)
+        jsonFilesList.push(args.file)
       } else if (type !== 'json' && fileExtension === 'xml') {
-        xmlFilesList.push(fileExtension)
+        xmlFilesList.push(args.file)
       } else {
         this.error(`The flag type ${type} does not match the file provided ${args.file}`)
       }
@@ -178,6 +179,10 @@ class JahiaTestrailReporter extends Command {
         parentSectionId = foundSection.id.toString()
       }
     }
+    
+    // Get Milestone
+    const milestone = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
+    const milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
     const executedSections: Section[] = []
@@ -235,7 +240,7 @@ class JahiaTestrailReporter extends Command {
 
     // Create test run
     const newRun: AddRun = {suite_id: testrailSuite.id,
-      name: flags.runName, description: flags.defaultRunDescription, include_all: false, case_ids: caseIds}
+      name: flags.runName, description: flags.defaultRunDescription, milestone_id: milestone_id, include_all: false, case_ids: caseIds}
     const run = testrail.addRun(testrailProject.id, newRun)
     this.log(`Created test run ${run.id.toString()}`)
 
