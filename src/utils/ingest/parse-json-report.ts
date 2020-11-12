@@ -1,18 +1,14 @@
-import {lstatSync, readFileSync} from 'fs'
 import {basename} from 'path'
 
 import {JunitRun, TestSuite} from '../../global.type'
 
 // Take an array of junit json files, return a javascript representation of the files content
-export const parseJson = (files: string[]): JunitRun => {
+export const parseJson = (rawReports: any[]): JunitRun => {
   // Each file has one single report and one single suite, different in that from the xml report
-  const suites: TestSuite[] = files
-  .filter((f: string) => lstatSync(f).isFile())
-  .reduce((acc: any, f: string) => {
-    const json = JSON.parse(readFileSync(f).toString())
-
+  const suites: TestSuite[] = rawReports
+  .reduce((acc: any, rawContent: any) => {
     // Primary tests are the tests reported in the tests array of the report
-    const primaryTests = json.tests.map((t: any) => {
+    const primaryTests = rawContent.content.tests.map((t: any) => {
       return {
         name: t.title,
         time: t.duration,
@@ -24,7 +20,7 @@ export const parseJson = (files: string[]): JunitRun => {
     })
 
     // In some situations (for example after each failing, we'd want to add those into the list of failed tests)
-    const otherFailed = json.failures
+    const otherFailed = rawContent.content.failures
     .filter((t: any) => primaryTests.find((pt: any) => pt.name === t.title) === undefined)
     .map((t: any) => {
       return {
@@ -38,10 +34,10 @@ export const parseJson = (files: string[]): JunitRun => {
     })
 
     const parsedSuite: any = [{
-      name: json.tests[0].suite + ' (' + basename(f) + ')',
-      failures: json.stats.failures,
-      timestamp: json.stats.start,
-      time: json.stats.duration,
+      name: rawContent.content.tests[0].suite + ' (' + basename(rawContent.filepath) + ')',
+      failures: rawContent.content.stats.failures,
+      timestamp: rawContent.content.stats.start,
+      time: rawContent.content.stats.duration,
       tests: [...primaryTests, ...otherFailed],
     }]
 

@@ -1,10 +1,6 @@
-import {lstatSync, readFileSync} from 'fs'
-import * as xmljs from 'xml-js'
-
 import {JunitReport, JunitRun} from '../../global.type'
 
 /* eslint-disable max-depth */
-
 // Format individual test cases
 const buildTest = (xmlTests: any) => {
   return xmlTests.map((t: any) => {
@@ -13,7 +9,7 @@ const buildTest = (xmlTests: any) => {
       time: Math.round(t.attributes.time),
       status: t.elements === undefined ? 'PASS' : 'FAIL',
       failures: t.elements === undefined ? [] : t.elements.map((f: any) => {
-        return {text: f.elements[0].text}
+        return JSON.stringify(f.elements)
       }),
     }
   })
@@ -29,27 +25,30 @@ const buildSuites = (xmlSuites: any) => {
       skipped: Math.round(s.attributes.skipped),
       testsCount: Math.round(s.attributes.tests),
       time: Math.round(s.attributes.time),
-      tests: buildTest(s.elements),
+      tests: buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
     }
   })
 }
 
 // Take an array of junit xml files, return a javascript representation of the files content
-export const parseXML = (files: string[]): JunitRun => {
-  const reports: JunitReport[] = files
-  .filter((f: string) => lstatSync(f).isFile())
-  .reduce((acc: any, f: string) => {
-    const jUnitReportXml = readFileSync(f, 'utf8')
-    const jUnitReport = xmljs.xml2js(jUnitReportXml)
-
-    const parsedReport: any = jUnitReport.elements
+export const parseXML = (rawReports: any[]): JunitRun => {
+  const reports: JunitReport[] = rawReports
+  .reduce((acc: any, rawContent: any) => {
+    const parsedReport: any = rawContent.content.elements
     .map((i: any) => {
+      let testsuites = []
+      if (i.name === 'testsuite' || i.name === 'suite') {
+        testsuites = buildSuites([i])
+      } else {
+        testsuites = buildSuites(i.elements)
+      }
       const report = {
         ...i.attributes,
         tests: Math.round(i.attributes.tests),
         failures: Math.round(i.attributes.failures),
         time: Math.round(i.attributes.time),
-        testsuites: buildSuites(i.elements),
+        // testsuites: buildSuites(i.elements),
+        testsuites: testsuites,
       }
       return  report
     })
