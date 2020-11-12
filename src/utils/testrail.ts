@@ -1,5 +1,5 @@
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {AddCase, Project, Section, Suite, Test, TestRailResult, AddRun, Run, CaseFields} from './testrail.interface'
+import {AddCase, Project, Section, Suite, Test, TestRailResult, AddRun, Run, CaseFields, Milestone} from './testrail.interface'
 
 export class TestRailClient {
     public base: string
@@ -28,6 +28,14 @@ export class TestRailClient {
 
     public getSuites(projectId: number): Suite[] {
       return this.sendRequest('GET', 'get_suites/' + projectId.toString(), '') as Suite[]
+    }
+
+    public getMilestones(projectId: number): Milestone[] {
+      return this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '') as Milestone[]
+    }
+
+    public addMilestone(projectId: number, name: string): Milestone {
+      return this.sendRequest('POST', 'add_milestone/' + projectId.toString(), {name: name}) as Milestone
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
