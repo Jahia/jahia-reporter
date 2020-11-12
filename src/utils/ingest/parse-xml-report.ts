@@ -1,6 +1,3 @@
-import {lstatSync, readFileSync} from 'fs'
-import * as xmljs from 'xml-js'
-
 import {JunitReport, JunitRun} from '../../global.type'
 
 /* eslint-disable max-depth */
@@ -34,14 +31,10 @@ const buildSuites = (xmlSuites: any) => {
 }
 
 // Take an array of junit xml files, return a javascript representation of the files content
-export const parseXML = (files: string[]): JunitRun => {
-  const reports: JunitReport[] = files
-  .filter((f: string) => lstatSync(f).isFile())
-  .reduce((acc: any, f: string) => {
-    const jUnitReportXml = readFileSync(f, 'utf8')
-    const jUnitReport = xmljs.xml2js(jUnitReportXml)
-
-    const parsedReport: any = jUnitReport.elements
+export const parseXML = (rawReports: any[]): JunitRun => {
+  const reports: JunitReport[] = rawReports
+  .reduce((acc: any, rawContent: any) => {
+    const parsedReport: any = rawContent.content.elements
     .map((i: any) => {
       let testsuites = []
       if (i.name === 'testsuite' || i.name === 'suite') {
