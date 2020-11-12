@@ -240,10 +240,7 @@ class JahiaTestrailReporter extends Command {
 
     // Create test run
     const newRun: AddRun = {suite_id: testrailSuite.id,
-      name: flags.runName, description: flags.defaultRunDescription, include_all: false, case_ids: caseIds}
-    if (milestone_id != 0) {
-      newRun.milestone_id = milestone_id
-    }
+      name: flags.runName, description: flags.defaultRunDescription, milestone_id: milestone_id, include_all: false, case_ids: caseIds}
     const run = testrail.addRun(testrailProject.id, newRun)
     this.log(`Created test run ${run.id.toString()}`)
 
