@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import {SyncRequestClient} from 'ts-sync-request/dist'
+import fetch from 'node-fetch'
 import * as fs from 'fs'
 
 import {UtilsVersions} from '../global.type'
@@ -117,9 +117,13 @@ class JahiaSlackReporter extends Command {
     if (flags.skip || (flags.skipSuccessful && report.failures === 0)) {
       this.log(JSON.stringify(slackPayload))
     } else {
-      new SyncRequestClient()
-      .addHeader('Content-Type', 'application/json')
-      .post(args.webhook, JSON.parse(JSON.stringify(slackPayload)))
+      await fetch(args.webhook, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackPayload),
+      })
     }
   }
 }

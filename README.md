@@ -25,6 +25,10 @@ yarn
 ./bin/run YourCommand --help
 ```
 
+## Release
+
+CI/CD on this repository is performed with GitHub actions, publication to NPM and building of the docker images can be done by creating a release in GitHub(with three digit versioning).
+
 ## Usage
 
 ### With NPM
@@ -36,6 +40,14 @@ jahia-reporter testrail --help
 
 ### With Docker
 
+
 ```
 docker run jahia/jahia-reporter:latest jahia-reporter slack --help
 ```
+
+Since the tool takes actual files as primary input, it is necessary to copy those during the run, this can be achieve like this:
+
+```
+docker run --rm -v ~/Desktop/junit/json2:/root/ jahia/jahia-reporter:latest /bin/bash -c "jahia-reporter slack /root/ WEBHOOK_URL -t json -u http://www.circleci.com -n \<@SLACK_USERNAME\> -w jahia -m augmented-search"
+```
+
