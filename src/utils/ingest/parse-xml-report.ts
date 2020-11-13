@@ -1,4 +1,4 @@
-import {JunitReport, JunitRun} from '../../global.type'
+import {JRReport, JRRun} from '../../global.type'
 import {basename} from 'path'
 
 /* eslint-disable max-depth */
@@ -36,8 +36,8 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
 }
 
 // Take an array of junit xml files, return a javascript representation of the files content
-export const parseXML = (rawReports: any[]): JunitRun => {
-  const reports: JunitReport[] = rawReports
+export const parseXML = (rawReports: any[]): JRRun => {
+  const reports: JRReport[] = rawReports
   .reduce((acc: any, rawContent: any) => {
     const parsedReport: any = rawContent.content.elements
     .map((i: any) => {

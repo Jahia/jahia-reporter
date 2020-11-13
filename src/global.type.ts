@@ -1,39 +1,39 @@
-interface TestFailure {
+interface JRTestfailure {
   text: string;
 }
 
-interface TestCase {
+interface JRTestcase {
   name: string;
   time: number;
   status: string;
-  failures: TestFailure[];
+  failures: JRTestfailure[];
 }
 
-export interface TestSuite {
+export interface JRTestsuite {
   name: string;
   errors?: number;
   failures: number;
   skipped?: number;
   timestamp: string;
   time: number;
-  tests: TestCase[];
+  tests: JRTestcase[];
 }
 
 // A report is a junit test file composed of multiple suites
-export interface JunitReport {
+export interface JRReport {
   name: string;
   tests: number;
   failures: number;
   time: number;
-  testsuites: TestSuite[];
+  testsuites: JRTestsuite[];
 }
 
 // A run is composed of multiple junit files
-export interface JunitRun {
+export interface JRRun {
   tests: number;
   failures: number;
   time: number;
-  reports: JunitReport[];
+  reports: JRReport[];
 }
 
 export interface ZenCrepesDependency {
