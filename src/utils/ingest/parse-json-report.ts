@@ -1,11 +1,11 @@
 import {basename} from 'path'
 
-import {JunitRun, TestSuite} from '../../global.type'
+import {JRRun, JRTestsuite} from '../../global.type'
 
 // Take an array of junit json files, return a javascript representation of the files content
-export const parseJson = (rawReports: any[]): JunitRun => {
+export const parseJson = (rawReports: any[]): JRRun => {
   // Each file has one single report and one single suite, different in that from the xml report
-  const suites: TestSuite[] = rawReports
+  const suites: JRTestsuite[] = rawReports
   .reduce((acc: any, rawContent: any) => {
     // Primary tests are the tests reported in the tests array of the report
     const primaryTests = rawContent.content.tests.map((t: any) => {
