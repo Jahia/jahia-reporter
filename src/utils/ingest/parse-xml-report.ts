@@ -49,6 +49,7 @@ export const parseXML = (rawReports: any[]): JunitRun => {
       }
       const report = {
         ...i.attributes,
+        name: i.attributes.name === 'null' ? basename(rawContent.filepath) : i.attributes.name,
         tests: Math.round(i.attributes.tests),
         failures: Math.round(i.attributes.failures),
         time: Math.round(i.attributes.time),
