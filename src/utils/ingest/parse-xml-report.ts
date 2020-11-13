@@ -1,4 +1,5 @@
 import {JunitReport, JunitRun} from '../../global.type'
+import {basename} from 'path'
 
 /* eslint-disable max-depth */
 // Format individual test cases
@@ -16,10 +17,14 @@ const buildTest = (xmlTests: any) => {
 }
 
 // Format individual test suites
-const buildSuites = (xmlSuites: any) => {
+const buildSuites = (xmlSuites: any, testFilename: string) => {
   return xmlSuites.map((s: any) => {
     return {
       ...s.attributes,
+      // Some of the existing testsuites have 'null' (as a string) instead of
+      // a name, if this is the case, we replace null by the name of the file
+      // which is more informative
+      name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
       errors: Math.round(s.attributes.errors),
       failures: Math.round(s.attributes.failures),
       skipped: Math.round(s.attributes.skipped),
@@ -38,12 +43,13 @@ export const parseXML = (rawReports: any[]): JunitRun => {
     .map((i: any) => {
       let testsuites = []
       if (i.name === 'testsuite' || i.name === 'suite') {
-        testsuites = buildSuites([i])
+        testsuites = buildSuites([i], basename(rawContent.filepath))
       } else {
-        testsuites = buildSuites(i.elements)
+        testsuites = buildSuites(i.elements, basename(rawContent.filepath))
       }
       const report = {
         ...i.attributes,
+        name: i.attributes.name === 'null' ? basename(rawContent.filepath) : i.attributes.name,
         tests: Math.round(i.attributes.tests),
         failures: Math.round(i.attributes.failures),
         time: Math.round(i.attributes.time),

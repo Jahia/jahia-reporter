@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import {SyncRequestClient} from 'ts-sync-request/dist'
+import fetch from 'node-fetch'
 import * as fs from 'fs'
 
 import {UtilsVersions} from '../global.type'
@@ -84,7 +84,7 @@ class JahiaSlackReporter extends Command {
     }
 
     // Format the failed tests in a message to be submitted to slack
-    let msg = `Test summary for: <${flags.url}|${module}> - Failures: ${report.failures}/${report.tests} \n`
+    let msg = `Test summary for: <${flags.url}|${module}> - ${report.tests} tests - ${report.failures} failures\n`
     const failedReports = report.reports.filter(r => r.failures > 0)
     if (failedReports.length > 0) {
       msg += '```\n'
@@ -92,10 +92,10 @@ class JahiaSlackReporter extends Command {
     failedReports.forEach(failedReport => {
       const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
       failedSuites.forEach(failedSuite => {
-        msg += `Suite: ${failedSuite.name} - Failures: ${failedSuite.failures}/${failedSuite.tests.length}\n`
+        msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
         const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
         failedTests.forEach(failedTest => {
-          msg += ` |-- ${failedTest.name} (${failedTest.time}s) \n`
+          msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
         })
       })
     })
@@ -117,9 +117,13 @@ class JahiaSlackReporter extends Command {
     if (flags.skip || (flags.skipSuccessful && report.failures === 0)) {
       this.log(JSON.stringify(slackPayload))
     } else {
-      new SyncRequestClient()
-      .addHeader('Content-Type', 'application/json')
-      .post(args.webhook, JSON.parse(JSON.stringify(slackPayload)))
+      await fetch(args.webhook, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackPayload),
+      })
     }
   }
 }
