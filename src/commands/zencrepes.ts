@@ -80,7 +80,8 @@ class JahiaTestrailReporter extends Command {
       default: '',
     }),
     versionFilepath: flags.string({
-      description: 'Fetch version details from a version JSON generated with utiles:modules',
+      char: 'f',
+      description: 'Fetch version details from the JSON generated with utiles:modules',
     }),
   }
 
@@ -91,12 +92,13 @@ class JahiaTestrailReporter extends Command {
     const report = await ingestReport(flags.type, args.file, this.log)
 
     // If dependencies were previously fetched, use those for the module
-    const dependencies = JSON.parse(flags.dependencies)
+    let dependencies = JSON.parse(flags.dependencies)
     let elementVersion = flags.version
     if (flags.versionFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.versionFilepath)
       const version: UtilsVersions = JSON.parse(versionFile)
       dependencies.push({name: 'Jahia', version: `${version.jahia.version}-${version.jahia.build}`})
+      dependencies = [...dependencies, ...version.dependencies]
       elementVersion = version.module.version
     }
 

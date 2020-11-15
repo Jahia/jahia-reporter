@@ -72,5 +72,6 @@ export interface UtilsVersions {
     fullVersion: string;
   };
   module: JahiaModule;
+  dependencies: JahiaModule[];
   allModules: JahiaModule[];
 }

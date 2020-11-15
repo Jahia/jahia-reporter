@@ -31,6 +31,11 @@ class JahiaUtilsModule extends Command {
       description: 'Module ID',
       required: true,
     }),
+    dependencies: flags.string({
+      char: 'd',
+      description: 'Comma separated list of module ID dependencies',
+      default: '',
+    }),
     filepath: flags.string({
       char: 'f',
       description: 'Filepath to store the resulting JSON to',
@@ -41,7 +46,9 @@ class JahiaUtilsModule extends Command {
   async run() {
     const {args, flags} = this.parse(JahiaUtilsModule)
 
-    const version: UtilsVersions = getModules(flags.module, args.jahiaUrl, args.jahiaUsername, args.jahiaPassword)
+    const dependencies: string[] = flags.dependencies.split(',')
+
+    const version: UtilsVersions = getModules(flags.module, dependencies, args.jahiaUrl, args.jahiaUsername, args.jahiaPassword)
 
     fs.writeFileSync(
       path.join(flags.filepath),

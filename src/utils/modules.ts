@@ -31,7 +31,8 @@ export const getJahiaVersion = (version: string) => {
   }
 }
 
-export const getModules = (moduleId: string, jahiaUrl: string, jahiaUsername: string, jahiaPassword: string) => {
+// eslint-disable-next-line max-params
+export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: string, jahiaUsername: string, jahiaPassword: string) => {
   const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
 
   // Simple graphql call to fetch the query
@@ -61,6 +62,9 @@ export const getModules = (moduleId: string, jahiaUrl: string, jahiaUsername: st
       name: 'UNKNOWN',
       version: 'UNKOWN',
     } : module,
+    dependencies: dependencies
+    .map((d: string) => response.data.dashboard.modules.find((m: {id: string}) => m.id === d))
+    .filter((d: {id: string} | undefined) => d !== undefined),
     allModules: response.data.dashboard.modules,
   }
   return version
