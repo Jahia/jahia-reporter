@@ -99,6 +99,6 @@ docker run jahia/jahia-reporter:latest jahia-reporter slack --help
 Since the tool takes actual files as primary input, it is necessary to make them available to the tool during the run, this can be done by mounting the volume like this:
 
 ```
-docker run --rm -v $PWD/junit/json2:/root/ jahia/jahia-reporter:latest /bin/bash -c "jahia-reporter slack /root/ WEBHOOK_URL -t json -u http://www.circleci.com -n \<@SLACK_USERNAME\> -w jahia -m augmented-search"
+docker run --rm -v $PWD/junit/json2:/root/:ro jahia/jahia-reporter:latest /bin/bash -c "jahia-reporter slack /root/ WEBHOOK_URL -t json -u http://www.circleci.com -n \<@SLACK_USERNAME\> -w jahia -m augmented-search"
 ```
 
