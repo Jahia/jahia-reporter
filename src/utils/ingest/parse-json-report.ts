@@ -6,6 +6,7 @@ import {JRRun, JRTestsuite} from '../../global.type'
 export const parseJson = (rawReports: any[]): JRRun => {
   // Each file has one single report and one single suite, different in that from the xml report
   const suites: JRTestsuite[] = rawReports
+  .filter((rc: any) => rc.stats !== undefined && rc.tests !== undefined)
   .reduce((acc: any, rawContent: any) => {
     // Primary tests are the tests reported in the tests array of the report
     const primaryTests = rawContent.content.tests.map((t: any) => {

@@ -179,7 +179,7 @@ class JahiaTestrailReporter extends Command {
         parentSectionId = foundSection.id.toString()
       }
     }
-    
+
     // Get Milestone
     const milestone = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
     const milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
