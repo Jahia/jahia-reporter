@@ -38,8 +38,12 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
 // Take an array of junit xml files, return a javascript representation of the files content
 export const parseXML = (rawReports: any[]): JRRun => {
   const reports: JRReport[] = rawReports
+  // Don't process if the report is absolutely empty
+  .filter((rawContent: any) => rawContent.content.elements !== undefined)
   .reduce((acc: any, rawContent: any) => {
     const parsedReport: any = rawContent.content.elements
+    // Don't process suites if there are no tests
+    .filter((i: any) => i.attributes.tests !== undefined && parseInt(i.attributes.tests, 10) > 0)
     .map((i: any) => {
       let testsuites = []
       if (i.name === 'testsuite' || i.name === 'suite') {
