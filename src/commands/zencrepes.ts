@@ -39,78 +39,75 @@ const getId = (name: string, version: string, dependencies: ZenCrepesDependency[
 class JahiaTestrailReporter extends Command {
   static description = 'Submit data about a junit/mocha report to ZenCrepes'
 
-  static args = [
-    {name: 'file',
-      required: true,
-      description: 'A json/xml report or a folder containing one or multiple json/xml reports'},
-    {name: 'payloadurl',
-      required: true,
-      description: 'The Webhook payload URL'},
-    {name: 'secret',
-      required: true,
-      description: 'The webhook secret'},
-  ]
-
   static flags = {
     help: flags.help({char: 'h'}),
-    type: flags.string({
+    sourcePath: flags.string({
+      description: 'A json/xml report or a folder containing one or multiple json/xml reports',
+      required: true,
+    }),
+    sourceType: flags.string({
       char: 't',                        // shorter flag version
-      description: 'report file type',  // help description for flag
+      description: 'The format of the report',  // help description for flag
       options: ['xml', 'json'],         // only allow the value to be from a discrete set
       default: 'xml',
     }),
+    webhook: flags.string({
+      description: 'The Webhook URL to send the payload to',
+      required: true,
+    }),
+    webhookSecret: flags.string({
+      description: 'The webhook secret',
+      required: true,
+    }),
     name: flags.string({
-      char: 'n',
-      description: 'Name of the element being tested (for example, module ID)',
+      description: 'Name of the element being tested (for example, a module ID)',
       default: 'Jahia',
     }),
     version: flags.string({
-      char: 'v',
-      description: 'Version of the element being tested',
+      description: 'Version of the element being tested (for example a module version)',
       default: 'SNAPSHOT',
     }),
     dependencies: flags.string({
-      char: 'd',
       description: 'Array of runtime dependencies of the element being tested [{name: "n", version: "v"}]',
       default: '[]',
     }),
-    url: flags.string({
-      char: 'u',
+    runUrl: flags.string({
       description: 'Url associated with the run',
       default: '',
     }),
-    versionFilepath: flags.string({
-      char: 'f',
-      description: 'Fetch version details from the JSON generated with utiles:modules',
+    moduleFilepath: flags.string({
+      description: 'Fetch version details from a version JSON generated with utils:modules (overwrites name and version)',
     }),
   }
 
   async run() {
-    const {args, flags} = this.parse(JahiaTestrailReporter)
+    const {flags} = this.parse(JahiaTestrailReporter)
 
     // Extract a report object from the actual report files (either XML or JSON)
-    const report = await ingestReport(flags.type, args.file, this.log)
+    const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
 
     // If dependencies were previously fetched, use those for the module
     let dependencies = JSON.parse(flags.dependencies)
-    let elementVersion = flags.version
-    if (flags.versionFilepath !== undefined) {
-      const versionFile: any = fs.readFileSync(flags.versionFilepath)
-      const version: UtilsVersions = JSON.parse(versionFile)
-      dependencies.push({name: 'Jahia', version: `${version.jahia.version}-${version.jahia.build}`})
-      dependencies = [...dependencies, ...version.dependencies]
-      elementVersion = version.module.version
+    let name = flags.name
+    let version = flags.version
+    if (flags.moduleFilepath !== undefined) {
+      const versionFile: any = fs.readFileSync(flags.moduleFilepath)
+      const versions: UtilsVersions = JSON.parse(versionFile)
+      dependencies.push({name: 'Jahia', version: `${versions.jahia.version}-${versions.jahia.build}`})
+      dependencies = [...dependencies, ...versions.dependencies]
+      version = versions.module.version
+      name = versions.module.name
     }
 
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
     const zcPayload: ZenCrepesStateNode = {
-      id: getId(flags.name, flags.version, dependencies),
-      name: flags.name,
-      version: elementVersion,
+      id: getId(name, flags.version, dependencies),
+      name: name,
+      version: version,
       dependencies: dependencies,
       createdAt: new Date().toISOString(),
       state: report.failures === 0 ? 'PASS' : 'FAIL',
-      url: flags.url,
+      url: flags.runUrl,
       runTotal: report.tests,
       runSuccess: report.tests - report.failures,
       runFailure: report.failures,
@@ -119,7 +116,7 @@ class JahiaTestrailReporter extends Command {
 
     // Prepare the payload signature, is used by ZenCrepes (zqueue)
     // to ensure submitted is authorized
-    const hmac = crypto.createHmac('sha1', args.secret)
+    const hmac = crypto.createHmac('sha1', flags.webhookSecret)
     const digest = Buffer.from(
       'sha1=' + hmac.update(JSON.stringify(zcPayload)).digest('hex'),
       'utf8',
@@ -131,7 +128,7 @@ class JahiaTestrailReporter extends Command {
     new SyncRequestClient()
     .addHeader('x-hub-signature', xHubSignature)
     .addHeader('Content-Type', 'application/json')
-    .post(args.payloadurl, zcPayload)
+    .post(flags.webhook, zcPayload)
   }
 }
 

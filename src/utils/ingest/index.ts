@@ -21,6 +21,8 @@ const parseFile = (reportType: string, filePath: string) => {
 /*
   Contains a set of functions related to the ingestion of raw junit files
   Those files are then transformed into a standard report format, common across the different type of source files
+
+  Note: It is necessary to supply a reportType to cover scenario in which a folder would contain both json and xml
 */
 const ingestReport = async (reportType: string, reportFilePath: string, log: any) => {
   const supportedFormats = ['json', 'xml']
