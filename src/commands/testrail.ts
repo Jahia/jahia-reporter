@@ -124,7 +124,7 @@ class JahiaTestrailReporter extends Command {
       }
     } else if (lstatSync(flags.sourcePath).isFile()) {
       this.log(`${flags.sourcePath} is a file.`)
-      const fileExtension: string = flags.sourcePath.split('.').pop()
+      const fileExtension: any = flags.sourcePath.split('.').pop()
       if (type !== 'xml' && fileExtension === 'json') {
         jsonFilesList.push(flags.sourcePath)
       } else if (type !== 'json' && fileExtension === 'xml') {
