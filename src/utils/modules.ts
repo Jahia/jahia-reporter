@@ -23,7 +23,7 @@ export const getJahiaVersion = (version: string) => {
   if (findVersion !== null) {
     jahiaVersion = findVersion[1]
   }
-  if (jahiaVersion === 'UNKNWON') {
+  if (jahiaVersion === 'UNKNOWN') {
     findVersion = version.match(/Jahia (.*) -/)
     if (findVersion !== null) {
       jahiaVersion = findVersion[1]
