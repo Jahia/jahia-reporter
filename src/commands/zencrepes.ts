@@ -100,7 +100,7 @@ class JahiaTestrailReporter extends Command {
       }
       dependencies = [...dependencies, ...versions.dependencies]
       version = versions.module.version
-      name = versions.module.name
+      name = versions.module.id
     }
 
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
