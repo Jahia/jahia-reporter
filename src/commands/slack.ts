@@ -80,7 +80,11 @@ class JahiaSlackReporter extends Command {
     if (flags.versionFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.versionFilepath)
       const version: UtilsVersions = JSON.parse(versionFile)
-      module = `${flags.module} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
+      if (version.jahia.build === '') {
+        module = `${flags.module} v${version.module.version} (Jahia: ${version.jahia.version})`
+      } else {
+        module = `${flags.module} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
+      }
     }
 
     // Format the failed tests in a message to be submitted to slack

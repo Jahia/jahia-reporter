@@ -97,7 +97,11 @@ class JahiaTestrailReporter extends Command {
     if (flags.versionFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.versionFilepath)
       const version: UtilsVersions = JSON.parse(versionFile)
-      dependencies.push({name: 'Jahia', version: `${version.jahia.version}-${version.jahia.build}`})
+      if (version.jahia.build === '') {
+        dependencies.push({name: 'Jahia', version: version.jahia.version})
+      } else {
+        dependencies.push({name: 'Jahia', version: `${version.jahia.version}-${version.jahia.build}`})
+      }
       dependencies = [...dependencies, ...version.dependencies]
       elementVersion = version.module.version
     }
