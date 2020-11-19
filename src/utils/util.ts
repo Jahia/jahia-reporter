@@ -9,12 +9,14 @@ export function parseJson(files: string[]): Test[] {
   for (const file of files) {
     if (lstatSync(file).isFile()) {
       const json = JSON.parse(readFileSync(file).toString())
-      for (const testInReport of json.tests) {
-        const test: Test = {section: testInReport.suite, title: testInReport.title, time: testInReport.duration, steps: testInReport.body}
-        if (testInReport.err.message) {
-          test.comment = `${testInReport.err.name}\n${testInReport.err.message}\n${testInReport.err.stack}`
+      if (json.stats !== undefined && json.tests !== undefined) {
+        for (const testInReport of json.tests) {
+          const test: Test = {section: testInReport.suite, title: testInReport.title, time: testInReport.duration, steps: testInReport.body}
+          if (testInReport.err.message) {
+            test.comment = `${testInReport.err.name}\n${testInReport.err.message}\n${testInReport.err.stack}`
+          }
+          tests.push(test)
         }
-        tests.push(test)
       }
     }
   }
