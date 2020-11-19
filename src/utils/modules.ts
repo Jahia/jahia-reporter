@@ -12,16 +12,22 @@ export const getJahiaVersion = (version: string) => {
     }
   }
 
-  let jahiaBuild = 'UNKNOWN'
+  let jahiaBuild = ''
   const findBuild = version.match(/Build (.*)/)
   if (findBuild !== null) {
     jahiaBuild = findBuild[1]
   }
 
   let jahiaVersion = 'UNKNOWN'
-  const findVersion = version.match(/Jahia (.*) \[/)
+  let findVersion = version.match(/Jahia (.*) \[/)
   if (findVersion !== null) {
     jahiaVersion = findVersion[1]
+  }
+  if (jahiaVersion === 'UNKNWON') {
+    findVersion = version.match(/Jahia (.*) -/)
+    if (findVersion !== null) {
+      jahiaVersion = findVersion[1]
+    }
   }
 
   return {
