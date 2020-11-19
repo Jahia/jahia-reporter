@@ -6,13 +6,13 @@ import {JRRun, JRTestsuite} from '../../global.type'
 export const parseJson = (rawReports: any[]): JRRun => {
   // Each file has one single report and one single suite, different in that from the xml report
   const suites: JRTestsuite[] = rawReports
-  .filter((rc: any) => rc.stats !== undefined && rc.tests !== undefined)
+  .filter((rc: any) => rc.content.stats !== undefined && rc.content.tests !== undefined)
   .reduce((acc: any, rawContent: any) => {
     // Primary tests are the tests reported in the tests array of the report
     const primaryTests = rawContent.content.tests.map((t: any) => {
       return {
         name: t.title,
-        time: t.duration,
+        time: Math.round(t.duration / 1000), // Time is in ms, converting to s
         status: Object.values(t.err).length === 0 ? 'PASS' : 'FAIL',
         failures: Object.values(t.err).length === 0 ? [] : [{
           text: JSON.stringify(t.err),
@@ -26,7 +26,7 @@ export const parseJson = (rawReports: any[]): JRRun => {
     .map((t: any) => {
       return {
         name: t.title,
-        time: t.duration,
+        time: Math.round(t.duration / 1000), // Time is in ms, converting to s
         status: 'FAIL',
         failures: Object.values(t.err).length === 0 ? [] : [{
           text: JSON.stringify(t.err),
@@ -38,7 +38,7 @@ export const parseJson = (rawReports: any[]): JRRun => {
       name: rawContent.content.tests[0].suite + ' (' + basename(rawContent.filepath) + ')',
       failures: rawContent.content.stats.failures,
       timestamp: rawContent.content.stats.start,
-      time: rawContent.content.stats.duration,
+      time: Math.round(rawContent.content.stats.duration / 1000), // Time is in ms, converting to s
       tests: [...primaryTests, ...otherFailed],
     }]
 
