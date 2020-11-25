@@ -79,7 +79,7 @@ class JahiaSlackReporter extends Command {
       } else {
         module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
       }
-      if (version.module.name === 'UNKNOWN' && version.jahia.version === 'UNKNOWN') {
+      if (version.module.name === 'UNKNOWN') {
         msg = `Error setting up executing tests in run: ${flags.runUrl}`
       }
     }
