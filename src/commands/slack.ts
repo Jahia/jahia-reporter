@@ -68,6 +68,7 @@ class JahiaSlackReporter extends Command {
     // Extract a report object from the actual report files (either XML or JSON)
     const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
 
+    let msg = ''
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
     if (flags.moduleFilepath !== undefined) {
@@ -78,32 +79,36 @@ class JahiaSlackReporter extends Command {
       } else {
         module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
       }
+      if (version.module.name === 'UNKNOWN' && version.jahia.version === 'UNKNOWN') {
+        msg = `Error setting up executing tests in run: ${flags.runUrl}`
+      }
     }
 
-    // Format the failed tests in a message to be submitted to slack
-    let msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures\n`
-    const failedReports = report.reports.filter(r => r.failures > 0)
-    if (failedReports.length > 0) {
-      msg += '```\n'
-    }
-    failedReports.forEach(failedReport => {
-      const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-      failedSuites.forEach(failedSuite => {
-        msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-        const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-        failedTests.forEach(failedTest => {
-          msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+    if (msg === '') {
+      // Format the failed tests in a message to be submitted to slack
+      msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures\n`
+      const failedReports = report.reports.filter(r => r.failures > 0)
+      if (failedReports.length > 0) {
+        msg += '```\n'
+      }
+      failedReports.forEach(failedReport => {
+        const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
+        failedSuites.forEach(failedSuite => {
+          msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+          failedTests.forEach(failedTest => {
+            msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+          })
         })
       })
-    })
-    if (failedReports.length > 0) {
-      msg += '```\n'
-    }
+      if (failedReports.length > 0) {
+        msg += '```\n'
+      }
 
-    if (flags.notify.length !== 0 && report.failures > 0) {
-      msg += `${flags.notify}`
+      if (flags.notify.length !== 0 && report.failures > 0) {
+        msg += `${flags.notify}`
+      }
     }
-
     const slackPayload = {
       text: msg,
       type: 'mrkdwn',
