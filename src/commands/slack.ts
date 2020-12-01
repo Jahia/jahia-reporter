@@ -25,6 +25,10 @@ class JahiaSlackReporter extends Command {
       description: 'The slack Webhook URL to send the message to',
       required: true,
     }),
+    webhookAll: flags.string({
+      description: 'An alternative slack Webhook URL to send the ALL message to (ignore skipSuccessful flag)',
+      default: '',
+    }),
     msgAuthor: flags.string({
       description: 'Author of the slack message being sent',
       default: 'Jahia-Reporter',
@@ -59,6 +63,7 @@ class JahiaSlackReporter extends Command {
     }),
     skipSuccessful: flags.boolean({
       description: 'Do not send slack notifications if all tests are passing',
+      default: false,
     }),
   }
 
@@ -116,10 +121,31 @@ class JahiaSlackReporter extends Command {
       icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
     }
 
-    if (flags.skip || (flags.skipSuccessful && report.failures === 0)) {
+    if (flags.skip) {
       this.log(JSON.stringify(slackPayload))
-    } else {
+      this.exit(0)
+    }
+
+    if (!flags.skipSuccessful) {
       await fetch(flags.webhook, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackPayload),
+      })
+    } else if (flags.skipSuccessful && report.failures > 0) {
+      await fetch(flags.webhook, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackPayload),
+      })
+    }
+
+    if (flags.webhookAll !== '') {
+      await fetch(flags.webhookAll, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
