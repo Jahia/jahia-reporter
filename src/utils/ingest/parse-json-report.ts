@@ -35,7 +35,6 @@ export const parseJson = (rawReports: any[]): JRRun => {
       }
     })
 
-
     const parsedSuite: any = [{
       name: rawContent.content.tests[0].suite + ' (' + basename(rawContent.filepath) + ')',
       failures: rawContent.content.stats.failures,

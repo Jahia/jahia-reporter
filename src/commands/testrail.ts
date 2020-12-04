@@ -1,3 +1,4 @@
+/* eslint max-depth: ["error", 5] */
 import {Command, flags} from '@oclif/command'
 import {TestRailClient} from '../utils/testrail'
 import {Project, Section, Suite, Test, AddCase, AddRun, Status, TestRailResult} from '../utils/testrail.interface'
@@ -82,9 +83,8 @@ class JahiaTestrailReporter extends Command {
       flags.runName += output
     }
 
-    let jrRun: JRRun
     // Parse files into objects
-    jrRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+    const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
     const tests: Test[] = []
     for (const report of jrRun.reports) {
       for (const testsuite of report.testsuites) {
