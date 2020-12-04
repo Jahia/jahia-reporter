@@ -1,10 +1,9 @@
 import {Command, flags} from '@oclif/command'
-import {existsSync, lstatSync} from 'fs'
-import * as glob from 'glob'
 import {TestRailClient} from '../utils/testrail'
 import {Project, Section, Suite, Test, AddCase, AddRun, Status, TestRailResult} from '../utils/testrail.interface'
-import {parseJson, parseXML} from '../utils/util'
 import {formatToTimeZone} from 'date-fns-timezone'
+import {JRRun, JRTestfailure} from '../global.type'
+import ingestReport from '../utils/ingest'
 
 class JahiaTestrailReporter extends Command {
   static description = 'Submit data about a junit/mocha report to TestRail'
@@ -83,70 +82,26 @@ class JahiaTestrailReporter extends Command {
       flags.runName += output
     }
 
-    const type: string = flags.sourceType === undefined ? 'json/xml' : flags.sourceType
-    let jsonFilesList: string[] = []
-    let xmlFilesList: string[] = []
-
-    if (!flags.sourcePath) {
-      this.error('Must specify file or folder argument')
-    }
-
-    if (!existsSync(flags.sourcePath)) {
-      this.error(`Specified path "${flags.sourcePath}" does not exist`)
-    }
-
-    if (lstatSync(flags.sourcePath).isDirectory()) {
-      this.log(`${flags.sourcePath} is a folder. Looking for ${type} files:`)
-      if (type !== 'xml') {
-        jsonFilesList = glob.sync(flags.sourcePath + '/**/*.json', {})
-        // eslint-disable-next-line unicorn/explicit-length-check
-        if (jsonFilesList.length) {
-          this.log(jsonFilesList.join('\r\n'))
-        }
-      }
-      if (type !== 'json') {
-        xmlFilesList = glob.sync(flags.sourcePath + '/**/*.xml', {})
-        // eslint-disable-next-line unicorn/explicit-length-check
-        if (xmlFilesList.length) {
-          this.log(xmlFilesList.join('\r\n'))
-        }
-      }
-
-      // We want json OR xml file/s but not both
-      // eslint-disable-next-line unicorn/explicit-length-check
-      if (type === 'json/xml' && xmlFilesList.length && jsonFilesList.length) {
-        this.error(`Two file types were found in ${flags.sourcePath}. Please specify file type`)
-      }
-
-      // Check that at least one report type was found
-      if (xmlFilesList.length === undefined && jsonFilesList.length === undefined) {
-        this.error(`Failed to find ${type} reports in the folder ${flags.sourcePath}`)
-      }
-    } else if (lstatSync(flags.sourcePath).isFile()) {
-      this.log(`${flags.sourcePath} is a file.`)
-      const fileExtension: any = flags.sourcePath.split('.').pop()
-      if (type !== 'xml' && fileExtension === 'json') {
-        jsonFilesList.push(flags.sourcePath)
-      } else if (type !== 'json' && fileExtension === 'xml') {
-        xmlFilesList.push(flags.sourcePath)
-      } else {
-        this.error(`The flag type ${type} does not match the file provided ${flags.sourcePath}`)
-      }
-    } else {
-      this.error(`the path ${flags.sourcePath} is not a file nor a folder`)
-    }
-    let tests: Test[]
+    let jrRun: JRRun
     // Parse files into objects
-    if (jsonFilesList.length > 0) {
-      tests = parseJson(jsonFilesList)
-    } else {
-      tests = parseXML(xmlFilesList)
-    }
-
-    // Make sure that we have tests
-    // eslint-disable-next-line unicorn/explicit-length-check
-    if (!tests.length) {
-      this.error('Failed to find test results. Check your report.')
+    jrRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+    const tests: Test[] = []
+    for (const report of jrRun.reports) {
+      for (const testsuite of report.testsuites) {
+        for (const test of testsuite.tests) {
+          if (!test.name.includes('hook for')) {
+            const sectionName = testsuite.name.includes('(') ? testsuite.name.substring(0, testsuite.name.indexOf('(') - 1) : testsuite.name
+            const testName = test.name.includes(sectionName) ?
+              test.name.substring(sectionName.length + 1) :
+              test.name
+            const testToPush: Test = {section: sectionName.trim(), title: testName.trim(), time: test.time.toString(), steps: test.steps}
+            if (test.failures.length > 0) {
+              testToPush.comment = test.failures.map((f: JRTestfailure) => f.text).join() || test.failures.join()
+            }
+            tests.push(testToPush)
+          }
+        }
+      }
     }
 
     const testrail = new TestRailClient(

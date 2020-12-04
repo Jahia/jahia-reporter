@@ -12,6 +12,7 @@ export const parseJson = (rawReports: any[]): JRRun => {
     const primaryTests = rawContent.content.tests.map((t: any) => {
       return {
         name: t.title,
+        steps: t.body,
         time: Math.round(t.duration / 1000), // Time is in ms, converting to s
         status: Object.values(t.err).length === 0 ? 'PASS' : 'FAIL',
         failures: Object.values(t.err).length === 0 ? [] : [{
@@ -33,6 +34,7 @@ export const parseJson = (rawReports: any[]): JRRun => {
         }],
       }
     })
+
 
     const parsedSuite: any = [{
       name: rawContent.content.tests[0].suite + ' (' + basename(rawContent.filepath) + ')',

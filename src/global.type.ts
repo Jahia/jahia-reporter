@@ -1,4 +1,4 @@
-interface JRTestfailure {
+export interface JRTestfailure {
   text: string;
 }
 
@@ -7,6 +7,7 @@ interface JRTestcase {
   time: number;
   status: string;
   failures: JRTestfailure[];
+  steps?: string;
 }
 
 export interface JRTestsuite {
