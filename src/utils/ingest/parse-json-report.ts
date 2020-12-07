@@ -35,8 +35,9 @@ export const parseJson = (rawReports: any[]): JRRun => {
       }
     })
 
+    const suiteName = rawContent.content.tests[0] === undefined ? rawContent.content.failures[0].suite : rawContent.content.tests[0].suite
     const parsedSuite: any = [{
-      name: rawContent.content.tests[0].suite + ' (' + basename(rawContent.filepath) + ')',
+      name: suiteName + ' (' + basename(rawContent.filepath) + ')',
       failures: rawContent.content.stats.failures,
       timestamp: rawContent.content.stats.start,
       time: Math.round(rawContent.content.stats.duration / 1000), // Time is in ms, converting to s
