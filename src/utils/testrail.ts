@@ -126,7 +126,7 @@ export class TestRailClient {
             .post(url, data)
           }
         } catch (error) {
-          if (error.statusCodes === 429) {
+          if (error.statusCode === 429) {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)
             Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90000)
