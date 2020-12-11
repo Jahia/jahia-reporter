@@ -126,10 +126,16 @@ export class TestRailClient {
             .post(url, data)
           }
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`Failed to send ${method} request to ${uri} with data ${JSON.stringify(data, null, 4)}:\n${(error as Error).message}`)
-          const randomWait: number = Math.floor(Math.random() * 200)
-          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, randomWait)
+          if (error.statusCode === 429) {
+            // eslint-disable-next-line no-console
+            console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90000)
+          } else {
+            // eslint-disable-next-line no-console
+            console.log(`Failed to send ${method} request to ${uri} with data ${JSON.stringify(data, null, 4)}:\n${(error as Error).message}`)
+            const randomWait: number = Math.floor(Math.random() * 200)
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, randomWait)
+          }
         }
       }
     }
