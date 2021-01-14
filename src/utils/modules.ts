@@ -4,11 +4,11 @@ import {Base64} from 'js-base64'
 import {JahiaModule} from '../global.type'
 
 export const getJahiaVersion = (version: string) => {
-  if (version === 'UNKOWN') {
+  if (version === 'UNKNOWN') {
     return {
-      fullVersion: 'UNKOWN',
-      version: 'UNKOWN',
-      build: 'UNKOWN',
+      fullVersion: 'UNKNOWN',
+      version: 'UNKNOWN',
+      build: 'UNKNOWN',
     }
   }
 
@@ -80,7 +80,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
       module: module === undefined ? {
         id: moduleId,
         name: 'UNKNOWN',
-        version: 'UNKOWN',
+        version: 'UNKNOWN',
       } : module,
       dependencies: dependencies
       .map((d: string) => response.data.dashboard.modules.find((m: {id: string}) => m.id === d))
@@ -103,7 +103,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
       module: module === undefined ? {
         id: moduleId,
         name: 'UNKNOWN',
-        version: 'UNKOWN',
+        version: 'UNKNOWN',
       } : module,
       dependencies: dependencies
       .map((d: string) => modules.find((m: {id: string}) => m.id === d))
@@ -118,7 +118,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
     module: {
       id: moduleId,
       name: 'UNKNOWN',
-      version: 'UNKOWN',
+      version: 'UNKNOWN',
     },
     dependencies: [],
     allModules: [],
