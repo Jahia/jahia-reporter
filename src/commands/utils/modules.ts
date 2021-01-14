@@ -13,8 +13,8 @@ class JahiaUtilsModule extends Command {
     version: flags.version({char: 'v'}),
     help: flags.help({char: 'h'}),
     jahiaUrl: flags.string({
-      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/modules/graphql)',
-      default: 'http://localhost:8080/modules/graphql',
+      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/)',
+      default: 'http://localhost:8080/',
     }),
     jahiaUsername: flags.string({
       description: 'Jahia username used to authenticated with the remote endpoint)',
