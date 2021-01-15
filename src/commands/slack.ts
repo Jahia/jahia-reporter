@@ -85,7 +85,8 @@ class JahiaSlackReporter extends Command {
         module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
       }
       if (version.module.name === 'UNKNOWN') {
-        msg = `Error setting up executing tests in run: ${flags.runUrl}`
+        msg = `Error in provisioning the test environment: ${flags.runUrl} \n`
+        msg += 'The target module to be tested was not detected in Jahia'
       }
     }
 
