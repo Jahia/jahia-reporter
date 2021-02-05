@@ -85,7 +85,15 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
       dependencies: dependencies
       .map((d: string) => response.data.dashboard.modules.find((m: {id: string}) => m.id === d))
       .filter((d: {id: string} | undefined) => d !== undefined),
-      allModules: response.data.dashboard.modules,
+      allModules: response.data.dashboard.modules.sort(function (a: {id: string}, b: {id: string}) {
+        if (a.id < b.id) {
+          return -1
+        }
+        if (a.id > b.id) {
+          return 1
+        }
+        return 0
+      }),
     }
   }
 
@@ -108,7 +116,15 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
       dependencies: dependencies
       .map((d: string) => modules.find((m: {id: string}) => m.id === d))
       .filter((d: {id: string} | undefined) => d !== undefined),
-      allModules: modules,
+      allModules: modules.sort(function (a: {id: string}, b: {id: string}) {
+        if (a.id < b.id) {
+          return -1
+        }
+        if (a.id > b.id) {
+          return 1
+        }
+        return 0
+      }),
     }
   }
 
