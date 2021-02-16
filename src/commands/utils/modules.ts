@@ -43,7 +43,8 @@ class JahiaUtilsModule extends Command {
 
     const dependencies: string[] = flags.dependencies.split(',')
 
-    const version: UtilsVersions = getModules(flags.moduleId, dependencies, flags.jahiaUrl, flags.jahiaUsername, flags.jahiaPassword)
+    const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
+    const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
 
     fs.writeFileSync(
       path.join(flags.filepath),
