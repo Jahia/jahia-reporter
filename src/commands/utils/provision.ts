@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import axios from 'axios'
 
 class JahiaUtilsProvision extends Command {
-  static description = 'Indefinitely waits until a Jahia instance becomes available'
+  static description = 'Provisions Jahia by sending a manifest (see Jahia provisioning API)'
 
   static flags = {
     version: flags.version({char: 'v'}),
