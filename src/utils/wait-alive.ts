@@ -7,6 +7,8 @@ import {Base64} from 'js-base64'
 import {sleep} from './sleep'
 
 const isAlive = (data: any) => {
+  // eslint-disable-next-line no-console  
+  console.log(`API response: ${JSON.stringify(data.data)}`)
   if (data.data === undefined || data.data.jcr.workspace !== 'EDIT') {
     return false
   }
@@ -29,8 +31,9 @@ const checkStatus = async (
   timeSinceStart: number, // in ms
 // eslint-disable-next-line max-params
 ) => {
+  const currentTime = new Date()
   // eslint-disable-next-line no-console
-  console.log('Time since start: ' + timeSinceStart + 'ms')
+  console.log(currentTime.toISOString() + 'Time since start: ' + timeSinceStart + 'ms')
   let data: any = {}
 
   if (timeSinceStart < timeout) {
