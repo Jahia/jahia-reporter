@@ -7,7 +7,7 @@ import {Base64} from 'js-base64'
 import {sleep} from './sleep'
 
 const isAlive = (data: any) => {
-  // eslint-disable-next-line no-console  
+  // eslint-disable-next-line no-console
   console.log(`API response: ${JSON.stringify(data.data)}`)
   if (data.data === undefined || data.data.jcr.workspace !== 'EDIT') {
     return false
@@ -33,10 +33,11 @@ const checkStatus = async (
 ) => {
   const currentTime = new Date()
   // eslint-disable-next-line no-console
-  console.log(currentTime.toISOString() + 'Time since start: ' + timeSinceStart + 'ms')
+  console.log(`${currentTime.toISOString()} - Time since start: ${timeSinceStart} ms`)
   let data: any = {}
 
   if (timeSinceStart < timeout) {
+    const callStart = performance.now()
     try {
       const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
 
@@ -48,9 +49,10 @@ const checkStatus = async (
       // eslint-disable-next-line no-console
       console.log(error.message)
     }
-    const time = Math.round(timeSinceStart + performance.now())
     if (isAlive(data) === false) {
       await sleep(2000)
+      const callDuration = performance.now() - callStart
+      const time = Math.round(timeSinceStart + callDuration)
       data = await checkStatus(jahiaUrl, jahiaUsername, jahiaPassword, timeout, time)
     }
   }
