@@ -9,7 +9,7 @@ import {sleep} from './sleep'
 const isAlive = (data: any) => {
   // eslint-disable-next-line no-console
   console.log(`API response: ${JSON.stringify(data.data)}`)
-  if (data.data === undefined || data.data.jcr.workspace !== 'EDIT') {
+  if (data.data === undefined || data.data === null || data.data.jcr.workspace !== 'EDIT') {
     return false
   }
   return true
