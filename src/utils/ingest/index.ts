@@ -10,7 +10,7 @@ import {parseJson} from './parse-json-report'
 const parseFile = (reportType: string, filePath: string) => {
   const rawFile = readFileSync(filePath, 'utf8')
   if (reportType === 'xml') {
-    return xmljs.xml2js(rawFile)
+    return xmljs.xml2js(rawFile, {ignoreComment: true})
   }
   if (reportType === 'json') {
     return JSON.parse(rawFile.toString())
