@@ -41,7 +41,12 @@ const checkStatus = async (
     try {
       const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
       const options = <SyncRequestOptions> { 
+        followRedirects: true,
+        maxRedirects: 1000,
         timeout: 5000,
+        retry: false,
+        retryDelay: 200,
+        maxRetries: 5
       }
       data = new SyncRequestClient(options)
       .addHeader('Content-Type', 'application/json')
