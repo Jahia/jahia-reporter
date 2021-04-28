@@ -40,7 +40,7 @@ const checkStatus = async (
     const callStart = performance.now()
     try {
       const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
-      const options = <SyncRequestOptions> { 
+      const options: SyncRequestOptions = { 
         followRedirects: true,
         maxRedirects: 1000,
         timeout: true,
