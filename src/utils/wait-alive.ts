@@ -1,5 +1,5 @@
 import cli from 'cli-ux'
-import {SyncRequestClient} from 'ts-sync-request/dist'
+import {SyncRequestClient, SyncRequestOptions} from 'ts-sync-request/dist'
 import {exit} from '@oclif/errors'
 import {performance} from 'perf_hooks'
 import {Base64} from 'js-base64'
@@ -40,8 +40,10 @@ const checkStatus = async (
     const callStart = performance.now()
     try {
       const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
-
-      data = new SyncRequestClient()
+      const options = <SyncRequestOptions> { 
+        timeout: 5000,
+      }
+      data = new SyncRequestClient(options)
       .addHeader('Content-Type', 'application/json')
       .addHeader('authorization', authHeader)
       .post(jahiaUrl + 'modules/graphql', {query: gqlQuery})
