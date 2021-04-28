@@ -43,7 +43,7 @@ const checkStatus = async (
       const options = <SyncRequestOptions> { 
         followRedirects: true,
         maxRedirects: 1000,
-        timeout: 5000,
+        timeout: true,
         retry: false,
         retryDelay: 200,
         maxRetries: 5
