@@ -134,9 +134,9 @@ class JahiaTestrailReporter extends Command {
       .addHeader('x-hub-signature', xHubSignature)
       .addHeader('Content-Type', 'application/json')
       .post(flags.webhook, zcPayload)      
-    } catch (e) {
+    } catch (error) {
       this.log('ERROR: Unable to submit data to ZenCrepes')
-      this.log(JSON.stringify(e))
+      this.log(JSON.stringify(error))
     }
   }
 }
