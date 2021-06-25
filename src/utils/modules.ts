@@ -65,6 +65,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
   if (response.errors !== undefined) {
     // There might be cases in which the admin node is not installed (older version of graphql-dxm-provider)
     // In that case, we re-run the query without the admin node
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify(response.errors))
     response = new SyncRequestClient()
     .addHeader('Content-Type', 'application/json')
