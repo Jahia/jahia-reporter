@@ -65,14 +65,20 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
   if (response.errors !== undefined) {
     // There might be cases in which the admin node is not installed (older version of graphql-dxm-provider)
     // In that case, we re-run the query without the admin node
+    console.log(JSON.stringify(response.errors))
     response = new SyncRequestClient()
     .addHeader('Content-Type', 'application/json')
     .addHeader('authorization', authHeader)
     .post(jahiaUrl + 'modules/graphql', {query: 'query { dashboard { modules { id name version } } }'})
   }
 
+  if (response.errors !== undefined) {
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(response.errors))
+  }
+  
   // Jahia 8 with the GraphQL dashboard node available
-  if (response.data !== null) {
+  if (response.data !== null && response.errors === undefined) {
     const module = response.data.dashboard.modules.find((m: JahiaModule) => m.id === moduleId)
 
     return {
