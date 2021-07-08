@@ -67,6 +67,14 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
+  var slackMsgForSuite = function (msg, failedSuite) {
+    msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+    const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+    failedTests.forEach(failedTest => {
+      msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+    })
+  };
+
   async run() {
     const {flags} = this.parse(JahiaSlackReporter)
 
@@ -74,6 +82,8 @@ class JahiaSlackReporter extends Command {
     const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
 
     let msg = ''
+    let threadMsg = ''
+    
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
     if (flags.moduleFilepath !== undefined) {
@@ -97,16 +107,25 @@ class JahiaSlackReporter extends Command {
       if (failedReports.length > 0) {
         msg += '```\n'
       }
+      
       failedReports.forEach(failedReport => {
         const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-        failedSuites.forEach(failedSuite => {
-          msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-          failedTests.forEach(failedTest => {
-            msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+        
+        // If there are more than 3 failing suites, only these 3 will be posted and then the other failures will be posted in its thread
+        if (r.failures > 3) {
+          for(var i = 0; i < 3; i++) {
+            slackMsgForSuite(msg, failedSuites[i])
+          }
+          
+          for(var j = 3; j < failedSuites.length; j++) {
+            slackMsgForSuite(threadMsg, failedSuites[j])
+          })
+        } else {
+          failedSuites.forEach(failedSuite => {
+            slackMsgForSuite(msg, failedSuite)
           })
         })
-      })
+      }
       if (failedReports.length > 0) {
         msg += '```\n'
       }
@@ -127,8 +146,9 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
+    let slackResponse = ''
     if (!flags.skipSuccessful) {
-      await fetch(flags.webhook, {
+      slackResponse = await fetch(flags.webhook, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,7 +156,7 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
     } else if (flags.skipSuccessful && report.failures > 0) {
-      await fetch(flags.webhook, {
+      slackResponse = await fetch(flags.webhook, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,15 +164,52 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
     }
+    
+    let slackThreadPayload = ''
+    if (threadMsg != '') {
+      slackThreadPayload = {
+        text: threadMsg,
+        type: 'mrkdwn',
+        thread_ts: slackResponse.ts,
+        username: flags.msgAuthor,
+        icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
+      }
+      
+      await fetch(flags.webhook, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackThreadPayload),
+      })
+    }
 
     if (flags.webhookAll !== '') {
-      await fetch(flags.webhookAll, {
+      slackResponse = await fetch(flags.webhookAll, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(slackPayload),
       })
+      
+      if (threadMsg != '') {
+        slackThreadPayload = {
+          text: threadMsg,
+          type: 'mrkdwn',
+          thread_ts: slackResponse.ts,
+          username: flags.msgAuthor,
+          icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
+        }
+        
+        await fetch(flags.webhook, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(slackThreadPayload),
+        })
+      }
     }
   }
 }
