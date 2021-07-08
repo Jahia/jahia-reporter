@@ -2,9 +2,17 @@ import {Command, flags} from '@oclif/command'
 import fetch from 'node-fetch'
 import * as fs from 'fs'
 
-import {UtilsVersions} from '../global.type'
+import {UtilsVersions, JRTestsuite} from '../global.type'
 
 import ingestReport from '../utils/ingest'
+
+interface SlackMsg {
+  text: string;
+  type: string;
+  thread_ts?: string;
+  username: string;
+  icon_emoji: string;
+}
 
 class JahiaSlackReporter extends Command {
   static description = 'Submit data about a junit/mocha report to Slack'
@@ -67,14 +75,14 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
-  slackMsgForSuite(msg:string, failedSuite:any) {
+  slackMsgForSuite(msg: string, failedSuite: JRTestsuite) {
     msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
     failedTests.forEach(failedTest => {
       msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
     })
     return msg
-  };
+  }
 
   async run() {
     const {flags} = this.parse(JahiaSlackReporter)
@@ -84,7 +92,7 @@ class JahiaSlackReporter extends Command {
 
     let msg = ''
     let threadMsg = ''
-    
+
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
     if (flags.moduleFilepath !== undefined) {
@@ -108,20 +116,20 @@ class JahiaSlackReporter extends Command {
       if (failedReports.length > 0) {
         msg += '```\n'
       }
-      
+
       failedReports.forEach(failedReport => {
         const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-        
+
         // If there are more than 3 failing suites, only these 3 will be posted and then the other failures will be posted in its thread
-        if (r.failures > 3) {
-          for(var i = 0; i < 3; i++) {
+        if (failedReport.failures > 3) {
+          for (let i = 0; i < 3; i++) {
             msg += this.slackMsgForSuite(msg, failedSuites[i])
           }
-          
-          let remainingFailures = failedSuites.length - 3
+
+          const remainingFailures = failedSuites.length - 3
           msg += ` and ${remainingFailures} more (see thread)`
-          
-          for(var j = 3; j < failedSuites.length; j++) {
+
+          for (let j = 3; j < failedSuites.length; j++) {
             threadMsg += this.slackMsgForSuite(threadMsg, failedSuites[j])
           }
         } else {
@@ -168,8 +176,8 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
     }
-    
-    let slackThreadPayload = ''
+
+    let slackThreadPayload: SlackMsg | null = null
     if (slackResponse.data !== undefined) {
       slackThreadPayload = {
         text: threadMsg,
@@ -178,7 +186,7 @@ class JahiaSlackReporter extends Command {
         username: flags.msgAuthor,
         icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
       }
-      
+
       await fetch(flags.webhook, {
         method: 'POST',
         headers: {
@@ -197,8 +205,8 @@ class JahiaSlackReporter extends Command {
         },
         body: JSON.stringify(slackPayload),
       })
-      
-    if (slackResponse.data !== undefined) {
+
+      if (slackResponse.data !== undefined) {
         slackThreadPayload = {
           text: threadMsg,
           type: 'mrkdwn',
@@ -206,7 +214,7 @@ class JahiaSlackReporter extends Command {
           username: flags.msgAuthor,
           icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
         }
-        
+
         await fetch(flags.webhook, {
           method: 'POST',
           headers: {
