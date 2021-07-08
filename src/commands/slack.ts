@@ -118,8 +118,8 @@ class JahiaSlackReporter extends Command {
             msg += slackMsgForSuite(msg, failedSuites[i])
           }
           
-          let remainingfailures = failedSuites.length - 3
-          msg += ' and ${remainingfailures} more (see thread)'
+          let remainingFailures = failedSuites.length - 3
+          msg += ` and ${remainingFailures} more (see thread)`
           
           for(var j = 3; j < failedSuites.length; j++) {
             threadMsg += slackMsgForSuite(threadMsg, failedSuites[j])
@@ -170,7 +170,7 @@ class JahiaSlackReporter extends Command {
     }
     
     let slackThreadPayload = ''
-    if (threadMsg != '') {
+    if (threadMsg !== '') {
       slackThreadPayload = {
         text: threadMsg,
         type: 'mrkdwn',
@@ -197,7 +197,7 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
       
-      if (threadMsg != '') {
+      if (threadMsg !== '') {
         slackThreadPayload = {
           text: threadMsg,
           type: 'mrkdwn',
