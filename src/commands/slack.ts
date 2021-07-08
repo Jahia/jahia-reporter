@@ -123,7 +123,7 @@ class JahiaSlackReporter extends Command {
           
           for(var j = 3; j < failedSuites.length; j++) {
             threadMsg += slackMsgForSuite(threadMsg, failedSuites[j])
-          })
+          }
         } else {
           failedSuites.forEach(failedSuite => {
             msg += slackMsgForSuite(msg, failedSuite)
