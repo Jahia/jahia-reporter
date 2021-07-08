@@ -129,7 +129,7 @@ class JahiaSlackReporter extends Command {
             msg += slackMsgForSuite(msg, failedSuite)
           })
         }
-      }
+      })
       if (failedReports.length > 0) {
         msg += '```\n'
       }
