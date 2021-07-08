@@ -150,7 +150,7 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
-    let slackResponse: Response
+    let slackResponse: Response = {}
     if (!flags.skipSuccessful) {
       slackResponse = await fetch(flags.webhook, {
         method: 'POST',
@@ -170,7 +170,7 @@ class JahiaSlackReporter extends Command {
     }
     
     let slackThreadPayload = ''
-    if (threadMsg !== '') {
+    if (slackResponse.data !== undefined) {
       slackThreadPayload = {
         text: threadMsg,
         type: 'mrkdwn',
@@ -188,6 +188,7 @@ class JahiaSlackReporter extends Command {
       })
     }
 
+    slackResponse = {}
     if (flags.webhookAll !== '') {
       slackResponse = await fetch(flags.webhookAll, {
         method: 'POST',
@@ -197,7 +198,7 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
       
-      if (threadMsg !== '') {
+    if (slackResponse.data !== undefined) {
         slackThreadPayload = {
           text: threadMsg,
           type: 'mrkdwn',
