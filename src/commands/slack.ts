@@ -118,6 +118,9 @@ class JahiaSlackReporter extends Command {
             msg += slackMsgForSuite(msg, failedSuites[i])
           }
           
+          let remainingfailures = failedSuites.length - 3
+          msg += ' and ${remainingfailures} more (see thread)'
+          
           for(var j = 3; j < failedSuites.length; j++) {
             threadMsg += slackMsgForSuite(threadMsg, failedSuites[j])
           })
