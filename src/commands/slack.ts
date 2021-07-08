@@ -67,7 +67,7 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
-  function slackMsgForSuite(msg, failedSuite) {
+  slackMsgForSuite(msg, failedSuite) {
     msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
     failedTests.forEach(failedTest => {
