@@ -67,7 +67,7 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
-  slackMsgForSuite(msg, failedSuite) {
+  slackMsgForSuite(msg:string, failedSuite:any) {
     msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
     failedTests.forEach(failedTest => {
@@ -115,18 +115,18 @@ class JahiaSlackReporter extends Command {
         // If there are more than 3 failing suites, only these 3 will be posted and then the other failures will be posted in its thread
         if (r.failures > 3) {
           for(var i = 0; i < 3; i++) {
-            msg += slackMsgForSuite(msg, failedSuites[i])
+            msg += this.slackMsgForSuite(msg, failedSuites[i])
           }
           
           let remainingFailures = failedSuites.length - 3
           msg += ` and ${remainingFailures} more (see thread)`
           
           for(var j = 3; j < failedSuites.length; j++) {
-            threadMsg += slackMsgForSuite(threadMsg, failedSuites[j])
+            threadMsg += this.slackMsgForSuite(threadMsg, failedSuites[j])
           }
         } else {
           failedSuites.forEach(failedSuite => {
-            msg += slackMsgForSuite(msg, failedSuite)
+            msg += this.slackMsgForSuite(msg, failedSuite)
           })
         }
       })
@@ -150,7 +150,7 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
-    let slackResponse = ''
+    let slackResponse: Response
     if (!flags.skipSuccessful) {
       slackResponse = await fetch(flags.webhook, {
         method: 'POST',
@@ -174,7 +174,7 @@ class JahiaSlackReporter extends Command {
       slackThreadPayload = {
         text: threadMsg,
         type: 'mrkdwn',
-        thread_ts: slackResponse.ts,
+        thread_ts: slackResponse.data.ts,
         username: flags.msgAuthor,
         icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
       }
@@ -201,7 +201,7 @@ class JahiaSlackReporter extends Command {
         slackThreadPayload = {
           text: threadMsg,
           type: 'mrkdwn',
-          thread_ts: slackResponse.ts,
+          thread_ts: slackResponse.data.ts,
           username: flags.msgAuthor,
           icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
         }
