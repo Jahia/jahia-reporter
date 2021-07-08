@@ -150,7 +150,7 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
-    let slackResponse: Response = {}
+    let slackResponse: any = {}
     if (!flags.skipSuccessful) {
       slackResponse = await fetch(flags.webhook, {
         method: 'POST',
