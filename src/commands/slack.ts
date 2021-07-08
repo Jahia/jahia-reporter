@@ -67,12 +67,13 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
-  var slackMsgForSuite = function (msg, failedSuite) {
+  function slackMsgForSuite(msg, failedSuite) {
     msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
     failedTests.forEach(failedTest => {
       msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
     })
+    return msg
   };
 
   async run() {
@@ -114,15 +115,15 @@ class JahiaSlackReporter extends Command {
         // If there are more than 3 failing suites, only these 3 will be posted and then the other failures will be posted in its thread
         if (r.failures > 3) {
           for(var i = 0; i < 3; i++) {
-            slackMsgForSuite(msg, failedSuites[i])
+            msg += slackMsgForSuite(msg, failedSuites[i])
           }
           
           for(var j = 3; j < failedSuites.length; j++) {
-            slackMsgForSuite(threadMsg, failedSuites[j])
+            threadMsg += slackMsgForSuite(threadMsg, failedSuites[j])
           })
         } else {
           failedSuites.forEach(failedSuite => {
-            slackMsgForSuite(msg, failedSuite)
+            msg += slackMsgForSuite(msg, failedSuite)
           })
         })
       }
