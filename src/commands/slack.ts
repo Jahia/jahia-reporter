@@ -113,6 +113,8 @@ class JahiaSlackReporter extends Command {
       // Format the failed tests in a message to be submitted to slack
       msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures`
       const failedReports = report.reports.filter(r => r.failures > 0)
+
+      // If there's more than 1 report, only show the first one in the message and add the rest in a thread
       if (failedReports.length > 1) {
         msg += ' and more in the thread\n```\n'
         const firstFailedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
@@ -128,13 +130,15 @@ class JahiaSlackReporter extends Command {
         }
       } else if (failedReports.length === 1) {
         const failedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
+
+	// In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
         if (failedSuites.length > 1) {
           msg += ' and more in the thread\n```\n'
           msg += this.slackMsgForSuite(msg, failedSuites[0])
           for (let s = 1; s < failedSuites.length; s++) {
              threadMsg += this.slackMsgForSuite(threadMsg, failedSuites[s])
           }
-        } else if (failedSuites.length == 1) {
+        } else if (failedSuites.length === 1) {
           msg += '\n```\n'
           msg += this.slackMsgForSuite(msg, failedSuites[0])
         }
