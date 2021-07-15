@@ -184,7 +184,8 @@ class JahiaSlackReporter extends Command {
     }
 
     let slackThreadPayload: SlackMsg | null = null
-    if (slackResponse.data !== undefined) {
+    if (slackResponse.data !== undefined
+      && slackResponse.data.ok === "true") {
       slackThreadPayload = {
         text: threadMsg,
         type: 'mrkdwn',
@@ -202,7 +203,7 @@ class JahiaSlackReporter extends Command {
       })
     }
 
-    slackResponse = {}
+    // Handle the publication in the ALL channel
     if (flags.webhookAll !== '') {
       slackResponse = await fetch(flags.webhookAll, {
         method: 'POST',
@@ -212,7 +213,8 @@ class JahiaSlackReporter extends Command {
         body: JSON.stringify(slackPayload),
       })
 
-      if (slackResponse.data !== undefined) {
+      if (slackResponse.data !== undefined
+        && slackResponse.data.ok === "true") {
         slackThreadPayload = {
           text: threadMsg,
           type: 'mrkdwn',
@@ -221,7 +223,7 @@ class JahiaSlackReporter extends Command {
           icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
         }
 
-        await fetch(flags.webhook, {
+        await fetch(flags.webhookAll, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
