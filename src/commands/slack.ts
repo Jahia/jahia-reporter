@@ -68,7 +68,6 @@ class JahiaSlackReporter extends Command {
     skip: flags.boolean({
       char: 's',
       description: 'Do not send the message to slack but only print it to console',
-      default: true,
     }),
     skipSuccessful: flags.boolean({
       description: 'Do not send slack notifications if all tests are passing',
