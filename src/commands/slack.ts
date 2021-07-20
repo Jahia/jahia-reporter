@@ -68,6 +68,7 @@ class JahiaSlackReporter extends Command {
     skip: flags.boolean({
       char: 's',
       description: 'Do not send the message to slack but only print it to console',
+      default: true,
     }),
     skipSuccessful: flags.boolean({
       description: 'Do not send slack notifications if all tests are passing',
@@ -75,13 +76,13 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
-  slackMsgForSuite(msg: string, failedSuite: JRTestsuite) {
-    msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+  slackMsgForSuite(failedSuite: JRTestsuite) {
+    let suiteMsg = `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
     failedTests.forEach(failedTest => {
-      msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+      suiteMsg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
     })
-    return msg
+    return suiteMsg
   }
 
   async run() {
@@ -116,16 +117,16 @@ class JahiaSlackReporter extends Command {
 
       // If there's more than 1 report, only show the first one in the message and add the rest in a thread
       if (failedReports.length > 1) {
-        msg += ' and more in the thread\n```\n'
+        msg += ' - See the thread for more details\n```\n'
         const firstFailedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
         firstFailedSuites.forEach(failedSuite => {
-          msg += this.slackMsgForSuite(msg, failedSuite)
+          msg += this.slackMsgForSuite(failedSuite)
         })
 
 	for (let r = 1; r < failedReports.length; r++) {
           const nextFailedSuites = failedReports[r].testsuites.filter(s => s.failures > 0)
           nextFailedSuites.forEach(failedSuite => {
-            threadMsg += this.slackMsgForSuite(threadMsg, failedSuite)
+            threadMsg += this.slackMsgForSuite(failedSuite)
           })
         }
       } else if (failedReports.length === 1) {
@@ -133,14 +134,14 @@ class JahiaSlackReporter extends Command {
 
 	// In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
         if (failedSuites.length > 1) {
-          msg += ' and more in the thread\n```\n'
-          msg += this.slackMsgForSuite(msg, failedSuites[0])
+          msg += ' - See the thread for more details\n```\n'
+          msg += this.slackMsgForSuite(failedSuites[0])
           for (let s = 1; s < failedSuites.length; s++) {
-             threadMsg += this.slackMsgForSuite(threadMsg, failedSuites[s])
+             threadMsg += this.slackMsgForSuite(failedSuites[s])
           }
         } else if (failedSuites.length === 1) {
           msg += '\n```\n'
-          msg += this.slackMsgForSuite(msg, failedSuites[0])
+          msg += this.slackMsgForSuite(failedSuites[0])
         }
       }
 
