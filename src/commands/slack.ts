@@ -6,6 +6,8 @@ import {UtilsVersions, JRTestsuite} from '../global.type'
 
 import ingestReport from '../utils/ingest'
 
+import {WebClient, LogLevel} from '@slack/web-api'
+
 interface SlackMsg {
   text: string;
   type: string;
@@ -29,12 +31,12 @@ class JahiaSlackReporter extends Command {
       options: ['xml', 'json'],         // only allow the value to be from a discrete set
       default: 'xml',
     }),
-    webhook: flags.string({
-      description: 'The slack Webhook URL to send the message to',
+    channelId: flags.string({
+      description: 'The slack channel id to send the message to',
       required: true,
     }),
-    webhookAll: flags.string({
-      description: 'An alternative slack Webhook URL to send the ALL message to (ignore skipSuccessful flag)',
+    channelAllId: flags.string({
+      description: 'An alternative slack channel id to send the ALL message to (ignore skipSuccessful flag)',
       default: '',
     }),
     msgAuthor: flags.string({
@@ -84,7 +86,46 @@ class JahiaSlackReporter extends Command {
     return suiteMsg
   }
 
+  // Reply to a message with the channel ID and message TS
+  async replyMessage(client: WebClient, id: string, ts: any, msg: string, emoji: any) {
+    try {
+      const result = await client.chat.postMessage({
+        channel: id,
+        thread_ts: ts,
+        text: msg,
+		icon_emoji: emoji
+      });
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+  // Post a message to a channel your app is in using ID and message text
+  async publishMessage(client: WebClient, id: string, msg: string, threadMsg: string, emoji: any) {
+    try {
+      const result = await client.chat.postMessage({
+        channel: id,
+        text: msg,
+		icon_emoji: emoji
+      });
+
+	  if (threadMsg !== ''
+	      && result.ok === true) {
+        this.replyMessage(client, id, result.ts, threadMsg, emoji);
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
   async run() {
+    const client = new WebClient("xoxb-4418322750-1989811352418-nTtbkjwkdtHaCRrBH6LAbII8", {
+      // LogLevel can be imported and used to make debugging simpler
+      logLevel: LogLevel.DEBUG
+    });
+
     const {flags} = this.parse(JahiaSlackReporter)
 
     // Extract a report object from the actual report files (either XML or JSON)
@@ -92,6 +133,7 @@ class JahiaSlackReporter extends Command {
 
     let msg = ''
     let threadMsg = ''
+	const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
 
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
@@ -122,6 +164,7 @@ class JahiaSlackReporter extends Command {
           msg += this.slackMsgForSuite(failedSuite)
         })
 
+        threadMsg += '```\n'
 	for (let r = 1; r < failedReports.length; r++) {
           const nextFailedSuites = failedReports[r].testsuites.filter(s => s.failures > 0)
           nextFailedSuites.forEach(failedSuite => {
@@ -135,6 +178,7 @@ class JahiaSlackReporter extends Command {
         if (failedSuites.length > 1) {
           msg += ' - See the thread for more details\n```\n'
           msg += this.slackMsgForSuite(failedSuites[0])
+          threadMsg += '```\n'
           for (let s = 1; s < failedSuites.length; s++) {
              threadMsg += this.slackMsgForSuite(failedSuites[s])
           }
@@ -151,12 +195,16 @@ class JahiaSlackReporter extends Command {
       if (flags.notify.length !== 0 && report.failures > 0) {
         msg += `${flags.notify}`
       }
+
+	  if (threadMsg !== '') {
+        threadMsg += '```\n'
+	  }
     }
     const slackPayload = {
       text: msg,
       type: 'mrkdwn',
       username: flags.msgAuthor,
-      icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
+      icon_emoji: emoji,
     }
 
     if (flags.skip) {
@@ -166,71 +214,14 @@ class JahiaSlackReporter extends Command {
 
     let slackResponse: any = {}
     if (!flags.skipSuccessful) {
-      slackResponse = await fetch(flags.webhook, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(slackPayload),
-      })
+	  slackResponse = this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     } else if (flags.skipSuccessful && report.failures > 0) {
-      slackResponse = await fetch(flags.webhook, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(slackPayload),
-      })
-    }
-
-    let slackThreadPayload: SlackMsg | null = null
-    if (slackResponse.data !== undefined
-      && slackResponse.data.ok === "true") {
-      slackThreadPayload = {
-        text: threadMsg,
-        type: 'mrkdwn',
-        thread_ts: slackResponse.data.ts,
-        username: flags.msgAuthor,
-        icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
-      }
-
-      await fetch(flags.webhook, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(slackThreadPayload),
-      })
+	  slackResponse = this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 
     // Handle the publication in the ALL channel
-    if (flags.webhookAll !== '') {
-      slackResponse = await fetch(flags.webhookAll, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(slackPayload),
-      })
-
-      if (slackResponse.data !== undefined
-        && slackResponse.data.ok === "true") {
-        slackThreadPayload = {
-          text: threadMsg,
-          type: 'mrkdwn',
-          thread_ts: slackResponse.data.ts,
-          username: flags.msgAuthor,
-          icon_emoji: report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure,
-        }
-
-        await fetch(flags.webhookAll, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(slackThreadPayload),
-        })
-      }
+    if (flags.channelAllId !== '') {
+      slackResponse = this.publishMessage(client, flags.channelAllId, msg, threadMsg, emoji)
     }
   }
 }
