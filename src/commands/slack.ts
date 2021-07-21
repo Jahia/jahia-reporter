@@ -88,6 +88,7 @@ class JahiaSlackReporter extends Command {
   }
 
   // Reply to a message with the channel ID and message TS
+  // eslint-disable-next-line max-params
   async replyMessage(client: WebClient, id: string, ts: any, msg: string, emoji: any) {
     try {
       await client.chat.postMessage({
@@ -103,6 +104,7 @@ class JahiaSlackReporter extends Command {
   }
 
   // Post a message to a channel your app is in using ID and message text
+  // eslint-disable-next-line max-params
   async publishMessage(client: WebClient, id: string, msg: string, threadMsg: string, emoji: any) {
     try {
       const result = await client.chat.postMessage({
@@ -222,9 +224,8 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
-    if (!flags.skipSuccessful) {
-      this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
-    } else if (flags.skipSuccessful && report.failures > 0) {
+    if (!flags.skipSuccessful
+        || (flags.skipSuccessful && report.failures > 0)) {
       this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 
