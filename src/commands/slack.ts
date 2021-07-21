@@ -2,7 +2,7 @@ import {Command, flags} from '@oclif/command'
 import fetch from 'node-fetch'
 import * as fs from 'fs'
 
-import {UtilsVersions, JRTestsuite} from '../global.type'
+import {UtilsVersions} from '../global.type'
 
 import ingestReport from '../utils/ingest'
 
@@ -138,7 +138,7 @@ class JahiaSlackReporter extends Command {
 
     let msg = ''
     let threadMsg = ''
-	const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
+	  const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
 
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
@@ -158,7 +158,7 @@ class JahiaSlackReporter extends Command {
 
     if (msg === '') {
       // Format the failed tests in a message to be submitted to slack
-      msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures`
+      msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures\n`
       const failedReports = report.reports.filter(r => r.failures > 0)
 
       // If there's more than 1 report, only show the first one in the message and add the rest in a thread
@@ -170,7 +170,7 @@ class JahiaSlackReporter extends Command {
         })
 
         threadMsg += '```\n'
-	for (let r = 1; r < failedReports.length; r++) {
+	      for (let r = 1; r < failedReports.length; r++) {
           const nextFailedSuites = failedReports[r].testsuites.filter(s => s.failures > 0)
           nextFailedSuites.forEach(failedSuite => {
             threadMsg += this.slackMsgForSuite(failedSuite)
@@ -192,7 +192,16 @@ class JahiaSlackReporter extends Command {
           msg += this.slackMsgForSuite(failedSuites[0])
         }
       }
-
+      failedReports.forEach(failedReport => {
+        const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
+        failedSuites.forEach(failedSuite => {
+          msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+          failedTests.forEach(failedTest => {
+            msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+          })
+        })
+      })
       if (failedReports.length > 0) {
         msg += '```\n'
       }
@@ -201,9 +210,9 @@ class JahiaSlackReporter extends Command {
         msg += `${flags.notify}`
       }
 
-	  if (threadMsg !== '') {
+  	  if (threadMsg !== '') {
         threadMsg += '```\n'
-	  }
+      }
     }
 
     if (flags.skip) {
