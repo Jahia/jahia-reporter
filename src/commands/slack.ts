@@ -1,11 +1,7 @@
 import {Command, flags} from '@oclif/command'
-import fetch from 'node-fetch'
 import * as fs from 'fs'
-
-import {UtilsVersions} from '../global.type'
-
+import {UtilsVersions, JRTestsuite} from '../global.type'
 import ingestReport from '../utils/ingest'
-
 import {WebClient, LogLevel} from '@slack/web-api'
 
 interface SlackMsg {
@@ -94,7 +90,7 @@ class JahiaSlackReporter extends Command {
   // Reply to a message with the channel ID and message TS
   async replyMessage(client: WebClient, id: string, ts: any, msg: string, emoji: any) {
     try {
-      const result = await client.chat.postMessage({
+      await client.chat.postMessage({
         channel: id,
         thread_ts: ts,
         text: msg,
@@ -102,7 +98,7 @@ class JahiaSlackReporter extends Command {
       });
     }
     catch (error) {
-      console.error(error);
+      this.log(error);
     }
   }
 
@@ -115,13 +111,13 @@ class JahiaSlackReporter extends Command {
 		icon_emoji: emoji
       });
 
-	  if (threadMsg !== ''
-	      && result.ok === true) {
+      if (threadMsg !== ''
+          && result.ok === true) {
         this.replyMessage(client, id, result.ts, threadMsg, emoji);
       }
     }
     catch (error) {
-      console.error(error);
+      this.log(error);
     }
   }
 
@@ -138,7 +134,7 @@ class JahiaSlackReporter extends Command {
 
     let msg = ''
     let threadMsg = ''
-	  const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
+    const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
 
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
@@ -170,7 +166,7 @@ class JahiaSlackReporter extends Command {
         })
 
         threadMsg += '```\n'
-	      for (let r = 1; r < failedReports.length; r++) {
+        for (let r = 1; r < failedReports.length; r++) {
           const nextFailedSuites = failedReports[r].testsuites.filter(s => s.failures > 0)
           nextFailedSuites.forEach(failedSuite => {
             threadMsg += this.slackMsgForSuite(failedSuite)
@@ -192,16 +188,7 @@ class JahiaSlackReporter extends Command {
           msg += this.slackMsgForSuite(failedSuites[0])
         }
       }
-      failedReports.forEach(failedReport => {
-        const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-        failedSuites.forEach(failedSuite => {
-          msg += `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-          failedTests.forEach(failedTest => {
-            msg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
-          })
-        })
-      })
+
       if (failedReports.length > 0) {
         msg += '```\n'
       }
@@ -210,7 +197,7 @@ class JahiaSlackReporter extends Command {
         msg += `${flags.notify}`
       }
 
-  	  if (threadMsg !== '') {
+      if (threadMsg !== '') {
         threadMsg += '```\n'
       }
     }
@@ -236,9 +223,9 @@ class JahiaSlackReporter extends Command {
     }
 
     if (!flags.skipSuccessful) {
-	  this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
+      this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     } else if (flags.skipSuccessful && report.failures > 0) {
-	  this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
+      this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 
     // Handle the publication in the ALL channel
