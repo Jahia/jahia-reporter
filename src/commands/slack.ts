@@ -81,6 +81,7 @@ class JahiaSlackReporter extends Command {
     }),
   }
 
+  // Create text for a failed test suite
   slackMsgForSuite(failedSuite: JRTestsuite) {
     let suiteMsg = `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
@@ -125,12 +126,12 @@ class JahiaSlackReporter extends Command {
   }
 
   async run() {
+    const {flags} = this.parse(JahiaSlackReporter)
+
     const client = new WebClient(flags.token, {
       // LogLevel can be imported and used to make debugging simpler
       logLevel: LogLevel.DEBUG
     });
-
-    const {flags} = this.parse(JahiaSlackReporter)
 
     // Extract a report object from the actual report files (either XML or JSON)
     const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
@@ -204,28 +205,36 @@ class JahiaSlackReporter extends Command {
         threadMsg += '```\n'
 	  }
     }
-    const slackPayload = {
-      text: msg,
-      type: 'mrkdwn',
-      username: flags.msgAuthor,
-      icon_emoji: emoji,
-    }
 
     if (flags.skip) {
+      const slackPayload = {
+        text: msg,
+        type: 'mrkdwn',
+        channel: flags.channelId,
+        username: flags.msgAuthor,
+        icon_emoji: emoji,
+      }
+      const slackThreadPayload = {
+        text: threadMsg,
+        type: 'mrkdwn',
+        channel: flags.channelId,
+        username: flags.msgAuthor,
+        icon_emoji: emoji,
+      }
       this.log(JSON.stringify(slackPayload))
+      this.log(JSON.stringify(slackThreadPayload))
       this.exit(0)
     }
 
-    let slackResponse: any = {}
     if (!flags.skipSuccessful) {
-	  slackResponse = this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
+	  this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     } else if (flags.skipSuccessful && report.failures > 0) {
-	  slackResponse = this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
+	  this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 
     // Handle the publication in the ALL channel
     if (flags.channelAllId !== '') {
-      slackResponse = this.publishMessage(client, flags.channelAllId, msg, threadMsg, emoji)
+      this.publishMessage(client, flags.channelAllId, msg, threadMsg, emoji)
     }
   }
 }
