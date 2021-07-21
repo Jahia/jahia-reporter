@@ -31,6 +31,10 @@ class JahiaSlackReporter extends Command {
       options: ['xml', 'json'],         // only allow the value to be from a discrete set
       default: 'xml',
     }),
+    token: flags.string({
+      description: 'The slack token used to post the messages',
+      required: true,
+    }),
     channelId: flags.string({
       description: 'The slack channel id to send the message to',
       required: true,
@@ -121,7 +125,7 @@ class JahiaSlackReporter extends Command {
   }
 
   async run() {
-    const client = new WebClient("xoxb-4418322750-1989811352418-nTtbkjwkdtHaCRrBH6LAbII8", {
+    const client = new WebClient(flags.token, {
       // LogLevel can be imported and used to make debugging simpler
       logLevel: LogLevel.DEBUG
     });
