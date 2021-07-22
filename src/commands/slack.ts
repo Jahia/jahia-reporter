@@ -4,14 +4,6 @@ import {UtilsVersions, JRTestsuite} from '../global.type'
 import ingestReport from '../utils/ingest'
 import {WebClient, LogLevel} from '@slack/web-api'
 
-interface SlackMsg {
-  text: string;
-  type: string;
-  thread_ts?: string;
-  username: string;
-  icon_emoji: string;
-}
-
 class JahiaSlackReporter extends Command {
   static description = 'Submit data about a junit/mocha report to Slack'
 
@@ -95,7 +87,7 @@ class JahiaSlackReporter extends Command {
         channel: id,
         thread_ts: ts,
         text: msg,
-		icon_emoji: emoji
+		    icon_emoji: emoji
       });
     }
     catch (error) {
@@ -110,7 +102,7 @@ class JahiaSlackReporter extends Command {
       const result = await client.chat.postMessage({
         channel: id,
         text: msg,
-		icon_emoji: emoji
+		    icon_emoji: emoji
       });
 
       if (threadMsg !== ''
@@ -177,7 +169,7 @@ class JahiaSlackReporter extends Command {
       } else if (failedReports.length === 1) {
         const failedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
 
-	// In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
+	      // In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
         if (failedSuites.length > 1) {
           msg += ' - See the thread for more details\n```\n'
           msg += this.slackMsgForSuite(failedSuites[0])
