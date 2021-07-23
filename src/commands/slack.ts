@@ -87,7 +87,7 @@ class JahiaSlackReporter extends Command {
         channel: id,
         thread_ts: ts,
         text: msg,
-		    icon_emoji: emoji
+        icon_emoji: emoji
       });
     }
     catch (error) {
@@ -102,7 +102,7 @@ class JahiaSlackReporter extends Command {
       const result = await client.chat.postMessage({
         channel: id,
         text: msg,
-		    icon_emoji: emoji
+        icon_emoji: emoji
       });
 
       if (threadMsg !== ''
@@ -148,7 +148,7 @@ class JahiaSlackReporter extends Command {
 
     if (msg === '') {
       // Format the failed tests in a message to be submitted to slack
-      msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures\n`
+      msg = `Test summary for: <${flags.runUrl}|${module}> - ${report.tests} tests - ${report.failures} failures`
       const failedReports = report.reports.filter(r => r.failures > 0)
 
       // If there's more than 1 report, only show the first one in the message and add the rest in a thread
@@ -169,7 +169,7 @@ class JahiaSlackReporter extends Command {
       } else if (failedReports.length === 1) {
         const failedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
 
-	      // In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
+        // In case there's only 1 report, only show the first failing suite in the message and the rest in a thread
         if (failedSuites.length > 1) {
           msg += ' - See the thread for more details\n```\n'
           msg += this.slackMsgForSuite(failedSuites[0])
