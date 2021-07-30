@@ -128,7 +128,7 @@ class JahiaSlackReporter extends Command {
 
     let msg = ''
     let threadMsg = ''
-    const emoji = report.failures === 0 ? flags.msgIconSuccess : flags.msgIconFailure
+    const emoji = (report.failures === 0 && report.tests !== 0) ? flags.msgIconSuccess : flags.msgIconFailure
 
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
