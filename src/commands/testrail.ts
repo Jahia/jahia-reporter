@@ -70,6 +70,11 @@ class JahiaTestrailReporter extends Command {
       description: 'Jahia/Module version',
       default: '8.0.1.0',
     }),
+    skip: flags.boolean({
+      char: 's',
+      description: 'Do not send the data but only print it to console',
+      default: false,
+    }),
   }
 
   // eslint-disable-next-line complexity
@@ -138,7 +143,13 @@ class JahiaTestrailReporter extends Command {
 
     // Get Milestone
     const milestone = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
-    const milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
+    let milestone_id = ''
+
+    if (flags.skip) {
+      this.log(`Milestone: ${milestone.toString()}`)
+    } else {
+      milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
+    }
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
     const executedSections: Section[] = []
@@ -154,7 +165,9 @@ class JahiaTestrailReporter extends Command {
         executedSections.push(foundSectionInTestrail)
       } else {
         this.log(`Section '${executedSectionName}' wasn't found. Creating it.`)
-        executedSections.push(testrail.addSection(testrailProject.id, testrailSuite.id, executedSectionName, parentSectionId))
+        if (!flags.skip) {
+          executedSections.push(testrail.addSection(testrailProject.id, testrailSuite.id, executedSectionName, parentSectionId))
+        }
       }
     }
 
@@ -162,7 +175,9 @@ class JahiaTestrailReporter extends Command {
     // First get all test cases from TestRail, by section
     const testCasesInTestrail: Record<string, Test[]> = {}
     for (const executedSection of executedSections) {
-      testCasesInTestrail[executedSection.name] = testrail.getCases(testrailProject.id, testrailSuite.id, executedSection.id)
+      if (!flags.skip) {
+        testCasesInTestrail[executedSection.name] = testrail.getCases(testrailProject.id, testrailSuite.id, executedSection.id)
+      }
     }
     // Go over the executed tests and make sure they all exist in the list we just got from TestRail
     for (const test of tests) {
@@ -171,19 +186,21 @@ class JahiaTestrailReporter extends Command {
       // if it's not found we are creating it
       if (foundTestCaseInTestRail === undefined) {
         this.log(`Test '${test.title}' was not found in TestRail. Creating it.`)
-        const newTestCase: AddCase = {title: test.title,
-          custom_status: testrail.getCustomStatus('Complete'),
-          custom_version: testrail.getCustomVersion('8.0.1.0')}
-        // Only Cypress reports at the moment are expected to have the steps field
-        if (test.steps !== undefined) {
-          newTestCase.custom_steps_separated = new Array({content: test.steps, expected: ''})
-        }
-        // Find the section ID of that that test belongs to
-        const section = executedSections.find(section => section.name === test.section)
-        if (section === undefined) {
-          this.error(`Something unexpected happened. Section ${test.section} was not found and not created.`)
-        } else {
-          test.id = testrail.addCase(section.id, newTestCase).id
+        if (!flags.skip) {
+          const newTestCase: AddCase = {title: test.title,
+            custom_status: testrail.getCustomStatus('Complete'),
+            custom_version: testrail.getCustomVersion('8.0.1.0')}
+          // Only Cypress reports at the moment are expected to have the steps field
+          if (test.steps !== undefined) {
+            newTestCase.custom_steps_separated = new Array({content: test.steps, expected: ''})
+          }
+          // Find the section ID of that that test belongs to
+          const section = executedSections.find(section => section.name === test.section)
+          if (section === undefined) {
+            this.error(`Something unexpected happened. Section ${test.section} was not found and not created.`)
+          } else {
+            test.id = testrail.addCase(section.id, newTestCase).id
+          }
         }
       } else {
         // the test exists in TestRail, so we'll just keep the ID
@@ -197,7 +214,10 @@ class JahiaTestrailReporter extends Command {
     // Create test run
     const newRun: AddRun = {suite_id: testrailSuite.id,
       name: flags.runName, description: flags.defaultRunDescription, milestone_id: milestone_id, include_all: false, case_ids: caseIds}
-    const run = testrail.addRun(testrailProject.id, newRun)
+    let run = '' 
+    if (!flags.skip) {
+      run = testrail.addRun(testrailProject.id, newRun)
+    }
     this.log(`Created test run ${run.id.toString()}`)
 
     // Create the results object
@@ -218,9 +238,15 @@ class JahiaTestrailReporter extends Command {
 
     // Bulk update results
     this.log('Updating test run')
-    testrail.addResults(run.id, results)
+    if (flags.skip) {
+      this.log(`Results: ${results.toString()}`)
+    } else {
+      testrail.addResults(run.id, results)
+    }
     this.log('Closing test run')
-    testrail.closeRun(run.id)
+    if (!flags.skip) {
+      testrail.closeRun(run.id)
+    }
   }
 }
 
