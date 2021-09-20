@@ -23,9 +23,9 @@ export class TestRailClient {
     }
 
     public getProjects(): Project[] {
-      this.projectsObject = this.sendRequest('GET', 'get_projects', '')
-      if (this.projectsObject.size > 0) {
-        return this.projectsObject.projects as Project[]
+      projectsObject = this.sendRequest('GET', 'get_projects', '')
+      if (projectsObject.size > 0) {
+        return projectsObject.projects as Project[]
       } else {
         throw new Error("Something went wrong. Can't find any project")
       }
@@ -36,9 +36,9 @@ export class TestRailClient {
     }
 
     public getMilestones(projectId: number): Milestone[] {
-      this.milestonesObject = this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '')
-      if (this.milestonesObject.size > 0) {
-        return this.milestonesObject.milestones as Milestone[]
+      milestonesObject = this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '')
+      if (milestonesObject.size > 0) {
+        return milestonesObject.milestones as Milestone[]
       } else {
         throw new Error("Something went wrong. Can't find any milestone")
       }
@@ -49,9 +49,9 @@ export class TestRailClient {
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
-      this.sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '')
-      if (this.sectionsObject.size > 0) {
-        return this.sectionsObject.sections as Section[]
+      sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '')
+      if (sectionsObject.size > 0) {
+        return sectionsObject.sections as Section[]
       } else {
         throw new Error("Something went wrong. Can't find any section")
       }
@@ -62,9 +62,9 @@ export class TestRailClient {
     }
 
     public getCases(projectId: number, suiteId: number, sectionId: number): Test[] {
-      this.casesObject = this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '')
-      if (this.casesObject.size > 0) {
-        return this.casesObject.cases as Test[]
+      casesObject = this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '')
+      if (casesObject.size > 0) {
+        return casesObject.cases as Test[]
       } else {
         throw new Error("Something went wrong. Can't find any test case")
       }
@@ -79,9 +79,9 @@ export class TestRailClient {
     }
 
     public addResults(runId: number, results: TestRailResult[]): TestRailResult[] {
-      this.resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results})
-      if (this.resultsObject.size > 0) {
-        return this.resultsObject.results as TestRailResult[]
+      resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results})
+      if (resultsObject.size > 0) {
+        return resultsObject.results as TestRailResult[]
       } else {
         throw new Error("Something went wrong. Can't find any test result")
       }
