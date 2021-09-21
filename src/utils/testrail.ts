@@ -1,5 +1,5 @@
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {AddCase, Project, Section, Suite, Test, TestRailResult, AddRun, Run, CaseFields, Milestone} from './testrail.interface'
+import {AddCase, PaginatedProjects, Project, PaginatedSections, Section, Suite, PaginatedTests, Test, PaginatedResults, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
 
 export class TestRailClient {
     public base: string
