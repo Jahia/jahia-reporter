@@ -23,8 +23,7 @@ export class TestRailClient {
     }
 
     public getProjects(): Project[] {
-      let projectsObject: PaginatedProjects
-      projectsObject = this.sendRequest('GET', 'get_projects', '')
+      const projectsObject = this.sendRequest('GET', 'get_projects', '') as PaginatedProjects
       if (projectsObject.size > 0) {
         return projectsObject.projects as Project[]
       }
@@ -36,8 +35,7 @@ export class TestRailClient {
     }
 
     public getMilestones(projectId: number): Milestone[] {
-      let milestonesObject: PaginatedMilestones
-      milestonesObject = this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '')
+      const milestonesObject = this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '') as PaginatedMilestones
       if (milestonesObject.size > 0) {
         return milestonesObject.milestones as Milestone[]
       }
@@ -49,8 +47,7 @@ export class TestRailClient {
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
-      let sectionsObject: PaginatedSections
-      sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '')
+      const sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '') as PaginatedSections
       if (sectionsObject.size > 0) {
         return sectionsObject.sections as Section[]
       }
@@ -62,8 +59,7 @@ export class TestRailClient {
     }
 
     public getCases(projectId: number, suiteId: number, sectionId: number): Test[] {
-      let casesObject: PaginatedTests
-      casesObject = this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '')
+      const casesObject = this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '') as PaginatedTests
       if (casesObject.size > 0) {
         return casesObject.cases as Test[]
       }
@@ -79,8 +75,7 @@ export class TestRailClient {
     }
 
     public addResults(runId: number, results: TestRailResult[]): TestRailResult[] {
-      let resultsObject: PaginatedResults
-      resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results})
+      const resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results}) as PaginatedResults
       if (resultsObject.size > 0) {
         return resultsObject.results as TestRailResult[]
       }
