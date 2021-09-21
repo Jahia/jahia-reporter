@@ -6,12 +6,26 @@ export enum Status {
   Failed = 5,
 }
 
+export interface PaginatedResults {
+  offset: number;
+  limit: number;
+  size: number;
+  results: TestRailResult[];
+}
+
 export interface TestRailResult {
   case_id: number;
   status_id: Status;
   comment?: string;
   elapsed?: string;
   version?: string;
+}
+
+export interface PaginatedProjects {
+  offset: number;
+  limit: number;
+  size: number;
+  projects: Project[];
 }
 
 export interface Project {
@@ -28,16 +42,37 @@ export interface Suite {
   name: string;
 }
 
+export interface PaginatedMilestones {
+  offset: number;
+  limit: number;
+  size: number;
+  milestones: Milestone[];
+}
+
 export interface Milestone {
   id: number;
   name: string;
   project_id: number;
 }
 
+export interface PaginatedSections {
+  offset: number;
+  limit: number;
+  size: number;
+  sections: Section[];
+}
+
 export interface Section {
   id: number;
   name: string;
   parent_id: number;
+}
+
+export interface PaginatedTests {
+  offset: number;
+  limit: number;
+  size: number;
+  cases: Test[];
 }
 
 export interface Test {
