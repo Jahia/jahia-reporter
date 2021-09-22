@@ -71,7 +71,6 @@ class JahiaTestrailReporter extends Command {
       default: '8.0.1.0',
     }),
     skip: flags.boolean({
-      char: 's',
       description: 'Do not send the data but only print it to console',
       default: false,
     }),
