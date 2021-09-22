@@ -1,7 +1,7 @@
 /* eslint max-depth: ["error", 5] */
 import {Command, flags} from '@oclif/command'
 import {TestRailClient} from '../utils/testrail'
-import {Project, Milestone, Section, Suite, Test, AddCase, AddRun, Run, Status, TestRailResult} from '../utils/testrail.interface'
+import {Project, Section, Suite, Test, AddCase, AddRun, Run, Status, TestRailResult} from '../utils/testrail.interface'
 import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
