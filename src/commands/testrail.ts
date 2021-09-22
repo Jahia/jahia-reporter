@@ -144,10 +144,10 @@ class JahiaTestrailReporter extends Command {
     // Get Milestone
     const milestone: any = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
     let milestone_id = -1
-    if (!flags.skip) {
-      milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
-    } else {
+    if (flags.skip) {
       this.log(`Milestone '${flags.milestone}'`)
+    } else {
+      milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
     }
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
@@ -182,32 +182,32 @@ class JahiaTestrailReporter extends Command {
     }
     // Go over the executed tests and make sure they all exist in the list we just got from TestRail
     for (const test of tests) {
-      if (!flags.skip) {
-	    // See if test exists in TestRail
-	    const foundTestCaseInTestRail = testCasesInTestrail[test.section].find(t => t.title === test.title)
-	    // if it's not found we are creating it
-	    if (foundTestCaseInTestRail === undefined) {
-		  this.log(`Test '${test.title}' was not found in TestRail. Creating it.`)
-		  const newTestCase: AddCase = {title: test.title,
-			custom_status: testrail.getCustomStatus('Complete'),
-			custom_version: testrail.getCustomVersion('8.0.1.0')}
-		  // Only Cypress reports at the moment are expected to have the steps field
-		  if (test.steps !== undefined) {
-			newTestCase.custom_steps_separated = new Array({content: test.steps, expected: ''})
-		  }
-		  // Find the section ID of that that test belongs to
-		  const section = executedSections.find(section => section.name === test.section)
-		  if (section === undefined) {
-			this.error(`Something unexpected happened. Section ${test.section} was not found and not created.`)
-		  } else {
-			test.id = testrail.addCase(section.id, newTestCase).id
-		  }
-	    } else {
-	      // the test exists in TestRail, so we'll just keep the ID
-		  test.id = foundTestCaseInTestRail.id
-	    }
-      } else {
+      if (flags.skip) {
         this.log(`Get test data ${test.toString()}`)
+      } else {
+        // See if test exists in TestRail
+        const foundTestCaseInTestRail = testCasesInTestrail[test.section].find(t => t.title === test.title)
+        // if it's not found we are creating it
+        if (foundTestCaseInTestRail === undefined) {
+          this.log(`Test '${test.title}' was not found in TestRail. Creating it.`)
+          const newTestCase: AddCase = {title: test.title,
+            custom_status: testrail.getCustomStatus('Complete'),
+            custom_version: testrail.getCustomVersion('8.0.1.0')}
+          // Only Cypress reports at the moment are expected to have the steps field
+          if (test.steps !== undefined) {
+            newTestCase.custom_steps_separated = new Array({content: test.steps, expected: ''})
+          }
+          // Find the section ID of that that test belongs to
+          const section = executedSections.find(section => section.name === test.section)
+          if (section === undefined) {
+            this.error(`Something unexpected happened. Section ${test.section} was not found and not created.`)
+          } else {
+            test.id = testrail.addCase(section.id, newTestCase).id
+          }
+        } else {
+          // the test exists in TestRail, so we'll just keep the ID
+          test.id = foundTestCaseInTestRail.id
+        }
       }
     }
 
@@ -222,11 +222,11 @@ class JahiaTestrailReporter extends Command {
       include_all: false,
       case_ids: caseIds}
     let run = {} as Run
-    if (!flags.skip) {
+    if (flags.skip) {
+      this.log(`Created test run ${flags.runName}`)
+    } else {
       run = testrail.addRun(testrailProject.id, newRun)
       this.log(`Created test run ${run.id.toString()}`)
-    } else {
-      this.log(`Created test run ${flags.runName}`)
     }
 
     // Create the results object
