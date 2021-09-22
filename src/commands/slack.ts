@@ -87,11 +87,10 @@ class JahiaSlackReporter extends Command {
         channel: id,
         thread_ts: ts,
         text: msg,
-        icon_emoji: emoji
-      });
-    }
-    catch (error) {
-      this.log(error);
+        icon_emoji: emoji,
+      })
+    } catch (error: any) {
+      this.log(error)
     }
   }
 
@@ -102,16 +101,15 @@ class JahiaSlackReporter extends Command {
       const result = await client.chat.postMessage({
         channel: id,
         text: msg,
-        icon_emoji: emoji
-      });
+        icon_emoji: emoji,
+      })
 
-      if (threadMsg !== ''
-          && result.ok === true) {
-        this.replyMessage(client, id, result.ts, threadMsg, emoji);
+      if (threadMsg !== '' &&
+          result.ok === true) {
+        this.replyMessage(client, id, result.ts, threadMsg, emoji)
       }
-    }
-    catch (error) {
-      this.log(error);
+    } catch (error: any) {
+      this.log(error)
     }
   }
 
@@ -120,8 +118,8 @@ class JahiaSlackReporter extends Command {
 
     const client = new WebClient(flags.token, {
       // LogLevel can be imported and used to make debugging simpler
-      logLevel: LogLevel.DEBUG
-    });
+      logLevel: LogLevel.DEBUG,
+    })
 
     // Extract a report object from the actual report files (either XML or JSON)
     const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
@@ -175,7 +173,7 @@ class JahiaSlackReporter extends Command {
           msg += this.slackMsgForSuite(failedSuites[0])
           threadMsg += '```\n'
           for (let s = 1; s < failedSuites.length; s++) {
-             threadMsg += this.slackMsgForSuite(failedSuites[s])
+            threadMsg += this.slackMsgForSuite(failedSuites[s])
           }
         } else if (failedSuites.length === 1) {
           msg += '\n```\n'
@@ -216,8 +214,8 @@ class JahiaSlackReporter extends Command {
       this.exit(0)
     }
 
-    if (!flags.skipSuccessful
-        || (flags.skipSuccessful && report.failures > 0)) {
+    if (!flags.skipSuccessful ||
+        (flags.skipSuccessful && report.failures > 0)) {
       this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 

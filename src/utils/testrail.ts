@@ -145,7 +145,7 @@ export class TestRailClient {
             .addHeader('Content-Type', 'application/json')
             .post(url, data)
           }
-        } catch (error) {
+        } catch (error: any) {
           if (error.statusCode === 429) {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)

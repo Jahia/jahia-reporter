@@ -1,7 +1,7 @@
 /* eslint max-depth: ["error", 5] */
 import {Command, flags} from '@oclif/command'
 import {TestRailClient} from '../utils/testrail'
-import {Project, Section, Suite, Test, AddCase, AddRun, Status, TestRailResult} from '../utils/testrail.interface'
+import {Project, Milestone, Section, Suite, Test, AddCase, AddRun, Run, Status, TestRailResult} from '../utils/testrail.interface'
 import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
@@ -142,7 +142,7 @@ class JahiaTestrailReporter extends Command {
     }
 
     // Get Milestone
-    const milestone = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
+    const milestone: any = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
     let milestone_id = ''
 
     if (flags.skip) {
@@ -214,7 +214,7 @@ class JahiaTestrailReporter extends Command {
     // Create test run
     const newRun: AddRun = {suite_id: testrailSuite.id,
       name: flags.runName, description: flags.defaultRunDescription, milestone_id: milestone_id, include_all: false, case_ids: caseIds}
-    let run = '' 
+    let run = {} as Run
     if (!flags.skip) {
       run = testrail.addRun(testrailProject.id, newRun)
     }

@@ -40,19 +40,19 @@ const checkStatus = async (
     const callStart = performance.now()
     try {
       const authHeader = `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`
-      const options: SyncRequestOptions = { 
+      const options: SyncRequestOptions = {
         followRedirects: true,
         maxRedirects: 1000,
         timeout: true,
         retry: false,
         retryDelay: 200,
-        maxRetries: 5
+        maxRetries: 5,
       }
       data = new SyncRequestClient(options)
       .addHeader('Content-Type', 'application/json')
       .addHeader('authorization', authHeader)
       .post(jahiaUrl + 'modules/graphql', {query: gqlQuery})
-    } catch (error) {
+    } catch (error: any) {
       // eslint-disable-next-line no-console
       console.log(error.message)
     }

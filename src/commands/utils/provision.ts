@@ -57,7 +57,7 @@ class JahiaUtilsProvision extends Command {
           password: flags.jahiaPassword,
         },
       })
-    } catch (error) {
+    } catch (error: any) {
       this.log('Error while submitting script')
       this.log(error)
       this.exit(1)

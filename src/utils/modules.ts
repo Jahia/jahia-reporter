@@ -77,7 +77,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
     // eslint-disable-next-line no-console
     console.log(JSON.stringify(response.errors))
   }
-  
+
   // Jahia 8 with the GraphQL dashboard node available
   if (response.data !== null && response.errors === undefined) {
     const module = response.data.dashboard.modules.find((m: JahiaModule) => m.id === moduleId)
