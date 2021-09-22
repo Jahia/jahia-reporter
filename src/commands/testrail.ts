@@ -143,7 +143,7 @@ class JahiaTestrailReporter extends Command {
 
     // Get Milestone
     const milestone: any = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
-    let milestone_id = ''
+    let milestone_id = -1
 
     if (flags.skip) {
       this.log(`Milestone: ${milestone.toString()}`)
@@ -213,7 +213,11 @@ class JahiaTestrailReporter extends Command {
 
     // Create test run
     const newRun: AddRun = {suite_id: testrailSuite.id,
-      name: flags.runName, description: flags.defaultRunDescription, milestone_id: milestone_id, include_all: false, case_ids: caseIds}
+      name: flags.runName,
+      description: flags.defaultRunDescription,
+      milestone_id: milestone_id,
+      include_all: false,
+      case_ids: caseIds}
     let run = {} as Run
     if (!flags.skip) {
       run = testrail.addRun(testrailProject.id, newRun)
