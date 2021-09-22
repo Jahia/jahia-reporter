@@ -182,7 +182,7 @@ class JahiaTestrailReporter extends Command {
     // Go over the executed tests and make sure they all exist in the list we just got from TestRail
     for (const test of tests) {
       if (flags.skip) {
-        this.log(`Get test data ${test.toString()}`)
+        this.log(`Get test data ${JSON.stringify(test)}`)
       } else {
         // See if test exists in TestRail
         const foundTestCaseInTestRail = testCasesInTestrail[test.section].find(t => t.title === test.title)
