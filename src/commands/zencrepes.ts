@@ -133,7 +133,7 @@ class JahiaTestrailReporter extends Command {
       new SyncRequestClient()
       .addHeader('x-hub-signature', xHubSignature)
       .addHeader('Content-Type', 'application/json')
-      .post(flags.webhook, zcPayload)      
+      .post(flags.webhook, zcPayload)
     } catch (error) {
       this.log('ERROR: Unable to submit data to ZenCrepes')
       this.log(JSON.stringify(error))

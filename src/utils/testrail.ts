@@ -1,5 +1,5 @@
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {AddCase, Project, Section, Suite, Test, TestRailResult, AddRun, Run, CaseFields, Milestone} from './testrail.interface'
+import {AddCase, PaginatedProjects, Project, PaginatedSections, Section, Suite, PaginatedTests, Test, PaginatedResults, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
 
 export class TestRailClient {
     public base: string
@@ -23,7 +23,11 @@ export class TestRailClient {
     }
 
     public getProjects(): Project[] {
-      return this.sendRequest('GET', 'get_projects', '') as Project[]
+      const projectsObject = this.sendRequest('GET', 'get_projects', '') as PaginatedProjects
+      if (projectsObject.size > 0) {
+        return projectsObject.projects as Project[]
+      }
+      throw new Error("Something went wrong. Can't find any project")
     }
 
     public getSuites(projectId: number): Suite[] {
@@ -31,7 +35,11 @@ export class TestRailClient {
     }
 
     public getMilestones(projectId: number): Milestone[] {
-      return this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '') as Milestone[]
+      const milestonesObject = this.sendRequest('GET', 'get_milestones/' + projectId.toString(), '') as PaginatedMilestones
+      if (milestonesObject.size > 0) {
+        return milestonesObject.milestones as Milestone[]
+      }
+      throw new Error("Something went wrong. Can't find any milestone")
     }
 
     public addMilestone(projectId: number, name: string): Milestone {
@@ -39,7 +47,11 @@ export class TestRailClient {
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
-      return this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '') as Section[]
+      const sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '') as PaginatedSections
+      if (sectionsObject.size > 0) {
+        return sectionsObject.sections as Section[]
+      }
+      throw new Error("Something went wrong. Can't find any section")
     }
 
     public addSection(projectId: number, suiteId: number, section: string, parentId: string): Section {
@@ -47,7 +59,11 @@ export class TestRailClient {
     }
 
     public getCases(projectId: number, suiteId: number, sectionId: number): Test[] {
-      return this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '') as Test[]
+      const casesObject = this.sendRequest('GET', 'get_cases/' + projectId.toString() + '&suite_id=' + suiteId.toString() + '&section_id=' + sectionId.toString(), '') as PaginatedTests
+      if (casesObject.size > 0) {
+        return casesObject.cases as Test[]
+      }
+      throw new Error("Something went wrong. Can't find any test case")
     }
 
     public addCase(sectionId: number, addCase: AddCase): Test {
@@ -59,7 +75,11 @@ export class TestRailClient {
     }
 
     public addResults(runId: number, results: TestRailResult[]): TestRailResult[] {
-      return this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results}) as TestRailResult[]
+      const resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results}) as PaginatedResults
+      if (resultsObject.size > 0) {
+        return resultsObject.results as TestRailResult[]
+      }
+      throw new Error("Something went wrong. Can't find any test result")
     }
 
     public closeRun(runId: number): Run {
@@ -125,7 +145,7 @@ export class TestRailClient {
             .addHeader('Content-Type', 'application/json')
             .post(url, data)
           }
-        } catch (error) {
+        } catch (error: any) {
           if (error.statusCode === 429) {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)
