@@ -240,7 +240,7 @@ class JahiaTestrailReporter extends Command {
         if (status_id === Status.Failed) {
           testResult.comment = test.comment
         }
-        this.log(`Added result: ${testResult.toString()}`)
+        this.log(`Added result: ${JSON.stringify(testResult)}`)
         results.push(testResult)
       }
     }
@@ -248,7 +248,7 @@ class JahiaTestrailReporter extends Command {
     // Bulk update results
     this.log('Updating test run')
     if (flags.skip) {
-      this.log(`Results: ${results.toString()}`)
+      this.log(`Results: ${JSON.stringify(results)}`)
     } else {
       testrail.addResults(run.id, results)
     }
