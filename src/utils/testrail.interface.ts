@@ -6,13 +6,6 @@ export enum Status {
   Failed = 5,
 }
 
-export interface PaginatedResults {
-  offset: number;
-  limit: number;
-  size: number;
-  results: TestRailResult[];
-}
-
 export interface TestRailResult {
   case_id: number;
   status_id: Status;

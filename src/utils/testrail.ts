@@ -1,5 +1,5 @@
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {AddCase, PaginatedProjects, Project, PaginatedSections, Section, Suite, PaginatedTests, Test, PaginatedResults, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
+import {AddCase, PaginatedProjects, Project, PaginatedSections, Section, Suite, PaginatedTests, Test, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
 
 export class TestRailClient {
     public base: string
@@ -75,11 +75,7 @@ export class TestRailClient {
     }
 
     public addResults(runId: number, results: TestRailResult[]): TestRailResult[] {
-      const resultsObject = this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results}) as PaginatedResults
-      if (resultsObject.size > 0) {
-        return resultsObject.results as TestRailResult[]
-      }
-      throw new Error("Something went wrong. Can't find any test result")
+      return this.sendRequest('POST', 'add_results_for_cases/' + runId.toString(), {results: results}) as TestRailResult[]
     }
 
     public closeRun(runId: number): Run {
