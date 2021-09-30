@@ -1,45 +1,12 @@
 import {Command, flags} from '@oclif/command'
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import * as fs from 'fs'
-import {lstatSync, readFileSync} from 'fs'
+import {readFileSync} from 'fs'
 
-import { PerfNode } from '@bit/zencrepes.zindexer.testing-perfs'
-
-import ingestReport from '../utils/ingest'
-import {UtilsVersions} from '../global.type'
+import {PerfNode} from '@bit/zencrepes.zindexer.testing-perfs'
 
 import * as crypto from 'crypto'
-import {v5 as uuidv5} from 'uuid'
 
-import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type'
-
-const prepString = (s: string) => {
-  return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
-}
-
-// This generate an unique id based on the combination the component and its dependencies
-// The ID is simply a UUID genreated from the concatenation of all elements
-// Note that the dependencies are sorted and all string are cleaned (lower case and stripped from non alphanumerical characters)
-const getId = (name: string, version: string, dependencies: ZenCrepesDependency[]) => {
-  let idStr = prepString(name) + prepString(version)
-
-  dependencies.sort((a: ZenCrepesDependency, b: ZenCrepesDependency) => {
-    // Sort by name
-    if (a.name > b.name) return 1
-    if (a.name < b.name) return -1
-    // If names are equal, then sort by version
-    if (a.version > b.version) return 1
-    if (a.version < b.version) return -1
-    return 0
-  }).forEach((d: ZenCrepesDependency) => {
-    idStr = idStr + prepString(d.name) + prepString(d.version)
-  })
-
-  const UUID_NAMESPACE = 'c72d8f12-1818-4cb9-bead-44634c441c11'
-  return uuidv5(idStr, UUID_NAMESPACE)
-}
-
-class JahiaTestrailReporter extends Command {
+class JahiaPerfsReporter extends Command {
   static description = 'Submit data about a junit/mocha report to ZenCrepes'
 
   static flags = {
@@ -59,7 +26,7 @@ class JahiaTestrailReporter extends Command {
   }
 
   async run() {
-    const {flags} = this.parse(JahiaTestrailReporter)
+    const {flags} = this.parse(JahiaPerfsReporter)
 
     const rawFile = readFileSync(flags.filepath, 'utf8')
     const zcPayload: PerfNode = JSON.parse(rawFile.toString())
@@ -87,4 +54,4 @@ class JahiaTestrailReporter extends Command {
   }
 }
 
-export = JahiaTestrailReporter
+export = JahiaPerfsReporter
