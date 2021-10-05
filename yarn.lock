@@ -93,10 +93,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bit/zencrepes.zindexer.testing-perfs@^0.0.29":
-  version "0.0.29"
-  resolved "https://node.bit.dev/zencrepes.zindexer.testing-perfs/-/zencrepes.zindexer.testing-perfs-0.0.29.tgz#78141cba14b04c16e1be50efe668590d686d3eca"
-  integrity sha1-eBQcuhSwTBbhvlDv5mhZDWhtPso=
+"@bit/zencrepes.zindexer.testing-perfs@^0.0.30":
+  version "0.0.30"
+  resolved "https://node.bit.dev/zencrepes.zindexer.testing-perfs/-/zencrepes.zindexer.testing-perfs-0.0.30.tgz#efa9ceb225d8a4e21c2b22fad3ff3ebca5fca996"
+  integrity sha1-76nOsiXYpOIcKyL60/8+vKX8qZY=
   dependencies:
     "@types/uuid" "^8.3.0"
     uuid "^8.3.1"
