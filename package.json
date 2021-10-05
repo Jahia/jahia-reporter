@@ -8,7 +8,6 @@
   },
   "bugs": "https://github.com/VladRadan/jahia-reporter/issues",
   "dependencies": {
-    "@bit/zencrepes.zindexer.testing-perfs": "^0.0.30",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
