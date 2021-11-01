@@ -1,0 +1,178 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 8,
+    "passes": 8,
+    "pending": 0,
+    "failures": 0,
+    "start": "2021-11-01T03:29:29.827Z",
+    "end": "2021-11-01T03:29:31.405Z",
+    "duration": 1578
+  },
+  "tests": [
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Verifies current connection is empty",
+      "fullTitle": "Admin - API operations with dbConnections Verifies current connection is empty",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.currentConnection));\n                    expect(response.data.admin.search.currentConnection).to.be.equal(null);\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 237,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "List available dbConnections",
+      "fullTitle": "Admin - API operations with dbConnections List available dbConnections",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));\n                    expect(response.data.admin.search.dbConnections.length).to.be.greaterThan(0);\n                    expect(response.data.admin.search.dbConnections[0].connectionId).to.equal(Cypress.env('AS_DBCONNECTION'));\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 67,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "List available dbConnections - Check plugins",
+      "fullTitle": "Admin - API operations with dbConnections List available dbConnections - Check plugins",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, asConnection;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    asConnection = response.data.admin.search.dbConnections.find(function (c) { return c.connectionId === Cypress.env('AS_DBCONNECTION'); });\n                    cy.log(JSON.stringify(asConnection));\n                    expect(asConnection).not.to.equal(undefined);\n                    expect(asConnection.plugins.length).to.be.greaterThan(0);\n                    expect(asConnection.plugins[0].name).not.to.equal(undefined);\n                    expect(asConnection.plugins[0].description).not.to.equal(undefined);\n                    expect(asConnection.plugins[0].version).not.to.equal(undefined);\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 65,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot set empty dbConnectionId",
+      "fullTitle": "Admin - API operations with dbConnections Cannot set empty dbConnectionId",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_1;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    _a.trys.push([0, 2, , 3]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: setDbConnection,\n                            variables: {\n                                connectionId: '',\n                            },\n                        })];\n                case 1:\n                    _a.sent();\n                    return [3 /*break*/, 3];\n                case 2:\n                    err_1 = _a.sent();\n                    console.log(err_1);\n                    cy.log(JSON.stringify(err_1));\n                    expect(err_1.graphQLErrors[0].message).to.contain('No such connection exist');\n                    return [3 /*break*/, 3];\n                case 3: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 70,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot set non-existing dbConnectionId",
+      "fullTitle": "Admin - API operations with dbConnections Cannot set non-existing dbConnectionId",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_2;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    _a.trys.push([0, 2, , 3]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: setDbConnection,\n                            variables: {\n                                connectionId: 'I-do-not-exist',\n                            },\n                        })];\n                case 1:\n                    _a.sent();\n                    return [3 /*break*/, 3];\n                case 2:\n                    err_2 = _a.sent();\n                    console.log(err_2);\n                    cy.log(JSON.stringify(err_2));\n                    expect(err_2.graphQLErrors[0].message).to.contain('No such connection exist');\n                    return [3 /*break*/, 3];\n                case 3: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 119,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Set valid dbConnection",
+      "fullTitle": "Admin - API operations with dbConnections Set valid dbConnection",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: setDbConnection,\n                        variables: {\n                            connectionId: Cypress.env('AS_DBCONNECTION'),\n                        },\n                    })];\n                case 1:\n                    _a.sent();\n                    return [4 /*yield*/, apollo_1.apollo().query({\n                            query: getDbConnections,\n                        })];\n                case 2:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));\n                    expect(response.data.admin.search.currentConnection).to.be.equal(Cypress.env('AS_DBCONNECTION'));\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 172,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot clear dbConnection if site configured",
+      "fullTitle": "Admin - API operations with dbConnections Cannot clear dbConnection if site configured",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_3;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: \n                // Add a site to validate that the connection cannot be removed\n                return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: addSite,\n                        variables: {\n                            siteKey: Cypress.env('AS_SITEKEY'),\n                        },\n                    })];\n                case 1:\n                    // Add a site to validate that the connection cannot be removed\n                    _a.sent();\n                    _a.label = 2;\n                case 2:\n                    _a.trys.push([2, 4, , 5]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: clearDbConnection,\n                        })];\n                case 3:\n                    _a.sent();\n                    return [3 /*break*/, 5];\n                case 4:\n                    err_3 = _a.sent();\n                    expect(err_3.graphQLErrors[0].message).to.contain('Please remove all site from Augmented Search before clearing connection');\n                    return [3 /*break*/, 5];\n                case 5: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 330,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Can clear dbConnection if no site configured",
+      "fullTitle": "Admin - API operations with dbConnections Can clear dbConnection if no site configured",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: \n                // Remove site so that the connection can be removed\n                return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: removeSite,\n                        variables: {\n                            siteKey: Cypress.env('AS_SITEKEY'),\n                        },\n                    })];\n                case 1:\n                    // Remove site so that the connection can be removed\n                    _a.sent();\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: clearDbConnection,\n                        })];\n                case 2:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response));\n                    expect(response.data.admin.search.clearDbConnection).to.equal('Successful');\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 275,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [],
+  "passes": [
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Verifies current connection is empty",
+      "fullTitle": "Admin - API operations with dbConnections Verifies current connection is empty",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.currentConnection));\n                    expect(response.data.admin.search.currentConnection).to.be.equal(null);\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 237,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "List available dbConnections",
+      "fullTitle": "Admin - API operations with dbConnections List available dbConnections",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));\n                    expect(response.data.admin.search.dbConnections.length).to.be.greaterThan(0);\n                    expect(response.data.admin.search.dbConnections[0].connectionId).to.equal(Cypress.env('AS_DBCONNECTION'));\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 67,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "List available dbConnections - Check plugins",
+      "fullTitle": "Admin - API operations with dbConnections List available dbConnections - Check plugins",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, asConnection;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: getDbConnections,\n                    })];\n                case 1:\n                    response = _a.sent();\n                    asConnection = response.data.admin.search.dbConnections.find(function (c) { return c.connectionId === Cypress.env('AS_DBCONNECTION'); });\n                    cy.log(JSON.stringify(asConnection));\n                    expect(asConnection).not.to.equal(undefined);\n                    expect(asConnection.plugins.length).to.be.greaterThan(0);\n                    expect(asConnection.plugins[0].name).not.to.equal(undefined);\n                    expect(asConnection.plugins[0].description).not.to.equal(undefined);\n                    expect(asConnection.plugins[0].version).not.to.equal(undefined);\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 65,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot set empty dbConnectionId",
+      "fullTitle": "Admin - API operations with dbConnections Cannot set empty dbConnectionId",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_1;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    _a.trys.push([0, 2, , 3]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: setDbConnection,\n                            variables: {\n                                connectionId: '',\n                            },\n                        })];\n                case 1:\n                    _a.sent();\n                    return [3 /*break*/, 3];\n                case 2:\n                    err_1 = _a.sent();\n                    console.log(err_1);\n                    cy.log(JSON.stringify(err_1));\n                    expect(err_1.graphQLErrors[0].message).to.contain('No such connection exist');\n                    return [3 /*break*/, 3];\n                case 3: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 70,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot set non-existing dbConnectionId",
+      "fullTitle": "Admin - API operations with dbConnections Cannot set non-existing dbConnectionId",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_2;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    _a.trys.push([0, 2, , 3]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: setDbConnection,\n                            variables: {\n                                connectionId: 'I-do-not-exist',\n                            },\n                        })];\n                case 1:\n                    _a.sent();\n                    return [3 /*break*/, 3];\n                case 2:\n                    err_2 = _a.sent();\n                    console.log(err_2);\n                    cy.log(JSON.stringify(err_2));\n                    expect(err_2.graphQLErrors[0].message).to.contain('No such connection exist');\n                    return [3 /*break*/, 3];\n                case 3: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 119,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Set valid dbConnection",
+      "fullTitle": "Admin - API operations with dbConnections Set valid dbConnection",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: setDbConnection,\n                        variables: {\n                            connectionId: Cypress.env('AS_DBCONNECTION'),\n                        },\n                    })];\n                case 1:\n                    _a.sent();\n                    return [4 /*yield*/, apollo_1.apollo().query({\n                            query: getDbConnections,\n                        })];\n                case 2:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));\n                    expect(response.data.admin.search.currentConnection).to.be.equal(Cypress.env('AS_DBCONNECTION'));\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 172,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Cannot clear dbConnection if site configured",
+      "fullTitle": "Admin - API operations with dbConnections Cannot clear dbConnection if site configured",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var err_3;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: \n                // Add a site to validate that the connection cannot be removed\n                return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: addSite,\n                        variables: {\n                            siteKey: Cypress.env('AS_SITEKEY'),\n                        },\n                    })];\n                case 1:\n                    // Add a site to validate that the connection cannot be removed\n                    _a.sent();\n                    _a.label = 2;\n                case 2:\n                    _a.trys.push([2, 4, , 5]);\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: clearDbConnection,\n                        })];\n                case 3:\n                    _a.sent();\n                    return [3 /*break*/, 5];\n                case 4:\n                    err_3 = _a.sent();\n                    expect(err_3.graphQLErrors[0].message).to.contain('Please remove all site from Augmented Search before clearing connection');\n                    return [3 /*break*/, 5];\n                case 5: return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 330,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Admin - API operations with dbConnections",
+      "title": "Can clear dbConnection if no site configured",
+      "fullTitle": "Admin - API operations with dbConnections Can clear dbConnection if no site configured",
+      "file": "cypress/integration/admin/api/dbConnections.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: \n                // Remove site so that the connection can be removed\n                return [4 /*yield*/, apollo_1.apollo().mutate({\n                        mutation: removeSite,\n                        variables: {\n                            siteKey: Cypress.env('AS_SITEKEY'),\n                        },\n                    })];\n                case 1:\n                    // Remove site so that the connection can be removed\n                    _a.sent();\n                    return [4 /*yield*/, apollo_1.apollo().mutate({\n                            mutation: clearDbConnection,\n                        })];\n                case 2:\n                    response = _a.sent();\n                    cy.log(JSON.stringify(response));\n                    expect(response.data.admin.search.clearDbConnection).to.equal('Successful');\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 275,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}

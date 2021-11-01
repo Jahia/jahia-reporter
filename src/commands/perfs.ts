@@ -32,7 +32,7 @@ class JahiaPerfsReporter extends Command {
       description: 'URL of the run',
       required: false,
       default: '',
-    }),    
+    }),
     webhook: flags.string({
       description: 'The Webhook URL to send the payload to',
       required: true,

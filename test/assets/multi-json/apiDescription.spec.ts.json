@@ -1,0 +1,38 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2021-11-01T03:29:15.788Z",
+    "end": "2021-11-01T03:29:16.378Z",
+    "duration": 590
+  },
+  "tests": [
+    {
+      "suite": "Test if every type in graphQL API has description",
+      "title": "Check every input for the User Type",
+      "fullTitle": "Test if every type in graphQL API has description Check every input for the User Type",
+      "file": "cypress/integration/misc/apiDescription.spec.ts",
+      "body": "function () {\n        return __awaiter(this, void 0, void 0, function () {\n            var noDesc;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        noDesc = new Set();\n                        return [4 /*yield*/, executeTest('ASAdminQueries', noDesc)];\n                    case 1:\n                        _a.sent();\n                        console.log(noDesc);\n                        expect(JSON.stringify(Array.from(noDesc))).to.equals('[]');\n                        return [2 /*return*/];\n                }\n            });\n        });\n    }",
+      "duration": 542,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [],
+  "passes": [
+    {
+      "suite": "Test if every type in graphQL API has description",
+      "title": "Check every input for the User Type",
+      "fullTitle": "Test if every type in graphQL API has description Check every input for the User Type",
+      "file": "cypress/integration/misc/apiDescription.spec.ts",
+      "body": "function () {\n        return __awaiter(this, void 0, void 0, function () {\n            var noDesc;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        noDesc = new Set();\n                        return [4 /*yield*/, executeTest('ASAdminQueries', noDesc)];\n                    case 1:\n                        _a.sent();\n                        console.log(noDesc);\n                        expect(JSON.stringify(Array.from(noDesc))).to.equals('[]');\n                        return [2 /*return*/];\n                }\n            });\n        });\n    }",
+      "duration": 542,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}
