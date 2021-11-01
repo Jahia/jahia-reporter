@@ -3,10 +3,10 @@ import {Command, flags} from '@oclif/command'
 import {event} from '@pagerduty/pdjs'
 import * as md5 from 'md5'
 
-import {JRRun} from '../global.type'
-import ingestReport from '../utils/ingest'
+import {JRRun} from '../../global.type'
+import ingestReport from '../../utils/ingest'
 
-class JahiaTestrailReporter extends Command {
+class JahiaPagerDutyEvent extends Command {
   static description = 'Create a pagerduty event based on a test report'
 
   static flags = {
@@ -39,7 +39,7 @@ class JahiaTestrailReporter extends Command {
       description: 'Link to obtain more details about the run',
       default: '',
     }),
-    dryrun: flags.boolean({
+    dryRun: flags.boolean({
       description: 'Do not send the data but only print it to console',
       default: false,
     }),
@@ -47,7 +47,7 @@ class JahiaTestrailReporter extends Command {
 
   // eslint-disable-next-line complexity
   async run() {
-    const {flags} = this.parse(JahiaTestrailReporter)
+    const {flags} = this.parse(JahiaPagerDutyEvent)
 
     // Parse files into objects
     const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
@@ -85,7 +85,7 @@ class JahiaTestrailReporter extends Command {
     // eslint-disable-next-line no-console
     console.log(pdPayload)
 
-    if (flags.dryrun === false) {
+    if (flags.dryRun === false) {
       // https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgx-sending-an-alert-event
       const eventResponse = await event({
         data: pdPayload,
@@ -97,4 +97,4 @@ class JahiaTestrailReporter extends Command {
   }
 }
 
-export = JahiaTestrailReporter
+export = JahiaPagerDutyEvent
