@@ -82,9 +82,6 @@ class JahiaPagerDutyEvent extends Command {
       }],
     }
 
-    // eslint-disable-next-line no-console
-    console.log(pdPayload)
-
     if (flags.dryRun === false) {
       // https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgx-sending-an-alert-event
       const eventResponse = await event({
