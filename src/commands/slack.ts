@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import {Command, flags} from '@oclif/command'
 import * as fs from 'fs'
 import {UtilsVersions, JRTestsuite} from '../global.type'

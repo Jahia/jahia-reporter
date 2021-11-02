@@ -1,0 +1,2175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test report ingestion JUnit XML 1`] = `
+Object {
+  "failures": 0,
+  "reports": Array [
+    Object {
+      "failures": 0,
+      "name": "Mocha JSON Report",
+      "tests": 0,
+      "testsuites": Array [],
+      "time": 0,
+    },
+  ],
+  "tests": 0,
+  "time": 0,
+}
+`;
+
+exports[`Test report ingestion Multi JSON (mocha) 1`] = `
+Object {
+  "failures": 2,
+  "reports": Array [
+    Object {
+      "failures": 2,
+      "name": "Mocha JSON Report",
+      "tests": 24,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "Indexing - Validating ACLs update and indexation (acls.spec.ts.json)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "Preparing environment to run the test and removing access for guest",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, checkGuestAcl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: grantRoles,
+                        variables: {
+                            pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\",
+                            permission: 'GRANT',
+                            users: 'u:guest',
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode.addChild.addChild));
+                    expect(response.data.jcr.mutateNode.addChild.addChild.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: updateRoles,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl/GRANT_u_guest\\",
+                                permission: 'GRANT',
+                                users: 'g:users',
+                            },
+                        })];
+                case 3:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode));
+                    expect(response.data.jcr.mutateNode.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, apollo_1.apollo().query({
+                            query: searchResults,
+                            variables: {
+                                q: 'digitall',
+                                workspace: 'LIVE',
+                                siteKeys: [Cypress.env('AS_SITEKEY')],
+                                language: 'en',
+                                searchIn: null,
+                                pageSize: 20,
+                                pageCount: 0,
+                                sortBy: null,
+                                filters: { nodeType: { type: 'jnt:page' } },
+                            },
+                        })];
+                case 5:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.search.results.hits));
+                    expect(response.data.search.results.hits.length).to.equal(8);
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: updateRoles,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl/GRANT_u_guest\\",
+                                permission: 'DENY',
+                                users: 'u:guest',
+                            },
+                        })];
+                case 6:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode));
+                    expect(response.data.jcr.mutateNode.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })
+                        // This function is used to check if the data has been updated and made its way to the AS index
+                        // Idea is to avoid using arbitrary sleep
+                    ];
+                case 7:
+                    _a.sent();
+                    checkGuestAcl = function (apollo, graphQLQuery) { return __awaiter(void 0, void 0, void 0, function () {
+                        var response, aboutPages;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, apollo().query({
+                                        query: graphQLQuery,
+                                        variables: {
+                                            q: 'digitall',
+                                            workspace: 'LIVE',
+                                            siteKeys: [Cypress.env('AS_SITEKEY')],
+                                            language: 'en',
+                                            searchIn: null,
+                                            pageSize: 20,
+                                            pageCount: 0,
+                                            sortBy: null,
+                                            filters: { nodeType: { type: 'jnt:page' } },
+                                        },
+                                    })];
+                                case 1:
+                                    response = _a.sent();
+                                    console.log(response.data.search.results.hits.filter(function (h) {
+                                        return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\");
+                                    }));
+                                    aboutPages = response.data.search.results.hits
+                                        .filter(function (h) { return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); })
+                                        .filter(function (h) { return h.acl.includes('guest'); });
+                                    return [2 /*return*/, aboutPages.length === 0];
+                            }
+                        });
+                    }); };
+                    cy.log('Wait until data has been re-indexed');
+                    return [4 /*yield*/, checkDataUpdated_1.checkDataUpdated(apollo_1.apollo, searchResults, 30, checkGuestAcl)];
+                case 8:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 4,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Validate that guest lost access to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () {
+        cy.task('apolloNode', {
+            baseUrl: Cypress.config().baseUrl,
+            query: searchResults,
+            variables: {
+                q: 'digitall',
+                workspace: 'LIVE',
+                siteKeys: [Cypress.env('AS_SITEKEY')],
+                language: 'en',
+                searchIn: null,
+                pageSize: 20,
+                pageCount: 0,
+                sortBy: null,
+                filters: { nodeType: { type: 'jnt:page' } },
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }).then(function (response) {
+            cy.log(JSON.stringify(response));
+            var paths = response.data.search.results.hits.map(function (h) { return h.path; });
+            cy.log(JSON.stringify(paths));
+            // Check if any of the returned path contains the about node
+            expect(paths.filter(function (p) { return p.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); }).length).to.equal(0);
+        });
+    }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Validate that user jane still has access to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () {
+        cy.task('apolloNode', {
+            baseUrl: Cypress.config().baseUrl,
+            query: searchResults,
+            authMethod: {
+                username: 'jane',
+                password: 'password',
+            },
+            variables: {
+                q: 'digitall',
+                workspace: 'LIVE',
+                siteKeys: [Cypress.env('AS_SITEKEY')],
+                language: 'en',
+                searchIn: null,
+                pageSize: 20,
+                pageCount: 0,
+                sortBy: null,
+                filters: { nodeType: { type: 'jnt:page' } },
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }).then(function (response) {
+            cy.log(JSON.stringify(response));
+            var paths = response.data.search.results.hits.map(function (h) { return h.path; });
+            cy.log(JSON.stringify(paths));
+            // Check if any of the returned path contains the about node
+            expect(paths.filter(function (p) { return p.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); }).length).to.be.greaterThan(0);
+        });
+    }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Restore access to guest user to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, checkGuestAcl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: updateRoles,
+                        variables: {
+                            pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl/GRANT_u_guest\\",
+                            permission: 'GRANT',
+                            users: 'u:guest',
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode));
+                    expect(response.data.jcr.mutateNode.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })];
+                case 2:
+                    _a.sent();
+                    checkGuestAcl = function (apollo, graphQLQuery) { return __awaiter(void 0, void 0, void 0, function () {
+                        var response, aboutPages;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, apollo().query({
+                                        query: graphQLQuery,
+                                        variables: {
+                                            q: 'digitall',
+                                            workspace: 'LIVE',
+                                            siteKeys: [Cypress.env('AS_SITEKEY')],
+                                            language: 'en',
+                                            searchIn: null,
+                                            pageSize: 20,
+                                            pageCount: 0,
+                                            sortBy: null,
+                                            filters: { nodeType: { type: 'jnt:page' } },
+                                        },
+                                    })];
+                                case 1:
+                                    response = _a.sent();
+                                    console.log(response.data.search.results.hits.filter(function (h) {
+                                        return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\");
+                                    }));
+                                    aboutPages = response.data.search.results.hits
+                                        .filter(function (h) { return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); })
+                                        .filter(function (h) { return h.acl.includes('guest'); });
+                                    return [2 /*return*/, aboutPages.length > 0];
+                            }
+                        });
+                    }); };
+                    cy.log('Wait until data has been re-indexed');
+                    return [4 /*yield*/, checkDataUpdated_1.checkDataUpdated(apollo_1.apollo, searchResults, 30, checkGuestAcl)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 2,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Validate guest user recovered access to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () {
+        cy.task('apolloNode', {
+            baseUrl: Cypress.config().baseUrl,
+            query: searchResults,
+            variables: {
+                q: 'digitall',
+                workspace: 'LIVE',
+                siteKeys: [Cypress.env('AS_SITEKEY')],
+                language: 'en',
+                searchIn: null,
+                pageSize: 20,
+                pageCount: 0,
+                sortBy: null,
+                filters: { nodeType: { type: 'jnt:page' } },
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }).then(function (response) { return __awaiter(void 0, void 0, void 0, function () {
+            var paths;
+            return __generator(this, function (_a) {
+                cy.log(JSON.stringify(response));
+                paths = response.data.search.results.hits.map(function (h) { return h.path; });
+                cy.log(JSON.stringify(paths));
+                // Check if any of the returned path contains the about node
+                expect(paths.filter(function (p) { return p.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); }).length).to.be.greaterThan(1);
+                return [2 /*return*/];
+            });
+        }); });
+    }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Preparing environment to run the test and removing access for group g:users",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, checkGroupsAcl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: updateRoles,
+                        variables: {
+                            pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl/GRANT_u_guest\\",
+                            permission: 'DENY',
+                            users: 'g:users',
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode));
+                    expect(response.data.jcr.mutateNode.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })];
+                case 2:
+                    _a.sent();
+                    checkGroupsAcl = function (apollo, graphQLQuery) { return __awaiter(void 0, void 0, void 0, function () {
+                        var response, aboutPages;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, apollo().query({
+                                        query: graphQLQuery,
+                                        variables: {
+                                            q: 'digitall',
+                                            workspace: 'LIVE',
+                                            siteKeys: [Cypress.env('AS_SITEKEY')],
+                                            language: 'en',
+                                            searchIn: null,
+                                            pageSize: 20,
+                                            pageCount: 0,
+                                            sortBy: null,
+                                            filters: { nodeType: { type: 'jnt:page' } },
+                                        },
+                                    })];
+                                case 1:
+                                    response = _a.sent();
+                                    console.log(response.data.search.results.hits.filter(function (h) {
+                                        return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\");
+                                    }));
+                                    aboutPages = response.data.search.results.hits
+                                        .filter(function (h) { return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); })
+                                        .filter(function (h) { return h.acl.includes('groups'); });
+                                    return [2 /*return*/, aboutPages.length === 0];
+                            }
+                        });
+                    }); };
+                    cy.log('Wait until data has been re-indexed');
+                    return [4 /*yield*/, checkDataUpdated_1.checkDataUpdated(apollo_1.apollo, searchResults, 30, checkGroupsAcl)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 2,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Validate that user jane (member of g:users) lost access to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () {
+        cy.task('apolloNode', {
+            baseUrl: Cypress.config().baseUrl,
+            query: searchResults,
+            authMethod: {
+                username: 'jane',
+                password: 'password',
+            },
+            variables: {
+                q: 'digitall',
+                workspace: 'LIVE',
+                siteKeys: [Cypress.env('AS_SITEKEY')],
+                language: 'en',
+                searchIn: null,
+                pageSize: 20,
+                pageCount: 0,
+                sortBy: null,
+                filters: { nodeType: { type: 'jnt:page' } },
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }).then(function (response) {
+            cy.log(JSON.stringify(response));
+            var paths = response.data.search.results.hits.map(function (h) { return h.path; });
+            cy.log(JSON.stringify(paths));
+            // Check if any of the returned path contains the about node
+            expect(paths.filter(function (p) { return p.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); }).length).to.equal(0);
+        });
+    }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Restore access to group g:users to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, checkGuestAcl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: updateRoles,
+                        variables: {
+                            pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl/GRANT_u_guest\\",
+                            permission: 'GRANT',
+                            users: 'g:users',
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.jcr.mutateNode));
+                    expect(response.data.jcr.mutateNode.property1.setValue).to.be.true;
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: publishNode,
+                            variables: {
+                                pathOrId: \\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about/j:acl\\",
+                            },
+                        })];
+                case 2:
+                    _a.sent();
+                    checkGuestAcl = function (apollo, graphQLQuery) { return __awaiter(void 0, void 0, void 0, function () {
+                        var response, aboutPages;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, apollo().query({
+                                        query: graphQLQuery,
+                                        variables: {
+                                            q: 'digitall',
+                                            workspace: 'LIVE',
+                                            siteKeys: [Cypress.env('AS_SITEKEY')],
+                                            language: 'en',
+                                            searchIn: null,
+                                            pageSize: 20,
+                                            pageCount: 0,
+                                            sortBy: null,
+                                            filters: { nodeType: { type: 'jnt:page' } },
+                                        },
+                                    })];
+                                case 1:
+                                    response = _a.sent();
+                                    console.log(response.data.search.results.hits.filter(function (h) {
+                                        return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\");
+                                    }));
+                                    aboutPages = response.data.search.results.hits
+                                        .filter(function (h) { return h.path.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); })
+                                        .filter(function (h) { return h.acl.includes('groups'); });
+                                    return [2 /*return*/, aboutPages.length > 0];
+                            }
+                        });
+                    }); };
+                    cy.log('Wait until data has been re-indexed');
+                    return [4 /*yield*/, checkDataUpdated_1.checkDataUpdated(apollo_1.apollo, searchResults, 30, checkGuestAcl)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 3,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Validate that user jane (member of g:users) recovered access to the /home/about/ nodes",
+              "status": "PASS",
+              "steps": "function () {
+        cy.task('apolloNode', {
+            baseUrl: Cypress.config().baseUrl,
+            query: searchResults,
+            authMethod: {
+                username: 'jane',
+                password: 'password',
+            },
+            variables: {
+                q: 'digitall',
+                workspace: 'LIVE',
+                siteKeys: [Cypress.env('AS_SITEKEY')],
+                language: 'en',
+                searchIn: null,
+                pageSize: 20,
+                pageCount: 0,
+                sortBy: null,
+                filters: { nodeType: { type: 'jnt:page' } },
+            },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }).then(function (response) {
+            cy.log(JSON.stringify(response));
+            var paths = response.data.search.results.hits.map(function (h) { return h.path; });
+            cy.log(JSON.stringify(paths));
+            // Check if any of the returned path contains the about node
+            expect(paths.filter(function (p) { return p.includes(\\"/sites/\\" + Cypress.env('AS_SITEKEY') + \\"/home/about\\"); }).length).to.be.greaterThan(1);
+        });
+    }",
+              "time": 0,
+            },
+          ],
+          "time": 13,
+          "timestamp": "2021-11-01T03:33:45.039Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Test if every type in graphQL API has description (apiDescription.spec.ts.json)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "Check every input for the User Type",
+              "status": "PASS",
+              "steps": "function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var noDesc;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        noDesc = new Set();
+                        return [4 /*yield*/, executeTest('ASAdminQueries', noDesc)];
+                    case 1:
+                        _a.sent();
+                        console.log(noDesc);
+                        expect(JSON.stringify(Array.from(noDesc))).to.equals('[]');
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }",
+              "time": 1,
+            },
+          ],
+          "time": 1,
+          "timestamp": "2021-11-01T03:29:15.788Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Filters - Filtering by author (author.spec.ts.json)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "Filter by author - root",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, hits, _i, hits_1, h;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: searchResults,
+                        variables: {
+                            q: 'demo',
+                            siteKeys: [Cypress.env('AS_SITEKEY1')],
+                            workspace: 'LIVE',
+                            searchIn: ['CONTENT'],
+                            language: 'en',
+                            filters: {
+                                author: 'root',
+                            },
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    hits = response.data.search.results.hits;
+                    cy.log(JSON.stringify(hits.map(function (h) {
+                        return { displayableName: h.displayableName, createdBy: h.createdBy };
+                    })));
+                    for (_i = 0, hits_1 = hits; _i < hits_1.length; _i++) {
+                        h = hits_1[_i];
+                        expect(h.path).to.contain(\\"/sites/\\" + Cypress.env('AS_SITEKEY1') + \\"/\\");
+                        expect(['root', 'system']).to.include(h.createdBy);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Filter by author - root - (DEPRECATED jcr node)",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, hits, _i, hits_2, h;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: deprecatedSearchResults,
+                        variables: {
+                            q: 'demo',
+                            siteKey: Cypress.env('AS_SITEKEY1'),
+                            workspace: 'LIVE',
+                            searchIn: ['CONTENT'],
+                            language: 'en',
+                            filter: {
+                                author: 'root',
+                            },
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    hits = response.data.jcr.searches.search.hits;
+                    cy.log(JSON.stringify(hits.map(function (h) {
+                        return { displayableName: h.displayableName, createdBy: h.createdBy };
+                    })));
+                    for (_i = 0, hits_2 = hits; _i < hits_2.length; _i++) {
+                        h = hits_2[_i];
+                        expect(h.path).to.contain(\\"/sites/\\" + Cypress.env('AS_SITEKEY1') + \\"/\\");
+                        expect(['root', 'system']).to.include(h.createdBy);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Filter by author - system",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, hits, _i, hits_3, h;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: searchResults,
+                        variables: {
+                            q: 'demo',
+                            siteKeys: [Cypress.env('AS_SITEKEY1')],
+                            workspace: 'LIVE',
+                            searchIn: ['CONTENT'],
+                            language: 'en',
+                            filters: {
+                                author: 'system',
+                            },
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    hits = response.data.search.results.hits;
+                    cy.log(JSON.stringify(hits.map(function (h) {
+                        return { displayableName: h.displayableName, createdBy: h.createdBy };
+                    })));
+                    for (_i = 0, hits_3 = hits; _i < hits_3.length; _i++) {
+                        h = hits_3[_i];
+                        expect(h.path).to.contain(\\"/sites/\\" + Cypress.env('AS_SITEKEY1') + \\"/\\");
+                        expect(['system']).to.include(h.createdBy);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Filter by author - system - (DEPRECATED jcr node)",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, hits, _i, hits_4, h;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: deprecatedSearchResults,
+                        variables: {
+                            q: 'demo',
+                            siteKey: Cypress.env('AS_SITEKEY1'),
+                            workspace: 'LIVE',
+                            searchIn: ['CONTENT'],
+                            language: 'en',
+                            filter: {
+                                author: 'system',
+                            },
+                        },
+                    })];
+                case 1:
+                    response = _a.sent();
+                    hits = response.data.jcr.searches.search.hits;
+                    cy.log(JSON.stringify(hits.map(function (h) {
+                        return { displayableName: h.displayableName, createdBy: h.createdBy };
+                    })));
+                    for (_i = 0, hits_4 = hits; _i < hits_4.length; _i++) {
+                        h = hits_4[_i];
+                        expect(h.path).to.contain(\\"/sites/\\" + Cypress.env('AS_SITEKEY1') + \\"/\\");
+                        expect(['system']).to.include(h.createdBy);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+          ],
+          "time": 1,
+          "timestamp": "2021-11-01T03:30:57.894Z",
+        },
+        Object {
+          "failures": 2,
+          "name": "Admin - UI operations on Augmented Search DB connection (connectionTest.spec.ts.json)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "{\\"message\\":\\"The following error originated from your application code, not from Cypress.\\\\n\\\\n  > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n\\\\nhttps://on.cypress.io/uncaught-exception-from-application\\",\\"name\\":\\"TypeError\\",\\"stack\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\\\n\\\\n  > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n\\\\nhttps://on.cypress.io/uncaught-exception-from-application\\\\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\\\\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\\\\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34\\",\\"sourceMappedStack\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\\\n\\\\n    > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\\\\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\\\\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)\\",\\"parsedStack\\":[{\\"message\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"  > Cannot read property 'size' of undefined\\",\\"whitespace\\":\\"  \\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"When Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"This behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\",\\"whitespace\\":\\"\\"},{\\"function\\":\\"Jp\\",\\"fileUrl\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"line\\":1,\\"column\\":292727,\\"whitespace\\":\\"    \\"},{\\"function\\":\\"Module.Xu\\",\\"fileUrl\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"line\\":1,\\"column\\":335006,\\"whitespace\\":\\"    \\"},{\\"function\\":\\"<unknown>\\",\\"fileUrl\\":\\"http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js\\",\\"line\\":5,\\"column\\":35,\\"whitespace\\":\\"    \\"}]}",
+                },
+              ],
+              "name": "Access the page and validate \\"ADD CONNECTION\\" button (no connection present)",
+              "status": "FAIL",
+              "steps": "function () {
+        as_admin_page_1.asAdminPage.goTo();
+        expect(as_admin_page_1.asAdminPage.getByText('button', 'ADD CONNECTION')).not.to.be.undefined;
+    }",
+              "time": 6,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "{\\"message\\":\\"The following error originated from your application code, not from Cypress.\\\\n\\\\n  > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n\\\\nhttps://on.cypress.io/uncaught-exception-from-application\\",\\"name\\":\\"TypeError\\",\\"stack\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\\\n\\\\n  > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n\\\\nhttps://on.cypress.io/uncaught-exception-from-application\\\\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\\\\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\\\\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34\\",\\"sourceMappedStack\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\\\n\\\\n    > Cannot read property 'size' of undefined\\\\n\\\\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\\\n\\\\nThis behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\\\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\\\\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\\\\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)\\",\\"parsedStack\\":[{\\"message\\":\\"TypeError: The following error originated from your application code, not from Cypress.\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"  > Cannot read property 'size' of undefined\\",\\"whitespace\\":\\"  \\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"When Cypress detects uncaught errors originating from your application it will automatically fail the current test.\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"\\",\\"whitespace\\":\\"\\"},{\\"message\\":\\"This behavior is configurable, and you can choose to turn this off by listening to the \`uncaught:exception\` event.\\",\\"whitespace\\":\\"\\"},{\\"function\\":\\"Jp\\",\\"fileUrl\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"line\\":1,\\"column\\":292727,\\"whitespace\\":\\"    \\"},{\\"function\\":\\"Module.Xu\\",\\"fileUrl\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js\\",\\"line\\":1,\\"column\\":335006,\\"whitespace\\":\\"    \\"},{\\"function\\":\\"<unknown>\\",\\"fileUrl\\":\\"http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js\\",\\"originalFile\\":\\"http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js\\",\\"line\\":5,\\"column\\":35,\\"whitespace\\":\\"    \\"}]}",
+                },
+              ],
+              "name": "Access the page and slect the connection and cancel",
+              "status": "FAIL",
+              "steps": "function () {
+        as_admin_page_1.asAdminPage.goTo();
+        as_admin_page_1.asAdminPage.clickAddConnection();
+    }",
+              "time": 1,
+            },
+          ],
+          "time": 8,
+          "timestamp": "2021-11-01T03:29:45.215Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Admin - API operations with dbConnections (dbConnections.spec.ts.json)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "Verifies current connection is empty",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: getDbConnections,
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.admin.search.currentConnection));
+                    expect(response.data.admin.search.currentConnection).to.be.equal(null);
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "List available dbConnections",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: getDbConnections,
+                    })];
+                case 1:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));
+                    expect(response.data.admin.search.dbConnections.length).to.be.greaterThan(0);
+                    expect(response.data.admin.search.dbConnections[0].connectionId).to.equal(Cypress.env('AS_DBCONNECTION'));
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "List available dbConnections - Check plugins",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, asConnection;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().query({
+                        query: getDbConnections,
+                    })];
+                case 1:
+                    response = _a.sent();
+                    asConnection = response.data.admin.search.dbConnections.find(function (c) { return c.connectionId === Cypress.env('AS_DBCONNECTION'); });
+                    cy.log(JSON.stringify(asConnection));
+                    expect(asConnection).not.to.equal(undefined);
+                    expect(asConnection.plugins.length).to.be.greaterThan(0);
+                    expect(asConnection.plugins[0].name).not.to.equal(undefined);
+                    expect(asConnection.plugins[0].description).not.to.equal(undefined);
+                    expect(asConnection.plugins[0].version).not.to.equal(undefined);
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Cannot set empty dbConnectionId",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: setDbConnection,
+                            variables: {
+                                connectionId: '',
+                            },
+                        })];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    console.log(err_1);
+                    cy.log(JSON.stringify(err_1));
+                    expect(err_1.graphQLErrors[0].message).to.contain('No such connection exist');
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Cannot set non-existing dbConnectionId",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var err_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: setDbConnection,
+                            variables: {
+                                connectionId: 'I-do-not-exist',
+                            },
+                        })];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_2 = _a.sent();
+                    console.log(err_2);
+                    cy.log(JSON.stringify(err_2));
+                    expect(err_2.graphQLErrors[0].message).to.contain('No such connection exist');
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Set valid dbConnection",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: setDbConnection,
+                        variables: {
+                            connectionId: Cypress.env('AS_DBCONNECTION'),
+                        },
+                    })];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, apollo_1.apollo().query({
+                            query: getDbConnections,
+                        })];
+                case 2:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response.data.admin.search.dbConnections));
+                    expect(response.data.admin.search.currentConnection).to.be.equal(Cypress.env('AS_DBCONNECTION'));
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Cannot clear dbConnection if site configured",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var err_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: 
+                // Add a site to validate that the connection cannot be removed
+                return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: addSite,
+                        variables: {
+                            siteKey: Cypress.env('AS_SITEKEY'),
+                        },
+                    })];
+                case 1:
+                    // Add a site to validate that the connection cannot be removed
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 4, , 5]);
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: clearDbConnection,
+                        })];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 4:
+                    err_3 = _a.sent();
+                    expect(err_3.graphQLErrors[0].message).to.contain('Please remove all site from Augmented Search before clearing connection');
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "Can clear dbConnection if no site configured",
+              "status": "PASS",
+              "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: 
+                // Remove site so that the connection can be removed
+                return [4 /*yield*/, apollo_1.apollo().mutate({
+                        mutation: removeSite,
+                        variables: {
+                            siteKey: Cypress.env('AS_SITEKEY'),
+                        },
+                    })];
+                case 1:
+                    // Remove site so that the connection can be removed
+                    _a.sent();
+                    return [4 /*yield*/, apollo_1.apollo().mutate({
+                            mutation: clearDbConnection,
+                        })];
+                case 2:
+                    response = _a.sent();
+                    cy.log(JSON.stringify(response));
+                    expect(response.data.admin.search.clearDbConnection).to.equal('Successful');
+                    return [2 /*return*/];
+            }
+        });
+    }); }",
+              "time": 0,
+            },
+          ],
+          "time": 2,
+          "timestamp": "2021-11-01T03:29:29.827Z",
+        },
+      ],
+      "time": 25,
+    },
+  ],
+  "tests": 24,
+  "time": 25,
+}
+`;
+
+exports[`Test report ingestion Single JSON (mochawesome-merge) - With failure 1`] = `
+Object {
+  "failures": 0,
+  "reports": Array [
+    Object {
+      "failures": 0,
+      "name": "report.json",
+      "tests": 31,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "admin.configuration",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get flat properties from config",
+              "status": "PASS",
+              "steps": "readConfig({ configPid: 'org.jahia.test.config', flat: true }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.flatKeys).to.include.members(['object.listObjects[0].A']);
+    expect(response.data.admin.jahia.configuration.flatProperties
+        .filter(function (c) { return c.key === 'object.listObjects[0].A'; })
+        .map(function (c) { return c.value; })[0]).to.eq('A0');
+});",
+              "time": 380,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get properties from structured navigation",
+              "status": "PASS",
+              "steps": "readConfig({ configPid: 'org.jahia.test.config', value: 'value', object: 'object', objectValue: 'A' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.keys).to.include.members(['list', 'value', 'object']);
+    expect(response.data.admin.jahia.configuration.value).to.eq('test');
+    expect(response.data.admin.jahia.configuration.object.keys).to.contain('A');
+    expect(response.data.admin.jahia.configuration.object.value).to.eq('testA');
+});",
+              "time": 93,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get list of values",
+              "status": "PASS",
+              "steps": "readConfig({ configPid: 'org.jahia.test.config', object: 'object', objectList: 'list' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.object.list.values).to.include.members([
+        'testObjectList0',
+        'testObjectList1',
+    ]);
+});",
+              "time": 83,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get list of objects",
+              "status": "PASS",
+              "steps": "readConfig({
+    configPid: 'org.jahia.test.config',
+    object: 'object',
+    objectList: 'listObjects',
+    objectListValue: 'A',
+}).should(function (response) {
+    response.data.admin.jahia.configuration.object.list.objects.forEach(function (obj) {
+        expect(obj.keys).to.include.members(['A', 'B']);
+        expect(obj.value).to.be.oneOf(['A0', 'A1']);
+    });
+});",
+              "time": 84,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Updates a property",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    mutation: (0, graphql_tag_1.default)(templateObject_3 || (templateObject_3 = __makeTemplateObject([\\"\\\\n                mutation {\\\\n                    admin {\\\\n                        jahia {\\\\n                            configuration(pid: \\\\\\"org.jahia.test.config\\\\\\") {\\\\n                                updated: value(name: \\\\\\"value\\\\\\", value: \\\\\\"updatedValue\\\\\\")\\\\n                                new: value(name: \\\\\\"newValue\\\\\\", value: \\\\\\"newValue\\\\\\")\\\\n                            }\\\\n                        }\\\\n                    }\\\\n                }\\\\n            \\"], [\\"\\\\n                mutation {\\\\n                    admin {\\\\n                        jahia {\\\\n                            configuration(pid: \\\\\\"org.jahia.test.config\\\\\\") {\\\\n                                updated: value(name: \\\\\\"value\\\\\\", value: \\\\\\"updatedValue\\\\\\")\\\\n                                new: value(name: \\\\\\"newValue\\\\\\", value: \\\\\\"newValue\\\\\\")\\\\n                            }\\\\n                        }\\\\n                    }\\\\n                }\\\\n            \\"])))
+});
+readConfig({ configPid: 'org.jahia.test.config', value: 'value' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.value).to.eq('updatedValue');
+});
+readConfig({ configPid: 'org.jahia.test.config', value: 'newValue' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.value).to.eq('newValue');
+});",
+              "time": 339,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "creates a config",
+              "status": "PASS",
+              "steps": "editConfig({ configPid: 'org.jahia.test.config.new', valueKey: 'value', value: 'test-new-prop' });
+readConfig({ configPid: 'org.jahia.test.config.new', value: 'value' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.value).to.eq('test-new-prop');
+});",
+              "time": 185,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "creates factory configs",
+              "status": "PASS",
+              "steps": "editConfig({
+    configPid: 'org.jahia.test.config.new',
+    configIdentifier: 'conf1',
+    valueKey: 'value',
+    value: 'test-new-prop-1',
+});
+editConfig({
+    configPid: 'org.jahia.test.config.new',
+    configIdentifier: 'conf2',
+    valueKey: 'value',
+    value: 'test-new-prop-2',
+});
+readConfig({ configPid: 'org.jahia.test.config.new', configIdentifier: 'conf1', value: 'value' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.value).to.eq('test-new-prop-1');
+});
+readConfig({ configPid: 'org.jahia.test.config.new', configIdentifier: 'conf2', value: 'value' }).should(function (response) {
+    expect(response.data.admin.jahia.configuration.value).to.eq('test-new-prop-2');
+});",
+              "time": 393,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "creates object value",
+              "status": "PASS",
+              "steps": "editConfig({
+    configPid: 'org.jahia.test.config.new',
+    object: 'subObject',
+    objectValueKey: 'value',
+    objectValue: 'test-new-prop',
+});
+readConfig({
+    configPid: 'org.jahia.test.config.new',
+    flat: true,
+    object: 'subObject',
+    objectValue: 'value',
+}).should(function (response) {
+    expect(response.data.admin.jahia.configuration.flatKeys).to.include('subObject.value');
+    expect(response.data.admin.jahia.configuration.object.value).to.eq('test-new-prop');
+});",
+              "time": 233,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "creates list values",
+              "status": "PASS",
+              "steps": "editConfig({
+    configPid: 'org.jahia.test.config.new',
+    object: 'subObject',
+    objectList: 'list',
+    addListValue: 'val1',
+});
+editConfig({
+    configPid: 'org.jahia.test.config.new',
+    object: 'subObject',
+    objectList: 'list',
+    addListValue: 'val2',
+});
+readConfig({
+    configPid: 'org.jahia.test.config.new',
+    flat: true,
+    object: 'subObject',
+    objectList: 'list',
+}).should(function (response) {
+    expect(response.data.admin.jahia.configuration.flatKeys).to.include.members([
+        'subObject.list[0]',
+        'subObject.list[1]',
+    ]);
+    expect(response.data.admin.jahia.configuration.object.list.values).to.include.members(['val1', 'val2']);
+});",
+              "time": 320,
+            },
+          ],
+          "time": 2110,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "admin.datetime - Jahia Server time",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Jahia server current time (as root)",
+              "status": "PASS",
+              "steps": "cy.apollo({ queryFile: 'admin/datetime.graphql' }).should(function (response) {
+    cy.log(\\"Date on the server is: \\" + response.data.admin.datetime);
+    expect((0, date_fns_1.isValid)(new Date(response.data.admin.datetime))).to.be.true;
+});",
+              "time": 130,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Jahia server current time (as guest)",
+              "status": "PASS",
+              "steps": "cy.apolloClient({ username: 'guest', password: 'I-DO-NOT-EXIST' }).apollo({ queryFile: 'admin/datetime.graphql', errorPolicy: 'all' }).should(function (response) {
+    expect(response.errors).to.be.not.empty;
+});",
+              "time": 127,
+            },
+          ],
+          "time": 257,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Test admin user endpoint",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets a user",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/user.graphql',
+    variables: { username: 'irina', group: '' }
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.name).to.equal('irina');
+    expect(response.data.admin.userAdmin.user.username).to.equal('irina');
+    expect(response.data.admin.userAdmin.user.firstname).to.equal('Irina');
+    expect(response.data.admin.userAdmin.user.lastname).to.equal('Pasteur');
+    expect(response.data.admin.userAdmin.user.organization).not.to.be.undefined;
+    expect(response.data.admin.userAdmin.user.language).to.equal('en');
+    expect(response.data.admin.userAdmin.user.locked).to.equal(false);
+    expect(response.data.admin.userAdmin.user.email).not.to.be.undefined;
+});",
+              "time": 231,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets a non existing user",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/user.graphql',
+    variables: { username: 'noob', group: '' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user).to.be.null;
+});",
+              "time": 74,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets a user name",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/user.graphql',
+    variables: { username: 'bill', group: '' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.username).to.equal('bill');
+    expect(response.data.admin.userAdmin.user.displayName).to.equal('Bill Galileo');
+});",
+              "time": 94,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets a user name",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/user.graphql',
+    variables: { username: 'bill', group: 'site-administrators', site1: 'digitall', site2: 'systemsite' }
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.yes).to.equal(true);
+    expect(response.data.admin.userAdmin.user.no).to.equal(false);
+});",
+              "time": 248,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "tests membership list",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/userGroupMembershipBasic.graphql',
+    variables: { username: 'bill', site: 'digitall' }
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.groupMembership.pageInfo.totalCount).to.be.greaterThan(2);
+    expect(response.data.admin.userAdmin.user.groupMembership.nodes.map(function (n) { return n.name; })).to.contains('site-administrators');
+});",
+              "time": 100,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "tests membership list for a site",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/userGroupMembershipBasic.graphql',
+    variables: { username: 'bill', site: 'digitall' }
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.groupMembership.pageInfo.totalCount).to.equal(3);
+});",
+              "time": 80,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "tests membership list with filter",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/userGroupMembershipFilter.graphql',
+    variables: { username: 'bill', field: 'site.name', value: 'digitall' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.user.groupMembership.pageInfo.totalCount).to.equal(3);
+});",
+              "time": 94,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "tests members list",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/group.graphql',
+    variables: { groupName: 'site-administrators', site: 'digitall' },
+}).should(function (response) {
+    expect(response.data.admin.userGroup).to.exist;
+    expect(response.data.admin.userGroup.group.members.nodes.map(function (n) { return n.name; })).to.contains('bill');
+});",
+              "time": 76,
+            },
+          ],
+          "time": 997,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Test admin users endpont",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets all users without any filtering",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/usersNoFilter.graphql'
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(108);
+});",
+              "time": 2977,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets users based on the name",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/users.graphql',
+    variables: { limit: 5, offset: 0, field: 'username', value: 'jay' }
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(1);
+    expect(response.data.admin.userAdmin.users.nodes[0].username).to.equal('jay');
+    expect(response.data.admin.userAdmin.users.nodes[0].firstname).to.equal('Jay');
+    expect(response.data.admin.userAdmin.users.nodes[0].lastname).to.equal('Hawking');
+    expect(response.data.admin.userAdmin.users.nodes[0].organization).to.exist;
+    expect(response.data.admin.userAdmin.users.nodes[0].locked).to.exist;
+});",
+              "time": 219,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets users based on the site and limit them",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/users.graphql',
+    variables: { limit: 20, offset: 0, field: 'site.name', value: 'systemsite' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(20);
+});",
+              "time": 158,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets users based on the organization and limit them",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/users.graphql',
+    variables: { limit: 15, offset: 0, field: 'organization', value: 'Product Development' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(13);
+});",
+              "time": 144,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets users based on the site and offset them",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/users.graphql',
+    variables: { limit: 10, offset: 100, field: 'site.name', value: 'systemsite' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(8);
+});",
+              "time": 237,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "gets users based on the site with huge limit and no offset",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'admin/users.graphql',
+    variables: { limit: 1000, offset: 0, field: 'site.name', value: 'systemsite' },
+}).should(function (response) {
+    expect(response.data.admin.userAdmin).to.exist;
+    expect(response.data.admin.userAdmin.users.pageInfo.nodesCount).to.equal(108);
+});",
+              "time": 209,
+            },
+          ],
+          "time": 3944,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Test if every type in graphQL API has description",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Check every input for the User Type",
+              "status": "PASS",
+              "steps": "var types = new Set();
+var noDesc = new Set();
+var invalidNames = new Set();
+cy.apolloClient().then(function (client) { return executeTest(client, 'Query', types, noDesc, invalidNames); }).should(function () {
+    var noDescBlacklist = [
+        'type=JCRSite/field=findAvailableNodeName/arg=nodeType',
+        'type=JCRSite/field=findAvailableNodeName/arg=language',
+        'type=VanityUrl/field=findAvailableNodeName/arg=nodeType',
+        'type=VanityUrl/field=findAvailableNodeName/arg=language',
+        'type=GqlDashboard',
+        'type=GqlModule',
+        'type=GqlEditorForms',
+        'type=EditorForm',
+        'type=EditorFormSection',
+        'type=EditorFormFieldSet',
+        'type=EditorFormField',
+        'type=EditorFormFieldValue',
+        'type=EditorFormProperty',
+        'type=EditorFormFieldValueConstraint',
+        'type=InputContextEntryInput',
+        'inputType=InputContextEntryInput/field=key',
+        'inputType=InputContextEntryInput/field=value',
+        'type=Query/field=categoryById/arg=id',
+        'type=Metadata/field=uuid',
+        'type=Metadata/field=path',
+        'type=Category/field=uuid',
+        'type=Category/field=path',
+        'type=Query/field=categoryByPath/arg=path',
+    ];
+    noDescBlacklist.forEach(function (n) { return noDesc.delete(n); });
+    var invalidNameBlacklist = ['wipInfo'];
+    invalidNameBlacklist.forEach(function (n) { return invalidNames.delete(n); });
+    expect(JSON.stringify(Array.from(noDesc))).to.equals('[]');
+    expect(JSON.stringify(Array.from(invalidNames))).to.equals('[]');
+});",
+              "time": 5960,
+            },
+          ],
+          "time": 5960,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Validate ability get current User",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for Authenticated user (irina)",
+              "status": "PASS",
+              "steps": "cy.apolloClient({ username: 'irina', password: 'password' }).apollo({ queryFile: 'currentUser.graphql' }).should(function (response) {
+    expect(response.data.currentUser.name).to.equal('irina');
+    expect(response.data.currentUser.username).to.equal('irina');
+    expect(response.data.currentUser.firstname).to.equal('Irina');
+    expect(response.data.currentUser.lastname).to.equal('Pasteur');
+    expect(response.data.currentUser.organization).to.equal('Acme Space');
+    expect(response.data.currentUser.language).to.equal('en');
+    expect(response.data.currentUser.locked).to.equal(false);
+    expect(response.data.currentUser.email).to.be.empty;
+});",
+              "time": 150,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for Authenticated user (root)",
+              "status": "PASS",
+              "steps": "cy.apollo({ queryFile: 'currentUser.graphql' }).should(function (response) {
+    expect(response.data.currentUser.name).to.equal('root');
+});",
+              "time": 58,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for Authenticated user (root) with an incorrect password",
+              "status": "PASS",
+              "steps": "cy.apolloClient({ username: 'root', password: 'THIS-IS-INCORRECT' }).apollo({ queryFile: 'currentUser.graphql', errorPolicy: 'all' }).should(function (response) {
+    expect(response.data.currentUser).to.be.null;
+});",
+              "time": 68,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for Authenticated user (root) with an incorrect user",
+              "status": "PASS",
+              "steps": "cy.apolloClient({ username: 'I-DO-NOT-EXIST', password: 'THIS-IS-INCORRECT' }).apollo({ queryFile: 'currentUser.graphql', errorPolicy: 'all' }).should(function (response) {
+    expect(response.data.currentUser).to.be.null;
+});",
+              "time": 55,
+            },
+          ],
+          "time": 331,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Test page properties",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get a page by path and verify isHomePage has a boolean value",
+              "status": "PASS",
+              "steps": "cy.apollo({
+    queryFile: 'jcr/pageByPath.graphql',
+    variables: { path: '/sites/systemsite/home/testPage' }
+}).should(function (response) {
+    expect(response.data.jcr.nodeByPath).to.exist;
+    expect(response.data.jcr.nodeByPath.name).to.equal('testPage');
+    expect(response.data.jcr.nodeByPath.isHomePage.booleanValue).to.equal(false);
+});",
+              "time": 483,
+            },
+          ],
+          "time": 483,
+          "timestamp": "",
+        },
+      ],
+      "time": 14,
+      "timestamp": "2021-10-29T17:28:00.882Z",
+    },
+  ],
+  "tests": 31,
+  "time": 14,
+}
+`;
+
+exports[`Test report ingestion Single JSON (mochawesome-merge) - Without failure 1`] = `
+Object {
+  "failures": 1,
+  "reports": Array [
+    Object {
+      "failures": 1,
+      "name": "report.json",
+      "tests": 16,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "Validate password change",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Change password to passABC123",
+              "status": "PASS",
+              "steps": "cy.log(\\"Starting test : This test will be changing the password to: \\" + karafPassword);
+// Check initialy jCustomer is online
+cy.log(\\"Nothing was changed, jcustomer should be online using default user (\\" + Cypress.env('JCUSTOMER_USERNAME') + \\" : \\" + Cypress.env('JCUSTOMER_PASSWORD') + \\")\\");
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Online');
+// check non existing user/password returns error 401
+cy.log('Since the new password has not been set, using it should return 401');
+checkJCustomerAccessibleFromAPI(karafUsername, karafPassword, 401);
+// API call to create a new karaf user
+cy.log(\\"Use Karaf SSH API to create the new user (\\" + karafUsername + \\" : \\" + karafPassword + \\")\\");
+createKarafAdmin(karafUsername, karafPassword);
+// check new user/password allow to access jcustomer api
+cy.log(\\"Verifies the new user (\\" + karafUsername + \\" : \\" + karafPassword + \\") can be used with the API\\");
+checkJCustomerAccessibleFromAPI(karafUsername, karafPassword, 200);
+// Edit jExperience configuration in Jahia set the new user but keep old password
+cy.log(\\"Update jExperience configuration to use the new user (\\" + karafUsername + \\") but keep the old password\\");
+updateJExperienceConfUsernamePassword(karafUsername);
+waitForJExperienceConfUsernamePasswordUpdated(karafUsername, Cypress.env('JCUSTOMER_PASSWORD'));
+// Check jExperience is offline
+cy.log('jCustomer connection should error out since the password has not been updated');
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Error');
+// Edit jExperience configuration in Jahia set the new password
+cy.log(\\"Update jExperience configuration to use the new password (\\" + karafPassword + \\")\\");
+updateJExperienceConfUsernamePassword(undefined, karafPassword);
+waitForJExperienceConfUsernamePasswordUpdated(karafUsername, karafPassword);
+cy.log('The connection is using new credentials, it should report Online');
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Online');",
+              "time": 13139,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Change password to pass!()+*-#$@_\`.:=/^?~w",
+              "status": "PASS",
+              "steps": "cy.log(\\"Starting test : This test will be changing the password to: \\" + karafPassword);
+// Check initialy jCustomer is online
+cy.log(\\"Nothing was changed, jcustomer should be online using default user (\\" + Cypress.env('JCUSTOMER_USERNAME') + \\" : \\" + Cypress.env('JCUSTOMER_PASSWORD') + \\")\\");
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Online');
+// check non existing user/password returns error 401
+cy.log('Since the new password has not been set, using it should return 401');
+checkJCustomerAccessibleFromAPI(karafUsername, karafPassword, 401);
+// API call to create a new karaf user
+cy.log(\\"Use Karaf SSH API to create the new user (\\" + karafUsername + \\" : \\" + karafPassword + \\")\\");
+createKarafAdmin(karafUsername, karafPassword);
+// check new user/password allow to access jcustomer api
+cy.log(\\"Verifies the new user (\\" + karafUsername + \\" : \\" + karafPassword + \\") can be used with the API\\");
+checkJCustomerAccessibleFromAPI(karafUsername, karafPassword, 200);
+// Edit jExperience configuration in Jahia set the new user but keep old password
+cy.log(\\"Update jExperience configuration to use the new user (\\" + karafUsername + \\") but keep the old password\\");
+updateJExperienceConfUsernamePassword(karafUsername);
+waitForJExperienceConfUsernamePasswordUpdated(karafUsername, Cypress.env('JCUSTOMER_PASSWORD'));
+// Check jExperience is offline
+cy.log('jCustomer connection should error out since the password has not been updated');
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Error');
+// Edit jExperience configuration in Jahia set the new password
+cy.log(\\"Update jExperience configuration to use the new password (\\" + karafPassword + \\")\\");
+updateJExperienceConfUsernamePassword(undefined, karafPassword);
+waitForJExperienceConfUsernamePasswordUpdated(karafUsername, karafPassword);
+cy.log('The connection is using new credentials, it should report Online');
+settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Online');",
+              "time": 3871,
+            },
+          ],
+          "time": 17010,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "DEMO - Validate ability get current User",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for known user (mathias) - Recommended method",
+              "status": "PASS",
+              "steps": "cy.log('Get Current user for known user (mathias) - Recommended method');
+cy.apolloQuery((0, apollo_1.apollo)(Cypress.config().baseUrl, { username: 'mathias', password: 'password' }), {
+    query: GQL_APIUSER,
+}).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.data.currentUser.name).to.equal('mathias');
+});",
+              "time": 225,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for known user (root) - Recommended method",
+              "status": "PASS",
+              "steps": "cy.log('Get Current user for known user (root) - Recommended method');
+cy.apolloQuery((0, apollo_1.apollo)(Cypress.config().baseUrl, { username: 'root', password: Cypress.env('SUPER_USER_PASSWORD') }), {
+    query: GQL_APIUSER,
+}).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.data.currentUser.name).to.equal('root');
+});",
+              "time": 51,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for known user (root) with incorrect password - Recommended method",
+              "status": "PASS",
+              "steps": "cy.log('Get Current user for known user (root) with incorrect password - Recommended method');
+cy.apolloQuery((0, apollo_1.apollo)(Cypress.config().baseUrl, { username: 'root', password: 'THIS-IS-AN-INCORRECT-PASSWORD' }), {
+    query: GQL_APIUSER,
+}).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.data.currentUser).to.equal(null);
+    expect(response.errors[0].message).to.equal('Permission denied');
+});",
+              "time": 66,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Get Current user for unknown user - Recommended method",
+              "status": "PASS",
+              "steps": "cy.log('Get Current user for unknown user - Recommended method');
+cy.apolloQuery((0, apollo_1.apollo)(Cypress.config().baseUrl, { username: 'I-DO-NOT-EXIST', password: 'THIS-IS-AN-INCORRECT-PASSWORD' }), {
+    query: GQL_APIUSER,
+}).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.data.currentUser).to.equal(null);
+    expect(response.errors[0].message).to.equal('Permission denied');
+});",
+              "time": 44,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Guest user cannot use the API with default configuration - Recommended method",
+              "status": "PASS",
+              "steps": "cy.log('Guest user cannot use the API with default configuration - Recommended method');
+cy.apolloQuery((0, apollo_1.apollo)(Cypress.config().baseUrl, {}), {
+    query: GQL_APIUSER,
+}).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.data.currentUser).to.equal(null);
+    expect(response.errors[0].message).to.equal('Permission denied');
+});",
+              "time": 35,
+            },
+          ],
+          "time": 421,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "Validate jExperience Healthcheck module",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Verifies the probe does not show up when filtered on high severity",
+              "status": "PASS",
+              "steps": "cy.apiRequest('GET', '/modules/healthcheck?severity=high', null, authorization).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg']).to.be.undefined;
+});",
+              "time": 102,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Verifies the probe does not show up when filtered on default severity",
+              "status": "PASS",
+              "steps": "cy.apiRequest('GET', '/modules/healthcheck', null, authorization).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg']).to.be.undefined;
+});",
+              "time": 48,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Verifies the probe shows up when filtered on low severity",
+              "status": "PASS",
+              "steps": "cy.apiRequest('GET', '/modules/healthcheck?severity=low', null, authorization).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg']).not.to.be.undefined;
+    var jexpProbe = response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg'];
+    expect(jexpProbe.severity).to.equal('LOW');
+    expect(jexpProbe.status).to.equal('GREEN');
+});",
+              "time": 53,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "Verifies jCustomer is online",
+              "status": "PASS",
+              "steps": "cy.apiRequest('GET', '/modules/healthcheck?severity=low', null, authorization).should(function (response) {
+    cy.log(JSON.stringify(response));
+    expect(response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg']).not.to.be.undefined;
+    var jexpProbe = response.probes['JExperience_org.jahia.modules.jexperience.settings-global.cfg'];
+    expect(jexpProbe.data.connectionInfo.status).to.equal('ONLINE');
+});",
+              "time": 17,
+            },
+          ],
+          "time": 220,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "jexperience",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "validate jcustomer is configured",
+              "status": "PASS",
+              "steps": "settings_connection_jcustomer_page_1.settingsConnectionJcustomer.goTo().verifyJcustomerStatus('Online');",
+              "time": 911,
+            },
+          ],
+          "time": 911,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "basic personalization test",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "validate basic personalization SSR",
+              "status": "PASS",
+              "steps": "testSite_test_page_1.testSitePage.goTo(testPagePath).verifySimpleTextDisplayed('botDetection-SSR-variant1');
+testSite_test_page_1.testSitePage.goTo(testPagePath).verifySimpleTextNotExist('botDetection-SSR-fallback');",
+              "time": 10591,
+            },
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "validate basic personalization JSR",
+              "status": "PASS",
+              "steps": "testSite_test_page_1.testSitePage.goTo(testPagePath).verifySimpleTextDisplayed('botDetection-JSR-variant1');
+testSite_test_page_1.testSitePage.goTo(testPagePath).verifySimpleTextNotDisplayed('botDetection-JSR-fallback');",
+              "time": 645,
+            },
+          ],
+          "time": 11236,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 1,
+          "name": "profile export in csv",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "CypressError: \`cy.task('listFiles')\` failed with the following error:
+
+> ENOENT: no such file or directory, scandir 'downloads/'
+
+https://on.cypress.io/api/task
+    at http://jahia:8080/__cypress/runner/cypress_runner.js:158898:78
+    at tryCatcher (http://jahia:8080/__cypress/runner/cypress_runner.js:13212:23)
+    at Promise._settlePromiseFromHandler (http://jahia:8080/__cypress/runner/cypress_runner.js:11147:31)
+    at Promise._settlePromise (http://jahia:8080/__cypress/runner/cypress_runner.js:11204:18)
+    at Promise._settlePromise0 (http://jahia:8080/__cypress/runner/cypress_runner.js:11249:10)
+    at Promise._settlePromises (http://jahia:8080/__cypress/runner/cypress_runner.js:11325:18)
+    at _drainQueueStep (http://jahia:8080/__cypress/runner/cypress_runner.js:7919:12)
+    at _drainQueue (http://jahia:8080/__cypress/runner/cypress_runner.js:7912:9)
+    at Async.../../node_modules/bluebird/js/release/async.js.Async._drainQueues (http://jahia:8080/__cypress/runner/cypress_runner.js:7928:5)
+    at Async.drainQueues (http://jahia:8080/__cypress/runner/cypress_runner.js:7798:14)
+From Your Spec Code:
+    at eval (http://jahia:8080/__cypress/tests?p=cypress/integration/ui/profileCsvExport.spec.ts:1327:23)
+    at resolveValue (http://jahia:8080/__cypress/tests?p=cypress/integration/ui/profileCsvExport.spec.ts:770:20)
+    at Context.waitUntil (http://jahia:8080/__cypress/tests?p=cypress/integration/ui/profileCsvExport.spec.ts:780:10)
+
+From Node.js Internals:
+  Error: ENOENT: no such file or directory, scandir 'downloads/'
+      at Object.readdirSync (fs.js:1021:3)
+      at Object.e.readdirSync (electron/js2c/asar_bundle.js:5:10478)
+      at listFiles (/home/jahians/cypress/plugins/index.js:42:23)
+      at invoke (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/child/task.js:47:14)
+      at /home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/util.js:45:14
+      at tryCatcher (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/util.js:16:23)
+      at Function.Promise.attempt.Promise.try (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/method.js:39:29)
+      at Object.wrapChildPromise (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/util.js:44:23)
+      at Object.wrap (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/child/task.js:53:8)
+      at execute (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/child/run_plugins.js:127:19)
+      at EventEmitter.<anonymous> (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/child/run_plugins.js:202:5)
+      at EventEmitter.emit (events.js:315:20)
+      at process.<anonymous> (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/lib/plugins/util.js:19:22)
+      at process.emit (events.js:315:20)
+      at process.emit (/home/jahians/.cache/Cypress/8.5.0/Cypress/resources/app/packages/server/node_modules/source-map-support/source-map-support.js:495:21)
+      at emit (internal/child_process.js:903:12)
+      at processTicksAndRejections (internal/process/task_queues.js:81:21)",
+                },
+              ],
+              "name": "export a set of profiles in csv",
+              "status": "FAIL",
+              "steps": "cy.login();
+var profileExportListPage = profiles_export_list_page_1.ProfileExportListPage.visit();
+var profileExportCreatePage = profileExportListPage.startNewProfileExport();
+profileExportCreatePage.setName('test-CSV-profile-exports');
+profileExportCreatePage.setSegment(segmentid);
+profileExportCreatePage.setMapping(['email', 'firstName', 'lastName', 'age', 'firstVisit', 'lastVisit']);
+profileExportCreatePage.saveAndExport();
+// Validate export
+var downloadFolder = 'downloads/';
+var lastDownloadedFile = '';
+cy.log('init lastDownloadedFile =' + lastDownloadedFile);
+// Wait for export file to be downloaded
+cy.waitUntil(function () {
+    return cy.task('listFiles', { downloadFolder: downloadFolder }).then(function (list) {
+        for (var _i = 0, _a = list; _i < _a.length; _i++) {
+            var fileName = _a[_i];
+            if (fileName.startsWith('Profiles_export')) {
+                return true;
+            }
+        }
+        return false;
+    });
+});
+cy.task('listFiles', { downloadFolder: downloadFolder }).then(function (list) {
+    // Find the latest \\"profile_export\\" file downloaded. File format is : 'Profiles_export_2021-10-27-13-26.csv'
+    for (var _i = 0, _a = list; _i < _a.length; _i++) {
+        var fileName = _a[_i];
+        if (fileName.startsWith('Profiles_export') && fileName > lastDownloadedFile) {
+            lastDownloadedFile = fileName;
+        }
+    }
+    // Validate latest profile_export file contains the expected data
+    cy.readFile(downloadFolder + lastDownloadedFile).then(function (file) {
+        expect(file).to.contain('Martin,Ravel,38');
+        expect(file).to.contain('CsvExportTest,CsvExportTest,30');
+        expect(file).not.to.contain('Claudia,Haydn,27');
+        expect(file).not.to.contain('Antoine,Vivaldi,41');
+    });
+});",
+              "time": 8521,
+            },
+          ],
+          "time": 8521,
+          "timestamp": "",
+        },
+        Object {
+          "failures": 0,
+          "name": "profile import from csv",
+          "skipped": 0,
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": undefined,
+                },
+              ],
+              "name": "import a set of profiles from csv",
+              "status": "PASS",
+              "steps": "cy.login();
+var profileImportListPage = profiles_import_list_page_1.ProfileImportListPage.visit();
+var profileImportCreatePage = profileImportListPage.startNewProfileImport();
+// Configure the import
+profileImportCreatePage.setName('test-CSV-profile-imports');
+var filePath = 'testData/profile_import.csv';
+profileImportCreatePage.selectFile(filePath);
+profileImportCreatePage.setMergingProperty('email');
+profileImportCreatePage.setMapping([
+    'email',
+    'firstName',
+    'lastName',
+    'age',
+    'city',
+    'company',
+    'firstVisit',
+    'lastVisit',
+]);
+// Perform the import
+profileImportCreatePage.saveAndImport();
+profileImportListPage.waitForPageDisplayed(120000);
+(0, profileListHelpers_1.waitForProfile)('CsvImportCompleted', 120000);
+// Get list of profiles, check they are imported
+cy.request(profileListHelpers_1.requestProfileList).then(function (resp) {
+    var founduser1 = false;
+    var founduser2 = false;
+    var founduser3 = false;
+    for (var i = 0; i < resp.body.list.length; i++) {
+        if (resp.body.list[i].properties.lastName == 'Pasteur' &&
+            resp.body.list[i].properties.firstName == 'Annie') {
+            founduser1 = true;
+            expect(resp.body.list[i].properties.age).to.equal(37);
+            expect(resp.body.list[i].properties.city).to.equal('');
+            expect(resp.body.list[i].properties.company).to.equal('Acme Space');
+            expect(resp.body.list[i].properties.firstVisit).to.equal('2021-06-08T09:49:20Z');
+            expect(resp.body.list[i].properties.lastVisit).to.equal('2021-10-07T09:49:20Z');
+        }
+        if (resp.body.list[i].properties.lastName == 'Hawking' &&
+            resp.body.list[i].properties.firstName == 'Irina') {
+            founduser2 = true;
+            expect(resp.body.list[i].properties.age).to.equal(58);
+            expect(resp.body.list[i].properties.city).to.equal('Paris');
+            expect(resp.body.list[i].properties.company).to.equal('');
+            expect(resp.body.list[i].properties.firstVisit).to.equal('2021-07-11T09:49:20Z');
+            expect(resp.body.list[i].properties.lastVisit).to.equal('2021-08-17T09:49:20Z');
+        }
+        if (resp.body.list[i].properties.lastName == 'Curie' &&
+            resp.body.list[i].properties.firstName == 'Stephane') {
+            founduser3 = true;
+            expect(resp.body.list[i].properties.age).to.equal(31);
+            expect(resp.body.list[i].properties.city).to.equal('Toronto');
+            expect(resp.body.list[i].properties.company).to.equal('Jahia');
+            expect(resp.body.list[i].properties.firstVisit).to.equal('2019-10-07T09:49:20Z');
+            expect(resp.body.list[i].properties.lastVisit).to.equal('2021-10-03T09:49:20Z');
+        }
+    }
+    expect(founduser1).to.equal(true);
+    expect(founduser2).to.equal(true);
+    expect(founduser3).to.equal(true);
+});",
+              "time": 54589,
+            },
+          ],
+          "time": 54589,
+          "timestamp": "",
+        },
+      ],
+      "time": 93,
+      "timestamp": "2021-10-29T13:18:13.161Z",
+    },
+  ],
+  "tests": 16,
+  "time": 93,
+}
+`;

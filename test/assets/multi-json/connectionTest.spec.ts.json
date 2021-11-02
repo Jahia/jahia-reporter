@@ -1,0 +1,292 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 0,
+    "pending": 0,
+    "failures": 2,
+    "start": "2021-11-01T03:29:45.215Z",
+    "end": "2021-11-01T03:29:53.023Z",
+    "duration": 7808
+  },
+  "tests": [
+    {
+      "suite": "Admin - UI operations on Augmented Search DB connection",
+      "title": "Access the page and validate \"ADD CONNECTION\" button (no connection present)",
+      "fullTitle": "Admin - UI operations on Augmented Search DB connection Access the page and validate \"ADD CONNECTION\" button (no connection present)",
+      "file": "cypress/integration/admin/connectionTest.spec.ts",
+      "body": "function () {\n        as_admin_page_1.asAdminPage.goTo();\n        expect(as_admin_page_1.asAdminPage.getByText('button', 'ADD CONNECTION')).not.to.be.undefined;\n    }",
+      "duration": 5738,
+      "currentRetry": 0,
+      "err": {
+        "message": "The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+        "name": "TypeError",
+        "stack": "TypeError: The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34",
+        "sourceMappedStack": "TypeError: The following error originated from your application code, not from Cypress.\n\n    > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)",
+        "parsedStack": [
+          {
+            "message": "TypeError: The following error originated from your application code, not from Cypress.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "  > Cannot read property 'size' of undefined",
+            "whitespace": "  "
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "When Cypress detects uncaught errors originating from your application it will automatically fail the current test.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.",
+            "whitespace": ""
+          },
+          {
+            "function": "Jp",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 292727,
+            "whitespace": "    "
+          },
+          {
+            "function": "Module.Xu",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 335006,
+            "whitespace": "    "
+          },
+          {
+            "function": "<unknown>",
+            "fileUrl": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "originalFile": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "line": 5,
+            "column": 35,
+            "whitespace": "    "
+          }
+        ]
+      }
+    },
+    {
+      "suite": "Admin - UI operations on Augmented Search DB connection",
+      "title": "Access the page and slect the connection and cancel",
+      "fullTitle": "Admin - UI operations on Augmented Search DB connection Access the page and slect the connection and cancel",
+      "file": "cypress/integration/admin/connectionTest.spec.ts",
+      "body": "function () {\n        as_admin_page_1.asAdminPage.goTo();\n        as_admin_page_1.asAdminPage.clickAddConnection();\n    }",
+      "duration": 1493,
+      "currentRetry": 0,
+      "err": {
+        "message": "The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+        "name": "TypeError",
+        "stack": "TypeError: The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34",
+        "sourceMappedStack": "TypeError: The following error originated from your application code, not from Cypress.\n\n    > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)",
+        "parsedStack": [
+          {
+            "message": "TypeError: The following error originated from your application code, not from Cypress.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "  > Cannot read property 'size' of undefined",
+            "whitespace": "  "
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "When Cypress detects uncaught errors originating from your application it will automatically fail the current test.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.",
+            "whitespace": ""
+          },
+          {
+            "function": "Jp",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 292727,
+            "whitespace": "    "
+          },
+          {
+            "function": "Module.Xu",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 335006,
+            "whitespace": "    "
+          },
+          {
+            "function": "<unknown>",
+            "fileUrl": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "originalFile": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "line": 5,
+            "column": 35,
+            "whitespace": "    "
+          }
+        ]
+      }
+    }
+  ],
+  "pending": [],
+  "failures": [
+    {
+      "suite": "Admin - UI operations on Augmented Search DB connection",
+      "title": "Access the page and validate \"ADD CONNECTION\" button (no connection present)",
+      "fullTitle": "Admin - UI operations on Augmented Search DB connection Access the page and validate \"ADD CONNECTION\" button (no connection present)",
+      "file": "cypress/integration/admin/connectionTest.spec.ts",
+      "body": "function () {\n        as_admin_page_1.asAdminPage.goTo();\n        expect(as_admin_page_1.asAdminPage.getByText('button', 'ADD CONNECTION')).not.to.be.undefined;\n    }",
+      "currentRetry": 0,
+      "err": {
+        "message": "The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+        "name": "TypeError",
+        "stack": "TypeError: The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34",
+        "sourceMappedStack": "TypeError: The following error originated from your application code, not from Cypress.\n\n    > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)",
+        "parsedStack": [
+          {
+            "message": "TypeError: The following error originated from your application code, not from Cypress.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "  > Cannot read property 'size' of undefined",
+            "whitespace": "  "
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "When Cypress detects uncaught errors originating from your application it will automatically fail the current test.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.",
+            "whitespace": ""
+          },
+          {
+            "function": "Jp",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 292727,
+            "whitespace": "    "
+          },
+          {
+            "function": "Module.Xu",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 335006,
+            "whitespace": "    "
+          },
+          {
+            "function": "<unknown>",
+            "fileUrl": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "originalFile": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "line": 5,
+            "column": 35,
+            "whitespace": "    "
+          }
+        ]
+      }
+    },
+    {
+      "suite": "Admin - UI operations on Augmented Search DB connection",
+      "title": "Access the page and slect the connection and cancel",
+      "fullTitle": "Admin - UI operations on Augmented Search DB connection Access the page and slect the connection and cancel",
+      "file": "cypress/integration/admin/connectionTest.spec.ts",
+      "body": "function () {\n        as_admin_page_1.asAdminPage.goTo();\n        as_admin_page_1.asAdminPage.clickAddConnection();\n    }",
+      "currentRetry": 0,
+      "err": {
+        "message": "The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+        "name": "TypeError",
+        "stack": "TypeError: The following error originated from your application code, not from Cypress.\n\n  > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292726)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335005)\n    at http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:34",
+        "sourceMappedStack": "TypeError: The following error originated from your application code, not from Cypress.\n\n    > Cannot read property 'size' of undefined\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n    at Jp (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:292727)\n    at Module.Xu (http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js:1:335006)\n    at <unknown> (http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js:5:35)",
+        "parsedStack": [
+          {
+            "message": "TypeError: The following error originated from your application code, not from Cypress.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "  > Cannot read property 'size' of undefined",
+            "whitespace": "  "
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "When Cypress detects uncaught errors originating from your application it will automatically fail the current test.",
+            "whitespace": ""
+          },
+          {
+            "message": "",
+            "whitespace": ""
+          },
+          {
+            "message": "This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.",
+            "whitespace": ""
+          },
+          {
+            "function": "Jp",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 292727,
+            "whitespace": "    "
+          },
+          {
+            "function": "Module.Xu",
+            "fileUrl": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "originalFile": "http://jahia:8080/modules/jcontent/javascript/apps/5454.jcontent.06213e.js",
+            "line": 1,
+            "column": 335006,
+            "whitespace": "    "
+          },
+          {
+            "function": "<unknown>",
+            "fileUrl": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "originalFile": "http://jahia:8080/modules/site-settings-publication/javascript/apps/sitesettingspublication.js",
+            "line": 5,
+            "column": 35,
+            "whitespace": "    "
+          }
+        ]
+      }
+    }
+  ],
+  "passes": []
+}

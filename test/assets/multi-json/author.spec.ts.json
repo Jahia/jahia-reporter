@@ -1,0 +1,98 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2021-11-01T03:30:57.894Z",
+    "end": "2021-11-01T03:30:58.542Z",
+    "duration": 648
+  },
+  "tests": [
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - root",
+      "fullTitle": "Filters - Filtering by author Filter by author - root",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_1, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: searchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKeys: [Cypress.env('AS_SITEKEY1')],\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filters: {\n                                author: 'root',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.search.results.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_1 = hits; _i < hits_1.length; _i++) {\n                        h = hits_1[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['root', 'system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 298,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - root - (DEPRECATED jcr node)",
+      "fullTitle": "Filters - Filtering by author Filter by author - root - (DEPRECATED jcr node)",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_2, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: deprecatedSearchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKey: Cypress.env('AS_SITEKEY1'),\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filter: {\n                                author: 'root',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.jcr.searches.search.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_2 = hits; _i < hits_2.length; _i++) {\n                        h = hits_2[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['root', 'system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 113,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - system",
+      "fullTitle": "Filters - Filtering by author Filter by author - system",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_3, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: searchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKeys: [Cypress.env('AS_SITEKEY1')],\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filters: {\n                                author: 'system',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.search.results.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_3 = hits; _i < hits_3.length; _i++) {\n                        h = hits_3[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 74,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - system - (DEPRECATED jcr node)",
+      "fullTitle": "Filters - Filtering by author Filter by author - system - (DEPRECATED jcr node)",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_4, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: deprecatedSearchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKey: Cypress.env('AS_SITEKEY1'),\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filter: {\n                                author: 'system',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.jcr.searches.search.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_4 = hits; _i < hits_4.length; _i++) {\n                        h = hits_4[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 81,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ],
+  "pending": [],
+  "failures": [],
+  "passes": [
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - root",
+      "fullTitle": "Filters - Filtering by author Filter by author - root",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_1, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: searchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKeys: [Cypress.env('AS_SITEKEY1')],\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filters: {\n                                author: 'root',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.search.results.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_1 = hits; _i < hits_1.length; _i++) {\n                        h = hits_1[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['root', 'system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 298,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - root - (DEPRECATED jcr node)",
+      "fullTitle": "Filters - Filtering by author Filter by author - root - (DEPRECATED jcr node)",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_2, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: deprecatedSearchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKey: Cypress.env('AS_SITEKEY1'),\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filter: {\n                                author: 'root',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.jcr.searches.search.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_2 = hits; _i < hits_2.length; _i++) {\n                        h = hits_2[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['root', 'system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 113,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - system",
+      "fullTitle": "Filters - Filtering by author Filter by author - system",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_3, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: searchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKeys: [Cypress.env('AS_SITEKEY1')],\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filters: {\n                                author: 'system',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.search.results.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_3 = hits; _i < hits_3.length; _i++) {\n                        h = hits_3[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 74,
+      "currentRetry": 0,
+      "err": {}
+    },
+    {
+      "suite": "Filters - Filtering by author",
+      "title": "Filter by author - system - (DEPRECATED jcr node)",
+      "fullTitle": "Filters - Filtering by author Filter by author - system - (DEPRECATED jcr node)",
+      "file": "cypress/integration/filters/author.spec.ts",
+      "body": "function () { return __awaiter(void 0, void 0, void 0, function () {\n        var response, hits, _i, hits_4, h;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, apollo_1.apollo().query({\n                        query: deprecatedSearchResults,\n                        variables: {\n                            q: 'demo',\n                            siteKey: Cypress.env('AS_SITEKEY1'),\n                            workspace: 'LIVE',\n                            searchIn: ['CONTENT'],\n                            language: 'en',\n                            filter: {\n                                author: 'system',\n                            },\n                        },\n                    })];\n                case 1:\n                    response = _a.sent();\n                    hits = response.data.jcr.searches.search.hits;\n                    cy.log(JSON.stringify(hits.map(function (h) {\n                        return { displayableName: h.displayableName, createdBy: h.createdBy };\n                    })));\n                    for (_i = 0, hits_4 = hits; _i < hits_4.length; _i++) {\n                        h = hits_4[_i];\n                        expect(h.path).to.contain(\"/sites/\" + Cypress.env('AS_SITEKEY1') + \"/\");\n                        expect(['system']).to.include(h.createdBy);\n                    }\n                    return [2 /*return*/];\n            }\n        });\n    }); }",
+      "duration": 81,
+      "currentRetry": 0,
+      "err": {}
+    }
+  ]
+}
