@@ -2,6 +2,7 @@
 import {Command, flags} from '@oclif/command'
 import {api} from '@pagerduty/pdjs'
 import * as md5 from 'md5'
+import {GoogleSpreadsheet} from 'google-spreadsheet'
 
 import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
@@ -25,10 +26,23 @@ class JahiaPagerDutyIncident extends Command {
     }),
     service: flags.string({
       description: 'Name of the service that triggered this incident (ex: graphql-dxm-provider)',
-      default: 'Jahia module',
+      required: true,
     }),
     sourceUrl: flags.string({
       description: 'URL back to the service who initiated the incident',
+      default: '',
+    }),
+    // Setup Google Auth: https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
+    googleSpreadsheetId: flags.string({
+      description: 'ID of the spreadsheet container user assignment for the service',
+      default: '',
+    }),
+    googleClientEmail: flags.string({
+      description: 'Google Client email required to access the spreadsheet',
+      default: '',
+    }),
+    googleApiKey: flags.string({
+      description: 'Google Client API key required to access the spreadsheet (base64)',
       default: '',
     }),
     pdApiKey: flags.string({
@@ -39,7 +53,6 @@ class JahiaPagerDutyIncident extends Command {
       description: 'Pagerduty email of the user who created the incident',
       required: true,
     }),
-
     pdEventLinkText: flags.string({
       description: 'Name of the link to obtain more details about the run',
       default: '',
@@ -50,11 +63,11 @@ class JahiaPagerDutyIncident extends Command {
     }),
     pdUserId: flags.string({
       description: 'User ID to assign the incident to (format: P2LGAVW)',
-      required: true,
+      default: '',
     }),
     pdServiceId: flags.string({
       description: 'Service ID to attach the incident to (format: PF5J3UC)',
-      required: true,
+      default: '',
     }),
     dryRun: flags.boolean({
       description: 'Do not send the data but only print it to console',
@@ -98,12 +111,39 @@ class JahiaPagerDutyIncident extends Command {
       })
     })
 
+    // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
+    const assignees: string[] = flags.pdUserId.split(',').filter((a: string) => a.length > 4)
+    let pagerDutyServiceId = flags.pdServiceId
+    if (flags.googleSpreadsheetId !== '') {
+      this.log(`Fetching data from Google Spreasheet ${flags.googleSpreadsheetId}`)
+      const doc = new GoogleSpreadsheet(flags.googleSpreadsheetId)
+      await doc.useServiceAccountAuth({
+        client_email: flags.googleClientEmail,
+        private_key: Buffer.from(flags.googleApiKey, 'base64').toString(),
+      })
+      await doc.loadInfo()
+      const sheet = doc.sheetsByIndex[0]
+      const rows = await sheet.getRows()
+      for (const row of rows) {
+        if (row['Test Service'] === flags.service) {
+          if (row['PagerDuty Service ID'] !== undefined && row['PagerDuty Service ID'].length > 4) {
+            pagerDutyServiceId = row['PagerDuty Service ID']
+          }
+          if (row['PagerDuty User ID'] !== undefined) {
+            for (const assignee of row['PagerDuty User ID'].split(',').filter((a: string) => a.length > 4)) {
+              assignees.push(assignee)
+            }
+          }
+        }
+      }
+    }
+
     const pdPayload = {
       incident: {
         type: 'incident',
         title: `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`,
         service: {
-          id: flags.pdServiceId,
+          id: pagerDutyServiceId,
           type: 'service_reference',
         },
         body: {
@@ -111,19 +151,19 @@ class JahiaPagerDutyIncident extends Command {
           details: bodyDetails,
         },
         status: 'triggered',
-        assignments: [
-          {
+        assignments: assignees.map(assignee => {
+          return {
             assignee: {
-              id: flags.pdUserId,
+              id: assignee,
               type: 'user_reference',
             },
-          },
-        ],
+          }
+        }),
       },
     }
 
     // eslint-disable-next-line no-console
-    console.log(pdPayload)
+    console.log(JSON.stringify(pdPayload))
 
     if (flags.dryRun === false) {
       const pd = api({token: flags.pdApiKey, ...{
@@ -136,7 +176,7 @@ class JahiaPagerDutyIncident extends Command {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
       } else {
         // eslint-disable-next-line no-console
-        console.log(incidentResponse)
+        console.log(incidentResponse.data.error)
       }
     } else {
       this.log('DRYRUN: Data not submitted to PagerDuty')
