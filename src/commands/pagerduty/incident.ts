@@ -55,14 +55,6 @@ class JahiaPagerDutyIncident extends Command {
       description: 'Pagerduty email of the user who created the incident',
       required: true,
     }),
-    pdEventLinkText: flags.string({
-      description: 'Name of the link to obtain more details about the run',
-      default: '',
-    }),
-    pdEventLinkHref: flags.string({
-      description: 'Link to obtain more details about the run',
-      default: '',
-    }),
     pdUserId: flags.string({
       description: 'User ID to assign the incident to (format: P2LGAVW)',
       default: '',
@@ -87,7 +79,8 @@ class JahiaPagerDutyIncident extends Command {
 
     // Default values in the event the report couldn't be accessed
     let dedupKey = md5('Unable to access reports')
-    let incidentBody = 'Unable to access reports data, it appears the tests were not executed'
+    let incidentBody = `Source URL: ${flags.sourceUrl} \n`
+    incidentBody += 'Unable to access reports data, it appears the tests were not executed\n'
     let incidentTitle = `${flags.service} - Unable to access reports data`
 
     if (fs.existsSync(flags.sourcePath)) {
@@ -111,7 +104,7 @@ class JahiaPagerDutyIncident extends Command {
       incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`
 
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
-      incidentBody = `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
+      incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
       const failedReports = jrRun.reports.filter(r => r.failures > 0)
       failedReports.forEach(failedReport => {
         const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
