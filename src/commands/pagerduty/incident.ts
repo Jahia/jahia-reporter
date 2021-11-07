@@ -2,6 +2,8 @@
 import {Command, flags} from '@oclif/command'
 import {api} from '@pagerduty/pdjs'
 import * as md5 from 'md5'
+import * as fs from 'fs'
+
 import {GoogleSpreadsheet} from 'google-spreadsheet'
 
 import {JRRun} from '../../global.type'
@@ -19,9 +21,9 @@ class JahiaPagerDutyIncident extends Command {
       required: true,
     }),
     sourceType: flags.string({
-      char: 't',                        // shorter flag version
+      char: 't',                                // shorter flag version
       description: 'The format of the report',  // help description for flag
-      options: ['xml', 'json'],         // only allow the value to be from a discrete set
+      options: ['xml', 'json'],                 // only allow the value to be from a discrete set
       default: 'xml',
     }),
     service: flags.string({
@@ -73,43 +75,55 @@ class JahiaPagerDutyIncident extends Command {
       description: 'Do not send the data but only print it to console',
       default: false,
     }),
+    requireAssignee: flags.boolean({
+      description: 'Only create incident in pagerduty if an assignee is present',
+      default: true,
+    }),
   }
 
   // eslint-disable-next-line complexity
   async run() {
     const {flags} = this.parse(JahiaPagerDutyIncident)
 
+    // Default values in the event the report couldn't be accessed
+    let dedupKey = md5('Unable to access reports')
+    let incidentBody = 'Unable to access reports data, it appears the tests were not executed'
+    let incidentTitle = `${flags.service} - Unable to access reports data`
+
+    if (fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
-    const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
-    // eslint-disable-next-line no-console
-    console.log(jrRun)
+      const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+      // eslint-disable-next-line no-console
+      console.log(jrRun)
 
-    // Generate dedup key by collecting all testnames
-
-    const tests: string[] = []
-    for (const report of jrRun.reports) {
-      for (const testsuite of report.testsuites) {
-        for (const test of testsuite.tests) {
-          tests.push(`${report.name}-${testsuite.name}-${test.name}`)
+      // Generate dedup key by collecting all testnames
+      const tests: string[] = []
+      for (const report of jrRun.reports) {
+        for (const testsuite of report.testsuites) {
+          for (const test of testsuite.tests) {
+            tests.push(`${report.name}-${testsuite.name}-${test.name}`)
+          }
         }
       }
-    }
-    const sortedTests = tests.sort()
-    const dedupKey = `${md5(JSON.stringify(sortedTests))}`
+      const sortedTests = tests.sort()
+      dedupKey = md5(JSON.stringify(sortedTests))
 
-    let bodyDetails = `Source URL: ${flags.sourceUrl} \n`
-    bodyDetails = `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
-    const failedReports = jrRun.reports.filter(r => r.failures > 0)
-    failedReports.forEach(failedReport => {
-      const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-      failedSuites.forEach(failedSuite => {
-        bodyDetails += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-        const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-        failedTests.forEach(failedTest => {
-          bodyDetails += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+      incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`
+
+      incidentBody = `Source URL: ${flags.sourceUrl} \n`
+      incidentBody = `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
+      const failedReports = jrRun.reports.filter(r => r.failures > 0)
+      failedReports.forEach(failedReport => {
+        const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
+        failedSuites.forEach(failedSuite => {
+          incidentBody += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+          failedTests.forEach(failedTest => {
+            incidentBody += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+          })
         })
       })
-    })
+    }
 
     // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
     const assignees: string[] = flags.pdUserId.split(',').filter((a: string) => a.length > 4)
@@ -141,14 +155,14 @@ class JahiaPagerDutyIncident extends Command {
     const pdPayload = {
       incident: {
         type: 'incident',
-        title: `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`,
+        title: incidentTitle,
         service: {
           id: pagerDutyServiceId,
           type: 'service_reference',
         },
         body: {
           type: 'incident_body',
-          details: bodyDetails,
+          details: incidentBody,
         },
         status: 'triggered',
         assignments: assignees.map(assignee => {
@@ -163,9 +177,13 @@ class JahiaPagerDutyIncident extends Command {
     }
 
     // eslint-disable-next-line no-console
-    console.log(JSON.stringify(pdPayload))
+    this.log('JSON Payload', JSON.stringify(pdPayload))
 
-    if (flags.dryRun === false) {
+    if (flags.dryRun === true) {
+      this.log('DRYRUN: Data not submitted to PagerDuty')
+    } else if (assignees.length === 0 && flags.requireAssignee === true) {
+      this.log('No assignees found, incident will not be created')
+    } else {
       const pd = api({token: flags.pdApiKey, ...{
         headers: {
           From: 'fgerthoffert@jahia.com',
@@ -175,11 +193,8 @@ class JahiaPagerDutyIncident extends Command {
       if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
       } else {
-        // eslint-disable-next-line no-console
-        console.log(incidentResponse.data.error)
+        this.log(incidentResponse.data.error)
       }
-    } else {
-      this.log('DRYRUN: Data not submitted to PagerDuty')
     }
   }
 }
