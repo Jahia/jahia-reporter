@@ -8,6 +8,6 @@ RUN apk add --no-cache bash
 
 WORKDIR /usr/share/jahia-reporter/
 
-RUN npm install -g jahia-reporter@latest
+RUN npm install -g @jahia/jahia-reporter@latest
 
 CMD ["/bin/bash"]

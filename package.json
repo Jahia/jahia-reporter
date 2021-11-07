@@ -1,12 +1,12 @@
 {
-  "name": "jahia-reporter",
+  "name": "@jahia/jahia-reporter",
   "description": "Testrail and ZenCrepes reporter that accepts mocha json and jest xml reports",
   "version": "0.0.1",
-  "author": "Vladislav Radan",
+  "author": "Jahia",
   "bin": {
     "jahia-reporter": "./bin/run"
   },
-  "bugs": "https://github.com/VladRadan/jahia-reporter/issues",
+  "bugs": "https://github.com/Jahia/jahia-reporter/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -58,7 +58,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/VladRadan/jahia-reporter",
+  "homepage": "https://github.com/Jahia/jahia-reporter",
   "keywords": [
     "oclif"
   ],
@@ -73,7 +73,7 @@
       }
     }
   },
-  "repository": "VladRadan/jahia-reporter",
+  "repository": "Jahia/jahia-reporter",
   "scripts": {
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",

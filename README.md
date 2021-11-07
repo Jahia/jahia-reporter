@@ -86,7 +86,7 @@ CI/CD on this repository is performed with GitHub actions, publication to NPM an
 ### With NPM
 
 ```
-npm install -g jahia-reporter@latest
+npm install -g @jahia/jahia-reporter@latest
 jahia-reporter testrail --help
 ```
 

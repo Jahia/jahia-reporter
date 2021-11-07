@@ -32,7 +32,7 @@ jobs:
       image: node:lts-alpine
 
     steps:
-      - run: npm -g install jahia-reporter@${{ github.event.release.tag_name }}
+      - run: npm -g install @jahia/jahia-reporter@${{ github.event.release.tag_name }}
       - run: jahia-reporter --help
       - run: jahia-reporter testrail --help
       - run: jahia-reporter zencrepes --help
