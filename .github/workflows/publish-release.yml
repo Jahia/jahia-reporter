@@ -7,13 +7,14 @@ jobs:
   npm_publish:
     runs-on: ubuntu-latest
 
-    container:
-      image: node:lts
-
     steps:
       - uses: actions/checkout@master
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'      
       - run: yarn
       - run: npm -g install typescript
+      - run: whoami && node -v && ls -lah && tsc -v
       - run: npm -g install @oclif/dev-cli@latest
       - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
       - run: npm --no-git-tag-version version ${{ github.event.release.tag_name }}
@@ -21,12 +22,6 @@ jobs:
       - run: oclif-dev manifest
       - run: oclif-dev readme
       - run: ls -lah ./
-      - run: whoami
-      # Temporary hack while trying to figure out the permission issue
-      # For some reason, npm commands were executed with user UID 1001, which does
-      # not exist within the container, causing all npm commands requiring 
-      # filesystem access to checkout repo to fail
-      - run: chmod 777 * -R
       - run: npm publish --access public
 
   npm_test:
