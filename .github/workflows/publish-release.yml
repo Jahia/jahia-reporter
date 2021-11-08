@@ -21,6 +21,7 @@ jobs:
       - run: oclif-dev manifest
       - run: oclif-dev readme
       - run: ls -lah ./
+      - run: whoami
       - run: npm publish
 
   npm_test:
