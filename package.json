@@ -12,6 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@slack/web-api": "^6.3.0",
+    "@pagerduty/pdjs": "^2.2.3",
     "@types/node": "^10",
     "@types/node-fetch": "^2.5.7",
     "@types/parse-github-url": "^1.0.0",
@@ -37,7 +38,6 @@
     "@babel/preset-typescript": "^7.16.0",
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
-    "@pagerduty/pdjs": "^2.2.3",
     "@types/chai": "^4",
     "@types/google-spreadsheet": "^3.1.5",
     "@types/jest": "^27.0.2",
@@ -78,6 +78,7 @@
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "nyc --extension .ts jest",
+    "version": "oclif-dev readme && git add README.md",
     "lint": "eslint . --ext .js,.ts --fix"
   },
   "types": "lib/index.d.ts"

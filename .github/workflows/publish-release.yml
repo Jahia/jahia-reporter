@@ -23,11 +23,10 @@ jobs:
       - run: ls -lah ./
       - run: whoami
       # Temporary hack while trying to figure out the permission issue
+      # For some reason, npm commands were executed with user UID 1001, which does
+      # not exist within the container, causing all npm commands requiring 
+      # filesystem access to checkout repo to fail
       - run: chmod 777 * -R
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      #   with:
-      #     sudo: false
       - run: npm publish --access public
 
   npm_test:
