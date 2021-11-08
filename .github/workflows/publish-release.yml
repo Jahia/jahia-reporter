@@ -22,10 +22,12 @@ jobs:
       - run: oclif-dev readme
       - run: ls -lah ./
       - run: whoami
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          sudo: false        
+      # Temporary hack while trying to figure out the permission issue
+      - run: chmod 777 * -R
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     sudo: false
       - run: npm publish
 
   npm_test:
