@@ -22,8 +22,8 @@ jobs:
       - run: oclif-dev readme
       - run: ls -lah ./
       - run: whoami
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1      
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3     
       - run: npm publish
 
   npm_test:
