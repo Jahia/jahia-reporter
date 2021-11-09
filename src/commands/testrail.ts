@@ -114,6 +114,7 @@ class JahiaTestrailReporter extends Command {
       flags.testrailPassword
     )
 
+    this.log('Get all testrail projects')
     // get the testrail project
     const testrailProject = testrail.getProjects().find(project => project.name === flags.projectName)
     if (testrailProject === undefined) {
@@ -122,13 +123,15 @@ class JahiaTestrailReporter extends Command {
       testrailProject as Project
     }
     // Get the testrail suite
+    this.log(`Get all suites for project ${testrailProject.id}`)
     const testrailSuite = testrail.getSuites(testrailProject.id).find(suite => suite.name === flags.suiteName)
     if (testrailSuite === undefined) {
-      this.error(`Failed to find suite named '${flags.suiteName}' in project '${flags.projectName}'`)
+      this.error(`Failed to find suite named: '${flags.suiteName}' in project: '${flags.projectName}'`)
     } else {
       testrailSuite as Suite
     }
     // Get parent section from test rail if parent_section was set
+    this.log(`Get all sections for project: ${testrailProject.id} and suite: ${testrailSuite.id}`)
     const allSectionsInTestrail = testrail.getSections(testrailProject.id, testrailSuite.id)
     let parentSectionId = ''
     if (flags.parentSection !== '') {
@@ -141,19 +144,25 @@ class JahiaTestrailReporter extends Command {
     }
 
     // Get Milestone
+    this.log(`Get all milestones for project: ${testrailProject.id}`)
     const milestone: any = testrail.getMilestones(testrailProject.id).find(milestone => milestone.name === flags.milestone)
     let milestone_id = -1
     if (flags.skip) {
-      this.log(`Milestone '${flags.milestone}'`)
+      this.log(`Milestone: ${flags.milestone}`)
     } else {
+      this.log(`Add milestone to project: ${testrailProject.id}, milestone: ${flags.milestone}`)
       milestone_id = milestone ? milestone.id : testrail.addMilestone(testrailProject.id, flags.milestone).id
     }
+    this.log(`Using milestone ${flags.milestone} with id: ${milestone_id}`)
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
     const executedSections: Section[] = []
     // Get all sections from the executed tests
     const executedSectionsNames: string[] = [...new Set(tests.map(test => test.section))]
-    this.log(`Section names '${executedSectionsNames.toString()}'`)
+    this.log('The following section names were found')
+    for (const sectionName of executedSectionsNames) {
+      this.log(sectionName)
+    }
 
     // Make sure those sections exist in TestRail
     for (const executedSectionName of executedSectionsNames) {
@@ -164,7 +173,7 @@ class JahiaTestrailReporter extends Command {
       if (foundSectionInTestrail !== undefined) {
         executedSections.push(foundSectionInTestrail)
       } else {
-        this.log(`Section '${executedSectionName}' wasn't found. Creating it.`)
+        this.log(`Section '${executedSectionName}' wasn't found. Creating it (project ID: ${testrailProject.id}, suite ID: ${testrailSuite.id}, section name: ${executedSectionName}, parent section ID: ${parentSectionId}).`)
         if (!flags.skip) {
           executedSections.push(testrail.addSection(testrailProject.id, testrailSuite.id, executedSectionName, parentSectionId))
         }
@@ -176,6 +185,7 @@ class JahiaTestrailReporter extends Command {
     const testCasesInTestrail: Record<string, Test[]> = {}
     for (const executedSection of executedSections) {
       if (!flags.skip) {
+        this.log(`Get cases for project: ${testrailProject.id}, suite: ${testrailSuite.id}, section: ${executedSection.id}`)
         testCasesInTestrail[executedSection.name] = testrail.getCases(testrailProject.id, testrailSuite.id, executedSection.id)
       }
     }
