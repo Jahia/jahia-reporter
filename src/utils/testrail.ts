@@ -39,7 +39,8 @@ export class TestRailClient {
       if (milestonesObject.size > 0) {
         return milestonesObject.milestones as Milestone[]
       }
-      throw new Error("Something went wrong. Can't find any milestone")
+      return []
+      // throw new Error("Something went wrong. Can't find any milestone")
     }
 
     public addMilestone(projectId: number, name: string): Milestone {
@@ -51,7 +52,8 @@ export class TestRailClient {
       if (sectionsObject.size > 0) {
         return sectionsObject.sections as Section[]
       }
-      throw new Error("Something went wrong. Can't find any section")
+      return []
+      // throw new Error("Something went wrong. Can't find any section")
     }
 
     public addSection(projectId: number, suiteId: number, section: string, parentId: string): Section {
