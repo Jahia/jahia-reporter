@@ -63,7 +63,8 @@ export class TestRailClient {
       if (casesObject.size > 0) {
         return casesObject.cases as Test[]
       }
-      throw new Error("Something went wrong. Can't find any test case")
+      return []
+      // throw new Error("Something went wrong. Can't find any test case")
     }
 
     public addCase(sectionId: number, addCase: AddCase): Test {
