@@ -80,8 +80,8 @@ class JahiaPagerDutyIncident extends Command {
     // Default values in the event the report couldn't be accessed
     let dedupKey = md5('Unable to access reports')
     let incidentBody = `Source URL: ${flags.sourceUrl} \n`
-    incidentBody += 'Unable to access reports data, it appears the tests were not executed\n'
-    let incidentTitle = `${flags.service} - Unable to access reports data`
+    incidentBody += 'An error is present in the test execution workflow.\n This usually means one of the steps of the workflow (tests or other) did fail.'
+    let incidentTitle = `${flags.service} - Incident during test execution`
 
     if (fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
@@ -99,11 +99,13 @@ class JahiaPagerDutyIncident extends Command {
         }
       }
       const sortedTests = tests.sort()
-      dedupKey = md5(JSON.stringify(sortedTests))
 
       incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`
 
+      dedupKey = md5(incidentTitle + JSON.stringify(sortedTests))
+
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
+      incidentBody += `Dedup Key: ${dedupKey} \n`
       incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
       const failedReports = jrRun.reports.filter(r => r.failures > 0)
       failedReports.forEach(failedReport => {
@@ -149,6 +151,7 @@ class JahiaPagerDutyIncident extends Command {
       incident: {
         type: 'incident',
         title: incidentTitle,
+        incident_key: dedupKey,
         service: {
           id: pagerDutyServiceId,
           type: 'service_reference',
@@ -186,6 +189,7 @@ class JahiaPagerDutyIncident extends Command {
       if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
       } else {
+        this.log('Incident not created')
         this.log(incidentResponse.data.error)
       }
     }
