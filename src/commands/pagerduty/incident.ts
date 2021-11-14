@@ -80,7 +80,7 @@ class JahiaPagerDutyIncident extends Command {
     // Default values in the event the report couldn't be accessed
     let dedupKey = md5('Unable to access reports')
     let incidentBody = `Source URL: ${flags.sourceUrl} \n`
-    incidentBody += 'An error is present in the test execution workflow.\n This usually means one of the steps of the workflow (tests or other) did fail.'
+    incidentBody += 'An error is present in the test execution workflow.\nThis usually means one of the steps of the workflow (tests or other) failed or that the reporter was unable to access reports data.'
     let incidentTitle = `${flags.service} - Incident during test execution`
 
     if (fs.existsSync(flags.sourcePath)) {
@@ -100,7 +100,7 @@ class JahiaPagerDutyIncident extends Command {
       }
       const sortedTests = tests.sort()
 
-      incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests} - #${dedupKey}`
+      incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests}`
 
       dedupKey = md5(incidentTitle + JSON.stringify(sortedTests))
 
