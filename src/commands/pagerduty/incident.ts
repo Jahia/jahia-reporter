@@ -157,6 +157,7 @@ class JahiaPagerDutyIncident extends Command {
             } else {
               row.State = 'PASSED'
             }
+            row.Updated = new Date().toISOString()
             // eslint-disable-next-line no-await-in-loop
             await row.save()
           }
