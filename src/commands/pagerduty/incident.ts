@@ -47,6 +47,10 @@ class JahiaPagerDutyIncident extends Command {
       description: 'Google Client API key required to access the spreadsheet (base64)',
       default: '',
     }),
+    googleUpdateState: flags.boolean({
+      description: 'Update the State column to PASSED/FAILED based on the outcome of the tests',
+      default: false,
+    }),
     pdApiKey: flags.string({
       description: 'Pagerduty API Key',
       required: true,
@@ -83,9 +87,12 @@ class JahiaPagerDutyIncident extends Command {
     incidentBody += 'An error is present in the test execution workflow.\nThis usually means one of the steps of the workflow (tests or other) failed or that the reporter was unable to access reports data.'
     let incidentTitle = `${flags.service} - Incident during test execution`
 
+    let testFailures = 999
+
     if (fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+      testFailures = jrRun.failures
       // eslint-disable-next-line no-console
       console.log(jrRun)
 
@@ -142,6 +149,16 @@ class JahiaPagerDutyIncident extends Command {
             for (const assignee of row['PagerDuty User ID'].split(',').filter((a: string) => a.length > 4)) {
               assignees.push(assignee)
             }
+          }
+          if (flags.googleUpdateState === true && row['CI/CD'] === 'Bamboo') {
+            this.log(`Updated state for: ${flags.service}`)
+            if (testFailures > 0) {
+              row.State = 'FAILED'
+            } else {
+              row.State = 'PASSED'
+            }
+            // eslint-disable-next-line no-await-in-loop
+            await row.save()
           }
         }
       }
