@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 'lts/*'      
       - run: yarn
-      - run: npm -g install typescript
+      - run: npm -g install typescript@4.4.4
       - run: whoami && node -v && ls -lah && tsc -v
       - run: npm -g install @oclif/dev-cli@latest
       - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
