@@ -59,6 +59,10 @@ class JahiaPagerDutyIncident extends Command {
       description: 'Pagerduty email of the user who created the incident',
       required: true,
     }),
+    pdReporterId: flags.string({
+      description: 'Pagerduty ID of the user who created the incident',
+      required: true,
+    }),
     pdUserId: flags.string({
       description: 'User ID to assign the incident to (format: P2LGAVW)',
       default: '',
@@ -66,6 +70,10 @@ class JahiaPagerDutyIncident extends Command {
     pdServiceId: flags.string({
       description: 'Service ID to attach the incident to (format: PF5J3UC)',
       default: '',
+    }),
+    pdTwoStepsAssign: flags.boolean({
+      description: 'Immediately assign incident to assignee. If false, the incident will first be assigned to the reporter, then re-assign to assignee. This is needed for slack (@user) to be sent to the channel.',
+      default: true,
     }),
     dryRun: flags.boolean({
       description: 'Do not send the data but only print it to console',
@@ -165,6 +173,11 @@ class JahiaPagerDutyIncident extends Command {
       }
     }
 
+    let firstAssignees = assignees
+    if (flags.pdTwoStepsAssign === true) {
+      firstAssignees = [flags.pdReporterId]
+    }
+
     const pdPayload = {
       incident: {
         type: 'incident',
@@ -179,7 +192,7 @@ class JahiaPagerDutyIncident extends Command {
           details: incidentBody,
         },
         status: 'triggered',
-        assignments: assignees.map(assignee => {
+        assignments: firstAssignees.map(assignee => {
           return {
             assignee: {
               id: assignee,
@@ -193,19 +206,47 @@ class JahiaPagerDutyIncident extends Command {
     // eslint-disable-next-line no-console
     this.log('JSON Payload', JSON.stringify(pdPayload))
 
-    if (flags.dryRun === true) {
+    if (testFailures === 0) {
+      this.log('There are 0 failures in the provided reports, not submitting an incident to pagerduty')
+    } else if (flags.dryRun === true) {
       this.log('DRYRUN: Data not submitted to PagerDuty')
     } else if (assignees.length === 0 && flags.requireAssignee === true) {
       this.log('No assignees found, incident will not be created')
     } else {
       const pd = api({token: flags.pdApiKey, ...{
         headers: {
-          From: 'fgerthoffert@jahia.com',
+          From: 'support@jahia.com',
         },
       }})
       const incidentResponse = await pd.post('/incidents', {data: pdPayload})
       if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
+
+        // If assignees were not directly assigned, they now get assigned by updating the incident.
+        // As of Nov 17, 2021, PagerDuty does not `@user` assignee in slack when incident is created.
+        // But it does notify users when incident is reassigned, thus this second call to handle it.
+        if (flags.pdTwoStepsAssign === true) {
+          const updatePayload = {
+            incident: {
+              type: 'incident',
+              assignments: assignees.map(assignee => {
+                return {
+                  assignee: {
+                    id: assignee,
+                    type: 'user_reference',
+                  },
+                }
+              }),
+            },
+          }
+          const updateResponse = await pd.put(`/incidents/${incidentResponse.data.incident.id}`, {data: updatePayload})
+          if (updateResponse.data !== undefined && updateResponse.data.incident !== undefined) {
+            this.log(`Pagerduty Incident updated: ${updateResponse.data.incident.incident_number} - ${updateResponse.data.incident.html_url}`)
+          } else {
+            this.log('Incident not updated')
+            this.log(updateResponse.data.error)
+          }
+        }
       } else {
         this.log('Incident not created')
         this.log(incidentResponse.data.error)
