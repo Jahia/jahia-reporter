@@ -59,6 +59,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
   // Simple graphql call to fetch the query
   let response: any = new SyncRequestClient()
   .addHeader('Content-Type', 'application/json')
+  .addHeader('referer', jahiaUrl)
   .addHeader('authorization', authHeader)
   .post(jahiaUrl + 'modules/graphql', {query: 'query { admin { version } dashboard { modules { id name version } } }'})
 
@@ -69,6 +70,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
     console.log(JSON.stringify(response.errors))
     response = new SyncRequestClient()
     .addHeader('Content-Type', 'application/json')
+    .addHeader('referer', jahiaUrl)
     .addHeader('authorization', authHeader)
     .post(jahiaUrl + 'modules/graphql', {query: 'query { dashboard { modules { id name version } } }'})
   }
@@ -107,6 +109,7 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
   // If GraphQL Dashboard node is not available, falling back to the module manager REST API
   response = new SyncRequestClient()
   .addHeader('Content-Type', 'application/json')
+  .addHeader('referer', jahiaUrl)
   .addHeader('authorization', authHeader)
   .get(jahiaUrl + 'modules/api/bundles/org.jahia.modules/*/*/_info')
 
