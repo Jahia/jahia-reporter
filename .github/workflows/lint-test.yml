@@ -32,4 +32,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn
       - run: npm install -g typescript
+      - run: tsc -v
       - run: tsc -b
