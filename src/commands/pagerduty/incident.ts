@@ -34,6 +34,10 @@ class JahiaPagerDutyIncident extends Command {
       description: 'URL back to the service who initiated the incident',
       default: '',
     }),
+    forceSuccess: flags.boolean({
+      description: 'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
+      default: false,
+    }),
     // Setup Google Auth: https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
     googleSpreadsheetId: flags.string({
       description: 'ID of the spreadsheet container user assignment for the service',
@@ -133,6 +137,12 @@ class JahiaPagerDutyIncident extends Command {
           })
         })
       })
+    }
+
+    if (flags.forceSuccess) {
+      // The script has been forced to success
+      this.log(`The script has been forced to success, the actual failure cound was: ${testFailures}`)
+      testFailures = 0
     }
 
     // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
