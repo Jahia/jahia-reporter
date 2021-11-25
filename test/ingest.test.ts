@@ -24,7 +24,12 @@ describe('Test report ingestion', () => {
   })
 
   it('JUnit XML', async () => {
-    const jrRun = await ingestReport('json', path.resolve(__dirname, './assets/junit'), log)
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit'), log)
+    expect(jrRun).toMatchSnapshot()
+  })
+
+  it('Mocha JUnit XML (generated using: mocha-junit-reporter)', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit'), log)
     expect(jrRun).toMatchSnapshot()
   })
 })

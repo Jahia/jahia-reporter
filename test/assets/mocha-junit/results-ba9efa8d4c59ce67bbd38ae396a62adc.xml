@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="1.0960" tests="8" failures="0">
+  <testsuite name="Root Suite" timestamp="2021-11-25T15:40:41" tests="0" file="cypress/integration/api/currentUser.spec.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Validate ability get current User" timestamp="2021-11-25T15:40:41" tests="8" time="1.0580" failures="0">
+    <testcase name="Validate ability get current User Get Current user for known user (mathias) - Recommended method" time="0.3200" classname="Get Current user for known user (mathias) - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User Get Current user for known user (root) - Recommended method" time="0.0840" classname="Get Current user for known user (root) - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User Get Current user for known user (root) with incorrect password - Recommended method" time="0.0850" classname="Get Current user for known user (root) with incorrect password - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User Get Current user for unknown user - Recommended method" time="0.0740" classname="Get Current user for unknown user - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User Guest user cannot use the API with default configuration - Recommended method" time="0.0460" classname="Guest user cannot use the API with default configuration - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User Get Current user for Authenticated user (mathias) - Alternative method" time="0.0690" classname="Get Current user for Authenticated user (mathias) - Alternative method">
+    </testcase>
+    <testcase name="Validate ability get current User Get current user non-Authenticated user (guest) - Alternative method" time="0.0540" classname="Get current user non-Authenticated user (guest) - Alternative method">
+    </testcase>
+    <testcase name="Validate ability get current User Get Current user for Authenticated user (mathias) - DO NOT USE" time="0.0730" classname="Get Current user for Authenticated user (mathias) - DO NOT USE">
+    </testcase>
+  </testsuite>
+</testsuites>

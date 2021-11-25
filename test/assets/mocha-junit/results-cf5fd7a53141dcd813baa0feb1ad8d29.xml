@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="27.6810" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2021-11-25T15:40:54" tests="0" file="cypress/integration/sandboxTest.spec.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Successfully navigates to sandbox app" timestamp="2021-11-25T15:40:54" tests="1" time="27.6190" failures="0">
+    <testcase name="Successfully navigates to sandbox app successfully navigate to the app" time="26.9160" classname="successfully navigate to the app">
+    </testcase>
+  </testsuite>
+</testsuites>
