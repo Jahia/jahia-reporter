@@ -30,7 +30,7 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
       skipped: Math.round(s.attributes.skipped),
       testsCount: Math.round(s.attributes.tests),
       time: Math.round(s.attributes.time),
-      tests: buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
+      tests: s.elements === undefined ? [] : buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
     }
   })
 }

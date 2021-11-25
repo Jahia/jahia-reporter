@@ -214,7 +214,7 @@ class JahiaPagerDutyIncident extends Command {
     }
 
     // eslint-disable-next-line no-console
-    this.log('JSON Payload', JSON.stringify(pdPayload))
+    this.log('JSON Payload for submission', JSON.stringify(pdPayload))
 
     if (testFailures === 0) {
       this.log('There are 0 failures in the provided reports, not submitting an incident to pagerduty')

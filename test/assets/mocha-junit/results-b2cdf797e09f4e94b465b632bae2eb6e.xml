@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="1.6550" tests="6" failures="0">
+  <testsuite name="Root Suite" timestamp="2021-11-25T15:40:48" tests="0" file="cypress/integration/api/jcrAddNode.spec.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Validate ability get current User" timestamp="2021-11-25T15:40:48" tests="6" time="1.6140" failures="0">
+    <testcase name="Validate ability get current User User root creating a JCR node - Recommended method" time="0.4570" classname="User root creating a JCR node - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User User guest creating a JCR node - Recommended method" time="0.0500" classname="User guest creating a JCR node - Recommended method">
+    </testcase>
+    <testcase name="Validate ability get current User User root creating a JCR node - Alternative method" time="0.1310" classname="User root creating a JCR node - Alternative method">
+    </testcase>
+    <testcase name="Validate ability get current User User guest creating a JCR node - Alternative method" time="0.0370" classname="User guest creating a JCR node - Alternative method">
+    </testcase>
+    <testcase name="Validate ability get current User User root creating a JCR node - DO NOT USE" time="0.1880" classname="User root creating a JCR node - DO NOT USE">
+    </testcase>
+    <testcase name="Validate ability get current User User guest creating a JCR node - DO NOT USE" time="0.0470" classname="User guest creating a JCR node - DO NOT USE">
+    </testcase>
+  </testsuite>
+</testsuites>
