@@ -100,6 +100,7 @@ class JahiaPagerDutyIncident extends Command {
     let incidentTitle = `${flags.service} - Incident during test execution`
 
     let testFailures = 999
+    let pagerDutyNotifEnabled = true
 
     if (fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
@@ -160,6 +161,9 @@ class JahiaPagerDutyIncident extends Command {
       const rows = await sheet.getRows()
       for (const row of rows) {
         if (row['Test Service'] === flags.service) {
+          if (row['PagerDuty Enabled'] !== undefined && row['PagerDuty Enabled'].toLowerCase() === 'no') {
+            pagerDutyNotifEnabled = false
+          }
           if (row['PagerDuty Service ID'] !== undefined && row['PagerDuty Service ID'].length > 4) {
             pagerDutyServiceId = row['PagerDuty Service ID']
           }
@@ -222,6 +226,8 @@ class JahiaPagerDutyIncident extends Command {
       this.log('DRYRUN: Data not submitted to PagerDuty')
     } else if (assignees.length === 0 && flags.requireAssignee === true) {
       this.log('No assignees found, incident will not be created')
+    } else if (pagerDutyNotifEnabled === false) {
+      this.log('According to the Google Spreadsheet, notifications are current disabled for that service')
     } else {
       const pd = api({token: flags.pdApiKey, ...{
         headers: {
