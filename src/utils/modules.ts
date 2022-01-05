@@ -40,7 +40,7 @@ export const getJahiaVersion = (version: string) => {
 const parseModuleManagerData = (response: any) => {
   const instanceModules: any = Object.values(response)[0]
   const modules = []
-  const regExp = new RegExp(/org\.jahia\.modules\/(.*)\/(.*)/)
+  const regExp = new RegExp(/.*\/(.*)\/(.*)/)
 
   const instanceModulesArr: Array<any> = Object.entries(instanceModules)
   for (const [key, value] of instanceModulesArr) {
