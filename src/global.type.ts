@@ -76,3 +76,78 @@ export interface UtilsVersions {
   dependencies: JahiaModule[];
   allModules: JahiaModule[];
 }
+
+export interface JMeterTRunTransaction {
+  name: string;
+  sampleCount?: number;
+  errorCount?: number;
+  errorPct?: number;
+  meanResTime?: number;
+  medianResTime?: number;
+  minResTime?: number;
+  maxResTime?: number;
+  pct1ResTime?: number;
+  pct2ResTime?: number;
+  pct3ResTime?: number;
+  throughput?: number;
+  receivedKBytesPerSec?: number;
+  sentKBytesPerSec?: number;
+}
+
+export interface JMeterTRun {
+  name: string;
+  transactions: JMeterTRunTransaction[];
+}
+
+export interface JMeterTMetricConstraint {
+  metric: string;
+  comparator: 'gt' | 'gte' | 'lt' | 'lte';
+}
+
+export interface JMeterThresholds {
+  runs: JMeterTRun[];
+  specs: JMeterTMetricConstraint[];
+}
+
+export interface JMeterRunTransaction {
+  transaction: string;
+  sampleCount: number;
+  errorCount: number;
+  errorPct: number;
+  meanResTime: number;
+  medianResTime: number;
+  minResTime: number;
+  maxResTime: number;
+  pct1ResTime: number;
+  pct2ResTime: number;
+  pct3ResTime: number;
+  throughput: number;
+  receivedKBytesPerSec: number;
+  sentKBytesPerSec: number;
+}
+
+// export interface JMeterRunStatistics {
+//   // [key: string]: JMeterRunTransaction;
+//   Record<string, JMeterRunTransaction>
+// }
+
+export interface JMeterRun {
+  name: string;
+  duration: number;
+  statistics: Record<string, JMeterRunTransaction>;
+}
+
+export interface JMeterExec {
+  duration: number;
+  runs: JMeterRun[];
+  startedAt: string;
+}
+
+export interface JMeterExecErrorReport {
+  run: string;
+  transaction: string;
+  metric: string;
+  comparator: string;
+  runValue: number | string;
+  thresholdValue: number | string | undefined;
+}
