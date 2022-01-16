@@ -18,7 +18,7 @@ export const parseJsonPerf = (rawAnalysis: JMeterExecAnalysisReport[]): JRRun =>
         return {
           name: t,
           failures: rawAnalysis.filter(a => a.run === run && a.transaction === t && a.error === true).length,
-          timestamp: new Date().toISOString(),
+          timestamp: '',
           time: 0,
           tests: metrics.map(m => {
             const metricTest = rawAnalysis.find(a => a.run === run && a.transaction === t && a.metric === m)
