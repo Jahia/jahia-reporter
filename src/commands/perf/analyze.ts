@@ -3,8 +3,9 @@
 import {Command, flags} from '@oclif/command'
 import {readFileSync} from 'fs'
 import * as fs from 'fs'
+import * as path from 'path'
 
-import {JMeterExec, JMeterThresholds, JMeterTRunTransaction, JMeterRunTransaction, JMeterExecErrorReport} from '../../global.type'
+import {JMeterExec, JMeterThresholds, JMeterTRunTransaction, JMeterRunTransaction, JMeterExecAnalysisReport} from '../../global.type'
 
 const getRunThreshold = (runName: string, thresholds: JMeterThresholds) => {
   // First use exact match
@@ -52,6 +53,11 @@ class JahiaAnalyzePerfsReporter extends Command {
       description: 'A json file containing values thresholds',
       required: true,
     }),
+    reportFile: flags.string({
+      description: 'A path to store the JSON report that will be generated at the end of the run',
+      default: '',
+      required: false,
+    }),
   }
 
   async run() {
@@ -76,7 +82,7 @@ class JahiaAnalyzePerfsReporter extends Command {
     this.log('Starting analysis')
     this.log('More details about the threshold format can be found at: https://github.com/Jahia/core-perf-test')
 
-    const errorsReport: JMeterExecErrorReport[] = []
+    const analysisReport: JMeterExecAnalysisReport[] = []
     for (const run of jMeterRuns.runs) {
       const threshold = getRunThreshold(run.name, jMeterThresholds)
       if (threshold === undefined) {
@@ -116,9 +122,10 @@ class JahiaAnalyzePerfsReporter extends Command {
                 }
                 if (thresholdError) {
                   this.log(`ERROR: run: ${run.name}, transaction: ${runStat.transaction}, metric: ${comp.metric} is failing threshold => Value: ${runValue} (Operator: ${comp.comparator}) Threshold: ${thresholdValue}`)
-                  errorsReport.push({run: run.name, transaction: runStat.transaction, metric: comp.metric, comparator: comp.comparator, runValue: runValue, thresholdValue: thresholdValue})
+                  analysisReport.push({error: true, run: run.name, transaction: runStat.transaction, metric: comp.metric, comparator: comp.comparator, runValue: runValue, thresholdValue: thresholdValue})
                 } else {
                   this.log(`OK: run: ${run.name}, transaction: ${runStat.transaction}, metric: ${comp.metric} is passing threshold => Value: ${runValue} (Operator: ${comp.comparator}) Threshold: ${thresholdValue}`)
+                  analysisReport.push({error: false, run: run.name, transaction: runStat.transaction, metric: comp.metric, comparator: comp.comparator, runValue: runValue, thresholdValue: thresholdValue})
                 }
               }
             }
@@ -127,11 +134,19 @@ class JahiaAnalyzePerfsReporter extends Command {
       }
     }
     this.log('The following values were failing threshold:')
-    for (const error of errorsReport) {
+    for (const error of analysisReport.filter(a => a.error === true)) {
       this.log(`ERROR: run: ${error.run}, transaction: ${error.transaction}, metric: ${error.metric} is failing threshold => Value: ${error.runValue} (Operator: ${error.comparator}) Threshold: ${error.thresholdValue}`)
     }
 
-    if (errorsReport.length > 0) {
+    if (flags.reportFile !== '') {
+      this.log(`Saving report to: ${flags.reportFile}`)
+      fs.writeFileSync(
+        path.join(flags.reportFile),
+        JSON.stringify(analysisReport)
+      )
+    }
+
+    if (analysisReport.length > 0) {
       this.exit(1)
     }
   }

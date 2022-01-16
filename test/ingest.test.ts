@@ -32,4 +32,9 @@ describe('Test report ingestion', () => {
     const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit'), log)
     expect(jrRun).toMatchSnapshot()
   })
+
+  it('JMeter Perf Analysis JSON', async () => {
+    const jrRun = await ingestReport('json-perf', path.resolve(__dirname, './assets/perf-json/perf-analysis.json'), log)
+    expect(jrRun).toMatchSnapshot()
+  })
 })

@@ -1,5 +1,5753 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Test report ingestion JMeter Perf Analysis JSON 1`] = `
+Object {
+  "failures": 10,
+  "reports": Array [
+    Object {
+      "failures": 3,
+      "name": "Jahia Perf at 15mn",
+      "tests": 9,
+      "testsuites": Array [
+        Object {
+          "failures": 1,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: E3-C6b Add main content / Save+reload, metric: sampleCount is failing threshold => Value: 30 (Operator: gte) Threshold: 30",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: E3-C6b Add main content / Save+reload, metric: sampleCount is failing threshold => Value: 30 (Operator: gte) Threshold: 30",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: E3-C6b Add main content / Save+reload, metric: sampleCount is failing threshold => Value: 30 (Operator: gte) Threshold: 30",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2a View news entry in live mode (auth), metric: sampleCount is failing threshold => Value: 8045 (Operator: gte) Threshold: 8045",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2a View news entry in live mode (auth), metric: sampleCount is failing threshold => Value: 8045 (Operator: gte) Threshold: 8045",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2a View news entry in live mode (auth), metric: sampleCount is failing threshold => Value: 8045 (Operator: gte) Threshold: 8045",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2 View internal link page in live mode (auth), metric: sampleCount is failing threshold => Value: 11332 (Operator: gte) Threshold: 11332",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2 View internal link page in live mode (auth), metric: sampleCount is failing threshold => Value: 11332 (Operator: gte) Threshold: 11332",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 15mn, transaction: L2 View internal link page in live mode (auth), metric: sampleCount is failing threshold => Value: 11332 (Operator: gte) Threshold: 11332",
+                },
+              ],
+              "name": "sampleCount",
+              "status": "FAIL",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "errorCount",
+              "status": "PASS",
+              "time": 0,
+            },
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.162Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 30mn",
+      "tests": 54,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.163Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.163Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.164Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.165Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 30mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705037.85 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 45mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.166Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.167Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 45mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705024 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 60mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.168Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.169Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 60mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705019 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.170Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 75mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.171Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 75mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705015 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 90mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.172Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.173Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 90mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705012.3 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 105mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.174Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.175Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 105mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705011 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+      ],
+      "time": 0,
+    },
+    Object {
+      "failures": 1,
+      "name": "Jahia Perf at 120mn",
+      "tests": 55,
+      "testsuites": Array [
+        Object {
+          "failures": 0,
+          "name": "E3-C6b Add main content / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C4 Add content / Open content selector",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2b Navigate in side-panel tree",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7a Add news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C7b Add news entry / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C9a Publish list page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1b Edit content / Close locked engine+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "P1 Background Workflow polling",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View internal link page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8b Publish page / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3d Search-did you mean (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2a View news entry in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C2 View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E4 Logout",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.176Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E1 Login/Dashboard",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit news entry list page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2d Download internal link (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2b Publish update / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View list page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1b Add page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C6a Add main content / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View list page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3a Search few results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View page in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U2c Publish update / Queue publish job+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2a Open homepage in edit (+load config)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C1a Add page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3c Paginate search result (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-C8a Publish page / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2 View query page in live mode (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1 View homepage in live mode (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L1a Login/homepage",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Open engine",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1d Edit rich text page / Save+reload",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E2c View page in edit mode",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1c Edit content / Add new tag",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 1,
+          "name": "P2 WebSocket reload check (X)",
+          "tests": Array [
+            Object {
+              "failures": Array [
+                Object {
+                  "text": "ERROR: run: Jahia Perf at 120mn, transaction: P2 WebSocket reload check (X), metric: pct2ResTime is failing threshold => Value: 705009.95 (Operator: gt) Threshold: 2000",
+                },
+              ],
+              "name": "pct2ResTime",
+              "status": "FAIL",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (guest)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L2b Paginate list/query (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit news entry / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "E3-U1a Edit rich text / Preview",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "Total",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+        Object {
+          "failures": 0,
+          "name": "L3b Search many results (auth)",
+          "tests": Array [
+            Object {
+              "failures": Array [],
+              "name": "pct2ResTime",
+              "status": "PASS",
+              "time": 0,
+            },
+          ],
+          "time": 0,
+          "timestamp": "2022-01-16T18:17:07.177Z",
+        },
+      ],
+      "time": 0,
+    },
+  ],
+  "tests": 393,
+  "time": 0,
+}
+`;
+
 exports[`Test report ingestion JUnit XML 1`] = `
 Object {
   "failures": 9,

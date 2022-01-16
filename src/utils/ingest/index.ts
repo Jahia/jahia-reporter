@@ -5,6 +5,7 @@ import * as xmljs from 'xml-js'
 
 import {parseXML} from './parse-xml-report'
 import {parseJson} from './parse-json-report'
+import {parseJsonPerf} from './parse-json-perf-report'
 
 // Takes a file and returns its parsed content
 const parseFile = (reportType: string, filePath: string) => {
@@ -12,7 +13,7 @@ const parseFile = (reportType: string, filePath: string) => {
   if (reportType === 'xml') {
     return xmljs.xml2js(rawFile, {ignoreComment: true})
   }
-  if (reportType === 'json') {
+  if (reportType === 'json' || reportType === 'json-perf') {
     return JSON.parse(rawFile.toString())
   }
   return {}
@@ -25,10 +26,20 @@ const parseFile = (reportType: string, filePath: string) => {
   Note: It is necessary to supply a reportType to cover scenario in which a folder would contain both json and xml
 */
 const ingestReport = async (reportType: string, reportFilePath: string, log: any) => {
-  const supportedFormats = ['json', 'xml']
+  const supportedFormats = ['json', 'xml', 'json-perf']
   let reportFiles: string[] = []
   if (!supportedFormats.includes(reportType)) {
     log(`${reportType} is not a supported format`)
+    exit(1)
+  }
+
+  if (reportType === 'json-perf') {
+    if (lstatSync(reportFilePath).isFile()) {
+      log(`${reportFilePath} is a file`)
+      const reportContent = parseFile(reportType, reportFilePath)
+      return parseJsonPerf(reportContent)
+    }
+    log(`${reportFilePath} is not a valid file`)
     exit(1)
   }
 

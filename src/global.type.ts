@@ -143,7 +143,8 @@ export interface JMeterExec {
   startedAt: string;
 }
 
-export interface JMeterExecErrorReport {
+export interface JMeterExecAnalysisReport {
+  error: boolean;
   run: string;
   transaction: string;
   metric: string;

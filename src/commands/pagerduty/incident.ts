@@ -23,7 +23,7 @@ class JahiaPagerDutyIncident extends Command {
     sourceType: flags.string({
       char: 't',                                // shorter flag version
       description: 'The format of the report',  // help description for flag
-      options: ['xml', 'json'],                 // only allow the value to be from a discrete set
+      options: ['xml', 'json', 'json-perf'],    // only allow the value to be from a discrete set
       default: 'xml',
     }),
     service: flags.string({
