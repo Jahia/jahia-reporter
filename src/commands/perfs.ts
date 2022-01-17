@@ -8,7 +8,7 @@ import * as fs from 'fs'
 import * as crypto from 'crypto'
 
 class JahiaPerfsReporter extends Command {
-  static description = '[DEPRECATED] Submit data about a junit/mocha report to ZenCrepes - use perf:submit instead'
+  static description = '[DEPRECATED] Submit data about a junit/mocha report to ZenCrepes - use perfs:submit instead'
 
   static flags = {
     help: flags.help({char: 'h'}),
