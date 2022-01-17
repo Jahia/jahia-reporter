@@ -15,7 +15,7 @@ const getRunThreshold = (runName: string, thresholds: JMeterThresholds) => {
   }
 
   // Second, try partial match, returning the first matching record
-  runThreshold = thresholds.runs.find(t => runName.includes(t.name))
+  runThreshold = thresholds.runs.find(t => runName.toLowerCase().includes(t.name.toLowerCase()))
   if (runThreshold !== undefined) {
     return runThreshold
   }
@@ -31,7 +31,7 @@ const getTransactionThreshold = (runRransactionName: string, thresholdtransactio
     return transactionThreshold
   }
 
-  transactionThreshold = thresholdtransactions.find(t => runRransactionName.includes(t.name))
+  transactionThreshold = thresholdtransactions.find(t => runRransactionName.toLowerCase().includes(t.name.toLowerCase()))
   if (transactionThreshold !== undefined) {
     return transactionThreshold
   }
