@@ -18,11 +18,11 @@ class JahiaPagerDutyIncident extends Command {
     help: flags.help({char: 'h'}),
     incidentMessage: flags.string({
       description: 'A string containing an incident message',
-      required: false,
+      default: '',
     }),
     sourcePath: flags.string({
       description: 'A json/xml report or a folder containing one or multiple json/xml reports',
-      required: false,
+      default: '',
     }),
     sourceType: flags.string({
       char: 't',                                // shorter flag version
@@ -106,7 +106,7 @@ class JahiaPagerDutyIncident extends Command {
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
-    if (fs.existsSync(flags.sourcePath)) {
+    if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
       testFailures = jrRun.failures
@@ -142,13 +142,16 @@ class JahiaPagerDutyIncident extends Command {
           })
         })
       })
-    } else if (fs.existsSync(flags.incidentMessage)) {
+    } else if (flags.incidentMessage.length > 0) {
       incidentTitle = `${flags.service} - ${flags.incidentMessage}`
 
       dedupKey = md5(incidentTitle)
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
       incidentBody += `Dedup Key: ${dedupKey} \n`
-      incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}`//
+      incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}`
+    } else {
+      this.log('ERROR: Please provide either sourcePath or incidentMessage')
+      this.exit(1)
     }
 
     if (flags.forceSuccess) {
