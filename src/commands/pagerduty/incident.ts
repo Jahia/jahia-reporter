@@ -171,7 +171,7 @@ class JahiaPagerDutyIncident extends Command {
     const assignees: string[] = flags.pdUserId.split(',').filter((a: string) => a.length > 4)
     let pagerDutyServiceId = flags.pdServiceId
     if (flags.googleSpreadsheetId !== '') {
-      this.log(`Fetching data from Google Spreasheet ${flags.googleSpreadsheetId}`)
+      this.log(`Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`)
       const doc = new GoogleSpreadsheet(flags.googleSpreadsheetId)
       await doc.useServiceAccountAuth({
         client_email: flags.googleClientEmail,
@@ -206,6 +206,8 @@ class JahiaPagerDutyIncident extends Command {
           }
         }
       }
+    } else {
+      this.log('Google Spreadsheet ID has not been set')
     }
 
     let firstAssignees = assignees
