@@ -20,6 +20,10 @@ class JahiaPagerDutyIncident extends Command {
       description: 'A string containing an incident message',
       default: '',
     }),
+    incidentDetailsPath: flags.string({
+      description: 'A file containing the details about the incident',
+      default: '',
+    }),
     sourcePath: flags.string({
       description: 'A json/xml report or a folder containing one or multiple json/xml reports',
       default: '',
@@ -144,11 +148,14 @@ class JahiaPagerDutyIncident extends Command {
       })
     } else if (flags.incidentMessage.length > 0) {
       incidentTitle = `${flags.service} - ${flags.incidentMessage}`
-
       dedupKey = md5(incidentTitle)
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
       incidentBody += `Dedup Key: ${dedupKey} \n`
-      incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}`
+
+      if (flags.incidentDetailsPath !== '' && fs.existsSync(flags.incidentDetailsPath)) {
+        const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
+        incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
+      }
     } else {
       this.log('ERROR: Please provide either sourcePath or incidentMessage')
       this.exit(1)
