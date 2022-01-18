@@ -16,9 +16,17 @@ class JahiaPagerDutyIncident extends Command {
     // add --version flag to show CLI version
     version: flags.version({char: 'v'}),
     help: flags.help({char: 'h'}),
+    incidentMessage: flags.string({
+      description: 'A string containing an incident message',
+      default: '',
+    }),
+    incidentDetailsPath: flags.string({
+      description: 'A file containing the details about the incident',
+      default: '',
+    }),
     sourcePath: flags.string({
       description: 'A json/xml report or a folder containing one or multiple json/xml reports',
-      required: true,
+      default: '',
     }),
     sourceType: flags.string({
       char: 't',                                // shorter flag version
@@ -102,7 +110,7 @@ class JahiaPagerDutyIncident extends Command {
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
-    if (fs.existsSync(flags.sourcePath)) {
+    if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
     // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
       testFailures = jrRun.failures
@@ -138,6 +146,19 @@ class JahiaPagerDutyIncident extends Command {
           })
         })
       })
+    } else if (flags.incidentMessage.length > 0) {
+      incidentTitle = `${flags.service} - ${flags.incidentMessage}`
+      dedupKey = md5(incidentTitle)
+      incidentBody = `Source URL: ${flags.sourceUrl} \n`
+      incidentBody += `Dedup Key: ${dedupKey} \n`
+
+      if (flags.incidentDetailsPath !== '' && fs.existsSync(flags.incidentDetailsPath)) {
+        const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
+        incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
+      }
+    } else {
+      this.log('ERROR: Please provide either sourcePath or incidentMessage')
+      this.exit(1)
     }
 
     if (flags.forceSuccess) {
@@ -172,7 +193,7 @@ class JahiaPagerDutyIncident extends Command {
               assignees.push(assignee)
             }
           }
-          if (flags.googleUpdateState === true && row['CI/CD'] === 'Bamboo') {
+          if (flags.googleUpdateState && row['CI/CD'] === 'Bamboo') {
             this.log(`Updated state for: ${flags.service}`)
             if (testFailures > 0) {
               row.State = 'FAILED'
@@ -188,7 +209,7 @@ class JahiaPagerDutyIncident extends Command {
     }
 
     let firstAssignees = assignees
-    if (flags.pdTwoStepsAssign === true) {
+    if (flags.pdTwoStepsAssign) {
       firstAssignees = [flags.pdReporterId]
     }
 
@@ -222,9 +243,9 @@ class JahiaPagerDutyIncident extends Command {
 
     if (testFailures === 0) {
       this.log('There are 0 failures in the provided reports, not submitting an incident to pagerduty')
-    } else if (flags.dryRun === true) {
+    } else if (flags.dryRun) {
       this.log('DRYRUN: Data not submitted to PagerDuty')
-    } else if (assignees.length === 0 && flags.requireAssignee === true) {
+    } else if (assignees.length === 0 && flags.requireAssignee) {
       this.log('No assignees found, incident will not be created')
     } else if (pagerDutyNotifEnabled === false) {
       this.log('According to the Google Spreadsheet, notifications are current disabled for that service')
@@ -241,7 +262,7 @@ class JahiaPagerDutyIncident extends Command {
         // If assignees were not directly assigned, they now get assigned by updating the incident.
         // As of Nov 17, 2021, PagerDuty does not `@user` assignee in slack when incident is created.
         // But it does notify users when incident is reassigned, thus this second call to handle it.
-        if (flags.pdTwoStepsAssign === true) {
+        if (flags.pdTwoStepsAssign) {
           const updatePayload = {
             incident: {
               type: 'incident',
