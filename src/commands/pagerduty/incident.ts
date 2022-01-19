@@ -170,8 +170,10 @@ class JahiaPagerDutyIncident extends Command {
     // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
     const assignees: string[] = flags.pdUserId.split(',').filter((a: string) => a.length > 4)
     let pagerDutyServiceId = flags.pdServiceId
-    if (flags.googleSpreadsheetId !== '') {
-      this.log(`Fetching data from Google Spreasheet ${flags.googleSpreadsheetId}`)
+    if (flags.googleSpreadsheetId === '') {
+      this.log('Google Spreadsheet ID has not been set')
+    } else {
+      this.log(`Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`)
       const doc = new GoogleSpreadsheet(flags.googleSpreadsheetId)
       await doc.useServiceAccountAuth({
         client_email: flags.googleClientEmail,
