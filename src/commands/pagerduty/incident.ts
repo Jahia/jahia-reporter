@@ -110,7 +110,11 @@ class JahiaPagerDutyIncident extends Command {
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
-    if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
+    if (flags.sourcePath !== '') {
+      if (!fs.existsSync(flags.sourcePath)) {
+        this.log(`ERROR: The following path does not exist: ${flags.sourcePath}`)
+        this.exit(1)        
+      }
     // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
       testFailures = jrRun.failures
