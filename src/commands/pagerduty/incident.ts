@@ -199,7 +199,7 @@ class JahiaPagerDutyIncident extends Command {
               assignees.push(assignee)
             }
           }
-          if (flags.googleUpdateState && row['CI/CD'] === 'Bamboo') {
+          if (flags.googleUpdateState && (row['CI/CD'] === 'Bamboo' || row['CI/CD'] === 'GitHub')) {
             this.log(`Updated state for: ${flags.service}`)
             if (testFailures > 0) {
               row.State = 'FAILED'
