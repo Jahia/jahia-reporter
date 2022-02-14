@@ -110,12 +110,8 @@ class JahiaPagerDutyIncident extends Command {
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
-    if (flags.sourcePath !== '') {
-      if (!fs.existsSync(flags.sourcePath)) {
-        this.log(`ERROR: The following path does not exist: ${flags.sourcePath}`)
-        this.exit(1)        
-      }
-    // Parse files into objects
+    if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
+      // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
       testFailures = jrRun.failures
       // eslint-disable-next-line no-console
@@ -150,6 +146,12 @@ class JahiaPagerDutyIncident extends Command {
           })
         })
       })
+    } else if (!fs.existsSync(flags.sourcePath)) {
+      incidentTitle = `${flags.service} - Tests not executed`
+      dedupKey = md5(incidentTitle)
+      incidentBody = `Source URL: ${flags.sourceUrl} \n`
+      incidentBody += `Dedup Key: ${dedupKey} \n`
+      incidentBody += `Test error: The following path does not exist: ${flags.sourcePath}`
     } else if (flags.incidentMessage.length > 0) {
       incidentTitle = `${flags.service} - ${flags.incidentMessage}`
       dedupKey = md5(incidentTitle)
