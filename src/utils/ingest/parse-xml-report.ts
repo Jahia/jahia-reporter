@@ -5,10 +5,14 @@ import {basename} from 'path'
 // Format individual test cases
 const buildTest = (xmlTests: any) => {
   return xmlTests.map((t: any) => {
+    let status = t.elements === undefined ? 'PASS' : 'FAIL'
+    if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'system-out') {
+      status = 'PASS'
+    }
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),
-      status: t.elements === undefined ? 'PASS' : 'FAIL',
+      status: status,
       failures: t.elements === undefined ? [] : t.elements.map((f: any) => {
         return JSON.stringify(f.elements)
       }),
