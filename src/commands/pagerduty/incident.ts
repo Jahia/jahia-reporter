@@ -110,7 +110,18 @@ class JahiaPagerDutyIncident extends Command {
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
-    if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
+    if (flags.incidentMessage.length > 0) {
+      // This is used to send a message not necessarily related to tests, for example if a build or publish workflow failed on a primary branch
+      incidentTitle = `${flags.service} - ${flags.incidentMessage}`
+      dedupKey = md5(incidentTitle)
+      incidentBody = `Source URL: ${flags.sourceUrl} \n`
+      incidentBody += `Dedup Key: ${dedupKey} \n`
+
+      if (flags.incidentDetailsPath !== '' && fs.existsSync(flags.incidentDetailsPath)) {
+        const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
+        incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
+      }
+    } else if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
       // Parse files into objects
       const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
       testFailures = jrRun.failures
@@ -152,16 +163,6 @@ class JahiaPagerDutyIncident extends Command {
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
       incidentBody += `Dedup Key: ${dedupKey} \n`
       incidentBody += `Test error: The following path does not exist: ${flags.sourcePath}`
-    } else if (flags.incidentMessage.length > 0) {
-      incidentTitle = `${flags.service} - ${flags.incidentMessage}`
-      dedupKey = md5(incidentTitle)
-      incidentBody = `Source URL: ${flags.sourceUrl} \n`
-      incidentBody += `Dedup Key: ${dedupKey} \n`
-
-      if (flags.incidentDetailsPath !== '' && fs.existsSync(flags.incidentDetailsPath)) {
-        const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
-        incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
-      }
     } else {
       this.log('ERROR: Please provide either sourcePath or incidentMessage')
       this.exit(1)
