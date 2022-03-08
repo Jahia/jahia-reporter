@@ -169,7 +169,7 @@ class JahiaPagerDutyIncident extends Command {
 
     if (flags.forceSuccess) {
       // The script has been forced to success
-      this.log(`The script has been forced to success, the actual failure cound was: ${testFailures}`)
+      this.log(`The script has been forced to success, the actual failure found was: ${testFailures}`)
       testFailures = 0
     }
 
