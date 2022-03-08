@@ -121,7 +121,7 @@ class JahiaPagerDutyIncident extends Command {
         const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
         incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
       }
-    } else if (flags.sourcePath !== '') {
+    } else if (flags.sourcePath.length > 0) {
       if (fs.existsSync(flags.sourcePath)) {
         // Parse files into objects
         const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
