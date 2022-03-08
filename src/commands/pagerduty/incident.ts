@@ -121,48 +121,50 @@ class JahiaPagerDutyIncident extends Command {
         const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
         incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
       }
-    } else if (flags.sourcePath !== '' && fs.existsSync(flags.sourcePath)) {
-      // Parse files into objects
-      const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
-      testFailures = jrRun.failures
-      // eslint-disable-next-line no-console
-      console.log(jrRun)
+    } else if (flags.sourcePath !== '') {
+      if (fs.existsSync(flags.sourcePath)) {
+        // Parse files into objects
+        const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+        testFailures = jrRun.failures
+        // eslint-disable-next-line no-console
+        console.log(jrRun)
 
-      // Generate dedup key by collecting all testnames
-      const tests: string[] = []
-      for (const report of jrRun.reports) {
-        for (const testsuite of report.testsuites) {
-          for (const test of testsuite.tests) {
-            tests.push(`${report.name}-${testsuite.name}-${test.name}`)
+        // Generate dedup key by collecting all testnames
+        const tests: string[] = []
+        for (const report of jrRun.reports) {
+          for (const testsuite of report.testsuites) {
+            for (const test of testsuite.tests) {
+              tests.push(`${report.name}-${testsuite.name}-${test.name}`)
+            }
           }
         }
-      }
-      const sortedTests = tests.sort()
+        const sortedTests = tests.sort()
 
-      incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests}`
+        incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests}`
 
-      dedupKey = md5(incidentTitle + JSON.stringify(sortedTests))
+        dedupKey = md5(incidentTitle + JSON.stringify(sortedTests))
 
-      incidentBody = `Source URL: ${flags.sourceUrl} \n`
-      incidentBody += `Dedup Key: ${dedupKey} \n`
-      incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
-      const failedReports = jrRun.reports.filter(r => r.failures > 0)
-      failedReports.forEach(failedReport => {
-        const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-        failedSuites.forEach(failedSuite => {
-          incidentBody += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-          const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-          failedTests.forEach(failedTest => {
-            incidentBody += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+        incidentBody = `Source URL: ${flags.sourceUrl} \n`
+        incidentBody += `Dedup Key: ${dedupKey} \n`
+        incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
+        const failedReports = jrRun.reports.filter(r => r.failures > 0)
+        failedReports.forEach(failedReport => {
+          const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
+          failedSuites.forEach(failedSuite => {
+            incidentBody += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
+            const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+            failedTests.forEach(failedTest => {
+              incidentBody += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+            })
           })
         })
-      })
-    } else if (!fs.existsSync(flags.sourcePath)) {
-      incidentTitle = `${flags.service} - Tests not executed`
-      dedupKey = md5(incidentTitle)
-      incidentBody = `Source URL: ${flags.sourceUrl} \n`
-      incidentBody += `Dedup Key: ${dedupKey} \n`
-      incidentBody += `Test error: The following path does not exist: ${flags.sourcePath}`
+      } else {
+        incidentTitle = `${flags.service} - Tests not executed`
+        dedupKey = md5(incidentTitle)
+        incidentBody = `Source URL: ${flags.sourceUrl} \n`
+        incidentBody += `Dedup Key: ${dedupKey} \n`
+        incidentBody += `Test error: The following path does not exist: ${flags.sourcePath}`
+      }
     } else {
       this.log('ERROR: Please provide either sourcePath or incidentMessage')
       this.exit(1)
