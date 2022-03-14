@@ -9,6 +9,9 @@ const buildTest = (xmlTests: any) => {
     if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'system-out') {
       status = 'PASS'
     }
+    if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'skipped') {
+      status = 'SKIP'
+    }
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),

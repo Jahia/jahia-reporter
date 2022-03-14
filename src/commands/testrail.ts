@@ -6,6 +6,10 @@ import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
 
+interface TestWithStatus extends Test {
+  status: string;
+}
+
 class JahiaTestrailReporter extends Command {
   static description = 'Submit data about a junit/mocha report to TestRail'
 
@@ -89,22 +93,22 @@ class JahiaTestrailReporter extends Command {
 
     // Parse files into objects
     const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
-    const tests: Test[] = []
+    const tests: TestWithStatus[] = []
     for (const report of jrRun.reports) {
+      this.log(`- Analyzed report: ${report.name}`)
       for (const testsuite of report.testsuites) {
+        this.log(`   |- Analyzed suite: ${testsuite.name}`)
         for (const test of testsuite.tests) {
           if (!test.name.includes('hook for')) {
             const sectionName = testsuite.name.includes('(') ? testsuite.name.substring(0, testsuite.name.indexOf('(') - 1) : testsuite.name
             const testName = test.name.includes(sectionName) ?
               test.name.substring(sectionName.length + 1) :
               test.name
-            const testToPush: Test = {section: sectionName.trim(), title: testName.trim(), time: test.time.toString(), steps: test.steps}
+            const testToPush: TestWithStatus = {section: sectionName.trim(), title: testName.trim(), time: test.time.toString(), steps: test.steps, status: test.status}
             if (test.failures.length > 0) {
               testToPush.comment = test.failures.map((f: JRTestfailure) => f.text).join() || test.failures.join()
-            } else if (test.status === 'FAIL') {
-              testToPush.comment = 'Test has failed but not failure messages were provided.'
             }
-            this.log(`Analyzed test: ${test.name} - Status: ${test.status}`)            
+            this.log(`   |    |- Analyzed test: ${test.name} - Status: ${test.status}`)
             tests.push(testToPush)
           }
         }
@@ -248,12 +252,18 @@ class JahiaTestrailReporter extends Command {
         this.error(`Something unexpected happened. Test ${test.title} does not have an ID.`)
       } else {
         // If there's a comment argument on the object it means the test failed.
-        const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
+        let status_id: Status = 5
+        if (test.status === 'PASS') {
+          status_id = 1
+        } else if (test.status === 'SKIP') {
+          status_id = 3
+        }
+        // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
         const testResult: TestRailResult = {case_id: test.id, elapsed: test.time, status_id: status_id, version: flags.jahiaVersion}
         if (status_id === Status.Failed) {
           testResult.comment = test.comment
         }
-        this.log(`Added result: ${JSON.stringify(testResult)}`)
+        this.log(`Puhsing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`)
         results.push(testResult)
       }
     }
