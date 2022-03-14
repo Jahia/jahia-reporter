@@ -101,7 +101,10 @@ class JahiaTestrailReporter extends Command {
             const testToPush: Test = {section: sectionName.trim(), title: testName.trim(), time: test.time.toString(), steps: test.steps}
             if (test.failures.length > 0) {
               testToPush.comment = test.failures.map((f: JRTestfailure) => f.text).join() || test.failures.join()
+            } else if (test.status === 'FAIL') {
+              testToPush.comment = 'Test has failed but not failure messages were provided.'
             }
+            this.log(`Analyzed test: ${test.title} - Status: ${test.status}`)            
             tests.push(testToPush)
           }
         }
@@ -245,9 +248,7 @@ class JahiaTestrailReporter extends Command {
         this.error(`Something unexpected happened. Test ${test.title} does not have an ID.`)
       } else {
         // If there's a comment argument on the object it means the test failed.
-        // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
-        const status_id: Status = test.status === 'PASS' ? Status.Passed : Status.Failed
-        this.log(`Test: ${test.title} - Status: ${test.status} (${status_id})`)
+        const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
         const testResult: TestRailResult = {case_id: test.id, elapsed: test.time, status_id: status_id, version: flags.jahiaVersion}
         if (status_id === Status.Failed) {
           testResult.comment = test.comment
