@@ -104,7 +104,7 @@ class JahiaTestrailReporter extends Command {
             } else if (test.status === 'FAIL') {
               testToPush.comment = 'Test has failed but not failure messages were provided.'
             }
-            this.log(`Analyzed test: ${test.title} - Status: ${test.status}`)            
+            this.log(`Analyzed test: ${test.name} - Status: ${test.status}`)            
             tests.push(testToPush)
           }
         }
