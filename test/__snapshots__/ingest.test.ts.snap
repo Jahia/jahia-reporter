@@ -6641,7 +6641,7 @@ Object {
                 undefined,
               ],
               "name": "testFormDisplayInLive",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6650,7 +6650,7 @@ Object {
                 undefined,
               ],
               "name": "testFormResults",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6659,7 +6659,7 @@ Object {
                 undefined,
               ],
               "name": "testAddNewStep",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6668,7 +6668,7 @@ Object {
                 undefined,
               ],
               "name": "testCreateFormInBuilder",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6677,7 +6677,7 @@ Object {
                 undefined,
               ],
               "name": "testPublishForm",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6686,7 +6686,7 @@ Object {
                 undefined,
               ],
               "name": "testAddElementWithLogics",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6695,7 +6695,7 @@ Object {
                 undefined,
               ],
               "name": "testSearchFormInLibrary",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
             Object {
@@ -6713,7 +6713,7 @@ Object {
                 undefined,
               ],
               "name": "testAddElementWithValidation",
-              "status": "FAIL",
+              "status": "SKIP",
               "time": 0,
             },
           ],
