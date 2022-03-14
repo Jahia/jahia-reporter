@@ -245,7 +245,9 @@ class JahiaTestrailReporter extends Command {
         this.error(`Something unexpected happened. Test ${test.title} does not have an ID.`)
       } else {
         // If there's a comment argument on the object it means the test failed.
-        const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
+        // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
+        const status_id: Status = test.status === 'PASS' ? Status.Passed : Status.Failed
+        this.log(`Test: ${test.title} - Status: ${test.status} (${status_id})`)
         const testResult: TestRailResult = {case_id: test.id, elapsed: test.time, status_id: status_id, version: flags.jahiaVersion}
         if (status_id === Status.Failed) {
           testResult.comment = test.comment
