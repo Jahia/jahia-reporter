@@ -256,7 +256,9 @@ class JahiaTestrailReporter extends Command {
         if (test.status === 'PASS') {
           status_id = 1
         } else if (test.status === 'SKIP') {
-          status_id = 3
+          // Passing status "blocked" since `3: Untested ` is not supported
+          // See: https://www.gurock.com/testrail/docs/api/reference/results/#addresult
+          status_id = 2
         }
         // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
         const testResult: TestRailResult = {case_id: test.id, elapsed: test.time, status_id: status_id, version: flags.jahiaVersion}
