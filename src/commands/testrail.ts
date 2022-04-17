@@ -334,12 +334,12 @@ class JahiaTestrailReporter extends Command {
     } else {
       run = testrail.addRun(testrailProject.id, newRun)
       this.log(
-        `Created test run ${run.id.toString()} (https://jahia.testrail.net/index.php?/runs/view/${flags.run.id.toString()})`,
+        `Created test run ${run.id.toString()} (https://jahia.testrail.net/index.php?/runs/view/${run.id.toString()})`,
       )
       if (flags.linkRunFile !== '') {
         fs.writeFileSync(
           flags.linkRunFile,
-          `https://jahia.testrail.net/index.php?/runs/view/${flags.run.id.toString()}`,
+          `https://jahia.testrail.net/index.php?/runs/view/${run.id.toString()}`,
         )
       }
     }
