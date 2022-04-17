@@ -25,7 +25,12 @@ const parseFile = (reportType: string, filePath: string) => {
 
   Note: It is necessary to supply a reportType to cover scenario in which a folder would contain both json and xml
 */
-const ingestReport = async (reportType: string, reportFilePath: string, log: any) => {
+const ingestReport = async (
+  reportType: string,
+  reportFilePath: string,
+  log: any,
+  silent = false,
+) => {
   const supportedFormats = ['json', 'xml', 'json-perf']
   let reportFiles: string[] = []
   if (!supportedFormats.includes(reportType)) {
@@ -45,13 +50,19 @@ const ingestReport = async (reportType: string, reportFilePath: string, log: any
 
   // Created an array of report files for further processing
   if (lstatSync(reportFilePath).isDirectory()) {
-    log(`${reportFilePath} is a folder. Looking for report files:`)
+    if (silent !== true) {
+      log(`${reportFilePath} is a folder. Looking for report files:`)
+    }
     reportFiles = glob.sync(reportFilePath + '/**/*.' + reportType, {})
     if (reportFiles.length > 0) {
-      log(reportFiles.join('\r\n'))
+      if (silent !== true) {
+        log(reportFiles.join('\r\n'))
+      }
     }
   } else if (lstatSync(reportFilePath).isFile()) {
-    log(`${reportFilePath} is a file`)
+    if (silent !== true) {
+      log(`${reportFilePath} is a file`)
+    }
     const fileExtension: string | undefined = reportFilePath.split('.').pop()
     if (fileExtension === undefined) {
       log('Unable to detect file extension')
