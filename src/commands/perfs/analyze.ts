@@ -133,10 +133,6 @@ class JahiaAnalyzePerfsReporter extends Command {
         }
       }
     }
-    this.log('The following values were failing threshold:')
-    for (const error of analysisReport.filter(a => a.error === true)) {
-      this.log(`ERROR: run: ${error.run}, transaction: ${error.transaction}, metric: ${error.metric} is failing threshold => Value: ${error.runValue} (Operator: ${error.comparator}) Threshold: ${error.thresholdValue}`)
-    }
 
     if (flags.reportFile !== '') {
       this.log(`Saving report to: ${flags.reportFile}`)
@@ -146,7 +142,12 @@ class JahiaAnalyzePerfsReporter extends Command {
       )
     }
 
-    if (analysisReport.length > 0) {
+    if (analysisReport.filter(a => a.error === true).length > 0) {
+      this.log('The following values were failing threshold:')
+      for (const error of analysisReport.filter(a => a.error === true)) {
+        this.log(`ERROR: run: ${error.run}, transaction: ${error.transaction}, metric: ${error.metric} is failing threshold => Value: ${error.runValue} (Operator: ${error.comparator}) Threshold: ${error.thresholdValue}`)
+      }
+      this.log('Exiting with exit code: 1 (failed)')
       this.exit(1)
     }
   }
