@@ -89,7 +89,11 @@ class JahiaAnalyzePerfsReporter extends Command {
         this.log(`Skipping analysis for run: ${run.name} - No threshold found`)
       } else {
         this.log(`Analyzing run: ${run.name}, using threshold: ${threshold.name}`)
-        for (const runStat of Object.values(run.statistics)) {
+        for (let runStat of Object.values(run.statistics)) {
+          // Added a check to handle new format for the statistics object used on core-perf-tests
+          if (runStat.transaction === undefined) {
+            runStat = Object.values(runStat)[0]
+          }
           const statThreshold = getTransactionThreshold(runStat.transaction, threshold.transactions)
           if (statThreshold === undefined) {
             this.log(`Skipping analysis for run: ${run.name}, transaction: ${runStat.transaction} - No threshold found`)
