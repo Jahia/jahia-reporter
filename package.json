@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/Jahia/jahia-reporter/issues",
   "dependencies": {
+    "browser-or-node": "2.0.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
@@ -51,6 +52,14 @@
     "nyc": "^14",
     "ts-jest": "^27.0.7"
   },
+  "overrides": {
+    "@pagerduty/pdjs": {
+      "browser-or-node": "2.0.0"
+    }
+  },
+  "resolutions": {
+    "browser-or-node": "2.0.0"
+  },  
   "engines": {
     "node": ">=8.10.0"
   },
