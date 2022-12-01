@@ -51,9 +51,11 @@
     "nyc": "^14",
     "ts-jest": "^27.0.7"
   },
-  "resolutions": {
-    "*/**/browser-or-node": "2.0.0"
-  },  
+  "overrides": {
+    "@pagerduty/pdjs": {
+      "browser-or-node": "2.0.0"
+    }
+  },
   "engines": {
     "node": ">=8.10.0"
   },
