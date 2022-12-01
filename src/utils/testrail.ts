@@ -16,9 +16,10 @@ export class TestRailClient {
       this.base = base
       this.username = username
       this.password = password
-      if (this.base.substr(-1) !== '/') {
+      if (this.base.slice(-1) !== '/') {
         this.base += '/'
       }
+
       this.url = this.base + 'index.php?/api/v2/'
     }
 
@@ -27,6 +28,7 @@ export class TestRailClient {
       if (projectsObject.size > 0) {
         return projectsObject.projects as Project[]
       }
+
       throw new Error("Something went wrong. Can't find any project")
     }
 
@@ -39,6 +41,7 @@ export class TestRailClient {
       if (milestonesObject.size > 0) {
         return milestonesObject.milestones as Milestone[]
       }
+
       return []
       // throw new Error("Something went wrong. Can't find any milestone")
     }
@@ -52,6 +55,7 @@ export class TestRailClient {
       if (sectionsObject.size > 0) {
         return sectionsObject.sections as Section[]
       }
+
       return []
       // throw new Error("Something went wrong. Can't find any section")
     }
@@ -65,6 +69,7 @@ export class TestRailClient {
       if (casesObject.size > 0) {
         return casesObject.cases as Test[]
       }
+
       return []
       // throw new Error("Something went wrong. Can't find any test case")
     }
@@ -93,10 +98,12 @@ export class TestRailClient {
       if (this.caseFields.length === 0) {
         this.caseFields = this.getCaseFields()
       }
+
       const versionField = this.caseFields.find(field => field.system_name === 'custom_version')
       if (versionField === undefined) {
         throw new Error("Something went wrong. Can't find custom field 'custom_version'")
       }
+
       // the returned items look like this:
       // 1, 7.2.0.0\n 2, 7.1.2.2\n....
       const listOfCustomVersion = versionField.configs[0].options.items.split('\n')
@@ -104,6 +111,7 @@ export class TestRailClient {
       if (foundVersion === undefined) {
         throw new Error(`Something went wrong. Can't find custom status ${status}`)
       }
+
       return [Number(foundVersion.split(',')[0])]
     }
 
@@ -111,10 +119,12 @@ export class TestRailClient {
       if (this.caseFields.length === 0) {
         this.caseFields = this.getCaseFields()
       }
+
       const statusField = this.caseFields.find(field => field.system_name === 'custom_status')
       if (statusField === undefined) {
         throw new Error("Something went wrong. Can't find custom field 'custom_status'")
       }
+
       // the returned items look like this:
       // "1, Incomplete/draft\n2, Complete\n3, In progress\n4, Needs to be checked/reworked
       const listOfCustomStatus = statusField.configs[0].options.items.split('\n')
@@ -122,6 +132,7 @@ export class TestRailClient {
       if (foundStatus === undefined) {
         throw new Error(`Something went wrong. Can't find custom status ${status}`)
       }
+
       return Number(foundStatus.split(',')[0])
     }
 
@@ -138,6 +149,7 @@ export class TestRailClient {
             .addHeader('Content-Type', 'application/json')
             .get(url)
           }
+
           if (method === 'POST') {
             return new SyncRequestClient()
             .addHeader('Authorization', 'Basic ' + auth)
@@ -148,7 +160,7 @@ export class TestRailClient {
           if (error.statusCode === 429) {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)
-            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90000)
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90_000)
           } else {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri} with data ${JSON.stringify(data, null, 4)}:\n${(error as Error).message}`)

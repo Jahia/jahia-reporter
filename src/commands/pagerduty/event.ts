@@ -64,6 +64,7 @@ class JahiaPagerDutyEvent extends Command {
         }
       }
     }
+
     const sortedTests = tests.sort()
     const dedupKey = `testshash_${md5(JSON.stringify(sortedTests))}`
 

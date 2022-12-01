@@ -1,6 +1,6 @@
 /* eslint max-depth: ["error", 5] */
 import {Command, flags} from '@oclif/command'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 import {TestRailClient} from '../utils/testrail'
 import {
   Project,
@@ -123,10 +123,10 @@ class JahiaTestrailReporter extends Command {
         for (const test of testsuite.tests) {
           if (!test.name.includes('hook for')) {
             const sectionName = testsuite.name.includes('(') ?
-              testsuite.name.substring(0, testsuite.name.indexOf('(') - 1) :
+              testsuite.name.slice(0, Math.max(0, testsuite.name.indexOf('(') - 1)) :
               testsuite.name
             const testName = test.name.includes(sectionName) ?
-              test.name.substring(sectionName.length + 1) :
+              test.name.slice(Math.max(0, sectionName.length + 1)) :
               test.name
             const testToPush: TestWithStatus = {
               section: sectionName.trim(),
@@ -137,9 +137,10 @@ class JahiaTestrailReporter extends Command {
             }
             if (test.failures.length > 0) {
               testToPush.comment =
-                test.failures.map((f: JRTestfailure) => f.text).join() ||
-                test.failures.join()
+                test.failures.map((f: JRTestfailure) => f.text).join(',') ||
+                test.failures.join(',')
             }
+
             this.log(
               `   |    |- Analyzed test: ${test.name} - Status: ${test.status}`,
             )
@@ -165,6 +166,7 @@ class JahiaTestrailReporter extends Command {
     } else {
       testrailProject as Project
     }
+
     // Get the testrail suite
     this.log(`Get all suites for project ${testrailProject.id}`)
     const testrailSuite = testrail
@@ -177,6 +179,7 @@ class JahiaTestrailReporter extends Command {
     } else {
       testrailSuite as Suite
     }
+
     // Get parent section from test rail if parent_section was set
     this.log(
       `Get all sections for project: ${testrailProject.id} and suite: ${testrailSuite.id}`,
@@ -215,6 +218,7 @@ class JahiaTestrailReporter extends Command {
         milestone.id :
         testrail.addMilestone(testrailProject.id, flags.milestone).id
     }
+
     this.log(`Using milestone ${flags.milestone} with id: ${milestone_id}`)
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
@@ -272,6 +276,7 @@ class JahiaTestrailReporter extends Command {
         )
       }
     }
+
     // Go over the executed tests and make sure they all exist in the list we just got from TestRail
     for (const test of tests) {
       if (flags.skip) {
@@ -298,6 +303,7 @@ class JahiaTestrailReporter extends Command {
               expected: '',
             })
           }
+
           // Find the section ID of that that test belongs to
           const section = executedSections.find(
             section => section.name === test.section,
@@ -361,6 +367,7 @@ class JahiaTestrailReporter extends Command {
           // See: https://www.gurock.com/testrail/docs/api/reference/results/#addresult
           status_id = 2
         }
+
         // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
         const testResult: TestRailResult = {
           case_id: test.id,
@@ -371,6 +378,7 @@ class JahiaTestrailReporter extends Command {
         if (status_id === Status.Failed) {
           testResult.comment = test.comment
         }
+
         this.log(
           `Puhsing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`,
         )
@@ -385,6 +393,7 @@ class JahiaTestrailReporter extends Command {
     } else {
       testrail.addResults(run.id, results)
     }
+
     this.log('Closing test run')
     if (!flags.skip) {
       testrail.closeRun(run.id)

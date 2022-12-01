@@ -1,5 +1,5 @@
 import {JRReport, JRRun} from '../../global.type'
-import {basename} from 'path'
+import {basename} from 'node:path'
 
 /* eslint-disable max-depth */
 // Format individual test cases
@@ -9,9 +9,11 @@ const buildTest = (xmlTests: any) => {
     if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'system-out') {
       status = 'PASS'
     }
+
     if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'skipped') {
       status = 'SKIP'
     }
+
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),
@@ -50,14 +52,10 @@ export const parseXML = (rawReports: any[]): JRRun => {
   .reduce((acc: any, rawContent: any) => {
     const parsedReport: any = rawContent.content.elements
     // Don't process suites if there are no tests
-    .filter((i: any) => i.attributes.tests !== undefined && parseInt(i.attributes.tests, 10) > 0)
+    .filter((i: any) => i.attributes.tests !== undefined && Number.parseInt(i.attributes.tests, 10) > 0)
     .map((i: any) => {
       let testsuites = []
-      if (i.name === 'testsuite' || i.name === 'suite') {
-        testsuites = buildSuites([i], basename(rawContent.filepath))
-      } else {
-        testsuites = buildSuites(i.elements, basename(rawContent.filepath))
-      }
+      testsuites = i.name === 'testsuite' || i.name === 'suite' ? buildSuites([i], basename(rawContent.filepath)) : buildSuites(i.elements, basename(rawContent.filepath))
       const report = {
         ...i.attributes,
         name: i.attributes.name === 'null' ? basename(rawContent.filepath) : i.attributes.name,

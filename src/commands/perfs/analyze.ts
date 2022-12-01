@@ -1,9 +1,9 @@
 /* eslint-disable complexity */
 /* eslint-disable max-depth */
 import {Command, flags} from '@oclif/command'
-import {readFileSync} from 'fs'
-import * as fs from 'fs'
-import * as path from 'path'
+import {readFileSync} from 'node:fs'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
 import {JMeterExec, JMeterThresholds, JMeterTRunTransaction, JMeterRunTransaction, JMeterExecAnalysisReport} from '../../global.type'
 
@@ -94,6 +94,7 @@ class JahiaAnalyzePerfsReporter extends Command {
           if (runStat.transaction === undefined) {
             runStat = Object.values(runStat)[0]
           }
+
           const statThreshold = getTransactionThreshold(runStat.transaction, threshold.transactions)
           if (statThreshold === undefined) {
             this.log(`Skipping analysis for run: ${run.name}, transaction: ${runStat.transaction} - No threshold found`)
@@ -119,11 +120,10 @@ class JahiaAnalyzePerfsReporter extends Command {
                   if (runValue < thresholdValue) {
                     thresholdError = true
                   }
-                } else if (thresholdValue !== undefined && comp.comparator === 'lte') {
-                  if (runValue <= thresholdValue) {
-                    thresholdError = true
-                  }
+                } else if (thresholdValue !== undefined && comp.comparator === 'lte' && runValue <= thresholdValue) {
+                  thresholdError = true
                 }
+
                 if (thresholdError) {
                   this.log(`ERROR: run: ${run.name}, transaction: ${runStat.transaction}, metric: ${comp.metric} is failing threshold => Value: ${runValue} (Operator: ${comp.comparator}) Threshold: ${thresholdValue}`)
                   analysisReport.push({error: true, run: run.name, transaction: runStat.transaction, metric: comp.metric, comparator: comp.comparator, runValue: runValue, thresholdValue: thresholdValue})
@@ -142,15 +142,16 @@ class JahiaAnalyzePerfsReporter extends Command {
       this.log(`Saving report to: ${flags.reportFile}`)
       fs.writeFileSync(
         path.join(flags.reportFile),
-        JSON.stringify(analysisReport)
+        JSON.stringify(analysisReport),
       )
     }
 
-    if (analysisReport.filter(a => a.error === true).length > 0) {
+    if (analysisReport.some(a => a.error === true)) {
       this.log('The following values were failing threshold:')
       for (const error of analysisReport.filter(a => a.error === true)) {
         this.log(`ERROR: run: ${error.run}, transaction: ${error.transaction}, metric: ${error.metric} is failing threshold => Value: ${error.runValue} (Operator: ${error.comparator}) Threshold: ${error.thresholdValue}`)
       }
+
       this.log('Exiting with exit code: 1 (failed)')
       this.exit(1)
     }

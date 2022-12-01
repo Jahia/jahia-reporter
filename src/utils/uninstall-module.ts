@@ -14,11 +14,12 @@ const uninstallModule = async (
   if (moduleKey.includes('SNAPSHOT')) {
     moduleKey = moduleKey.replace('-SNAPSHOT', '.SNAPSHOT')
   }
+
   let installResponse: any = {}
   try {
     installResponse = await axios.post(jahiaUrl + 'modules/api/bundles/org.jahia.modules/' + moduleKey + '/_uninstall', null, {
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      maxContentLength: Number.POSITIVE_INFINITY,
+      maxBodyLength: Number.POSITIVE_INFINITY,
       auth: {
         username: jahiaUsername,
         password: jahiaPassword,
@@ -29,9 +30,11 @@ const uninstallModule = async (
     console.log(error)
     exit(1)
   }
+
   if (installResponse.data !== undefined) {
     return installResponse.data.bundleInfos
   }
+
   // eslint-disable-next-line no-console
   console.log(`Unable to uninstall module: ${JSON.stringify(installResponse)}`)
   exit(1)

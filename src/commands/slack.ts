@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import {Command, flags} from '@oclif/command'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 import {UtilsVersions, JRTestsuite} from '../global.type'
 import ingestReport from '../utils/ingest'
 import {WebClient, LogLevel} from '@slack/web-api'
@@ -74,9 +74,10 @@ class JahiaSlackReporter extends Command {
   slackMsgForSuite(failedSuite: JRTestsuite) {
     let suiteMsg = `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
     const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-    failedTests.forEach(failedTest => {
+    for (const failedTest of failedTests) {
       suiteMsg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
-    })
+    }
+
     return suiteMsg
   }
 
@@ -134,11 +135,7 @@ class JahiaSlackReporter extends Command {
     if (flags.moduleFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.moduleFilepath)
       const version: UtilsVersions = JSON.parse(versionFile)
-      if (version.jahia.build === '') {
-        module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version})`
-      } else {
-        module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
-      }
+      module = version.jahia.build === '' ? `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version})` : `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version}-${version.jahia.build})`
       if (version.module.name === 'UNKNOWN') {
         msg = `Error in provisioning the test environment: ${flags.runUrl} \n`
         msg += 'The target module to be tested was not detected in Jahia'
@@ -154,16 +151,16 @@ class JahiaSlackReporter extends Command {
       if (failedReports.length > 1) {
         msg += ' - See the thread for more details\n```\n'
         const firstFailedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
-        firstFailedSuites.forEach(failedSuite => {
+        for (const failedSuite of firstFailedSuites) {
           msg += this.slackMsgForSuite(failedSuite)
-        })
+        }
 
         threadMsg += '```\n'
         for (let r = 1; r < failedReports.length; r++) {
           const nextFailedSuites = failedReports[r].testsuites.filter(s => s.failures > 0)
-          nextFailedSuites.forEach(failedSuite => {
+          for (const failedSuite of nextFailedSuites) {
             threadMsg += this.slackMsgForSuite(failedSuite)
-          })
+          }
         }
       } else if (failedReports.length === 1) {
         const failedSuites = failedReports[0].testsuites.filter(s => s.failures > 0)
@@ -186,7 +183,7 @@ class JahiaSlackReporter extends Command {
         msg += '```\n'
       }
 
-      if (flags.notify.length !== 0 && report.failures > 0) {
+      if (flags.notify.length > 0 && report.failures > 0) {
         msg += `${flags.notify}`
       }
 

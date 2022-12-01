@@ -1,17 +1,17 @@
 import {Command, flags} from '@oclif/command'
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
 import ingestReport from '../utils/ingest'
 import {UtilsVersions} from '../global.type'
 
-import * as crypto from 'crypto'
+import * as crypto from 'node:crypto'
 import {v5 as uuidv5} from 'uuid'
 
 import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type'
 
 const prepString = (s: string) => {
-  return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
+  return s.replace(/[^\dA-Za-z]/g, '').toLowerCase()
 }
 
 // This generate an unique id based on the combination the component and its dependencies
@@ -98,6 +98,7 @@ class JahiaTestrailReporter extends Command {
       } else {
         dependencies.push({name: 'Jahia', version: `${versions.jahia.version}-${versions.jahia.build}`})
       }
+
       dependencies = [...dependencies, ...versions.dependencies]
       version = versions.module.version
       name = versions.module.id

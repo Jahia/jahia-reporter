@@ -23,6 +23,7 @@ export const getJahiaVersion = (version: string) => {
   if (findVersion !== null) {
     jahiaVersion = findVersion[1]
   }
+
   if (jahiaVersion === 'UNKNOWN') {
     findVersion = version.match(/Jahia (.*) -/)
     if (findVersion !== null) {
@@ -49,6 +50,7 @@ const parseModuleManagerData = (response: any) => {
       modules.push({...value, id: ex[1], version: ex[2], name: ex[1]})
     }
   }
+
   return modules
 }
 
@@ -98,9 +100,11 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
         if (a.id < b.id) {
           return -1
         }
+
         if (a.id > b.id) {
           return 1
         }
+
         return 0
       }),
     }
@@ -130,9 +134,11 @@ export const getModules = (moduleId: string, dependencies: string[], jahiaUrl: s
         if (a.id < b.id) {
           return -1
         }
+
         if (a.id > b.id) {
           return 1
         }
+
         return 0
       }),
     }
