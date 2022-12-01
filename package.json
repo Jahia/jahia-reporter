@@ -10,7 +10,7 @@
   "dependencies": {
     "browser-or-node": "2.0.0",
     "@oclif/command": "^1",
-    "@oclif/config": "1.18.5",
+    "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@slack/web-api": "^6.3.0",
     "@pagerduty/pdjs": "^2.2.3",
