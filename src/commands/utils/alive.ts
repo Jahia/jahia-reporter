@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import {performance} from 'perf_hooks'
+import {performance} from 'node:perf_hooks'
 
 import waitAlive from '../../utils/wait-alive'
 
@@ -38,7 +38,7 @@ class JahiaUtilsAlive extends Command {
         0 :
         Math.round(Number.parseInt(flags.timeout, 10) * 1000)
     if (timeout === 0) {
-      timeout = 300000 // By default timeout, if specified, is a minimum of 300 seconds (5 minutes)
+      timeout = 300_000 // By default timeout, if specified, is a minimum of 300 seconds (5 minutes)
     }
 
     const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'

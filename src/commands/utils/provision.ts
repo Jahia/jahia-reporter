@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import {performance} from 'perf_hooks'
-import * as fs from 'fs'
+import {performance} from 'node:perf_hooks'
+import * as fs from 'node:fs'
 import axios from 'axios'
 
 class JahiaUtilsProvision extends Command {
@@ -50,8 +50,8 @@ class JahiaUtilsProvision extends Command {
         headers: {
           'Content-Type': flags.type === 'YAML' ? 'application/yaml' : 'application/json',
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
+        maxContentLength: Number.POSITIVE_INFINITY,
+        maxBodyLength: Number.POSITIVE_INFINITY,
         auth: {
           username: flags.jahiaUsername,
           password: flags.jahiaPassword,

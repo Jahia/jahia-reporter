@@ -1,11 +1,11 @@
 import {Command, flags} from '@oclif/command'
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {readFileSync} from 'fs'
+import {readFileSync} from 'node:fs'
 import * as gh from 'parse-github-url'
 import * as loadYamlFile from 'load-yaml-file'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import * as crypto from 'crypto'
+import * as crypto from 'node:crypto'
 
 class JahiaPerfsReporter extends Command {
   static description = '[DEPRECATED] Submit data about a junit/mocha report to ZenCrepes - use perfs:submit instead'

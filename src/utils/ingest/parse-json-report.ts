@@ -1,4 +1,4 @@
-import {basename} from 'path'
+import {basename} from 'node:path'
 
 import {JRRun, JRTestsuite, JRReport} from '../../global.type'
 
@@ -106,11 +106,12 @@ const mochaParser = (rawReports: any[]): JRRun => {
 
 // Take an array of junit json files, return a javascript representation of the files content
 export const parseJson = (rawReports: any[]): JRRun => {
-  if (rawReports.filter((rc: any) => rc.content.meta !== undefined).length > 0) {
+  if (rawReports.some((rc: any) => rc.content.meta !== undefined)) {
     // eslint-disable-next-line no-console
     console.log('Proceeding with mocha parser')
     return mochaParser(rawReports)
   }
+
   // eslint-disable-next-line no-console
   console.log('Proceeding with legacy parser')
   return legacyParser(rawReports)

@@ -1,7 +1,7 @@
 import cli from 'cli-ux'
 import {SyncRequestClient, SyncRequestOptions} from 'ts-sync-request/dist'
 import {exit} from '@oclif/errors'
-import {performance} from 'perf_hooks'
+import {performance} from 'node:perf_hooks'
 import {Base64} from 'js-base64'
 
 import {sleep} from './sleep'
@@ -12,6 +12,7 @@ const isAlive = (data: any) => {
   if (data.data === undefined || data.data === null || data.data.jcr.workspace !== 'EDIT') {
     return false
   }
+
   return true
 }
 
@@ -56,6 +57,7 @@ const checkStatus = async (
       // eslint-disable-next-line no-console
       console.log(error.message)
     }
+
     if (isAlive(data) === false) {
       await sleep(2000)
       const callDuration = performance.now() - callStart
@@ -81,6 +83,7 @@ const waitAlive = async (
     )
     exit()
   }
+
   return true
 }
 

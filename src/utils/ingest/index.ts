@@ -1,6 +1,6 @@
 import * as glob from 'glob'
-import {exit} from 'process'
-import {lstatSync, readFileSync} from 'fs'
+import {exit} from 'node:process'
+import {lstatSync, readFileSync} from 'node:fs'
 import * as xmljs from 'xml-js'
 
 import {parseXML} from './parse-xml-report'
@@ -13,9 +13,11 @@ const parseFile = (reportType: string, filePath: string) => {
   if (reportType === 'xml') {
     return xmljs.xml2js(rawFile, {ignoreComment: true})
   }
+
   if (reportType === 'json' || reportType === 'json-perf') {
     return JSON.parse(rawFile.toString())
   }
+
   return {}
 }
 
@@ -31,9 +33,9 @@ const ingestReport = async (
   log: any,
   silent = false,
 ) => {
-  const supportedFormats = ['json', 'xml', 'json-perf']
+  const supportedFormats = new Set(['json', 'xml', 'json-perf'])
   let reportFiles: string[] = []
-  if (!supportedFormats.includes(reportType)) {
+  if (!supportedFormats.has(reportType)) {
     log(`${reportType} is not a supported format`)
     exit(1)
   }
@@ -44,6 +46,7 @@ const ingestReport = async (
       const reportContent = parseFile(reportType, reportFilePath)
       return parseJsonPerf(reportContent)
     }
+
     log(`${reportFilePath} is not a valid file`)
     exit(1)
   }
@@ -53,25 +56,27 @@ const ingestReport = async (
     if (silent !== true) {
       log(`${reportFilePath} is a folder. Looking for report files:`)
     }
+
     reportFiles = glob.sync(reportFilePath + '/**/*.' + reportType, {})
-    if (reportFiles.length > 0) {
-      if (silent !== true) {
-        log(reportFiles.join('\r\n'))
-      }
+    if (reportFiles.length > 0 && silent !== true) {
+      log(reportFiles.join('\r\n'))
     }
   } else if (lstatSync(reportFilePath).isFile()) {
     if (silent !== true) {
       log(`${reportFilePath} is a file`)
     }
+
     const fileExtension: string | undefined = reportFilePath.split('.').pop()
     if (fileExtension === undefined) {
       log('Unable to detect file extension')
       exit(1)
     }
-    if (!supportedFormats.includes(fileExtension)) {
+
+    if (!supportedFormats.has(fileExtension)) {
       log(`${fileExtension} is not a supported format`)
       exit(1)
     }
+
     reportFiles.push(reportFilePath)
   }
 

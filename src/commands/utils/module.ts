@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command'
-import {performance} from 'perf_hooks'
-import * as fs from 'fs'
+import {performance} from 'node:perf_hooks'
+import * as fs from 'node:fs'
 
 import installModule from '../../utils/install-module'
 import uninstallModule from '../../utils/uninstall-module'
@@ -63,7 +63,7 @@ class JahiaUtilsModule extends Command {
       // So we first inatll the module, then look for any previously version that might still be present, then uninstall these previous version.
       // For some obscure reasons, the version returned by module manager is different from the version returned by the install payload (. instead of -)
       // Stripping all non-alphanumerical characters for the comparison
-      const otherVersionsSameModule = installedModules.allModules.filter((m: { id: string; version: string }) => m.id === flags.moduleId && m.version.replace(/[^0-9a-z]/gi, '') !== install[0].version.replace(/[^0-9a-z]/gi, ''))
+      const otherVersionsSameModule = installedModules.allModules.filter((m: { id: string; version: string }) => m.id === flags.moduleId && m.version.replace(/[^\da-z]/gi, '') !== install[0].version.replace(/[^\da-z]/gi, ''))
       if (otherVersionsSameModule.length > 0) {
         this.log('A previous version of this module is on the system, it will be removed')
         this.log(JSON.stringify(otherVersionsSameModule))

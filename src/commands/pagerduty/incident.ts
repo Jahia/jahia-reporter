@@ -2,7 +2,7 @@
 import {Command, flags} from '@oclif/command'
 import {api} from '@pagerduty/pdjs'
 import * as md5 from 'md5'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
 import {GoogleSpreadsheet} from 'google-spreadsheet'
 
@@ -138,6 +138,7 @@ class JahiaPagerDutyIncident extends Command {
             }
           }
         }
+
         const sortedTests = tests.sort()
 
         incidentTitle = `${flags.service} - Tests: ${jrRun.failures} failed out of ${jrRun.tests}`
@@ -148,16 +149,16 @@ class JahiaPagerDutyIncident extends Command {
         incidentBody += `Dedup Key: ${dedupKey} \n`
         incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
         const failedReports = jrRun.reports.filter(r => r.failures > 0)
-        failedReports.forEach(failedReport => {
+        for (const failedReport of failedReports) {
           const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
-          failedSuites.forEach(failedSuite => {
+          for (const failedSuite of failedSuites) {
             incidentBody += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
             const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
-            failedTests.forEach(failedTest => {
+            for (const failedTest of failedTests) {
               incidentBody += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
-            })
-          })
-        })
+            }
+          }
+        }
       } else {
         incidentTitle = `${flags.service} - Tests not executed`
         dedupKey = md5(incidentTitle)
@@ -196,21 +197,20 @@ class JahiaPagerDutyIncident extends Command {
           if (row['PagerDuty Enabled'] !== undefined && row['PagerDuty Enabled'].toLowerCase() === 'no') {
             pagerDutyNotifEnabled = false
           }
+
           if (row['PagerDuty Service ID'] !== undefined && row['PagerDuty Service ID'].length > 4) {
             pagerDutyServiceId = row['PagerDuty Service ID']
           }
+
           if (row['PagerDuty User ID'] !== undefined) {
             for (const assignee of row['PagerDuty User ID'].split(',').filter((a: string) => a.length > 4)) {
               assignees.push(assignee)
             }
           }
+
           if (flags.googleUpdateState && (row['CI/CD'] === 'Bamboo' || row['CI/CD'] === 'GitHub')) {
             this.log(`Updated state for: ${flags.service}`)
-            if (testFailures > 0) {
-              row.State = 'FAILED'
-            } else {
-              row.State = 'PASSED'
-            }
+            row.State = testFailures > 0 ? 'FAILED' : 'PASSED'
             row.Updated = new Date().toISOString()
             // eslint-disable-next-line no-await-in-loop
             await row.save()
@@ -261,11 +261,11 @@ class JahiaPagerDutyIncident extends Command {
     } else if (pagerDutyNotifEnabled === false) {
       this.log('According to the Google Spreadsheet, notifications are current disabled for that service')
     } else {
-      const pd = api({token: flags.pdApiKey, ...{
+      const pd = api({token: flags.pdApiKey,
         headers: {
           From: 'support@jahia.com',
         },
-      }})
+      })
       const incidentResponse = await pd.post('/incidents', {data: pdPayload})
       if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)

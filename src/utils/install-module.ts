@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as FormData from 'form-data'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
 import {exit} from '@oclif/errors'
 
@@ -24,8 +24,8 @@ const installModule = async (
       headers: {
         ...formHeaders,
       },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
+      maxContentLength: Number.POSITIVE_INFINITY,
+      maxBodyLength: Number.POSITIVE_INFINITY,
       auth: {
         username: jahiaUsername,
         password: jahiaPassword,
@@ -36,9 +36,11 @@ const installModule = async (
     console.log(error)
     exit(1)
   }
+
   if (installResponse.data !== undefined) {
     return installResponse.data.bundleInfos
   }
+
   // eslint-disable-next-line no-console
   console.log(`Unable to install module: ${JSON.stringify(installResponse)}`)
   exit(1)
