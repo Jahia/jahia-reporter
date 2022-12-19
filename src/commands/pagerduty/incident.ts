@@ -9,6 +9,17 @@ import {GoogleSpreadsheet} from 'google-spreadsheet'
 import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
 
+const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
+  const doc = new GoogleSpreadsheet(googleSpreadsheetId)
+  await doc.useServiceAccountAuth({
+    client_email: googleClientEmail,
+    private_key: Buffer.from(googleApiKey, 'base64').toString(),
+  })
+  await doc.loadInfo()
+  const sheet = doc.sheetsByIndex[0]
+  return sheet.getRows()
+}
+
 class JahiaPagerDutyIncident extends Command {
   static description = 'Create a pagerduty event based on a test report'
 
@@ -107,6 +118,7 @@ class JahiaPagerDutyIncident extends Command {
     incidentBody += 'An error is present in the test execution workflow.\nThis usually means one of the steps of the workflow (tests or other) failed or that the reporter was unable to access reports data.'
     let incidentTitle = `${flags.service} - Incident during test execution`
 
+    let testTotal = 999
     let testFailures = 999
     let pagerDutyNotifEnabled = true
 
@@ -126,6 +138,7 @@ class JahiaPagerDutyIncident extends Command {
         // Parse files into objects
         const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
         testFailures = jrRun.failures
+        testTotal = jrRun.tests
         // eslint-disable-next-line no-console
         console.log(jrRun)
 
@@ -174,6 +187,7 @@ class JahiaPagerDutyIncident extends Command {
       // The script has been forced to success
       this.log(`The script has been forced to success, the actual failure found was: ${testFailures}`)
       testFailures = 0
+      testTotal = 0
     }
 
     // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
@@ -183,15 +197,20 @@ class JahiaPagerDutyIncident extends Command {
       this.log('Google Spreadsheet ID has not been set')
     } else {
       this.log(`Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`)
-      const doc = new GoogleSpreadsheet(flags.googleSpreadsheetId)
-      await doc.useServiceAccountAuth({
-        client_email: flags.googleClientEmail,
-        private_key: Buffer.from(flags.googleApiKey, 'base64').toString(),
-      })
-      await doc.loadInfo()
-      const sheet = doc.sheetsByIndex[0]
-      const rows = await sheet.getRows()
-      for (const row of rows) {
+      // There are sometimes some unavailability of the GitHub API
+      let spRows: any[] = []
+      for (let cpt = 1; cpt < 4; cpt++) {
+        if (spRows.length === 0) {
+          this.log(`Connecting to spreadsheet: ${cpt}/3`)
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            spRows = await getSpreadsheetRows(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
+          } catch {
+            this.log('Unable to connect to spreadsheet')
+          }
+        }
+      }
+      for (const row of spRows) {
         if (row['Test Service'] === flags.service) {
           if (row['PagerDuty Enabled'] !== undefined && row['PagerDuty Enabled'].toLowerCase() === 'no') {
             pagerDutyNotifEnabled = false
@@ -212,6 +231,9 @@ class JahiaPagerDutyIncident extends Command {
               row.State = 'PASSED'
             }
             row.Updated = new Date().toISOString()
+            row.Total = testTotal
+            row.Failures = testFailures
+            this.log(`Saving Google Spreadsheet row for: ${row['Test Service']}`)
             // eslint-disable-next-line no-await-in-loop
             await row.save()
           }
