@@ -17,7 +17,7 @@ const getSpreadsheet = async (googleSpreadsheetId: string, googleClientEmail: st
   })
   await doc.loadInfo()
   const sheet = doc.sheetsByIndex[0]
-  return await sheet.getRows()
+  return sheet.getRows()
 }
 
 class JahiaPagerDutyIncident extends Command {
@@ -203,6 +203,7 @@ class JahiaPagerDutyIncident extends Command {
         if (spRows.length === 0) {
           this.log(`Connecting to spreadsheet: ${cpt}/3`)
           try {
+            // eslint-disable-next-line no-await-in-loop
             spRows = await getSpreadsheet(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
           } catch {
             this.log('Unable to connect to spreadsheet')
@@ -232,8 +233,8 @@ class JahiaPagerDutyIncident extends Command {
             row.Updated = new Date().toISOString()
             row.Total = testTotal
             row.Failures = testFailures
-            // eslint-disable-next-line no-await-in-loop
             this.log(`Saving Google Spreadsheet row for: ${row['Test Service']}`)
+            // eslint-disable-next-line no-await-in-loop
             await row.save()
           }
         }
