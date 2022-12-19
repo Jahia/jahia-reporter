@@ -9,7 +9,7 @@ import {GoogleSpreadsheet} from 'google-spreadsheet'
 import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
 
-const getSpreadsheet = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
+const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId)
   await doc.useServiceAccountAuth({
     client_email: googleClientEmail,
@@ -204,7 +204,7 @@ class JahiaPagerDutyIncident extends Command {
           this.log(`Connecting to spreadsheet: ${cpt}/3`)
           try {
             // eslint-disable-next-line no-await-in-loop
-            spRows = await getSpreadsheet(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
+            spRows = await getSpreadsheetRows(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
           } catch {
             this.log('Unable to connect to spreadsheet')
           }
