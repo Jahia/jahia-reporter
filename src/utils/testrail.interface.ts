@@ -39,14 +39,14 @@ export interface ResultField {
   label:  string;
   description: string;
   configs: ResultFieldConfig[];
-  display_order:number;
+  display_order: number;
   include_all: number;
   template_ids: number[];
 
   // Fields added while comparing with the submitted file
   enabledOnProject: boolean;
   type: string;
-  value: string;  
+  value: string;
 }
 
 export interface ResultFieldConfig {
@@ -58,7 +58,7 @@ export interface ResultFieldConfig {
   options: {
     is_required: false;
     defailt_value: string;
-  }
+  };
 }
 
 export interface Suite {

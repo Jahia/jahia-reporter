@@ -17,7 +17,7 @@ import {
 import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
-import { cli } from 'cli-ux'
+import {cli} from 'cli-ux'
 import {lstatSync, readFileSync} from 'fs'
 
 interface TestWithStatus extends Test {
@@ -49,7 +49,7 @@ class JahiaTestrailReporter extends Command {
     testrailApiKey: flags.string({
       description: 'TestRail to be used as an alternative to username/password',
       required: false,
-    }),    
+    }),
     testrailUsername: flags.string({
       description: 'TestRail username',
       required: true,
@@ -61,7 +61,7 @@ class JahiaTestrailReporter extends Command {
     testrailCustomResultFields: flags.string({
       description: 'Path to a file containing values (in a key:value JSON object) to be added to the result fields',
       default: '',
-    }),    
+    }),
     projectName: flags.string({
       char: 'n',
       description: 'TestRail Project name',
@@ -232,7 +232,7 @@ class JahiaTestrailReporter extends Command {
     if (flags.testrailCustomResultFields !== undefined) {
       // Parse the provided json file
       if (!lstatSync(flags.testrailCustomResultFields).isFile()) {
-        throw new Error("Something went wrong. You provided a testrailCustomResultFields path, but jahia-reporter could not access it")
+        throw new Error('Something went wrong. You provided a testrailCustomResultFields path, but jahia-reporter could not access it')
       }
       this.log(`${flags.testrailCustomResultFields}, exists, parsing its content`)
       const rawFile = readFileSync(flags.testrailCustomResultFields, 'utf8')
@@ -241,26 +241,26 @@ class JahiaTestrailReporter extends Command {
       // Get all configured Testrail custom fields for that account
       // Decorate it with value and project details
       this.log('Get all configured custom fields')
-      testrailCustomFields = testrail.getResultFields().map((t) => {
+      testrailCustomFields = testrail.getResultFields().map(t => {
         // See static type list here: https://support.gurock.com/hc/en-us/articles/7077871398036-Result-Fields
         const staticTypes = ['', 'String', 'Integer', 'Text', 'URL', 'Checkbox', 'Dropdown', 'User', 'Date', 'Milestone', 'Step Results', 'Multi-select']
-        let isEnabledOnProject = false;
-        const config = t.configs.forEach((c) => {
+        let isEnabledOnProject = false
+        t.configs.forEach(c => {
           if (c.context.is_global === true || c.context.project_ids.includes(testrailProject.id)) {
             isEnabledOnProject = true
           }
-        })     
+        })
         // Search in the submission to find a match
         return {
           ...t,
           type: staticTypes[t.type_id],
           enabledOnProject: isEnabledOnProject, // Is that custom field valid for the current project
-          value: customFieldsSubmission[t.system_name]
+          value: customFieldsSubmission[t.system_name],
         }
       })
       this.log('The following custom fields are present on testrail:')
-      cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {} })
-      testrailCustomFields = testrailCustomFields.filter((f) => f.enabledOnProject === true)
+      cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
+      testrailCustomFields = testrailCustomFields.filter(f => f.enabledOnProject === true)
     }
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
@@ -408,7 +408,7 @@ class JahiaTestrailReporter extends Command {
           status_id = 2
         }
         // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
-        let testResult: any = {
+        const testResult: any = {
           case_id: test.id,
           elapsed: test.time,
           status_id: status_id,
@@ -420,7 +420,7 @@ class JahiaTestrailReporter extends Command {
         this.log(
           `Puhsing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`,
         )
-        
+
         // Adding custom fields when applicable
         if (testrailCustomFields.length > 0) {
           testrailCustomFields.forEach(f => {
