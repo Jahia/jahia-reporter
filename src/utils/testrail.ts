@@ -1,5 +1,5 @@
 import {SyncRequestClient} from 'ts-sync-request/dist'
-import {AddCase, PaginatedProjects, Project, PaginatedSections, Section, Suite, PaginatedTests, Test, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
+import {AddCase, PaginatedProjects, Project, PaginatedSections, ResultField, Section, Suite, PaginatedTests, Test, TestRailResult, AddRun, Run, CaseFields, PaginatedMilestones, Milestone} from './testrail.interface'
 
 export class TestRailClient {
     public base: string
@@ -41,6 +41,10 @@ export class TestRailClient {
       }
       return []
       // throw new Error("Something went wrong. Can't find any milestone")
+    }
+
+    public getResultFields(): ResultField[] {
+      return this.sendRequest('GET', 'get_result_fields', '') as ResultField[]
     }
 
     public addMilestone(projectId: number, name: string): Milestone {

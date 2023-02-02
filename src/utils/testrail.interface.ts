@@ -30,6 +30,37 @@ export interface Project {
   url: string;
 }
 
+export interface ResultField {
+  id: number;
+  is_active: boolean;
+  type_id: number;
+  name: string;
+  system_name:  string;
+  label:  string;
+  description: string;
+  configs: ResultFieldConfig[];
+  display_order:number;
+  include_all: number;
+  template_ids: number[];
+
+  // Fields added while comparing with the submitted file
+  enabledOnProject: boolean;
+  type: string;
+  value: string;  
+}
+
+export interface ResultFieldConfig {
+  id: number;
+  context: {
+    is_global: boolean;
+    project_ids: number[];
+  };
+  options: {
+    is_required: false;
+    defailt_value: string;
+  }
+}
+
 export interface Suite {
   id: number;
   name: string;
