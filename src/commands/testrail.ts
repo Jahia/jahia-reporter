@@ -18,7 +18,7 @@ import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
 import {cli} from 'cli-ux'
-import {lstatSync, readFileSync} from 'fs'
+import {lstatSync, readFileSync, existsSync} from 'fs'
 
 interface TestWithStatus extends Test {
   status: string;
@@ -229,10 +229,13 @@ class JahiaTestrailReporter extends Command {
     this.log(`Using milestone ${flags.milestone} with id: ${milestone_id}`)
 
     let testrailCustomFields: ResultField[] = []
-    if (flags.testrailCustomResultFields !== undefined) {
+    if (flags.testrailCustomResultFields !== undefined && flags.testrailCustomResultFields !== '') {
       // Parse the provided json file
+      if (!existsSync(flags.testrailCustomResultFields)) {
+        throw new Error(`Something went wrong. The provided path: ${flags.testrailCustomResultFields} does not exist.`)
+      }
       if (!lstatSync(flags.testrailCustomResultFields).isFile()) {
-        throw new Error('Something went wrong. You provided a testrailCustomResultFields path, but jahia-reporter could not access it')
+        throw new Error(`Something went wrong. The provided path: ${flags.testrailCustomResultFields} is not a file`)
       }
       this.log(`${flags.testrailCustomResultFields}, exists, parsing its content`)
       const rawFile = readFileSync(flags.testrailCustomResultFields, 'utf8')
