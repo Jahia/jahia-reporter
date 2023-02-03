@@ -2,9 +2,10 @@ import {Command, flags} from '@oclif/command'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import {UtilsVersions} from '../../global.type'
+import {UtilsVersions, UtilsPlatform} from '../../global.type'
 
 import {getModules} from '../../utils/modules'
+import {getPlatform} from '../../utils/platform'
 
 class JahiaUtilsModule extends Command {
   static description = 'For a provided module, returns the module version, Jahia version and list of installed modules'
@@ -45,10 +46,11 @@ class JahiaUtilsModule extends Command {
 
     const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
     const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
+    const platform: UtilsPlatform | undefined = getPlatform(jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
 
     fs.writeFileSync(
       path.join(flags.filepath),
-      JSON.stringify(version)
+      JSON.stringify({...version, platform: platform})
     )
   }
 }

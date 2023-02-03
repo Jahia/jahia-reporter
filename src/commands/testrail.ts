@@ -12,10 +12,13 @@ import {
   Run,
   Status,
   TestRailResult,
+  ResultField,
 } from '../utils/testrail.interface'
 import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
+import {cli} from 'cli-ux'
+import {lstatSync, readFileSync, existsSync} from 'fs'
 
 interface TestWithStatus extends Test {
   status: string;
@@ -43,6 +46,10 @@ class JahiaTestrailReporter extends Command {
       description: 'TestRail url to submit the results from the report to',
       default: 'https://jahia.testrail.net',
     }),
+    testrailApiKey: flags.string({
+      description: 'TestRail to be used as an alternative to username/password',
+      required: false,
+    }),
     testrailUsername: flags.string({
       description: 'TestRail username',
       required: true,
@@ -50,6 +57,10 @@ class JahiaTestrailReporter extends Command {
     testrailPassword: flags.string({
       description: 'TestRail password',
       required: true,
+    }),
+    testrailCustomResultFields: flags.string({
+      description: 'Path to a file containing values (in a key:value JSON object) to be added to the result fields',
+      default: '',
     }),
     projectName: flags.string({
       char: 'n',
@@ -152,7 +163,7 @@ class JahiaTestrailReporter extends Command {
     const testrail = new TestRailClient(
       flags.testrailUrl,
       flags.testrailUsername,
-      flags.testrailPassword,
+      flags.testrailApiKey === undefined ? flags.testrailPassword : flags.testrailApiKey
     )
 
     this.log('Get all testrail projects')
@@ -216,6 +227,44 @@ class JahiaTestrailReporter extends Command {
         testrail.addMilestone(testrailProject.id, flags.milestone).id
     }
     this.log(`Using milestone ${flags.milestone} with id: ${milestone_id}`)
+
+    let testrailCustomFields: ResultField[] = []
+    if (flags.testrailCustomResultFields !== undefined && flags.testrailCustomResultFields !== '') {
+      // Parse the provided json file
+      if (!existsSync(flags.testrailCustomResultFields)) {
+        throw new Error(`Something went wrong. The provided path: ${flags.testrailCustomResultFields} does not exist.`)
+      }
+      if (!lstatSync(flags.testrailCustomResultFields).isFile()) {
+        throw new Error(`Something went wrong. The provided path: ${flags.testrailCustomResultFields} is not a file`)
+      }
+      this.log(`${flags.testrailCustomResultFields}, exists, parsing its content`)
+      const rawFile = readFileSync(flags.testrailCustomResultFields, 'utf8')
+      const customFieldsSubmission = JSON.parse(rawFile.toString())
+
+      // Get all configured Testrail custom fields for that account
+      // Decorate it with value and project details
+      this.log('Get all configured custom fields')
+      testrailCustomFields = testrail.getResultFields().map(t => {
+        // See static type list here: https://support.gurock.com/hc/en-us/articles/7077871398036-Result-Fields
+        const staticTypes = ['', 'String', 'Integer', 'Text', 'URL', 'Checkbox', 'Dropdown', 'User', 'Date', 'Milestone', 'Step Results', 'Multi-select']
+        let isEnabledOnProject = false
+        t.configs.forEach(c => {
+          if (c.context.is_global === true || c.context.project_ids.includes(testrailProject.id)) {
+            isEnabledOnProject = true
+          }
+        })
+        // Search in the submission to find a match
+        return {
+          ...t,
+          type: staticTypes[t.type_id],
+          enabledOnProject: isEnabledOnProject, // Is that custom field valid for the current project
+          value: customFieldsSubmission[t.system_name],
+        }
+      })
+      this.log('The following custom fields are present on testrail:')
+      cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
+      testrailCustomFields = testrailCustomFields.filter(f => f.enabledOnProject === true)
+    }
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
     const executedSections: Section[] = []
@@ -362,7 +411,7 @@ class JahiaTestrailReporter extends Command {
           status_id = 2
         }
         // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
-        const testResult: TestRailResult = {
+        const testResult: any = {
           case_id: test.id,
           elapsed: test.time,
           status_id: status_id,
@@ -374,6 +423,13 @@ class JahiaTestrailReporter extends Command {
         this.log(
           `Puhsing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`,
         )
+
+        // Adding custom fields when applicable
+        if (testrailCustomFields.length > 0) {
+          testrailCustomFields.forEach(f => {
+            testResult[f.system_name] = f.value
+          })
+        }
         results.push(testResult)
       }
     }

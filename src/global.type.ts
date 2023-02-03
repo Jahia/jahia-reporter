@@ -77,6 +77,41 @@ export interface UtilsVersions {
   allModules: JahiaModule[];
 }
 
+export interface UtilsPlatform {
+  jahia: {
+    version: {
+      build: string;
+      buildDate: string;
+      isSnapshot: string;
+      release: string;
+    };
+    database: {
+      type: string;
+      name: string;
+      version: string;
+      driverName: string;
+      driverVersion: string;
+      url: string;
+    };
+    system: {
+      os: {
+        name: string;
+        architecture: string;
+        version: string;
+      };
+      java: {
+        runtimeName: string;
+        runtimeVerison: string;
+        vendor: string;
+        vendorVersion: string;
+      };
+    };
+  };
+  cluster: {
+    isActivated: boolean;
+  };
+}
+
 export interface JMeterTRunTransaction {
   name: string;
   sampleCount?: number;
