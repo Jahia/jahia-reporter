@@ -261,6 +261,25 @@ class JahiaTestrailReporter extends Command {
           value: customFieldsSubmission[t.system_name],
         }
       })
+      // Finally, add the system fields (if present in the json file)
+      if (customFieldsSubmission.version !== undefined) {
+        testrailCustomFields.push({
+          id: 1000,
+          is_active: true,
+          type_id: 1,
+          name: 'Version (System)',
+          system_name: 'version',
+          label: 'Version',
+          description: 'Version (System field)',
+          configs: [],
+          display_order: 1,
+          include_all: 1,
+          template_ids: [],
+          type: 'String',
+          enabledOnProject: true,
+          value: customFieldsSubmission.version,
+        })
+      }
       this.log('The following custom fields are present on testrail:')
       cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
       testrailCustomFields = testrailCustomFields.filter(f => f.enabledOnProject === true)
