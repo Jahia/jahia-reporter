@@ -4,6 +4,7 @@ import { Command, flags } from '@oclif/command';
 import { lstatSync, readFileSync } from 'fs';
 import * as fs from 'fs';
 import * as glob from 'glob';
+import { format } from 'date-fns';
 
 import { cli } from 'cli-ux';
 
@@ -126,7 +127,8 @@ class JahiaAnalyzePerfsReporter extends Command {
       };
       // Add one column per report
       for (const a of currentTransations[0].analysis) {
-        columns[a.startedAt.slice(0, 10)] = {};
+        const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm');
+        columns[currentDate] = {};
       }
       columns['Send Alert'] = {};
       columns['threshold'] = {};
@@ -141,8 +143,9 @@ class JahiaAnalyzePerfsReporter extends Command {
           };
           for (const a of e.analysis) {
             const cellValue = Math.round(a.analysis.runValue);
-            row[a.startedAt.slice(0, 10)] =
-              a.analysis.error === true ? `${cellValue}*` : cellValue;
+            const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm');
+            row[currentDate] =
+              a.analysis.error === true ? `${cellValue}*` : cellValue
           }
           const alertWindow = e.analysis.slice(-flags.analysisFailureAlert);
           const alertCount = alertWindow.reduce(
