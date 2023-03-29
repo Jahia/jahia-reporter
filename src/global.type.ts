@@ -61,9 +61,9 @@ export interface ZenCrepesStateNode {
 }
 
 export interface JahiaModule {
-    id: string;
-    name: string;
-    version: string;
+  id: string;
+  name: string;
+  version: string;
 }
 
 export interface UtilsVersions {
@@ -176,6 +176,7 @@ export interface JMeterExec {
   duration: number;
   runs: JMeterRun[];
   startedAt: string;
+  tags: Array<any>;
 }
 
 export interface JMeterExecAnalysisReport {
