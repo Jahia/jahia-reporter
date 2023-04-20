@@ -80,7 +80,7 @@ class JahiaTestrailReporter extends Command {
     runName: flags.string({
       char: 'r',
       description: 'TestRail run name',
-      default: 'Automated Execution - ',
+      default: 'AE - ',
     }),
     suiteName: flags.string({
       char: 's',
@@ -111,10 +111,10 @@ class JahiaTestrailReporter extends Command {
   async run() {
     const {flags} = this.parse(JahiaTestrailReporter)
 
-    if (flags.runName === 'Automated Execution - ') {
+    if (flags.runName === 'AE - ') {
       const date = new Date()
       const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)'
-      const output = formatToTimeZone(date, format, {
+      const output = flags.projectName+'-'+formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       })
       flags.runName += output
