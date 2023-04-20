@@ -112,12 +112,10 @@ class JahiaTestrailReporter extends Command {
     const {flags} = this.parse(JahiaTestrailReporter)
 
     if (flags.runName === 'AE - ') {
-      const date = new Date()
-      const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)'
-      const output = flags.projectName+'-'+formatToTimeZone(date, format, {
+      const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       })
-      flags.runName += output
+      flags.runName += `${flags.projectName}-${runDate}`
     }
 
     // Parse files into objects
@@ -279,7 +277,7 @@ class JahiaTestrailReporter extends Command {
           enabledOnProject: true,
           value: customFieldsSubmission.version,
         })
-      }      
+      }
       this.log('The following custom fields are present on testrail:')
       cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
       testrailCustomFields = testrailCustomFields.filter(f => f.enabledOnProject === true)
