@@ -10,7 +10,7 @@ export const getPlatform = (jahiaUrl: string, jahiaUsername: string, jahiaPasswo
   .addHeader('Content-Type', 'application/json')
   .addHeader('referer', jahiaUrl)
   .addHeader('authorization', authHeader)
-  .post(jahiaUrl + 'modules/graphql', {query: '{admin{jahia{version{build buildDate isSnapshot release}database{type name version driverName driverVersion url}system{os{name architecture version}java{runtimeName runtimeVersion vendor vendorVersion}}}cluster{isActivated}}}'})
+  .post(jahiaUrl + 'modules/graphql', {query: '{admin{jahia{version{build buildDate isSnapshot release}database{type name version driverName driverVersion}system{os{name architecture version}java{runtimeName runtimeVersion vendor vendorVersion}}}cluster{isActivated}}}'})
 
   if (response.data !== null && response.errors === undefined) {
     // eslint-disable-next-line no-console
