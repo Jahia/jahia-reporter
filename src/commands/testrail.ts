@@ -112,6 +112,7 @@ class JahiaTestrailReporter extends Command {
     const {flags} = this.parse(JahiaTestrailReporter)
 
     if (flags.runName === 'AE - ') {
+      const date = new Date()
       const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       })
