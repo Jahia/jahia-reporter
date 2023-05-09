@@ -117,10 +117,10 @@ class JahiaTestrailReporter extends Command {
       const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       })
-      if (flags.parentSection !==""){
-        flags.runName += `${flags.parentSection}-${runDate}`
-      } else {
+      if (flags.parentSection === '') {
         flags.runName += `${flags.projectName}-${runDate}`
+      } else {
+        flags.runName += `${flags.parentSection}-${runDate}`
       }
     }
 
