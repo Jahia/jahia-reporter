@@ -196,22 +196,31 @@ class JahiaTestrailReporter extends Command {
     this.log(
       `Get all sections for project: ${testrailProject.id} and suite: ${testrailSuite.id}`,
     )
-    const allSectionsInTestrail = testrail.getSections(
+    let allSectionsInTestrail = testrail.getSections(
       testrailProject.id,
       testrailSuite.id,
     )
     let parentSectionId = ''
     if (flags.parentSection !== '') {
-      const foundSection = allSectionsInTestrail.find(
+      let foundSection = allSectionsInTestrail.find(
         section => section.name === flags.parentSection,
       )
       if (foundSection === undefined) {
-        this.error(
-          `Failed to find section named '${flags.parentSection}' in project '${flags.projectName}'`,
+        this.log(
+          `Failed to find section named '${flags.parentSection}' in project '${flags.projectName}'. Creating the section now.`,
         )
-      } else {
-        parentSectionId = foundSection.id.toString()
-      }
+        foundSection = testrail.addSection(
+          testrailProject.id,
+          testrailSuite.id,
+          flags.parentSection,
+        )
+        allSectionsInTestrail = testrail.getSections(
+          testrailProject.id,
+          testrailSuite.id,
+        )
+      } 
+      parentSectionId = foundSection.id.toString()
+      
     }
 
     // Get Milestone
