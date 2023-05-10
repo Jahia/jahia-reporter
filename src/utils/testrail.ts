@@ -52,9 +52,34 @@ export class TestRailClient {
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
-      const sectionsObject = this.sendRequest('GET', 'get_sections/' + projectId.toString() + '&suite_id=' + suiteId.toString(), '') as PaginatedSections
+      const sections: Section[] = []
+      const sectionsObject = this.sendRequest('GET', `get_sections/${projectId.toString()}&suite_id=${suiteId.toString()}`, '') as PaginatedSections
       if (sectionsObject.size > 0) {
-        return sectionsObject.sections as Section[]
+        for (const s of sectionsObject.sections) {
+          sections.push(s)
+        }
+        let lastCallSectionsCount = sectionsObject.sections.length
+        const hardLimit = 50 // Hard limit the number of queries to avoid going in an infinite loop
+        let cpt = 0
+        while (lastCallSectionsCount > 0 && cpt <= hardLimit) {
+          const sectionsObject = this.sendRequest(
+            'GET',
+            `get_sections/${projectId.toString()}&suite_id=${suiteId.toString()}&limit=250&offset=${
+              sections.length
+            }`,
+            '',
+          ) as PaginatedSections
+          lastCallSectionsCount = sectionsObject.sections.length
+          // eslint-disable-next-line no-console
+          console.log(
+            `Fetched ${lastCallSectionsCount} sections (${sections.length} already fetched)`,
+          )
+          for (const s of sectionsObject.sections) {
+            sections.push(s)
+          }
+          cpt++
+        }
+        return sections
       }
       return []
       // throw new Error("Something went wrong. Can't find any section")

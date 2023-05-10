@@ -35,8 +35,8 @@ export interface ResultField {
   is_active: boolean;
   type_id: number;
   name: string;
-  system_name:  string;
-  label:  string;
+  system_name: string;
+  label: string;
   description: string;
   configs: ResultFieldConfig[];
   display_order: number;
@@ -84,6 +84,10 @@ export interface PaginatedSections {
   limit: number;
   size: number;
   sections: Section[];
+  _links: {
+    next: string;
+    prev: string | null;
+  };
 }
 
 export interface Section {
