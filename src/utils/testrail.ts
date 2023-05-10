@@ -52,6 +52,7 @@ export class TestRailClient {
     }
 
     public getSections(projectId: number, suiteId: number): Section[] {
+      const sections: Section[] = []
       const sectionsObject = this.sendRequest('GET', `get_sections/${projectId.toString()}&suite_id=${suiteId.toString()}`, '') as PaginatedSections
       if (sectionsObject.size > 0) {
         for (const s of sectionsObject.sections) {
