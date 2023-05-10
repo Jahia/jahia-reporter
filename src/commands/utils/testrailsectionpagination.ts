@@ -1,13 +1,13 @@
-import { Command, flags } from '@oclif/command';
+import {Command, flags} from '@oclif/command'
 
-import { TestRailClient } from '../../utils/testrail';
+import {TestRailClient} from '../../utils/testrail'
 
 class TestrailSectionsPagination extends Command {
   static description = 'Try out testrail pagination for sections';
 
   static flags = {
-    version: flags.version({ char: 'v' }),
-    help: flags.help({ char: 'h' }),
+    version: flags.version({char: 'v'}),
+    help: flags.help({char: 'h'}),
     testrailUrl: flags.string({
       description: 'TestRail url to submit the results from the report to',
       default: 'https://jahia.testrail.net',
@@ -35,25 +35,25 @@ class TestrailSectionsPagination extends Command {
   };
 
   async run() {
-    const { flags } = this.parse(TestrailSectionsPagination);
+    const {flags} = this.parse(TestrailSectionsPagination)
 
     const testrail = new TestRailClient(
       flags.testrailUrl,
       flags.testrailUsername,
-      flags.testrailApiKey === undefined
-        ? flags.testrailPassword
-        : flags.testrailApiKey,
-    );
+      flags.testrailApiKey === undefined ?
+        flags.testrailPassword :
+        flags.testrailApiKey,
+    )
 
     const allSectionsInTestrail = testrail.getSections(
       flags.testrailProjectId,
       flags.testrailSuiteId,
-    );
+    )
 
     // for (const section of allSectionsInTestrail) {
     //   console.log(section);
     // }
-    this.log(`Total sections count: ${allSectionsInTestrail.length}`);
+    this.log(`Total sections count: ${allSectionsInTestrail.length}`)
   }
 }
 
