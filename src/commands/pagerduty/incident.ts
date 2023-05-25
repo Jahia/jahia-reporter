@@ -120,6 +120,7 @@ class JahiaPagerDutyIncident extends Command {
 
     let testTotal = 999
     let testFailures = 999
+    let testSkipped = 0
     let pagerDutyNotifEnabled = true
 
     if (flags.incidentMessage.length > 0) {
@@ -138,9 +139,16 @@ class JahiaPagerDutyIncident extends Command {
         // Parse files into objects
         const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
         testFailures = jrRun.failures
+        testSkipped = jrRun.skipped
         testTotal = jrRun.tests
         // eslint-disable-next-line no-console
         console.log(jrRun)
+
+        // There are times at which the failures might actually be negatives due to skipped tests
+        // In such cases, we put the failures back to 0
+        if (testSkipped > 0 && testFailures < 0 && testFailures + testSkipped === 0) {
+          testFailures = 0
+        }
 
         // Generate dedup key by collecting all testnames
         const tests: string[] = []

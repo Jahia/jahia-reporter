@@ -34,7 +34,7 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
       name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
       errors: Math.round(s.attributes.errors),
       failures: Math.round(s.attributes.failures),
-      skipped: Math.round(s.attributes.skipped),
+      skipped: s.attributes.skipped === undefined ? 0 : Math.round(s.attributes.skipped),
       testsCount: Math.round(s.attributes.tests),
       time: Math.round(s.attributes.time),
       tests: s.elements === undefined ? [] : buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
@@ -63,6 +63,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
         name: i.attributes.name === 'null' ? basename(rawContent.filepath) : i.attributes.name,
         tests: Math.round(i.attributes.tests),
         failures: Math.round(i.attributes.failures),
+        skipped: i.attributes.skipped === undefined ? 0 : Math.round(i.attributes.skipped),
         time: Math.round(i.attributes.time),
         // testsuites: buildSuites(i.elements),
         testsuites: testsuites,
@@ -76,6 +77,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
   return {
     tests: reports.map(r => r.tests).reduce((acc, count) => acc + count, 0),
     failures: reports.map(r => r.failures).reduce((acc, count) => acc + count, 0),
+    skipped: reports.map(r => r.skipped).reduce((acc, count) => acc + count, 0),
     time: reports.map(r => r.time).reduce((acc, count) => acc + count, 0),
     reports: reports,
   }
