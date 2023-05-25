@@ -12,12 +12,14 @@ export const parseJsonPerf = (rawAnalysis: JMeterExecAnalysisReport[]): JRRun =>
       name: run,
       tests: rawAnalysis.filter(a => a.run === run).length,
       failures: rawAnalysis.filter(a => a.run === run && a.error === true).length,
+      skipped: 0,
       time: 0,
       testsuites: transactions.map(t => {
         const metrics = rawAnalysis.filter(a => a.run === run && a.transaction === t).map(a => a.metric)
         return {
           name: t,
           failures: rawAnalysis.filter(a => a.run === run && a.transaction === t && a.error === true).length,
+          skipped: 0,
           timestamp: '',
           time: 0,
           tests: metrics.map(m => {
@@ -26,6 +28,7 @@ export const parseJsonPerf = (rawAnalysis: JMeterExecAnalysisReport[]): JRRun =>
               name: m,
               time: 0,
               status: metricTest !== undefined && metricTest.error === true ? 'FAIL' : 'PASS',
+              skipped: 0,
               failures: metricTest !== undefined && metricTest.error === true ? [{text: `ERROR: run: ${metricTest.run}, transaction: ${metricTest.transaction}, metric: ${metricTest.metric} is failing threshold => Value: ${metricTest.runValue} (Operator: ${metricTest.comparator}) Threshold: ${metricTest.thresholdValue}`}] : [],
             }
           }),
@@ -38,6 +41,7 @@ export const parseJsonPerf = (rawAnalysis: JMeterExecAnalysisReport[]): JRRun =>
   return {
     tests: rawAnalysis.length,
     failures: rawAnalysis.filter(a => a.error).length,
+    skipped: 0,
     time: 0,
     reports: reports,
   }

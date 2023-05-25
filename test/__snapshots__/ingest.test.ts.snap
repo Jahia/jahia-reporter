@@ -7,11 +7,13 @@ Object {
     Object {
       "failures": 3,
       "name": "Jahia Perf at 15mn",
+      "skipped": 0,
       "tests": 9,
       "testsuites": Array [
         Object {
           "failures": 1,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -20,18 +22,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -42,6 +47,7 @@ Object {
         Object {
           "failures": 1,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -50,18 +56,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -72,6 +81,7 @@ Object {
         Object {
           "failures": 1,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -80,18 +90,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -102,6 +115,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -110,18 +124,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -132,6 +149,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -140,18 +158,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -162,6 +183,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -170,18 +192,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -192,6 +217,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -200,18 +226,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -222,6 +251,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -230,18 +260,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -252,6 +285,7 @@ Object {
         Object {
           "failures": 1,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -260,18 +294,21 @@ Object {
                 },
               ],
               "name": "sampleCount",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "errorCount",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -285,15 +322,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 30mn",
+      "skipped": 0,
       "tests": 54,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -304,10 +344,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -318,10 +360,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -332,10 +376,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -346,10 +392,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -360,10 +408,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -374,10 +424,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -388,10 +440,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -402,10 +456,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -416,10 +472,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -430,10 +488,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -444,10 +504,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -458,10 +520,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -472,10 +536,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -486,10 +552,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -500,10 +568,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -514,10 +584,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -528,10 +600,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -542,10 +616,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -556,10 +632,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -570,10 +648,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -584,10 +664,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -598,10 +680,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -612,10 +696,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -626,10 +712,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -640,10 +728,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -654,10 +744,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -668,10 +760,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -682,10 +776,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -696,10 +792,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -710,10 +808,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -724,10 +824,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -738,10 +840,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -752,10 +856,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -766,10 +872,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -780,10 +888,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -794,10 +904,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -808,10 +920,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -822,10 +936,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -836,10 +952,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -850,10 +968,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -864,10 +984,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -878,10 +1000,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -892,10 +1016,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -906,10 +1032,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -920,10 +1048,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -934,10 +1064,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -948,6 +1080,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -956,6 +1089,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -966,10 +1100,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -980,10 +1116,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -994,10 +1132,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1008,10 +1148,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1022,10 +1164,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1036,10 +1180,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1053,15 +1199,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 45mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1072,10 +1221,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1086,10 +1237,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1100,10 +1253,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1114,10 +1269,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1128,10 +1285,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1142,10 +1301,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1156,10 +1317,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1170,10 +1333,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1184,10 +1349,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1198,10 +1365,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1212,10 +1381,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1226,10 +1397,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1240,10 +1413,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1254,10 +1429,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1268,10 +1445,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1282,10 +1461,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1296,10 +1477,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1310,10 +1493,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1324,10 +1509,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1338,10 +1525,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1352,10 +1541,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1366,10 +1557,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1380,10 +1573,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1394,10 +1589,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1408,10 +1605,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1422,10 +1621,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1436,10 +1637,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1450,10 +1653,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1464,10 +1669,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1478,10 +1685,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1492,10 +1701,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1506,10 +1717,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1520,10 +1733,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1534,10 +1749,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1548,10 +1765,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1562,10 +1781,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1576,10 +1797,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1590,10 +1813,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1604,10 +1829,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1618,10 +1845,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1632,10 +1861,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1646,10 +1877,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1660,10 +1893,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1674,10 +1909,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1688,10 +1925,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1702,10 +1941,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1716,10 +1957,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1730,6 +1973,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -1738,6 +1982,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -1748,10 +1993,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1762,10 +2009,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1776,10 +2025,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1790,10 +2041,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1804,10 +2057,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1818,10 +2073,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1835,15 +2092,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 60mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1854,10 +2114,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1868,10 +2130,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1882,10 +2146,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1896,10 +2162,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1910,10 +2178,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1924,10 +2194,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1938,10 +2210,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1952,10 +2226,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1966,10 +2242,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1980,10 +2258,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -1994,10 +2274,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2008,10 +2290,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2022,10 +2306,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2036,10 +2322,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2050,10 +2338,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2064,10 +2354,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2078,10 +2370,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2092,10 +2386,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2106,10 +2402,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2120,10 +2418,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2134,10 +2434,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2148,10 +2450,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2162,10 +2466,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2176,10 +2482,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2190,10 +2498,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2204,10 +2514,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2218,10 +2530,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2232,10 +2546,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2246,10 +2562,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2260,10 +2578,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2274,10 +2594,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2288,10 +2610,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2302,10 +2626,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2316,10 +2642,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2330,10 +2658,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2344,10 +2674,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2358,10 +2690,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2372,10 +2706,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2386,10 +2722,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2400,10 +2738,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2414,10 +2754,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2428,10 +2770,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2442,10 +2786,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2456,10 +2802,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2470,10 +2818,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2484,10 +2834,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2498,10 +2850,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2512,6 +2866,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -2520,6 +2875,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -2530,10 +2886,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2544,10 +2902,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2558,10 +2918,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2572,10 +2934,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2586,10 +2950,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2600,10 +2966,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2617,15 +2985,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 75mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2636,10 +3007,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2650,10 +3023,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2664,10 +3039,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2678,10 +3055,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2692,10 +3071,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2706,10 +3087,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2720,10 +3103,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2734,10 +3119,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2748,10 +3135,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2762,10 +3151,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2776,10 +3167,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2790,10 +3183,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2804,10 +3199,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2818,10 +3215,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2832,10 +3231,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2846,10 +3247,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2860,10 +3263,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2874,10 +3279,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2888,10 +3295,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2902,10 +3311,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2916,10 +3327,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2930,10 +3343,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2944,10 +3359,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2958,10 +3375,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2972,10 +3391,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -2986,10 +3407,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3000,10 +3423,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3014,10 +3439,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3028,10 +3455,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3042,10 +3471,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3056,10 +3487,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3070,10 +3503,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3084,10 +3519,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3098,10 +3535,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3112,10 +3551,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3126,10 +3567,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3140,10 +3583,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3154,10 +3599,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3168,10 +3615,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3182,10 +3631,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3196,10 +3647,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3210,10 +3663,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3224,10 +3679,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3238,10 +3695,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3252,10 +3711,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3266,10 +3727,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3280,10 +3743,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3294,6 +3759,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -3302,6 +3768,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -3312,10 +3779,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3326,10 +3795,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3340,10 +3811,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3354,10 +3827,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3368,10 +3843,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3382,10 +3859,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3399,15 +3878,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 90mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3418,10 +3900,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3432,10 +3916,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3446,10 +3932,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3460,10 +3948,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3474,10 +3964,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3488,10 +3980,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3502,10 +3996,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3516,10 +4012,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3530,10 +4028,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3544,10 +4044,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3558,10 +4060,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3572,10 +4076,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3586,10 +4092,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3600,10 +4108,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3614,10 +4124,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3628,10 +4140,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3642,10 +4156,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3656,10 +4172,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3670,10 +4188,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3684,10 +4204,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3698,10 +4220,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3712,10 +4236,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3726,10 +4252,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3740,10 +4268,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3754,10 +4284,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3768,10 +4300,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3782,10 +4316,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3796,10 +4332,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3810,10 +4348,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3824,10 +4364,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3838,10 +4380,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3852,10 +4396,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3866,10 +4412,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3880,10 +4428,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3894,10 +4444,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3908,10 +4460,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3922,10 +4476,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3936,10 +4492,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3950,10 +4508,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3964,10 +4524,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3978,10 +4540,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -3992,10 +4556,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4006,10 +4572,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4020,10 +4588,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4034,10 +4604,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4048,10 +4620,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4062,10 +4636,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4076,6 +4652,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -4084,6 +4661,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -4094,10 +4672,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4108,10 +4688,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4122,10 +4704,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4136,10 +4720,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4150,10 +4736,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4164,10 +4752,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4181,15 +4771,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 105mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4200,10 +4793,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4214,10 +4809,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4228,10 +4825,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4242,10 +4841,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4256,10 +4857,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4270,10 +4873,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4284,10 +4889,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4298,10 +4905,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4312,10 +4921,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4326,10 +4937,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4340,10 +4953,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4354,10 +4969,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4368,10 +4985,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4382,10 +5001,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4396,10 +5017,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4410,10 +5033,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4424,10 +5049,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4438,10 +5065,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4452,10 +5081,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4466,10 +5097,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4480,10 +5113,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4494,10 +5129,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4508,10 +5145,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4522,10 +5161,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4536,10 +5177,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4550,10 +5193,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4564,10 +5209,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4578,10 +5225,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4592,10 +5241,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4606,10 +5257,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4620,10 +5273,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4634,10 +5289,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4648,10 +5305,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4662,10 +5321,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4676,10 +5337,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4690,10 +5353,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4704,10 +5369,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4718,10 +5385,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4732,10 +5401,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4746,10 +5417,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4760,10 +5433,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4774,10 +5449,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4788,10 +5465,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4802,10 +5481,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4816,10 +5497,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4830,10 +5513,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4844,10 +5529,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4858,6 +5545,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -4866,6 +5554,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -4876,10 +5565,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4890,10 +5581,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4904,10 +5597,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4918,10 +5613,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4932,10 +5629,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4946,10 +5645,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4963,15 +5664,18 @@ Object {
     Object {
       "failures": 1,
       "name": "Jahia Perf at 120mn",
+      "skipped": 0,
       "tests": 55,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "E3-C6b Add main content / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4982,10 +5686,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9b Publish list page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -4996,10 +5702,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5010,10 +5718,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5024,10 +5734,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C4 Add content / Open content selector",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5038,10 +5750,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2b Navigate in side-panel tree",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5052,10 +5766,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7a Add news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5066,10 +5782,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C7b Add news entry / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5080,10 +5798,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C9a Publish list page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5094,10 +5814,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1b Edit content / Close locked engine+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5108,10 +5830,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5122,10 +5846,12 @@ Object {
         Object {
           "failures": 0,
           "name": "P1 Background Workflow polling",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5136,10 +5862,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View internal link page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5150,10 +5878,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5164,10 +5894,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8b Publish page / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5178,10 +5910,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5192,10 +5926,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3d Search-did you mean (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5206,10 +5942,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2a View news entry in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5220,10 +5958,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C2 View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5234,10 +5974,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E4 Logout",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5248,10 +5990,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E1 Login/Dashboard",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5262,10 +6006,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5276,10 +6022,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit news entry list page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5290,10 +6038,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5304,10 +6054,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5318,10 +6070,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2d Download internal link (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5332,10 +6086,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2b Publish update / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5346,10 +6102,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5360,10 +6118,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View list page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5374,10 +6134,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1b Add page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5388,10 +6150,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C6a Add main content / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5402,10 +6166,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5416,10 +6182,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View list page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5430,10 +6198,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3a Search few results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5444,10 +6214,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View page in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5458,10 +6230,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U2c Publish update / Queue publish job+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5472,10 +6246,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2a Open homepage in edit (+load config)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5486,10 +6262,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C1a Add page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5500,10 +6278,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3c Paginate search result (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5514,10 +6294,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-C8a Publish page / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5528,10 +6310,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2 View query page in live mode (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5542,10 +6326,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1 View homepage in live mode (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5556,10 +6342,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5570,10 +6358,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L1a Login/homepage",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5584,10 +6374,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Open engine",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5598,10 +6390,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1d Edit rich text page / Save+reload",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5612,10 +6406,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E2c View page in edit mode",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5626,10 +6422,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1c Edit content / Add new tag",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5640,6 +6438,7 @@ Object {
         Object {
           "failures": 1,
           "name": "P2 WebSocket reload check (X)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -5648,6 +6447,7 @@ Object {
                 },
               ],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "FAIL",
               "time": 0,
             },
@@ -5658,10 +6458,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (guest)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5672,10 +6474,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L2b Paginate list/query (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5686,10 +6490,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit news entry / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5700,10 +6506,12 @@ Object {
         Object {
           "failures": 0,
           "name": "E3-U1a Edit rich text / Preview",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5714,10 +6522,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Total",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5728,10 +6538,12 @@ Object {
         Object {
           "failures": 0,
           "name": "L3b Search many results (auth)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "pct2ResTime",
+              "skipped": 0,
               "status": "PASS",
               "time": 0,
             },
@@ -5743,6 +6555,7 @@ Object {
       "time": 0,
     },
   ],
+  "skipped": 0,
   "tests": 393,
   "time": 0,
 }
@@ -5757,7 +6570,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.accordion.tests.FormsAccordionTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 2,
       "testsuites": Array [
         Object {
@@ -5799,7 +6612,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormCreationTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 10,
       "testsuites": Array [
         Object {
@@ -5893,7 +6706,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormDatatableTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 2,
       "testsuites": Array [
         Object {
@@ -5931,7 +6744,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormDeletionTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 2,
       "testsuites": Array [
         Object {
@@ -5969,7 +6782,7 @@ Object {
       "failures": 6,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormExportTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 6,
       "testsuites": Array [
         Object {
@@ -6047,7 +6860,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormImportTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 6,
       "testsuites": Array [
         Object {
@@ -6113,7 +6926,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormModificationTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 4,
       "testsuites": Array [
         Object {
@@ -6165,7 +6978,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormPublicationTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 3,
       "testsuites": Array [
         Object {
@@ -6210,7 +7023,7 @@ Object {
       "failures": 3,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormResultsTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 7,
       "testsuites": Array [
         Object {
@@ -6291,7 +7104,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormSearchTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 17,
       "testsuites": Array [
         Object {
@@ -6434,7 +7247,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.library.tests.FormTranslationTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 1,
       "testsuites": Array [
         Object {
@@ -6465,7 +7278,7 @@ Object {
       "failures": 0,
       "hostname": "ba89c541a82f",
       "name": "org.jahia.modules.forms.permissions.tests.EditorPermissionsTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 5,
       "testsuites": Array [
         Object {
@@ -6532,7 +7345,7 @@ Object {
       "failures": 0,
       "hostname": "ba89c541a82f",
       "name": "org.jahia.modules.forms.permissions.tests.PermissionsTabLayoutTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 1,
       "testsuites": Array [
         Object {
@@ -6565,7 +7378,7 @@ Object {
       "failures": 0,
       "hostname": "ba89c541a82f",
       "name": "org.jahia.modules.forms.permissions.tests.ResultsViewerPermissionsTest",
-      "skipped": "0",
+      "skipped": 0,
       "tests": 4,
       "testsuites": Array [
         Object {
@@ -6625,7 +7438,7 @@ Object {
       "failures": 0,
       "hostname": "MacBook-Pro.local",
       "name": "org.jahia.modules.forms.tests.FormEnd2EndTest",
-      "skipped": "8",
+      "skipped": 8,
       "tests": 9,
       "testsuites": Array [
         Object {
@@ -6726,6 +7539,7 @@ Object {
       "timestamp": "2021-09-27T14:47:38 EDT",
     },
   ],
+  "skipped": 8,
   "tests": 79,
   "time": 1014,
 }
@@ -6738,6 +7552,7 @@ Object {
     Object {
       "failures": 0,
       "name": "Mocha Tests",
+      "skipped": 0,
       "tests": 1,
       "testsuites": Array [
         Object {
@@ -6745,7 +7560,7 @@ Object {
           "failures": 0,
           "file": "cypress/integration/api/apiDescription.spec.ts",
           "name": "Root Suite",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [],
           "testsCount": 0,
           "time": 0,
@@ -6755,7 +7570,7 @@ Object {
           "errors": NaN,
           "failures": 0,
           "name": "Test if every type in graphQL API has description",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [
             Object {
               "classname": "Check every input for the User Type",
@@ -6775,6 +7590,7 @@ Object {
     Object {
       "failures": 0,
       "name": "Mocha Tests",
+      "skipped": 0,
       "tests": 6,
       "testsuites": Array [
         Object {
@@ -6782,7 +7598,7 @@ Object {
           "failures": 0,
           "file": "cypress/integration/api/jcrAddNode.spec.ts",
           "name": "Root Suite",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [],
           "testsCount": 0,
           "time": 0,
@@ -6792,7 +7608,7 @@ Object {
           "errors": NaN,
           "failures": 0,
           "name": "Validate ability get current User",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [
             Object {
               "classname": "User root creating a JCR node - Recommended method",
@@ -6847,6 +7663,7 @@ Object {
     Object {
       "failures": 0,
       "name": "Mocha Tests",
+      "skipped": 0,
       "tests": 8,
       "testsuites": Array [
         Object {
@@ -6854,7 +7671,7 @@ Object {
           "failures": 0,
           "file": "cypress/integration/api/currentUser.spec.ts",
           "name": "Root Suite",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [],
           "testsCount": 0,
           "time": 0,
@@ -6864,7 +7681,7 @@ Object {
           "errors": NaN,
           "failures": 0,
           "name": "Validate ability get current User",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [
             Object {
               "classname": "Get Current user for known user (mathias) - Recommended method",
@@ -6933,6 +7750,7 @@ Object {
     Object {
       "failures": 0,
       "name": "Mocha Tests",
+      "skipped": 0,
       "tests": 1,
       "testsuites": Array [
         Object {
@@ -6940,7 +7758,7 @@ Object {
           "failures": 0,
           "file": "cypress/integration/sandboxTest.spec.ts",
           "name": "Root Suite",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [],
           "testsCount": 0,
           "time": 0,
@@ -6950,7 +7768,7 @@ Object {
           "errors": NaN,
           "failures": 0,
           "name": "Successfully navigates to sandbox app",
-          "skipped": NaN,
+          "skipped": 0,
           "tests": Array [
             Object {
               "classname": "successfully navigate to the app",
@@ -6968,6 +7786,7 @@ Object {
       "time": 28,
     },
   ],
+  "skipped": 0,
   "tests": 16,
   "time": 32,
 }
@@ -6980,15 +7799,18 @@ Object {
     Object {
       "failures": 2,
       "name": "Mocha JSON Report",
+      "skipped": 0,
       "tests": 24,
       "testsuites": Array [
         Object {
           "failures": 0,
           "name": "Indexing - Validating ACLs update and indexation (acls.spec.ts.json)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "Preparing environment to run the test and removing access for guest",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, checkGuestAcl;
@@ -7118,6 +7940,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Validate that guest lost access to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         cy.task('apolloNode', {
@@ -7148,6 +7971,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Validate that user jane still has access to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         cy.task('apolloNode', {
@@ -7182,6 +8006,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Restore access to guest user to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, checkGuestAcl;
@@ -7250,6 +8075,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Validate guest user recovered access to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         cy.task('apolloNode', {
@@ -7284,6 +8110,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Preparing environment to run the test and removing access for group g:users",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, checkGroupsAcl;
@@ -7352,6 +8179,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Validate that user jane (member of g:users) lost access to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         cy.task('apolloNode', {
@@ -7386,6 +8214,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Restore access to group g:users to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, checkGuestAcl;
@@ -7454,6 +8283,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Validate that user jane (member of g:users) recovered access to the /home/about/ nodes",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         cy.task('apolloNode', {
@@ -7492,10 +8322,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Test if every type in graphQL API has description (apiDescription.spec.ts.json)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "Check every input for the User Type",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -7523,10 +8355,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Filters - Filtering by author (author.spec.ts.json)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "Filter by author - root",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, hits, _i, hits_1, h;
@@ -7565,6 +8399,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Filter by author - root - (DEPRECATED jcr node)",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, hits, _i, hits_2, h;
@@ -7603,6 +8438,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Filter by author - system",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, hits, _i, hits_3, h;
@@ -7641,6 +8477,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Filter by author - system - (DEPRECATED jcr node)",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, hits, _i, hits_4, h;
@@ -7683,6 +8520,7 @@ Object {
         Object {
           "failures": 2,
           "name": "Admin - UI operations on Augmented Search DB connection (connectionTest.spec.ts.json)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [
@@ -7691,6 +8529,7 @@ Object {
                 },
               ],
               "name": "Access the page and validate \\"ADD CONNECTION\\" button (no connection present)",
+              "skipped": 0,
               "status": "FAIL",
               "steps": "function () {
         as_admin_page_1.asAdminPage.goTo();
@@ -7705,6 +8544,7 @@ Object {
                 },
               ],
               "name": "Access the page and slect the connection and cancel",
+              "skipped": 0,
               "status": "FAIL",
               "steps": "function () {
         as_admin_page_1.asAdminPage.goTo();
@@ -7719,10 +8559,12 @@ Object {
         Object {
           "failures": 0,
           "name": "Admin - API operations with dbConnections (dbConnections.spec.ts.json)",
+          "skipped": 0,
           "tests": Array [
             Object {
               "failures": Array [],
               "name": "Verifies current connection is empty",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -7744,6 +8586,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "List available dbConnections",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -7766,6 +8609,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "List available dbConnections - Check plugins",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, asConnection;
@@ -7792,6 +8636,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Cannot set empty dbConnectionId",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var err_1;
@@ -7823,6 +8668,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Cannot set non-existing dbConnectionId",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var err_2;
@@ -7854,6 +8700,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Set valid dbConnection",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -7883,6 +8730,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Cannot clear dbConnection if site configured",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var err_3;
@@ -7921,6 +8769,7 @@ Object {
             Object {
               "failures": Array [],
               "name": "Can clear dbConnection if no site configured",
+              "skipped": 0,
               "status": "PASS",
               "steps": "function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -7958,6 +8807,7 @@ Object {
       "time": 25,
     },
   ],
+  "skipped": 0,
   "tests": 24,
   "time": 25,
 }
@@ -8630,6 +9480,7 @@ cy.apolloClient().then(function (client) { return executeTest(client, 'Query', t
       "timestamp": "2021-10-29T17:28:00.882Z",
     },
   ],
+  "skipped": NaN,
   "tests": 31,
   "time": 14,
 }
@@ -9125,6 +9976,7 @@ cy.request(profileListHelpers_1.requestProfileList).then(function (resp) {
       "timestamp": "2021-10-29T13:18:13.161Z",
     },
   ],
+  "skipped": NaN,
   "tests": 16,
   "time": 93,
 }
