@@ -85,15 +85,15 @@ export class TestRailClient {
       // throw new Error("Something went wrong. Can't find any section")
     }
 
-    public addSection(projectId: number, suiteId: number, section: string, parentId: string = ''): Section {
-      let sectionParams:any = {
-        suite_id: suiteId.toString(), 
-        name: section
+    public addSection(projectId: number, suiteId: number, section: string, parentId = ''): Section {
+      let sectionParams: any = {
+        suite_id: suiteId.toString(),
+        name: section,
       }
-      if (parentId !== ''){
+      if (parentId !== '') {
         sectionParams = {
           ...sectionParams,
-          parent_id: parentId
+          parent_id: parentId,
         }
       }
       return this.sendRequest('POST', 'add_section/' + projectId.toString(), sectionParams) as Section

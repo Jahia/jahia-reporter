@@ -14,7 +14,7 @@ export interface JRTestsuite {
   name: string;
   errors?: number;
   failures: number;
-  skipped?: number;
+  skipped: number;
   timestamp: string;
   time: number;
   tests: JRTestcase[];
@@ -25,6 +25,7 @@ export interface JRReport {
   name: string;
   tests: number;
   failures: number;
+  skipped: number;
   time: number;
   testsuites: JRTestsuite[];
 }
@@ -33,6 +34,7 @@ export interface JRReport {
 export interface JRRun {
   tests: number;
   failures: number;
+  skipped: number;
   time: number;
   reports: JRReport[];
 }

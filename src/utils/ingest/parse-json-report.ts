@@ -17,6 +17,7 @@ const legacyParser = (rawReports: any[]): JRRun => {
         failures: Object.values(t.err).length === 0 ? [] : [{
           text: JSON.stringify(t.err),
         }],
+        skipped: t.skipped === undefined ? 0 : Math.round(t.skipped),
       }
     })
 
@@ -31,6 +32,7 @@ const legacyParser = (rawReports: any[]): JRRun => {
         failures: Object.values(t.err).length === 0 ? [] : [{
           text: JSON.stringify(t.err),
         }],
+        skipped: t.skipped === undefined ? 0 : Math.round(t.skipped),
       }
     })
 
@@ -38,6 +40,7 @@ const legacyParser = (rawReports: any[]): JRRun => {
     const parsedSuite: any = [{
       name: suiteName + ' (' + basename(rawContent.filepath) + ')',
       failures: rawContent.content.stats.failures,
+      skipped: rawContent.content.stats.skipped === undefined ? 0 : rawContent.content.stats.skipped,
       timestamp: rawContent.content.stats.start,
       time: Math.round(rawContent.content.stats.duration / 1000), // Time is in ms, converting to s
       tests: [...primaryTests, ...otherFailed],
@@ -50,11 +53,13 @@ const legacyParser = (rawReports: any[]): JRRun => {
   return {
     tests: suites.map(r => r.tests.length).reduce((acc, count) => acc + count, 0),
     failures: suites.map(r => r.failures).reduce((acc, count) => acc + count, 0),
+    skipped: suites.map(r => r.skipped).reduce((acc, count) => acc + count, 0),
     time: suites.map(r => r.time).reduce((acc, count) => acc + count, 0),
     reports: [{
       name: 'Mocha JSON Report',
       tests: suites.map(r => r.tests.length).reduce((acc, count) => acc + count, 0),
       failures: suites.map(r => r.failures).reduce((acc, count) => acc + count, 0),
+      skipped: suites.map(r => r.skipped).reduce((acc, count) => acc + count, 0),
       time: suites.map(r => r.time).reduce((acc, count) => acc + count, 0),
       testsuites: suites,
     }],
@@ -99,6 +104,7 @@ const mochaParser = (rawReports: any[]): JRRun => {
   return {
     tests: reports.map(r => r.tests).reduce((acc, count) => acc + count, 0),
     failures: reports.map(r => r.failures).reduce((acc, count) => acc + count, 0),
+    skipped: reports.map(r => r.skipped).reduce((acc, count) => acc + count, 0),
     time: reports.map(r => r.time).reduce((acc, count) => acc + count, 0),
     reports: reports,
   }
