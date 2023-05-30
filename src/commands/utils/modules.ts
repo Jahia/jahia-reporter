@@ -1,4 +1,5 @@
 import {Command, flags} from '@oclif/command'
+import cli from 'cli-ux'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -6,6 +7,7 @@ import {UtilsVersions, UtilsPlatform} from '../../global.type'
 
 import {getModules} from '../../utils/modules'
 import {getPlatform} from '../../utils/platform'
+import {waitForJournalSync} from '../../utils/journal-sync'
 
 class JahiaUtilsModule extends Command {
   static description = 'For a provided module, returns the module version, Jahia version and list of installed modules'
@@ -37,6 +39,10 @@ class JahiaUtilsModule extends Command {
       description: 'Filepath to store the resulting JSON to',
       required: true,
     }),
+    timeout: flags.integer({
+      description: 'Timeout for journal sync',
+      default: 120,
+    }),
   }
 
   async run() {
@@ -45,6 +51,9 @@ class JahiaUtilsModule extends Command {
     const dependencies: string[] = flags.dependencies.split(',')
 
     const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
+    cli.action.start(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`)
+    waitForJournalSync(flags.timeout, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
+    cli.action.stop()
     const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
     const platform: UtilsPlatform | undefined = getPlatform(jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
 
