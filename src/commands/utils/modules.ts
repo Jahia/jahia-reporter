@@ -1,4 +1,5 @@
 import {Command, flags} from '@oclif/command'
+import cli from 'cli-ux'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -50,7 +51,9 @@ class JahiaUtilsModule extends Command {
     const dependencies: string[] = flags.dependencies.split(',')
 
     const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
+    cli.action.start(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`)
     waitForJournalSync(flags.timeout, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
+    cli.action.stop()
     const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
     const platform: UtilsPlatform | undefined = getPlatform(jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
 
