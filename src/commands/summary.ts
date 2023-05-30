@@ -36,8 +36,19 @@ class JahiaSummaryReporter extends Command {
       this.log,
       flags.silent,
     )
+
+    const testTotal = report.tests
+    let testFailures = report.failures
+    const testSkipped = report.skipped
+
+    // There are times at which the failures might actually be negatives due to skipped tests
+    // In such cases, we put the failures back to 0
+    if (testSkipped > 0 && testFailures < 0 && testFailures + testSkipped === 0) {
+      testFailures = 0
+    }
+
     this.log(
-      `Total Tests: ${report.tests} - Failure: ${report.failures} - Executed in ${report.time}s`,
+      `Total Tests: ${testTotal} - Failure: ${testFailures} (skipped: ${testSkipped})- Executed in ${report.time}s`,
     )
     if (report.failures > 0) {
       this.log('FAILURES:')
