@@ -4,10 +4,9 @@ import * as path from 'path'
 
 import {UtilsVersions, UtilsPlatform} from '../../global.type'
 
-import {SyncRequestClient} from 'ts-sync-request/dist'
-import {Base64} from 'js-base64'
 import {getModules} from '../../utils/modules'
 import {getPlatform} from '../../utils/platform'
+import {waitForJournalSync} from '../../utils/journal-sync'
 
 class JahiaUtilsModule extends Command {
   static description = 'For a provided module, returns the module version, Jahia version and list of installed modules'
@@ -40,7 +39,7 @@ class JahiaUtilsModule extends Command {
       required: true,
     }),
     timeout: flags.integer({
-      decription: 'Timeout for the provisioning script to end execution',
+      description: 'Timeout for journal sync',
       default: 120,
     }),
   }
@@ -51,23 +50,7 @@ class JahiaUtilsModule extends Command {
     const dependencies: string[] = flags.dependencies.split(',')
 
     const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
-    for (let i = 0; i < flags.timeout; i++) {
-      let out = false
-      setTimeout(() => {
-        const response: any = new SyncRequestClient()
-        .addHeader('Content-Type', 'application/json')
-        .addHeader('referer', flags.jahiaUrl)
-        .addHeader('authorization', `Basic ${Base64.btoa(flags.jahiaUsername + ':' + flags.jahiaPassword)}`)
-        .post(flags.jahiaUrl + 'modules/graphql', {query: 'query { admin { cluster { journal { globalRevision localRevision { revision serverId } revisions { revision serverId } isClusterSync } isActivated } }}'})
-        if (response.errors !== undefined) out = true
-        if (response.data !== null) {
-          if (response.data.admin.cluster.journal.isClusterSync === true && response.data.cluster.isActivated === true) out = true
-        }
-      }, 1000);
-      if (out) {
-        break
-      }
-    }
+    waitForJournalSync(flags.timeout, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
     const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
     const platform: UtilsPlatform | undefined = getPlatform(jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
 
