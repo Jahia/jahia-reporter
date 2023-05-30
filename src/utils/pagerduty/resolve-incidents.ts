@@ -21,7 +21,7 @@ export const resolveIncidents = async (
   console.log(
     `${allOpenIncidents.length} incidents still open in pagerduty for service: ${testService}`,
   )
-  if (allOpenIncidents.length === 0) {
+  if (allOpenIncidents.length > 0) {
     console.log('These incidents will be resolved')
   }
   for (const incident of allOpenIncidents) {

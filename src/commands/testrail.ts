@@ -218,9 +218,8 @@ class JahiaTestrailReporter extends Command {
           testrailProject.id,
           testrailSuite.id,
         )
-      } 
+      }
       parentSectionId = foundSection.id.toString()
-      
     }
 
     // Get Milestone
