@@ -8,8 +8,13 @@ import {GoogleSpreadsheet} from 'google-spreadsheet'
 
 import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
+import {resolveIncidents} from '../../utils/pagerduty/resolve-incidents'
 
-const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
+const getSpreadsheetRows = async (
+  googleSpreadsheetId: string,
+  googleClientEmail: string,
+  googleApiKey: string,
+) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId)
   await doc.useServiceAccountAuth({
     client_email: googleClientEmail,
@@ -21,7 +26,7 @@ const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail
 }
 
 class JahiaPagerDutyIncident extends Command {
-  static description = 'Create a pagerduty event based on a test report'
+  static description = 'Create a pagerduty event based on a test report';
 
   static flags = {
     // add --version flag to show CLI version
@@ -36,17 +41,19 @@ class JahiaPagerDutyIncident extends Command {
       default: '',
     }),
     sourcePath: flags.string({
-      description: 'A json/xml report or a folder containing one or multiple json/xml reports',
+      description:
+        'A json/xml report or a folder containing one or multiple json/xml reports',
       default: '',
     }),
     sourceType: flags.string({
-      char: 't',                                // shorter flag version
-      description: 'The format of the report',  // help description for flag
-      options: ['xml', 'json', 'json-perf'],    // only allow the value to be from a discrete set
+      char: 't', // shorter flag version
+      description: 'The format of the report', // help description for flag
+      options: ['xml', 'json', 'json-perf'], // only allow the value to be from a discrete set
       default: 'xml',
     }),
     service: flags.string({
-      description: 'Name of the service that triggered this incident (ex: graphql-dxm-provider)',
+      description:
+        'Name of the service that triggered this incident (ex: graphql-dxm-provider)',
       required: true,
     }),
     sourceUrl: flags.string({
@@ -54,12 +61,19 @@ class JahiaPagerDutyIncident extends Command {
       default: '',
     }),
     forceSuccess: flags.boolean({
-      description: 'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
+      description:
+        'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
+      default: false,
+    }),
+    ignorePreviousIncidents: flags.boolean({
+      description:
+        'If provided, will not resolve previous incidents for the same service when there are currently no failures',
       default: false,
     }),
     // Setup Google Auth: https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
     googleSpreadsheetId: flags.string({
-      description: 'ID of the spreadsheet container user assignment for the service',
+      description:
+        'ID of the spreadsheet container user assignment for the service',
       default: '',
     }),
     googleClientEmail: flags.string({
@@ -67,11 +81,13 @@ class JahiaPagerDutyIncident extends Command {
       default: '',
     }),
     googleApiKey: flags.string({
-      description: 'Google Client API key required to access the spreadsheet (base64)',
+      description:
+        'Google Client API key required to access the spreadsheet (base64)',
       default: '',
     }),
     googleUpdateState: flags.boolean({
-      description: 'Update the State column to PASSED/FAILED based on the outcome of the tests',
+      description:
+        'Update the State column to PASSED/FAILED based on the outcome of the tests',
       default: false,
     }),
     pdApiKey: flags.string({
@@ -95,7 +111,8 @@ class JahiaPagerDutyIncident extends Command {
       default: '',
     }),
     pdTwoStepsAssign: flags.boolean({
-      description: 'Immediately assign incident to assignee. If false, the incident will first be assigned to the reporter, then re-assign to assignee. This is needed for slack (@user) to be sent to the channel.',
+      description:
+        'Immediately assign incident to assignee. If false, the incident will first be assigned to the reporter, then re-assign to assignee. This is needed for slack (@user) to be sent to the channel.',
       default: true,
     }),
     dryRun: flags.boolean({
@@ -103,10 +120,11 @@ class JahiaPagerDutyIncident extends Command {
       default: false,
     }),
     requireAssignee: flags.boolean({
-      description: 'Only create incident in pagerduty if an assignee is present',
+      description:
+        'Only create incident in pagerduty if an assignee is present',
       default: true,
     }),
-  }
+  };
 
   // eslint-disable-next-line complexity
   async run() {
@@ -115,7 +133,8 @@ class JahiaPagerDutyIncident extends Command {
     // Default values in the event the report couldn't be accessed
     let dedupKey = md5('Unable to access reports')
     let incidentBody = `Source URL: ${flags.sourceUrl} \n`
-    incidentBody += 'An error is present in the test execution workflow.\nThis usually means one of the steps of the workflow (tests or other) failed or that the reporter was unable to access reports data.'
+    incidentBody +=
+      'An error is present in the test execution workflow.\nThis usually means one of the steps of the workflow (tests or other) failed or that the reporter was unable to access reports data.'
     let incidentTitle = `${flags.service} - Incident during test execution`
 
     let testTotal = 999
@@ -130,14 +149,21 @@ class JahiaPagerDutyIncident extends Command {
       incidentBody = `Source URL: ${flags.sourceUrl} \n`
       incidentBody += `Dedup Key: ${dedupKey} \n`
 
-      if (flags.incidentDetailsPath !== '' && fs.existsSync(flags.incidentDetailsPath)) {
+      if (
+        flags.incidentDetailsPath !== '' &&
+        fs.existsSync(flags.incidentDetailsPath)
+      ) {
         const errorLogs = fs.readFileSync(flags.incidentDetailsPath)
         incidentBody += `Test summary for: ${flags.service} - ${flags.incidentMessage}\n\n${errorLogs}`
       }
     } else if (flags.sourcePath.length > 0) {
       if (fs.existsSync(flags.sourcePath)) {
         // Parse files into objects
-        const jrRun: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+        const jrRun: JRRun = await ingestReport(
+          flags.sourceType,
+          flags.sourcePath,
+          this.log,
+        )
         testFailures = jrRun.failures
         testSkipped = jrRun.skipped
         testTotal = jrRun.tests
@@ -146,7 +172,11 @@ class JahiaPagerDutyIncident extends Command {
 
         // There are times at which the failures might actually be negatives due to skipped tests
         // In such cases, we put the failures back to 0
-        if (testSkipped > 0 && testFailures < 0 && testFailures + testSkipped === 0) {
+        if (
+          testSkipped > 0 &&
+          testFailures < 0 &&
+          testFailures + testSkipped === 0
+        ) {
           testFailures = 0
         }
 
@@ -170,12 +200,22 @@ class JahiaPagerDutyIncident extends Command {
         incidentBody += `Test summary for: ${flags.service} - ${jrRun.tests} tests - ${jrRun.failures} failures`
         const failedReports = jrRun.reports.filter(r => r.failures > 0)
         failedReports.forEach(failedReport => {
-          const failedSuites = failedReport.testsuites.filter(s => s.failures > 0)
+          const failedSuites = failedReport.testsuites.filter(
+            s => s.failures > 0,
+          )
           failedSuites.forEach(failedSuite => {
             incidentBody += `\nSuite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-            const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+            const failedTests = failedSuite.tests.filter(
+              t => t.status === 'FAIL',
+            )
             failedTests.forEach(failedTest => {
-              incidentBody += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
+              incidentBody += ` |-- ${failedTest.name} (${
+                failedTest.time
+              }s) - ${
+                failedTest.failures.length > 1 ?
+                  failedTest.failures.length + ' failures' :
+                  ''
+              } \n`
             })
           })
         })
@@ -193,18 +233,24 @@ class JahiaPagerDutyIncident extends Command {
 
     if (flags.forceSuccess) {
       // The script has been forced to success
-      this.log(`The script has been forced to success, the actual failure found was: ${testFailures}`)
+      this.log(
+        `The script has been forced to success, the actual failure found was: ${testFailures}`,
+      )
       testFailures = 0
       testTotal = 0
     }
 
     // Note, the spreadsheet must be shared with the email provided in flags.googleClientEmail
-    const assignees: string[] = flags.pdUserId.split(',').filter((a: string) => a.length > 4)
+    const assignees: string[] = flags.pdUserId
+    .split(',')
+    .filter((a: string) => a.length > 4)
     let pagerDutyServiceId = flags.pdServiceId
     if (flags.googleSpreadsheetId === '') {
       this.log('Google Spreadsheet ID has not been set')
     } else {
-      this.log(`Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`)
+      this.log(
+        `Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`,
+      )
       // There are sometimes some unavailability of the GitHub API
       let spRows: any[] = []
       for (let cpt = 1; cpt < 4; cpt++) {
@@ -212,7 +258,11 @@ class JahiaPagerDutyIncident extends Command {
           this.log(`Connecting to spreadsheet: ${cpt}/3`)
           try {
             // eslint-disable-next-line no-await-in-loop
-            spRows = await getSpreadsheetRows(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
+            spRows = await getSpreadsheetRows(
+              flags.googleSpreadsheetId,
+              flags.googleClientEmail,
+              flags.googleApiKey,
+            )
           } catch {
             this.log('Unable to connect to spreadsheet')
           }
@@ -220,18 +270,29 @@ class JahiaPagerDutyIncident extends Command {
       }
       for (const row of spRows) {
         if (row['Test Service'] === flags.service) {
-          if (row['PagerDuty Enabled'] !== undefined && row['PagerDuty Enabled'].toLowerCase() === 'no') {
+          if (
+            row['PagerDuty Enabled'] !== undefined &&
+            row['PagerDuty Enabled'].toLowerCase() === 'no'
+          ) {
             pagerDutyNotifEnabled = false
           }
-          if (row['PagerDuty Service ID'] !== undefined && row['PagerDuty Service ID'].length > 4) {
+          if (
+            row['PagerDuty Service ID'] !== undefined &&
+            row['PagerDuty Service ID'].length > 4
+          ) {
             pagerDutyServiceId = row['PagerDuty Service ID']
           }
           if (row['PagerDuty User ID'] !== undefined) {
-            for (const assignee of row['PagerDuty User ID'].split(',').filter((a: string) => a.length > 4)) {
+            for (const assignee of row['PagerDuty User ID']
+            .split(',')
+            .filter((a: string) => a.length > 4)) {
               assignees.push(assignee)
             }
           }
-          if (flags.googleUpdateState && (row['CI/CD'] === 'Bamboo' || row['CI/CD'] === 'GitHub')) {
+          if (
+            flags.googleUpdateState &&
+            (row['CI/CD'] === 'Bamboo' || row['CI/CD'] === 'GitHub')
+          ) {
             this.log(`Updated state for: ${flags.service}`)
             if (testFailures > 0) {
               row.State = 'FAILED'
@@ -241,7 +302,9 @@ class JahiaPagerDutyIncident extends Command {
             row.Updated = new Date().toISOString()
             row.Total = testTotal
             row.Failures = testFailures
-            this.log(`Saving Google Spreadsheet row for: ${row['Test Service']}`)
+            this.log(
+              `Saving Google Spreadsheet row for: ${row['Test Service']}`,
+            )
             // eslint-disable-next-line no-await-in-loop
             await row.save()
           }
@@ -282,23 +345,40 @@ class JahiaPagerDutyIncident extends Command {
     // eslint-disable-next-line no-console
     this.log('JSON Payload for submission', JSON.stringify(pdPayload))
 
-    if (testFailures === 0) {
-      this.log('There are 0 failures in the provided reports, not submitting an incident to pagerduty')
-    } else if (flags.dryRun) {
-      this.log('DRYRUN: Data not submitted to PagerDuty')
-    } else if (assignees.length === 0 && flags.requireAssignee) {
-      this.log('No assignees found, incident will not be created')
-    } else if (pagerDutyNotifEnabled === false) {
-      this.log('According to the Google Spreadsheet, notifications are current disabled for that service')
-    } else {
-      const pd = api({token: flags.pdApiKey, ...{
+    const pd = api({
+      token: flags.pdApiKey,
+      ...{
         headers: {
           From: 'support@jahia.com',
         },
-      }})
+      },
+    })
+
+    if (flags.dryRun) {
+      this.log('DRYRUN: Data not submitted to PagerDuty')
+    } else if (testFailures === 0) {
+      this.log(
+        'There are 0 failures in the provided reports, not submitting a new incident to pagerduty',
+      )
+      if (flags.ignorePreviousIncidents === false) {
+        resolveIncidents(pd, pagerDutyServiceId, flags.service)
+      }
+      // Checking if there are previous items to clear
+    } else if (assignees.length === 0 && flags.requireAssignee) {
+      this.log('No assignees found, incident will not be created')
+    } else if (pagerDutyNotifEnabled === false) {
+      this.log(
+        'According to the Google Spreadsheet, notifications are current disabled for that service',
+      )
+    } else {
       const incidentResponse = await pd.post('/incidents', {data: pdPayload})
-      if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
-        this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
+      if (
+        incidentResponse.data !== undefined &&
+        incidentResponse.data.incident !== undefined
+      ) {
+        this.log(
+          `Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`,
+        )
 
         // If assignees were not directly assigned, they now get assigned by updating the incident.
         // As of Nov 17, 2021, PagerDuty does not `@user` assignee in slack when incident is created.
@@ -317,9 +397,17 @@ class JahiaPagerDutyIncident extends Command {
               }),
             },
           }
-          const updateResponse = await pd.put(`/incidents/${incidentResponse.data.incident.id}`, {data: updatePayload})
-          if (updateResponse.data !== undefined && updateResponse.data.incident !== undefined) {
-            this.log(`Pagerduty Incident updated: ${updateResponse.data.incident.incident_number} - ${updateResponse.data.incident.html_url}`)
+          const updateResponse = await pd.put(
+            `/incidents/${incidentResponse.data.incident.id}`,
+            {data: updatePayload},
+          )
+          if (
+            updateResponse.data !== undefined &&
+            updateResponse.data.incident !== undefined
+          ) {
+            this.log(
+              `Pagerduty Incident updated: ${updateResponse.data.incident.incident_number} - ${updateResponse.data.incident.html_url}`,
+            )
           } else {
             this.log('Incident not updated')
             this.log(updateResponse.data.error)
@@ -333,4 +421,4 @@ class JahiaPagerDutyIncident extends Command {
   }
 }
 
-export = JahiaPagerDutyIncident
+export = JahiaPagerDutyIncident;
