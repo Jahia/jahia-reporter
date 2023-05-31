@@ -8,6 +8,7 @@ import {GoogleSpreadsheet} from 'google-spreadsheet'
 
 import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
+import {resolveIncidents} from '../../utils/pagerduty/resolve-incidents'
 
 const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId)
@@ -55,6 +56,11 @@ class JahiaPagerDutyIncident extends Command {
     }),
     forceSuccess: flags.boolean({
       description: 'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
+      default: false,
+    }),
+    ignorePreviousIncidents: flags.boolean({
+      description:
+        'If provided, will not resolve previous incidents for the same service when there are currently no failures',
       default: false,
     }),
     // Setup Google Auth: https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -282,20 +288,25 @@ class JahiaPagerDutyIncident extends Command {
     // eslint-disable-next-line no-console
     this.log('JSON Payload for submission', JSON.stringify(pdPayload))
 
-    if (testFailures === 0) {
-      this.log('There are 0 failures in the provided reports, not submitting an incident to pagerduty')
-    } else if (flags.dryRun) {
+    const pd = api({token: flags.pdApiKey, ...{
+      headers: {
+        From: 'support@jahia.com',
+      },
+    }})
+    if (flags.dryRun) {
       this.log('DRYRUN: Data not submitted to PagerDuty')
+    } else if (testFailures === 0) {
+      this.log(
+        'There are 0 failures in the provided reports, not submitting a new incident to pagerduty',
+      )
+      if (flags.ignorePreviousIncidents === false) {
+        resolveIncidents(pd, pagerDutyServiceId, flags.service, flags.sourceUrl)
+      }
     } else if (assignees.length === 0 && flags.requireAssignee) {
       this.log('No assignees found, incident will not be created')
     } else if (pagerDutyNotifEnabled === false) {
       this.log('According to the Google Spreadsheet, notifications are current disabled for that service')
     } else {
-      const pd = api({token: flags.pdApiKey, ...{
-        headers: {
-          From: 'support@jahia.com',
-        },
-      }})
       const incidentResponse = await pd.post('/incidents', {data: pdPayload})
       if (incidentResponse.data !== undefined && incidentResponse.data.incident !== undefined) {
         this.log(`Pagerduty Incident created: ${incidentResponse.data.incident.incident_number} - ${incidentResponse.data.incident.html_url}`)
