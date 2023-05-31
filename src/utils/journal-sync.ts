@@ -11,9 +11,9 @@ export const waitForJournalSync = (timeout: number, jahiaUrl: string, jahiaUsern
     .post(jahiaUrl + 'modules/graphql', {query: 'query { admin { cluster { journal { globalRevision localRevision { revision serverId } revisions { revision serverId } isClusterSync } isActivated } }}'})
     if (response.errors !== undefined) break
     if (response.data === null) break
-    if (response.data.admin.cluster.journal === 'null') break
-    if (response.data.admin.cluster.isActivated === undefined || response.data.admin.cluster.isActivated === 'false') break
-    if (response.data.admin.cluster.journal.isClusterSync === 'true' && response.data.cluster.isActivated === 'true') break
+    if (response.data.admin.cluster.journal === null) break
+    if (response.data.admin.cluster.isActivated === undefined || response.data.admin.cluster.isActivated === false) break
+    if (response.data.admin.cluster.journal.isClusterSync === true && response.data.cluster.isActivated === true) break
     
     sleep(1000)
   }
