@@ -300,7 +300,7 @@ class JahiaPagerDutyIncident extends Command {
         'There are 0 failures in the provided reports, not submitting a new incident to pagerduty',
       )
       if (flags.ignorePreviousIncidents === false) {
-        resolveIncidents(pd, pagerDutyServiceId, flags.service)
+        resolveIncidents(pd, pagerDutyServiceId, flags.service, flags.sourceUrl)
       }
     } else if (assignees.length === 0 && flags.requireAssignee) {
       this.log('No assignees found, incident will not be created')

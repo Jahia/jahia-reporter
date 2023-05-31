@@ -6,6 +6,7 @@ export const resolveIncidents = async (
   pdClient: any,
   serviceId: string,
   testService: string,
+  sourceUrl: string,
 ) => {
   const allIncidents = await pdClient.all(
     `/incidents?service_ids%5B%5D=${serviceId}&statuses%5B%5D=acknowledged&statuses%5B%5D=triggered`,
@@ -31,8 +32,7 @@ export const resolveIncidents = async (
         incident: {
           type: 'incident',
           status: 'resolved',
-          resolution:
-            'Incident was automatically resolved by jahia-reporter since the last run was successful',
+          resolution: `Incident was automatically resolved by jahia-reporter since the last run (${sourceUrl}) was successful`,
         },
       },
     })
