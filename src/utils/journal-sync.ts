@@ -9,6 +9,7 @@ export const waitForJournalSync = (timeout: number, jahiaUrl: string, jahiaUsern
     .addHeader('referer', jahiaUrl)
     .addHeader('authorization', `Basic ${Base64.btoa(jahiaUsername + ':' + jahiaPassword)}`)
     .post(jahiaUrl + 'modules/graphql', {query: 'query { admin { cluster { journal { globalRevision localRevision { revision serverId } revisions { revision serverId } isClusterSync } isActivated } }}'})
+    console.log(response.data)
     if (response.errors !== undefined) break
     if (response.data === null) break
     if (response.data.admin.cluster.isActivated === undefined || response.data.admin.cluster.isActivated === false) break
