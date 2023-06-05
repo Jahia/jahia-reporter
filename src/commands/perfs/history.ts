@@ -142,25 +142,34 @@ class JahiaAnalyzePerfsReporter extends Command {
           metric: e.metric,
         }
         for (const a of e.analysis) {
-          const cellValue = Math.round(a.analysis.runValue)
           const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm')
-          row[currentDate] =
+          if (a.analysis === undefined) {
+            // The value could be undefined when creating new thresholds
+            row[currentDate] = 'N/A';
+          } else {
+            const cellValue = Math.round(a.analysis.runValue)
+            row[currentDate] =
               a.analysis.error === true ? `${cellValue}*` : cellValue
+          }
         }
         const alertWindow = e.analysis.slice(-flags.analysisFailureAlert)
-        const alertCount = alertWindow.reduce(
-          (acc: number, a: any) => acc + (a.analysis.error === true ? 1 : 0),
-          0,
-        )
+        const alertCount = alertWindow.reduce((acc: number, a: any) => {
+          if (a.analysis === undefined) return acc;
+          return acc + (a.analysis.error === true ? 1 : 0);
+        }, 0);
         if (alertCount === flags.analysisFailureAlert) {
           triggerFailure = true
         }
-        row.threshold =
+        if (e.analysis[e.analysis.length - 1].analysis === undefined) {
+          row.threshold = 'N/A';
+        } else {
+          row.threshold =
             e.analysis[e.analysis.length - 1].analysis.thresholdValue
+        }
         row['Send Alert'] =
-            alertCount === flags.analysisFailureAlert ? 'YES' : 'NO'
-        return row
-      })
+          alertCount === flags.analysisFailureAlert ? 'YES' : 'NO';
+        return row;
+      });
       this.log('* (Above threshold)')
       cli.table(formattedTable, columns)
     }
