@@ -1,4 +1,6 @@
 import {Command, flags} from '@oclif/command'
+import * as fs from 'fs'
+import * as path from 'path'
 
 import ingestReport from '../utils/ingest'
 
@@ -18,6 +20,11 @@ class JahiaSummaryReporter extends Command {
       options: ['xml', 'json'], // only allow the value to be from a discrete set
       default: 'xml',
     }),
+    savePath: flags.string({
+      description:
+        'Path to save the report as JSON',
+      default: '',
+    }),    
     silent: flags.boolean({
       char: 's',
       description:
@@ -36,6 +43,13 @@ class JahiaSummaryReporter extends Command {
       this.log,
       flags.silent,
     )
+
+    if (flags.savePath !== '') {
+      fs.writeFileSync(
+        path.join(flags.savePath),
+        JSON.stringify(report)
+      )      
+    }
 
     const testTotal = report.tests
     let testFailures = report.failures

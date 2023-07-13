@@ -33,13 +33,13 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
       // which is more informative
       name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
       errors: Math.round(s.attributes.errors),
-      failures: Math.round(s.attributes.failures),
+      failures: Math.round(s.attributes.failures) < 0 ? 0 : Math.round(s.attributes.failures),
       skipped: s.attributes.skipped === undefined ? 0 : Math.round(s.attributes.skipped),
       testsCount: Math.round(s.attributes.tests),
       time: Math.round(s.attributes.time),
       tests: s.elements === undefined ? [] : buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
     }
-  })
+  }).filter((s: any)=> s.testsCount > 0) 
 }
 
 // Take an array of junit xml files, return a javascript representation of the files content
@@ -62,7 +62,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
         ...i.attributes,
         name: i.attributes.name === 'null' ? basename(rawContent.filepath) : i.attributes.name,
         tests: Math.round(i.attributes.tests),
-        failures: Math.round(i.attributes.failures),
+        failures: Math.round(i.attributes.failures) < 0 ? 0 : Math.round(i.attributes.failures),
         skipped: i.attributes.skipped === undefined ? 0 : Math.round(i.attributes.skipped),
         time: Math.round(i.attributes.time),
         // testsuites: buildSuites(i.elements),

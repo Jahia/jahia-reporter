@@ -7558,17 +7558,6 @@ Object {
         Object {
           "errors": NaN,
           "failures": 0,
-          "file": "cypress/integration/api/apiDescription.spec.ts",
-          "name": "Root Suite",
-          "skipped": 0,
-          "tests": Array [],
-          "testsCount": 0,
-          "time": 0,
-          "timestamp": "2021-11-25T15:40:34",
-        },
-        Object {
-          "errors": NaN,
-          "failures": 0,
           "name": "Test if every type in graphQL API has description",
           "skipped": 0,
           "tests": Array [
@@ -7593,17 +7582,6 @@ Object {
       "skipped": 0,
       "tests": 6,
       "testsuites": Array [
-        Object {
-          "errors": NaN,
-          "failures": 0,
-          "file": "cypress/integration/api/jcrAddNode.spec.ts",
-          "name": "Root Suite",
-          "skipped": 0,
-          "tests": Array [],
-          "testsCount": 0,
-          "time": 0,
-          "timestamp": "2021-11-25T15:40:48",
-        },
         Object {
           "errors": NaN,
           "failures": 0,
@@ -7666,17 +7644,6 @@ Object {
       "skipped": 0,
       "tests": 8,
       "testsuites": Array [
-        Object {
-          "errors": NaN,
-          "failures": 0,
-          "file": "cypress/integration/api/currentUser.spec.ts",
-          "name": "Root Suite",
-          "skipped": 0,
-          "tests": Array [],
-          "testsCount": 0,
-          "time": 0,
-          "timestamp": "2021-11-25T15:40:41",
-        },
         Object {
           "errors": NaN,
           "failures": 0,
@@ -7753,17 +7720,6 @@ Object {
       "skipped": 0,
       "tests": 1,
       "testsuites": Array [
-        Object {
-          "errors": NaN,
-          "failures": 0,
-          "file": "cypress/integration/sandboxTest.spec.ts",
-          "name": "Root Suite",
-          "skipped": 0,
-          "tests": Array [],
-          "testsCount": 0,
-          "time": 0,
-          "timestamp": "2021-11-25T15:40:54",
-        },
         Object {
           "errors": NaN,
           "failures": 0,
