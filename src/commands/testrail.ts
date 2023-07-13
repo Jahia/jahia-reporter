@@ -152,7 +152,7 @@ class JahiaTestrailReporter extends Command {
             }
             if (test.failures.length > 0) {
               testToPush.comment =
-                test.failures.map((f: JRTestfailure) => f.text).join() ||
+                test.failures.filter((f: JRTestfailure) => f !== undefined).map((f: JRTestfailure) => f.text).join() ||
                 test.failures.join()
             }
             this.log(
