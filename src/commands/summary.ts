@@ -1,3 +1,4 @@
+/* eslint max-depth: ["error", 5] */
 import {Command, flags} from '@oclif/command'
 import * as fs from 'fs'
 import * as path from 'path'

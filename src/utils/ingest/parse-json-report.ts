@@ -1,6 +1,6 @@
 import {basename} from 'path'
 
-import {JRRun, JRTestsuite, JRReport} from '../../global.type'
+import {JRRun, JRReport} from '../../global.type'
 
 const mochaParser = (rawReports: any[]): JRRun => {
   // Each file has one single report and one single suite, different in that from the xml report
@@ -58,6 +58,5 @@ const mochaParser = (rawReports: any[]): JRRun => {
 
 // Take an array of junit json files, return a javascript representation of the files content
 export const parseJson = (rawReports: any[]): JRRun => {
-  console.log('Proceeding with mocha parser')
   return mochaParser(rawReports) 
 }
