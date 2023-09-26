@@ -33,7 +33,7 @@ const mochaParser = (rawReports: any[]): JRRun => {
             return {
               name: mochaTest.title,
               time: mochaTest.duration,
-              status: mochaTest.pass === true ? 'PASS' : 'FAIL',
+              status,
               failures: [{text: mochaTest.err.estack}],
               steps: mochaTest.code,
             }
