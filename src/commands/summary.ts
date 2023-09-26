@@ -54,15 +54,16 @@ class JahiaSummaryReporter extends Command {
     const testTotal = report.tests
     let testFailures = report.failures
     const testSkipped = report.skipped
+    const testPending = report.pending
 
     // There are times at which the failures might actually be negatives due to skipped tests
     // In such cases, we put the failures back to 0
-    if (testSkipped > 0 && testFailures < 0 && testFailures + testSkipped === 0) {
+    if (flags.sourceType === 'xml' && testSkipped > 0 && testFailures < 0 && testFailures + testSkipped === 0) {
       testFailures = 0
     }
 
     this.log(
-      `Total Tests: ${testTotal} - Failure: ${testFailures} (skipped: ${testSkipped})- Executed in ${report.time}s`,
+      `Total Tests: ${testTotal} - Failure: ${testFailures} (skipped: ${testSkipped}, pending: ${testPending})- Executed in ${report.time}s`,
     )
     if (report.failures > 0) {
       this.log('FAILURES:')
@@ -78,7 +79,38 @@ class JahiaSummaryReporter extends Command {
         }
       }
     }
-    // console.log(report);
+
+    // Skipped and Pending are only supported for JSON reports
+    if (flags.sourceType === 'json') {
+      if (report.skipped > 0) {
+        this.log('SKIPPED:')
+        for (const r of report.reports.filter(r => r.skipped > 0)) {
+          this.log(
+            ` | Suite: ${r.name} - Total tests: ${r.tests} - Skipped: ${r.skipped} - Executed in ${r.time}s`,
+          )
+          for (const s of r.testsuites.filter(s => s.skipped > 0)) {
+            this.log(` |   | - ${s.name}`)
+            for (const t of s.tests.filter(t => t.status === 'FAIL')) {
+              this.log(` |   |    | - SKIPPED: ${t.name}`)
+            }
+          }
+        }
+      }
+      if (report.pending > 0) {
+        this.log('PENDING:')
+        for (const r of report.reports.filter(r => r.pending > 0)) {
+          this.log(
+            ` | Suite: ${r.name} - Total tests: ${r.tests} - Pending: ${r.pending} - Executed in ${r.time}s`,
+          )
+          for (const s of r.testsuites.filter(s => s.pending > 0)) {
+            this.log(` |   | - ${s.name}`)
+            for (const t of s.tests.filter(t => t.status === 'FAIL')) {
+              this.log(` |   |    | - PENDING: ${t.name}`)
+            }
+          }
+        }
+      }  
+    }
   }
 }
 
