@@ -12,6 +12,9 @@ const buildTest = (xmlTests: any) => {
     if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'skipped') {
       status = 'SKIP'
     }
+    if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'pending') {
+      status = 'PENDING'
+    }    
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),
@@ -35,6 +38,7 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
       errors: Math.round(s.attributes.errors),
       failures: Math.round(s.attributes.failures) < 0 ? 0 : Math.round(s.attributes.failures),
       skipped: s.attributes.skipped === undefined ? 0 : Math.round(s.attributes.skipped),
+      pending: s.attributes.pending === undefined ? 0 : Math.round(s.attributes.pending),
       testsCount: Math.round(s.attributes.tests),
       time: Math.round(s.attributes.time),
       tests: s.elements === undefined ? [] : buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
@@ -64,6 +68,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
         tests: Math.round(i.attributes.tests),
         failures: Math.round(i.attributes.failures) < 0 ? 0 : Math.round(i.attributes.failures),
         skipped: i.attributes.skipped === undefined ? 0 : Math.round(i.attributes.skipped),
+        pending: i.attributes.pending === undefined ? 0 : Math.round(i.attributes.pending),
         time: Math.round(i.attributes.time),
         // testsuites: buildSuites(i.elements),
         testsuites: testsuites,
@@ -78,6 +83,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
     tests: reports.map(r => r.tests).reduce((acc, count) => acc + count, 0),
     failures: reports.map(r => r.failures).reduce((acc, count) => acc + count, 0),
     skipped: reports.map(r => r.skipped).reduce((acc, count) => acc + count, 0),
+    pending: reports.map(r => r.pending).reduce((acc, count) => acc + count, 0),
     time: reports.map(r => r.time).reduce((acc, count) => acc + count, 0),
     reports: reports,
   }
