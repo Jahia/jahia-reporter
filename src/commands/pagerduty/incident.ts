@@ -10,7 +10,7 @@ import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
 import {resolveIncidents} from '../../utils/pagerduty/resolve-incidents'
 
-const findSheetByTitle = (doc: typeof GoogleSpreadsheet, title: string): any => {
+const findSheetByTitle = (doc: any, title: string): any => {
   const sheetCount = doc.sheetCount
   for (let i = 0; i < sheetCount; i++) {
     // eslint-disable-next-line no-console
