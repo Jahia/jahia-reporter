@@ -13,6 +13,7 @@ import {resolveIncidents} from '../../utils/pagerduty/resolve-incidents'
 const findSheetByTitle = (doc: typeof GoogleSpreadsheet, title: string): any => {
   const sheetCount = doc.sheetCount
   for (let i = 0; i < sheetCount; i++) {
+    // eslint-disable-next-line no-console
     console.log(`Found sheet with title: ${doc.sheetsByIndex[i].title}`)
     if (doc.sheetsByIndex[i].title === title) {
       return doc.sheetsByIndex[i]
