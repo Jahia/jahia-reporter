@@ -10,14 +10,26 @@ import {JRRun} from '../../global.type'
 import ingestReport from '../../utils/ingest'
 import {resolveIncidents} from '../../utils/pagerduty/resolve-incidents'
 
-const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string) => {
+const findSheetByTitle = (doc: any, title: string): any => {
+  const sheetCount = doc.sheetCount
+  for (let i = 0; i < sheetCount; i++) {
+    // eslint-disable-next-line no-console
+    console.log(`Found sheet with title: ${doc.sheetsByIndex[i].title}`)
+    if (doc.sheetsByIndex[i].title === title) {
+      return doc.sheetsByIndex[i]
+    }
+  }
+  return null
+}
+
+const getSpreadsheetRows = async (googleSpreadsheetId: string, googleClientEmail: string, googleApiKey: string, worksheetTitle: string) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId)
   await doc.useServiceAccountAuth({
     client_email: googleClientEmail,
     private_key: Buffer.from(googleApiKey, 'base64').toString(),
   })
   await doc.loadInfo()
-  const sheet = doc.sheetsByIndex[0]
+  const sheet = findSheetByTitle(doc, worksheetTitle)
   return sheet.getRows()
 }
 
@@ -68,6 +80,10 @@ class JahiaPagerDutyIncident extends Command {
       description: 'ID of the spreadsheet container user assignment for the service',
       default: '',
     }),
+    googleWorksheetName: flags.string({
+      description: 'Name of the worksheet to use within the Spreadsheet',
+      default: 'Pagerduty',
+    }),    
     googleClientEmail: flags.string({
       description: 'Google Client email required to access the spreadsheet',
       default: '',
@@ -218,7 +234,7 @@ class JahiaPagerDutyIncident extends Command {
           this.log(`Connecting to spreadsheet: ${cpt}/3`)
           try {
             // eslint-disable-next-line no-await-in-loop
-            spRows = await getSpreadsheetRows(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey)
+            spRows = await getSpreadsheetRows(flags.googleSpreadsheetId, flags.googleClientEmail, flags.googleApiKey, flags.googleWorksheetName)
           } catch {
             this.log('Unable to connect to spreadsheet')
           }
