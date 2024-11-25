@@ -132,9 +132,6 @@ class JahiaTestrailReporter extends Command {
         }
       }
     }
-    // const testCases = report.reports.reduce((acc: any, report: any) => {
-    //   console.log(report)
-    // }, [])
 
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
     const zcPayload: ZenCrepesStateNode = {
