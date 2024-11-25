@@ -1,3 +1,5 @@
+import { createSourceFile } from "typescript";
+
 export interface JRTestfailure {
   text: string;
 }
@@ -49,7 +51,13 @@ export interface JRCase {
   name: string;
   suite: string;
   duration: number;
-  statis: string;
+  state: string;
+  jahia: string;
+  module: string;
+  caseTotal: number;
+  caseSuccess: number;
+  caseFailure: number;
+  createdAt: string;
 }
 
 export interface ZenCrepesDependency {
