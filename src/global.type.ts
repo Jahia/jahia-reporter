@@ -29,6 +29,7 @@ export interface JRReport {
   skipped: number;
   pending: number;
   time: number;
+  timestamp?: string;
   testsuites: JRTestsuite[];
 }
 
@@ -40,6 +41,15 @@ export interface JRRun {
   pending: number;
   time: number;
   reports: JRReport[];
+}
+
+// A run is composed of multiple junit files
+export interface JRCase {
+  id: string;
+  name: string;
+  suite: string;
+  duration: number;
+  statis: string;
 }
 
 export interface ZenCrepesDependency {
@@ -58,6 +68,7 @@ export interface ZenCrepesStateNode {
   dependencies: ZenCrepesDependency[];
   createdAt: string;
   state: string;
+  cases: JRCase[];
   url: string;
   runTotal: number;
   runSuccess: number;

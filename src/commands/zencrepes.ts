@@ -90,9 +90,17 @@ class JahiaTestrailReporter extends Command {
     let dependencies = JSON.parse(flags.dependencies)
     let name = flags.name
     let version = flags.version
+    let jahiaFullVersion = ''
+    let moduleVersion = ''
     if (flags.moduleFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.moduleFilepath)
       const versions: UtilsVersions = JSON.parse(versionFile)
+      if (versions.jahia.fullVersion !== '') {
+        jahiaFullVersion = versions.jahia.fullVersion
+      }
+      if (versions.module.id !== '' && versions.module.version !== '') {
+        moduleVersion = `${versions.module.id}-${versions.module.version}`
+      }      
       if (versions.jahia.build === '') {
         dependencies.push({name: 'Jahia', version: versions.jahia.version})
       } else {
@@ -103,6 +111,31 @@ class JahiaTestrailReporter extends Command {
       name = versions.module.id
     }
 
+    // Get all individual test cases in an array
+    const testCases: any = []
+    for (const r of report.reports) {
+      for (const suite of r.testsuites) {
+        for (const test of suite.tests) {
+          testCases.push({
+            id: getId(test.name, flags.version, dependencies),
+            name: test.name,
+            suite: suite.name,
+            duration: test.time,
+            state: test.status,
+            jahia: jahiaFullVersion,
+            module: moduleVersion,
+            caseTotal: 1, // Hack to fit in Zencrepes ZUI existing data model
+            caseSuccess: test.status === 'PASS' ? 1 : 0,
+            caseFailure: test.status === 'FAIL' ? 1 : 0,
+            createdAt: r.timestamp === undefined ? new Date().toISOString() : new Date(r.timestamp).toISOString(),
+          })
+        }
+      }
+    }
+    // const testCases = report.reports.reduce((acc: any, report: any) => {
+    //   console.log(report)
+    // }, [])
+
     // From the report object, format the payload to be sent to ZenCrepes webhook (zqueue)
     const zcPayload: ZenCrepesStateNode = {
       id: getId(name, flags.version, dependencies),
@@ -112,6 +145,7 @@ class JahiaTestrailReporter extends Command {
       createdAt: new Date().toISOString(),
       state: report.failures === 0 ? 'PASS' : 'FAIL',
       url: flags.runUrl,
+      cases: testCases,
       runTotal: report.tests,
       runSuccess: report.tests - report.failures,
       runFailure: report.failures,
