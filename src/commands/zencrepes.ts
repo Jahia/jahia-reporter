@@ -90,13 +90,13 @@ class JahiaTestrailReporter extends Command {
     let dependencies = JSON.parse(flags.dependencies)
     let name = ''
     let version = flags.version
-    let jahiaFullVersion = ''
+    let jahiaVersion = ''
     let moduleVersion = ''
     if (flags.moduleFilepath !== undefined) {
       const versionFile: any = fs.readFileSync(flags.moduleFilepath)
       const versions: UtilsVersions = JSON.parse(versionFile)
-      if (versions.jahia.fullVersion !== '') {
-        jahiaFullVersion = versions.jahia.fullVersion
+      if (versions.jahia.version !== '') {
+        jahiaVersion = `Jahia ${versions.jahia.version}` 
       }
       if (versions.module.id !== '' && versions.module.version !== '') {
         moduleVersion = `${versions.module.id}-${versions.module.version}`
@@ -126,7 +126,7 @@ class JahiaTestrailReporter extends Command {
             suite: suite.name,
             duration: test.time,
             state: test.status,
-            jahia: jahiaFullVersion,
+            jahia: jahiaVersion,
             module: moduleVersion,
             caseTotal: 1, // Hack to fit in Zencrepes ZUI existing data model
             caseSuccess: test.status === 'PASS' ? 1 : 0,
