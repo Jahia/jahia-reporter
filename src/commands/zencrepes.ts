@@ -88,7 +88,7 @@ class JahiaTestrailReporter extends Command {
 
     // If dependencies were previously fetched, use those for the module
     let dependencies = JSON.parse(flags.dependencies)
-    let name = flags.name
+    let name = ''
     let version = flags.version
     let jahiaFullVersion = ''
     let moduleVersion = ''
@@ -109,6 +109,10 @@ class JahiaTestrailReporter extends Command {
       dependencies = [...dependencies, ...versions.dependencies]
       version = versions.module.version
       name = versions.module.id
+    }
+    // If name could not be fetched from the module file, fallback on the flag value
+    if (name === '') {
+      name = flags.name
     }
 
     // Get all individual test cases in an array
