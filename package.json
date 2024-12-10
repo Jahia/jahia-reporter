@@ -8,7 +8,7 @@
   },
   "bugs": "https://github.com/Jahia/jahia-reporter/issues",
   "dependencies": {
-    "browser-or-node": "2.0.0",
+    "browser-or-node": "2.1.1",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
@@ -58,7 +58,7 @@
     }
   },
   "resolutions": {
-    "browser-or-node": "2.0.0"
+    "browser-or-node": "2.1.1"
   },  
   "engines": {
     "node": ">=8.10.0"
