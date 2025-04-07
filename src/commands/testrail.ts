@@ -436,7 +436,7 @@ class JahiaTestrailReporter extends Command {
         let status_id: Status = 5
         if (test.status === 'PASS') {
           status_id = 1
-        } else if (test.status === 'SKIP') {
+        } else if (['SKIP', 'PENDING'].includes(test.status)) {
           // Passing status "blocked" since `3: Untested ` is not supported
           // See: https://www.gurock.com/testrail/docs/api/reference/results/#addresult
           status_id = 2
