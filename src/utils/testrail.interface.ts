@@ -61,6 +61,13 @@ export interface ResultFieldConfig {
   };
 }
 
+export interface PaginatedSuites {
+  offset: number;
+  limit: number;
+  size: number;
+  suites: Suite[];
+}
+
 export interface Suite {
   id: number;
   name: string;
