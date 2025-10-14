@@ -58,5 +58,5 @@ const mochaParser = (rawReports: any[]): JRRun => {
 
 // Take an array of junit json files, return a javascript representation of the files content
 export const parseJson = (rawReports: any[]): JRRun => {
-  return mochaParser(rawReports) 
+  return mochaParser(rawReports)
 }

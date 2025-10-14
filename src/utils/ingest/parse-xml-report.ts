@@ -14,7 +14,7 @@ const buildTest = (xmlTests: any) => {
     }
     if (t.elements !== undefined && t.elements.length > 0 && t.elements[0].name !== undefined && t.elements[0].name === 'pending') {
       status = 'PENDING'
-    }    
+    }
     return {
       ...t.attributes,
       time: Math.round(t.attributes.time),
@@ -43,7 +43,7 @@ const buildSuites = (xmlSuites: any, testFilename: string) => {
       time: Math.round(s.attributes.time),
       tests: s.elements === undefined ? [] : buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
     }
-  }).filter((s: any)=> s.testsCount > 0) 
+  }).filter((s: any) => s.testsCount > 0)
 }
 
 // Take an array of junit xml files, return a javascript representation of the files content

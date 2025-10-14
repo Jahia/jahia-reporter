@@ -13,7 +13,7 @@ export const waitForJournalSync = (timeout: number, jahiaUrl: string, jahiaUsern
     if (response.data === null) break
     if (response.data.admin.cluster.isActivated === undefined || response.data.admin.cluster.isActivated === false) break
     if (response.data.admin.cluster.journal.isClusterSync === true && response.data.admin.cluster.isActivated === true) break
-    
+
     sleep(1000)
   }
 }

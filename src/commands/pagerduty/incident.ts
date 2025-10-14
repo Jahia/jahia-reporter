@@ -83,7 +83,7 @@ class JahiaPagerDutyIncident extends Command {
     googleWorksheetName: flags.string({
       description: 'Name of the worksheet to use within the Spreadsheet',
       default: 'Pagerduty',
-    }),    
+    }),
     googleClientEmail: flags.string({
       description: 'Google Client email required to access the spreadsheet',
       default: '',

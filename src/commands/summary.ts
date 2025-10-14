@@ -25,7 +25,7 @@ class JahiaSummaryReporter extends Command {
       description:
         'Path to save the report as JSON',
       default: '',
-    }),    
+    }),
     silent: flags.boolean({
       char: 's',
       description:
@@ -49,7 +49,7 @@ class JahiaSummaryReporter extends Command {
       fs.writeFileSync(
         path.join(flags.savePath),
         JSON.stringify(report)
-      )      
+      )
     }
 
     const testTotal = report.tests
@@ -110,7 +110,7 @@ class JahiaSummaryReporter extends Command {
             }
           }
         }
-      }  
+      }
     }
   }
 }
