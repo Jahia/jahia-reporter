@@ -55,9 +55,10 @@
   },
   "resolutions": {
     "browser-or-node": "2.0.0"
-  },  
+  },
+  "packageManager": "yarn@4.10.3",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "files": [
     "/bin",

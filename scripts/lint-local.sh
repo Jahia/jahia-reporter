@@ -13,8 +13,17 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
+# Detect architecture and set platform accordingly
+ARCH=$(uname -m)
+PLATFORM=""
+
+if [[ "$ARCH" == "arm64" || "$ARCH" == "aarch64" ]]; then
+    echo "Detected ARM64 architecture. Using platform override..."
+    PLATFORM="--platform linux/amd64"
+fi
+
 # Run super-linter in a Docker container
-docker run \
+docker run $PLATFORM \
   -e RUN_LOCAL=true \
   -e DEFAULT_BRANCH=main \
   -e VALIDATE_TYPESCRIPT_ES=true \
