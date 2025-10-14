@@ -1,15 +1,15 @@
-import cli from 'cli-ux'
+import {ux} from '@oclif/core'
 import {SyncRequestClient, SyncRequestOptions} from 'ts-sync-request/dist'
-import {exit} from '@oclif/errors'
 import {performance} from 'perf_hooks'
 import {Base64} from 'js-base64'
 
 import {sleep} from './sleep'
 
-const isAlive = (data: any) => {
+const isAlive = (data: unknown): boolean => {
   // eslint-disable-next-line no-console
-  console.log(`API response: ${JSON.stringify(data.data)}`)
-  if (data.data === undefined || data.data === null || data.data.jcr.workspace !== 'EDIT') {
+  console.log(`API response: ${JSON.stringify((data as {data?: unknown}).data)}`)
+  const responseData = (data as {data?: {jcr?: {workspace?: string}}}).data
+  if (responseData === undefined || responseData === null || responseData.jcr?.workspace !== 'EDIT') {
     return false
   }
   return true
@@ -30,11 +30,11 @@ const checkStatus = async (
   timeout: number, // in ms
   timeSinceStart: number, // in ms
 // eslint-disable-next-line max-params
-) => {
+): Promise<unknown> => {
   const currentTime = new Date()
   // eslint-disable-next-line no-console
   console.log(`${currentTime.toISOString()} - Time since start: ${timeSinceStart} ms`)
-  let data: any = {}
+  let data: unknown = {}
 
   if (timeSinceStart < timeout) {
     const callStart = performance.now()
@@ -52,9 +52,9 @@ const checkStatus = async (
       .addHeader('Content-Type', 'application/json')
       .addHeader('authorization', authHeader)
       .post(jahiaUrl + 'modules/graphql', {query: gqlQuery})
-    } catch (error: any) {
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error.message)
+      console.log(String(error))
     }
     if (isAlive(data) === false) {
       await sleep(2000)
@@ -71,15 +71,15 @@ const waitAlive = async (
   jahiaUrl: string,
   jahiaUsername: string,
   jahiaPassword: string,
-  timeout: number) => {
-  cli.action.start('Waiting for Jahia to be online')
+  timeout: number): Promise<boolean> => {
+  ux.action.start('Waiting for Jahia to be online')
   const data = await checkStatus(jahiaUrl, jahiaUsername, jahiaPassword, timeout, 0)
   if (isAlive(data) === false) {
     // eslint-disable-next-line no-console
     console.log(
       'ERROR: Unable to validate alive state, most likely expired timeout',
     )
-    exit()
+    process.exit(1)
   }
   return true
 }

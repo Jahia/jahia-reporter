@@ -165,7 +165,7 @@ export class TestRailClient {
       return Number(foundStatus.split(',')[0])
     }
 
-    private sendRequest(method: string, uri: string, data: {}) {
+    private sendRequest(method: string, uri: string, data: {}): unknown {
       const encode = (str: string): string => Buffer.from(str, 'binary').toString('base64')
       const url: string = this.url + uri
 
@@ -184,18 +184,20 @@ export class TestRailClient {
             .addHeader('Content-Type', 'application/json')
             .post(url, data)
           }
-        } catch (error: any) {
-          if (error.statusCode === 429) {
+        } catch (error) {
+          const err = error as {statusCode?: number; message?: string}
+          if (err.statusCode === 429) {
             // eslint-disable-next-line no-console
             console.log(`Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`)
             Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90000)
           } else {
             // eslint-disable-next-line no-console
-            console.log(`Failed to send ${method} request to ${uri} with data ${JSON.stringify(data, null, 4)}:\n${(error as Error).message}`)
+            console.log(`Failed to send ${method} request to ${uri} with data ${JSON.stringify(data, null, 4)}:\n${err.message || String(error)}`)
             const randomWait: number = Math.floor(Math.random() * 200)
             Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, randomWait)
           }
         }
       }
+      return null
     }
 }

@@ -1,79 +1,78 @@
 /* eslint-disable complexity */
-import {Command, flags} from '@oclif/command'
+import {Command, Flags} from '@oclif/core'
 import * as fs from 'fs'
-import {UtilsVersions, JRTestsuite} from '../global.type'
+import {UtilsVersions, JRTestsuite, JRRun} from '../global.type'
 import ingestReport from '../utils/ingest'
 import {WebClient, LogLevel} from '@slack/web-api'
 
-class JahiaSlackReporter extends Command {
-  static description = 'Submit data about a junit/mocha report to Slack'
+export default class SlackCommand extends Command {
+  static override description = 'Submit data about a junit/mocha report to Slack'
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-    sourcePath: flags.string({
+  static override flags = {
+    sourcePath: Flags.string({
       description: 'A json/xml report or a folder containing one or multiple json/xml reports',
       required: true,
     }),
-    sourceType: flags.string({
-      char: 't',                        // shorter flag version
-      description: 'The format of the report',  // help description for flag
-      options: ['xml', 'json'],         // only allow the value to be from a discrete set
+    sourceType: Flags.string({
+      char: 't',
+      description: 'The format of the report',
+      options: ['xml', 'json'] as const,
       default: 'xml',
     }),
-    token: flags.string({
+    token: Flags.string({
       description: 'The slack token used to post the messages',
       required: true,
     }),
-    channelId: flags.string({
+    channelId: Flags.string({
       description: 'The slack channel id to send the message to',
       required: true,
     }),
-    channelAllId: flags.string({
+    channelAllId: Flags.string({
       description: 'An alternative slack channel id to send the ALL message to (ignore skipSuccessful flag)',
       default: '',
     }),
-    msgAuthor: flags.string({
+    msgAuthor: Flags.string({
       description: 'Author of the slack message being sent',
       default: 'Jahia-Reporter',
     }),
-    msgIconFailure: flags.string({
+    msgIconFailure: Flags.string({
       description: 'Icon attached to the message if tests are failing',
       default: ':x:',
     }),
-    msgIconSuccess: flags.string({
+    msgIconSuccess: Flags.string({
       description: 'Icon attached to the message if tests are successful',
       default: ':white_check_mark:',
     }),
-    moduleFilepath: flags.string({
+    moduleFilepath: Flags.string({
       description: 'Fetch version details from a version JSON generated with utils:modules (overwrites module)',
     }),
-    module: flags.string({
+    module: Flags.string({
       char: 'm',
       description: 'The ID of the module being tested (for example, name of the module), overwridden if moduleFilepath is provided',
       default: 'A Jahia module',
     }),
-    runUrl: flags.string({
+    runUrl: Flags.string({
       description: 'Url associated with the run',
       default: '',
     }),
-    notify: flags.string({
+    notify: Flags.string({
       description: 'List of people to notify, separated by <>, for example: <MyUsername> <AnotherUser>',
       default: '',
     }),
-    skip: flags.boolean({
+    skip: Flags.boolean({
       char: 's',
       description: 'Do not send the message to slack but only print it to console',
     }),
-    skipSuccessful: flags.boolean({
+    skipSuccessful: Flags.boolean({
       description: 'Do not send slack notifications if all tests are passing',
       default: false,
     }),
   }
 
   // Create text for a failed test suite
-  slackMsgForSuite(failedSuite: JRTestsuite) {
+  private slackMsgForSuite(failedSuite: JRTestsuite): string {
     let suiteMsg = `Suite: ${failedSuite.name} - ${failedSuite.tests.length} tests - ${failedSuite.failures} failures\n`
-    const failedTests = failedSuite.tests.filter(t => t.status ===  'FAIL')
+    const failedTests = failedSuite.tests.filter(t => t.status === 'FAIL')
     failedTests.forEach(failedTest => {
       suiteMsg += ` |-- ${failedTest.name} (${failedTest.time}s) - ${failedTest.failures.length > 1 ? failedTest.failures.length + ' failures' : ''} \n`
     })
@@ -81,8 +80,7 @@ class JahiaSlackReporter extends Command {
   }
 
   // Reply to a message with the channel ID and message TS
-  // eslint-disable-next-line max-params
-  async replyMessage(client: WebClient, id: string, ts: any, msg: string, emoji: any) {
+  private async replyMessage(client: WebClient, id: string, ts: string, msg: string, emoji: string): Promise<void> {
     try {
       await client.chat.postMessage({
         channel: id,
@@ -90,14 +88,13 @@ class JahiaSlackReporter extends Command {
         text: msg,
         icon_emoji: emoji,
       })
-    } catch (error: any) {
-      this.log(error)
+    } catch (error) {
+      this.log(String(error))
     }
   }
 
   // Post a message to a channel your app is in using ID and message text
-  // eslint-disable-next-line max-params
-  async publishMessage(client: WebClient, id: string, msg: string, threadMsg: string, emoji: any) {
+  private async publishMessage(client: WebClient, id: string, msg: string, threadMsg: string, emoji: string): Promise<void> {
     try {
       const result = await client.chat.postMessage({
         channel: id,
@@ -105,25 +102,23 @@ class JahiaSlackReporter extends Command {
         icon_emoji: emoji,
       })
 
-      if (threadMsg !== '' &&
-          result.ok === true) {
-        this.replyMessage(client, id, result.ts, threadMsg, emoji)
+      if (threadMsg !== '' && result.ok === true && result.ts) {
+        await this.replyMessage(client, id, result.ts, threadMsg, emoji)
       }
-    } catch (error: any) {
-      this.log(error)
+    } catch (error) {
+      this.log(String(error))
     }
   }
 
-  async run() {
-    const {flags} = this.parse(JahiaSlackReporter)
+  public async run(): Promise<void> {
+    const {flags} = await this.parse(SlackCommand)
 
     const client = new WebClient(flags.token, {
-      // LogLevel can be imported and used to make debugging simpler
       logLevel: LogLevel.DEBUG,
     })
 
     // Extract a report object from the actual report files (either XML or JSON)
-    const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+    const report: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
 
     let msg = ''
     let threadMsg = ''
@@ -132,8 +127,8 @@ class JahiaSlackReporter extends Command {
     // If a Jahia GraphQL API is specified, we actually call Jahia to learn more
     let module = flags.module
     if (flags.moduleFilepath !== undefined) {
-      const versionFile: any = fs.readFileSync(flags.moduleFilepath)
-      const version: UtilsVersions = JSON.parse(versionFile)
+      const versionFile = fs.readFileSync(flags.moduleFilepath)
+      const version: UtilsVersions = JSON.parse(versionFile.toString())
       if (version.jahia.build === '') {
         module = `${version.module.name} v${version.module.version} (Jahia: ${version.jahia.version})`
       } else {
@@ -216,15 +211,13 @@ class JahiaSlackReporter extends Command {
     }
 
     if (!flags.skipSuccessful ||
-        (flags.skipSuccessful && report.failures > 0)) {
-      this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
+      (flags.skipSuccessful && report.failures > 0)) {
+      await this.publishMessage(client, flags.channelId, msg, threadMsg, emoji)
     }
 
     // Handle the publication in the ALL channel
     if (flags.channelAllId !== '') {
-      this.publishMessage(client, flags.channelAllId, msg, threadMsg, emoji)
+      await this.publishMessage(client, flags.channelAllId, msg, threadMsg, emoji)
     }
   }
 }
-
-export = JahiaSlackReporter
