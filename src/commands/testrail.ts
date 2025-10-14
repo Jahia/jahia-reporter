@@ -1,5 +1,5 @@
 /* eslint max-depth: ["error", 5] */
-import {Command, flags} from '@oclif/command'
+import {Command, Flags, ux} from '@oclif/core'
 import * as fs from 'fs'
 import {TestRailClient} from '../utils/testrail'
 import {
@@ -17,99 +17,95 @@ import {
 import {formatToTimeZone} from 'date-fns-timezone'
 import {JRRun, JRTestfailure} from '../global.type'
 import ingestReport from '../utils/ingest'
-import {cli} from 'cli-ux'
 import {lstatSync, readFileSync, existsSync} from 'fs'
 
 interface TestWithStatus extends Test {
   status: string;
 }
 
-class JahiaTestrailReporter extends Command {
-  static description = 'Submit data about a junit/mocha report to TestRail';
+export default class TestrailCommand extends Command {
+  static override description = 'Submit data about a junit/mocha report to TestRail'
 
-  static flags = {
-    // add --version flag to show CLI version
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    sourcePath: flags.string({
+  static override flags = {
+    sourcePath: Flags.string({
       description:
         'A json/xml report or a folder containing one or multiple json/xml reports',
       required: true,
     }),
-    sourceType: flags.string({
+    sourceType: Flags.string({
       char: 't', // shorter flag version
       description: 'The format of the report', // help description for flag
-      options: ['xml', 'json'], // only allow the value to be from a discrete set
+      options: ['xml', 'json'] as const, // only allow the value to be from a discrete set
       default: 'xml',
     }),
-    testrailUrl: flags.string({
+    testrailUrl: Flags.string({
       description: 'TestRail url to submit the results from the report to',
       default: 'https://jahia.testrail.net',
     }),
-    testrailApiKey: flags.string({
+    testrailApiKey: Flags.string({
       description: 'TestRail to be used as an alternative to username/password',
       required: false,
     }),
-    testrailUsername: flags.string({
+    testrailUsername: Flags.string({
       description: 'TestRail username',
       required: true,
     }),
-    testrailPassword: flags.string({
+    testrailPassword: Flags.string({
       description: 'TestRail password',
       required: true,
     }),
-    testrailCustomResultFields: flags.string({
+    testrailCustomResultFields: Flags.string({
       description: 'Path to a file containing values (in a key:value JSON object) to be added to the result fields',
       default: '',
     }),
-    projectName: flags.string({
+    projectName: Flags.string({
       char: 'n',
       description: 'TestRail Project name',
       default: 'Jahia',
     }),
-    milestone: flags.string({
+    milestone: Flags.string({
       char: 'm',
       description: 'TestRail milestone',
       default: 'Default',
     }),
-    defaultRunDescription: flags.string({
+    defaultRunDescription: Flags.string({
       char: 'd',
       description: 'TestRail default run description',
       default: 'This test run was manually triggered',
     }),
-    runName: flags.string({
+    runName: Flags.string({
       char: 'r',
       description: 'TestRail run name',
       default: 'AE - ',
     }),
-    suiteName: flags.string({
+    suiteName: Flags.string({
       char: 's',
       description: 'TestRail suite name',
       default: 'Master',
     }),
-    parentSection: flags.string({
+    parentSection: Flags.string({
       char: 'p',
       description: 'TestRail default run description',
       default: '',
     }),
-    jahiaVersion: flags.string({
+    jahiaVersion: Flags.string({
       char: 'j',
       description: 'Jahia/Module version',
       default: '8.0.1.0',
     }),
-    skip: flags.boolean({
+    skip: Flags.boolean({
       description: 'Do not send the data but only print it to console',
       default: false,
     }),
-    linkRunFile: flags.string({
+    linkRunFile: Flags.string({
       description: 'Save the link to the run to a file',
       default: '',
     }),
-  };
+  }
 
   // eslint-disable-next-line complexity
-  async run() {
-    const {flags} = this.parse(JahiaTestrailReporter)
+  public async run(): Promise<void> {
+    const {flags} = await this.parse(TestrailCommand)
 
     if (flags.runName === 'AE - ') {
       const date = new Date()
@@ -224,7 +220,7 @@ class JahiaTestrailReporter extends Command {
 
     // Get Milestone
     this.log(`Get all milestones for project: ${testrailProject.id}`)
-    const milestone: any = testrail
+    const milestone: {id: number; name: string} | undefined = testrail
     .getMilestones(testrailProject.id)
     .find(milestone => milestone.name === flags.milestone)
     let milestone_id = -1
@@ -293,7 +289,7 @@ class JahiaTestrailReporter extends Command {
         })
       }
       this.log('The following custom fields are present on testrail:')
-      cli.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
+      ux.table(testrailCustomFields, {id: {}, system_name: {}, type: {},  enabledOnProject: {}, value: {}, description: {}})
       testrailCustomFields = testrailCustomFields.filter(f => f.enabledOnProject === true)
     }
 
@@ -442,7 +438,7 @@ class JahiaTestrailReporter extends Command {
           status_id = 2
         }
         // const status_id: Status = test.comment === undefined ? Status.Passed : Status.Failed
-        const testResult: any = {
+        const testResult: TestRailResult = {
           case_id: test.id,
           elapsed: test.time,
           status_id: status_id,

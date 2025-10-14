@@ -1,23 +1,23 @@
-import {Command, flags} from '@oclif/command'
+import {Command, Flags} from '@oclif/core'
 import {SyncRequestClient} from 'ts-sync-request/dist'
 import * as fs from 'fs'
 
 import ingestReport from '../utils/ingest'
-import {UtilsVersions} from '../global.type'
+import {UtilsVersions, JRRun, JRCase} from '../global.type'
 
 import * as crypto from 'crypto'
 import {v5 as uuidv5} from 'uuid'
 
 import {ZenCrepesStateNode, ZenCrepesDependency} from '../global.type'
 
-const prepString = (s: string) => {
+const prepString = (s: string): string => {
   return s.replace(/[^0-9a-zA-Z]/g, '').toLowerCase()
 }
 
 // This generate an unique id based on the combination the component and its dependencies
 // The ID is simply a UUID genreated from the concatenation of all elements
 // Note that the dependencies are sorted and all string are cleaned (lower case and stripped from non alphanumerical characters)
-const getId = (name: string, version: string, dependencies: ZenCrepesDependency[]) => {
+const getId = (name: string, version: string, dependencies: ZenCrepesDependency[]): string => {
   let idStr = prepString(name) + prepString(version)
 
   dependencies.sort((a: ZenCrepesDependency, b: ZenCrepesDependency) => {
@@ -36,55 +36,54 @@ const getId = (name: string, version: string, dependencies: ZenCrepesDependency[
   return uuidv5(idStr, UUID_NAMESPACE)
 }
 
-class JahiaTestrailReporter extends Command {
-  static description = 'Submit data about a junit/mocha report to ZenCrepes'
+export default class ZencrepesCommand extends Command {
+  static override description = 'Submit data about a junit/mocha report to ZenCrepes'
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-    sourcePath: flags.string({
+  static override flags = {
+    sourcePath: Flags.string({
       description: 'A json/xml report or a folder containing one or multiple json/xml reports',
       required: true,
     }),
-    sourceType: flags.string({
+    sourceType: Flags.string({
       char: 't',                        // shorter flag version
       description: 'The format of the report',  // help description for flag
-      options: ['xml', 'json'],         // only allow the value to be from a discrete set
+      options: ['xml', 'json'] as const,         // only allow the value to be from a discrete set
       default: 'xml',
     }),
-    webhook: flags.string({
+    webhook: Flags.string({
       description: 'The Webhook URL to send the payload to',
       required: true,
     }),
-    webhookSecret: flags.string({
+    webhookSecret: Flags.string({
       description: 'The webhook secret',
       required: true,
     }),
-    name: flags.string({
+    name: Flags.string({
       description: 'Name of the element being tested (for example, a module ID)',
       default: 'Jahia',
     }),
-    version: flags.string({
+    version: Flags.string({
       description: 'Version of the element being tested (for example a module version)',
       default: 'SNAPSHOT',
     }),
-    dependencies: flags.string({
+    dependencies: Flags.string({
       description: 'Array of runtime dependencies of the element being tested [{name: "n", version: "v"}]',
       default: '[]',
     }),
-    runUrl: flags.string({
+    runUrl: Flags.string({
       description: 'Url associated with the run',
       default: '',
     }),
-    moduleFilepath: flags.string({
+    moduleFilepath: Flags.string({
       description: 'Fetch version details from a version JSON generated with utils:modules (overwrites name and version)',
     }),
   }
 
-  async run() {
-    const {flags} = this.parse(JahiaTestrailReporter)
+  public async run(): Promise<void> {
+    const {flags} = await this.parse(ZencrepesCommand)
 
     // Extract a report object from the actual report files (either XML or JSON)
-    const report = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
+    const report: JRRun = await ingestReport(flags.sourceType, flags.sourcePath, this.log)
 
     // If dependencies were previously fetched, use those for the module
     let dependencies = JSON.parse(flags.dependencies)
@@ -116,7 +115,7 @@ class JahiaTestrailReporter extends Command {
     }
 
     // Get all individual test cases in an array
-    const testCases: any = []
+    const testCases: JRCase[] = []
     for (const r of report.reports) {
       for (const suite of r.testsuites) {
         for (const test of suite.tests) {

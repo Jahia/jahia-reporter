@@ -71,11 +71,47 @@ This file can then be used as input for other Jahia-Repoter first-level commands
 To add a new command, simply create the corresponding `.ts` file in the `./src/commands/` folder.
 
 ```
-yarn
+npm install
 ./bin/run yourcommand --help
 ```
 
 If adding a utility, please add this into the `utils` folder
+
+### Code Quality and Linting
+
+This project uses [Super Linter](https://github.com/super-linter/super-linter) to ensure code quality and consistency. The linting configuration includes:
+
+- TypeScript/JavaScript linting with ESLint
+- JSON and YAML validation
+- Markdown linting
+- Dockerfile linting
+- GitHub Actions workflow validation
+
+#### Running Linter Locally
+
+To run the super-linter locally before submitting a PR:
+
+```bash
+# Make sure Docker is installed and running
+./scripts/lint-local.sh
+```
+
+This will run the same linting checks that are executed in the CI pipeline.
+
+#### Manual Linting
+
+You can also run specific linters manually:
+
+```bash
+# Run ESLint on TypeScript files
+npm run lint
+
+# Run tests
+npm test
+
+# Build the project
+npm run build
+```
 
 ### Release
 
