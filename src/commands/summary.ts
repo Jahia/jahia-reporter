@@ -1,44 +1,44 @@
 /* eslint max-depth: ["error", 5] */
-import {Command, flags} from '@oclif/command'
+import {Args, Command, Flags} from '@oclif/core'
 import * as fs from 'fs'
 import * as path from 'path'
 
 import ingestReport from '../utils/ingest'
+import {JRRun} from '../global.type'
 
-class JahiaSummaryReporter extends Command {
-  static description = 'Display a summary of the test results';
+export default class SummaryCommand extends Command {
+  static override description = 'Display a summary of the test results'
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-    sourcePath: flags.string({
+  static override flags = {
+    sourcePath: Flags.string({
       description:
         'A json/xml report or a folder containing one or multiple json/xml reports',
       required: true,
     }),
-    sourceType: flags.string({
+    sourceType: Flags.string({
       char: 't', // shorter flag version
       description: 'The format of the report', // help description for flag
       options: ['xml', 'json'], // only allow the value to be from a discrete set
       default: 'xml',
     }),
-    savePath: flags.string({
+    savePath: Flags.string({
       description:
         'Path to save the report as JSON',
       default: '',
     }),
-    silent: flags.boolean({
+    silent: Flags.boolean({
       char: 's',
       description:
         'Should report ingestion be silent (not to display identified files)',
       default: false,
     }),
-  };
+  }
 
-  async run() {
-    const {flags} = this.parse(JahiaSummaryReporter)
+  public async run(): Promise<void> {
+    const {flags} = await this.parse(SummaryCommand)
 
     // Extract a report object from the actual report files (either XML or JSON)
-    const report = await ingestReport(
+    const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
       this.log,
@@ -114,5 +114,3 @@ class JahiaSummaryReporter extends Command {
     }
   }
 }
-
-export = JahiaSummaryReporter;
