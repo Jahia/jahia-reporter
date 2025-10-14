@@ -174,5 +174,3 @@ export default class ZencrepesCommand extends Command {
     }
   }
 }
-
-export = JahiaTestrailReporter
