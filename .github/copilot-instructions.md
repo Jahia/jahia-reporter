@@ -51,7 +51,7 @@ class JahiaCommandName extends Command {
     const report = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
     );
     // Command logic using standardized report data...
   }

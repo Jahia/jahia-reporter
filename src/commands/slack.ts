@@ -88,7 +88,7 @@ export default class SlackCommand extends Command {
     const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
     );
 
     let msg = '';

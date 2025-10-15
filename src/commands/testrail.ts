@@ -126,7 +126,7 @@ export default class TestrailCommand extends Command {
     const jrRun: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
     );
     const tests: TestWithStatus[] = [];
     for (const report of jrRun.reports) {

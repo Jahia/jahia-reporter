@@ -181,7 +181,7 @@ class JahiaPagerDutyIncident extends Command {
         const jrRun: JRRun = await ingestReport(
           flags.sourceType,
           flags.sourcePath,
-          this.log,
+          this.log.bind(this),
         );
         testFailures = jrRun.failures;
         testSkipped = jrRun.skipped;

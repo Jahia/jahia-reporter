@@ -100,7 +100,7 @@ export default class ZencrepesCommand extends Command {
     const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
     );
 
     // If dependencies were previously fetched, use those for the module

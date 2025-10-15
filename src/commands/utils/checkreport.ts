@@ -31,7 +31,7 @@ class JahiaCheckReport extends Command {
     const jrRun: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
     );
 
     this.log(
