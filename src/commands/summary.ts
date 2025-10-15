@@ -40,7 +40,7 @@ export default class SummaryCommand extends Command {
     const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
       flags.silent,
     );
 

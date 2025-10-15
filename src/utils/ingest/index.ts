@@ -53,7 +53,6 @@ const ingestReport = async (
 
   // Created an array of report files for further processing
   if (lstatSync(reportFilePath).isDirectory()) {
-    log('Looking for report files in folder:');
     if (silent !== true) {
       log(`${reportFilePath} is a folder. Looking for report files:`);
     }
