@@ -1,5 +1,4 @@
 import { Command, Flags } from '@oclif/core';
-import { performance } from 'node:perf_hooks';
 
 import waitAlive from '../../utils/wait-alive.js';
 
@@ -34,7 +33,6 @@ class JahiaUtilsAlive extends Command {
 
   async run() {
     const { flags } = await this.parse(JahiaUtilsAlive);
-    const t0 = performance.now();
 
     let timeout =
       flags.timeout === undefined
@@ -53,9 +51,6 @@ class JahiaUtilsAlive extends Command {
       flags.jahiaPassword,
       timeout,
     );
-
-    const t1 = performance.now();
-    this.log('Total Exceution time: ' + Math.round(t1 - t0) + ' milliseconds.');
   }
 }
 
