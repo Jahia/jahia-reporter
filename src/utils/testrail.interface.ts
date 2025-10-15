@@ -1,69 +1,70 @@
 export enum Status {
-  Passed = 1,
   Blocked = 2,
-  Untested = 3,
-  Retest = 4,
   Failed = 5,
+  Passed = 1,
+  Retest = 4,
+  Untested = 3,
 }
 
 export interface TestRailResult {
+  [key: string]: any; // Allow custom fields
   case_id: number;
-  status_id: Status;
   comment?: string;
   elapsed?: string;
+  status_id: Status;
   version?: string;
 }
 
 export interface PaginatedProjects {
-  offset: number;
   limit: number;
-  size: number;
+  offset: number;
   projects: Project[];
+  size: number;
 }
 
 export interface Project {
   id: number;
+  is_completed: boolean;
   name: string;
   show_announcement: false;
-  is_completed: boolean;
   suite_mode: number;
   url: string;
 }
 
 export interface ResultField {
-  id: number;
-  is_active: boolean;
-  type_id: number;
-  name: string;
-  system_name: string;
-  label: string;
-  description: string;
   configs: ResultFieldConfig[];
+  description: string;
   display_order: number;
-  include_all: number;
-  template_ids: number[];
-
   // Fields added while comparing with the submitted file
   enabledOnProject: boolean;
+  id: number;
+  include_all: number;
+  is_active: boolean;
+  label: string;
+  name: string;
+  system_name: string;
+  template_ids: number[];
+
   type: string;
+  type_id: number;
   value: string;
 }
 
 export interface ResultFieldConfig {
-  id: number;
   context: {
     is_global: boolean;
     project_ids: number[];
   };
+  id: number;
   options: {
-    is_required: false;
     defailt_value: string;
+    is_required: false;
   };
 }
 
 export interface PaginatedSuites {
-  offset: number;
   limit: number;
+  offset: number;
   size: number;
   suites: Suite[];
 }
@@ -74,10 +75,10 @@ export interface Suite {
 }
 
 export interface PaginatedMilestones {
-  offset: number;
   limit: number;
-  size: number;
   milestones: Milestone[];
+  offset: number;
+  size: number;
 }
 
 export interface Milestone {
@@ -87,14 +88,14 @@ export interface Milestone {
 }
 
 export interface PaginatedSections {
-  offset: number;
-  limit: number;
-  size: number;
-  sections: Section[];
   _links: {
     next: string;
-    prev: string | null;
+    prev: null | string;
   };
+  limit: number;
+  offset: number;
+  sections: Section[];
+  size: number;
 }
 
 export interface Section {
@@ -104,27 +105,27 @@ export interface Section {
 }
 
 export interface PaginatedTests {
-  offset: number;
-  limit: number;
-  size: number;
   cases: Test[];
+  limit: number;
+  offset: number;
+  size: number;
 }
 
 export interface Test {
-  section: string;
-  title: string;
-  time: string;
   comment?: string;
   id?: number;
-  steps?: string;
+  section: string;
   section_id?: string;
+  steps?: string;
+  time: string;
+  title: string;
 }
 
 export interface AddCase {
-  title: string;
   custom_status: number;
-  custom_version: number[];
   custom_steps_separated?: any[];
+  custom_version: number[];
+  title: string;
 }
 
 export interface Run {
@@ -132,18 +133,18 @@ export interface Run {
 }
 
 export interface AddRun {
-  suite_id: number;
-  name: string;
-  description: string;
-  milestone_id?: number;
-  include_all?: boolean;
   case_ids?: (number | undefined)[];
+  description: string;
+  include_all?: boolean;
+  milestone_id?: number;
+  name: string;
+  suite_id: number;
 }
 
 export interface CaseFields {
+  configs: Config[];
   id: number;
   system_name: string;
-  configs: Config[];
 }
 
 export interface Config {
@@ -157,7 +158,7 @@ export interface Context {
 }
 
 export interface Options {
-  is_required: boolean;
   default_value: string;
+  is_required: boolean;
   items: string;
 }

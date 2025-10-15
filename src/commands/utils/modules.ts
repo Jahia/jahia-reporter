@@ -1,67 +1,84 @@
-import {Command, flags} from '@oclif/command'
-import cli from 'cli-ux'
-import * as fs from 'fs'
-import * as path from 'path'
+import { Command, Flags } from '@oclif/core';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-import {UtilsVersions, UtilsPlatform} from '../../global.type'
-
-import {getModules} from '../../utils/modules'
-import {getPlatform} from '../../utils/platform'
-import {waitForJournalSync} from '../../utils/journal-sync'
+import { UtilsPlatform, UtilsVersions } from '../../global.type';
+import { waitForJournalSync } from '../../utils/journal-sync.js';
+import { getModules } from '../../utils/modules.js';
+import { getPlatform } from '../../utils/platform.js';
 
 class JahiaUtilsModule extends Command {
-  static description = 'For a provided module, returns the module version, Jahia version and list of installed modules'
+  static description =
+    'For a provided module, returns the module version, Jahia version and list of installed modules';
 
   static flags = {
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    jahiaUrl: flags.string({
-      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/)',
-      default: 'http://localhost:8080/',
-    }),
-    jahiaUsername: flags.string({
-      description: 'Jahia username used to authenticated with the remote endpoint)',
-      default: 'root',
-    }),
-    jahiaPassword: flags.string({
-      description: 'Jahia password used to authenticated with the remote endpoint)',
-      default: 'root',
-    }),
-    moduleId: flags.string({
-      description: 'Module ID of the module currently being tested',
-      required: true,
-    }),
-    dependencies: flags.string({
-      description: 'Comma separated list of module ID dependencies',
+    dependencies: Flags.string({
       default: '',
+      description: 'Comma separated list of module ID dependencies',
     }),
-    filepath: flags.string({
+    filepath: Flags.string({
       description: 'Filepath to store the resulting JSON to',
       required: true,
     }),
-    timeout: flags.integer({
-      description: 'Timeout for journal sync',
-      default: 120,
+    help: Flags.help({ char: 'h' }),
+    jahiaPassword: Flags.string({
+      default: 'root',
+      description:
+        'Jahia password used to authenticated with the remote endpoint)',
     }),
-  }
+    jahiaUrl: Flags.string({
+      default: 'http://localhost:8080/',
+      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/)',
+    }),
+    jahiaUsername: Flags.string({
+      default: 'root',
+      description:
+        'Jahia username used to authenticated with the remote endpoint)',
+    }),
+    moduleId: Flags.string({
+      description: 'Module ID of the module currently being tested',
+      required: true,
+    }),
+    timeout: Flags.integer({
+      default: 120,
+      description: 'Timeout for journal sync',
+    }),
+    version: Flags.version({ char: 'v' }),
+  };
 
   async run() {
-    const {flags} = this.parse(JahiaUtilsModule)
+    const { flags } = await this.parse(JahiaUtilsModule);
 
-    const dependencies: string[] = flags.dependencies.split(',')
+    const dependencies: string[] = flags.dependencies.split(',');
 
-    const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
-    cli.action.start(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`)
-    waitForJournalSync(flags.timeout, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
-    cli.action.stop()
-    const version: UtilsVersions = getModules(flags.moduleId, dependencies, jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
-    const platform: UtilsPlatform | undefined = getPlatform(jahiaFullUrl, flags.jahiaUsername, flags.jahiaPassword)
+    const jahiaFullUrl =
+      flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/';
+    console.log(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`);
+    await waitForJournalSync(
+      flags.timeout,
+      jahiaFullUrl,
+      flags.jahiaUsername,
+      flags.jahiaPassword,
+    );
+    console.log('Done waiting for journal sync');
+    const version: UtilsVersions = getModules(
+      flags.moduleId,
+      dependencies,
+      jahiaFullUrl,
+      flags.jahiaUsername,
+      flags.jahiaPassword,
+    );
+    const platform: UtilsPlatform | undefined = getPlatform(
+      jahiaFullUrl,
+      flags.jahiaUsername,
+      flags.jahiaPassword,
+    );
 
     fs.writeFileSync(
       path.join(flags.filepath),
-      JSON.stringify({...version, platform: platform})
-    )
+      JSON.stringify({ ...version, platform }),
+    );
   }
 }
 
-export = JahiaUtilsModule
+export default JahiaUtilsModule;

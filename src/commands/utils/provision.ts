@@ -1,38 +1,41 @@
-import {Command, flags} from '@oclif/command'
-import {performance} from 'perf_hooks'
-import * as fs from 'fs'
+import {Command, Flags} from '@oclif/core'
 import axios from 'axios'
+import * as fs from 'node:fs'
+import {performance} from 'node:perf_hooks'
 
 class JahiaUtilsProvision extends Command {
-  static description = 'Provisions Jahia by sending a manifest (see Jahia provisioning API)'
+  static description
+    = 'Provisions Jahia by sending a manifest (see Jahia provisioning API)'
 
   static flags = {
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    jahiaUrl: flags.string({
-      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/)',
+    help: Flags.help({char: 'h'}),
+    jahiaPassword: Flags.string({
+      default: 'root',
+      description:
+        'Jahia password used to authenticated with the remote endpoint)',
+    }),
+    jahiaUrl: Flags.string({
       default: 'http://localhost:8080/',
+      description: 'Jahia GraphQL endpoint (i.e. http://localhost:8080/)',
     }),
-    jahiaUsername: flags.string({
-      description: 'Jahia username used to authenticated with the remote endpoint)',
+    jahiaUsername: Flags.string({
       default: 'root',
+      description:
+        'Jahia username used to authenticated with the remote endpoint)',
     }),
-    jahiaPassword: flags.string({
-      description: 'Jahia password used to authenticated with the remote endpoint)',
-      default: 'root',
-    }),
-    script: flags.string({
+    script: Flags.string({
       description: 'Specify the filepath to the script to be pushed',
       required: true,
     }),
-    type: flags.string({
-      description: 'Filetype of the script (YAML or JSON)',
+    type: Flags.string({
       default: 'YAML',
+      description: 'Filetype of the script (YAML or JSON)',
     }),
+    version: Flags.version({char: 'v'}),
   }
 
   async run() {
-    const {flags} = this.parse(JahiaUtilsProvision)
+    const {flags} = await this.parse(JahiaUtilsProvision)
     const t0 = performance.now()
 
     if (!fs.existsSync(flags.script)) {
@@ -41,35 +44,41 @@ class JahiaUtilsProvision extends Command {
     }
 
     const scriptContent = await fs.readFileSync(flags.script)
-    const jahiaFullUrl = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
+    const jahiaFullUrl
+      = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
 
     this.log(`Submitting provisioning script located in: ${flags.script}`)
     let submissionResponse: any = {}
     try {
-      submissionResponse = await axios.post(jahiaFullUrl + 'modules/api/provisioning', scriptContent, {
-        headers: {
-          'Content-Type': flags.type === 'YAML' ? 'application/yaml' : 'application/json',
+      submissionResponse = await axios.post(
+        jahiaFullUrl + 'modules/api/provisioning',
+        scriptContent,
+        {
+          auth: {
+            password: flags.jahiaPassword,
+            username: flags.jahiaUsername,
+          },
+          headers: {
+            'Content-Type':
+              flags.type === 'YAML' ? 'application/yaml' : 'application/json',
+          },
+          maxBodyLength: Number.POSITIVE_INFINITY,
+          maxContentLength: Number.POSITIVE_INFINITY,
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-        auth: {
-          username: flags.jahiaUsername,
-          password: flags.jahiaPassword,
-        },
-      })
+      )
     } catch (error: any) {
       this.log('Error while submitting script')
       this.log(error)
       this.exit(1)
     }
 
-    this.log(`Submission successful, response code: ${submissionResponse.status}`)
+    this.log(
+      `Submission successful, response code: ${submissionResponse.status}`,
+    )
     this.log(submissionResponse.statusText)
     const t1 = performance.now()
-    this.log(
-      'Total Exceution time: ' + Math.round(t1 - t0) + ' milliseconds.',
-    )
+    this.log('Total Exceution time: ' + Math.round(t1 - t0) + ' milliseconds.')
   }
 }
 
-export = JahiaUtilsProvision
+export default JahiaUtilsProvision

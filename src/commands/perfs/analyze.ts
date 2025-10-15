@@ -1,16 +1,16 @@
 /* eslint-disable complexity */
 /* eslint-disable max-depth */
-import {Command, flags} from '@oclif/command'
-import {readFileSync} from 'fs'
-import * as fs from 'fs'
-import * as path from 'path'
+import {Command, Flags} from '@oclif/core'
+import {readFileSync} from 'node:fs'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
 import {
   JMeterExec,
-  JMeterThresholds,
-  JMeterTRunTransaction,
-  JMeterRunTransaction,
   JMeterExecAnalysisReport,
+  JMeterRunTransaction,
+  JMeterTRunTransaction,
+  JMeterThresholds,
 } from '../../global.type'
 
 const getRunThreshold = (runName: string, thresholds: JMeterThresholds) => {
@@ -56,38 +56,38 @@ const getTransactionThreshold = (
 }
 
 class JahiaAnalyzePerfsReporter extends Command {
-  static description =
-    'Analyze a runs file against values included in a threshold file.';
+  static description
+    = 'Analyze a runs file against values included in a threshold file.'
 
   static flags = {
-    help: flags.help({char: 'h'}),
-    runsFile: flags.string({
+    failOnError: Flags.boolean({
+      default: false,
+      description: 'Should the system send an exit signal in case of failure',
+    }),
+    help: Flags.help({char: 'h'}),
+    reportFile: Flags.string({
+      default: '',
+      description:
+        'A path to store the JSON report that will be generated at the end of the run (full report)',
+      required: false,
+    }),
+    runsFile: Flags.string({
       description:
         'A json file containing the perf report provided by the jmeter container',
       required: true,
     }),
-    thresholdsFile: flags.string({
+    thresholdsFile: Flags.string({
       description: 'A json file containing values thresholds',
       required: true,
     }),
-    reportFile: flags.string({
-      description:
-        'A path to store the JSON report that will be generated at the end of the run (full report)',
-      default: '',
-      required: false,
-    }),
-    verbose: flags.boolean({
+    verbose: Flags.boolean({
+      default: false,
       description: 'Display more log messages',
-      default: false,
     }),
-    failOnError: flags.boolean({
-      description: 'Should the system send an exit signal in case of failure',
-      default: false,
-    }),
-  };
+  }
 
   async run() {
-    const {flags} = this.parse(JahiaAnalyzePerfsReporter)
+    const {flags} = await this.parse(JahiaAnalyzePerfsReporter)
 
     if (!fs.existsSync(flags.runsFile)) {
       this.log(`Unable to read runsFile at: ${flags.runsFile}`)
@@ -130,6 +130,7 @@ class JahiaAnalyzePerfsReporter extends Command {
           if (runStat.transaction === undefined) {
             runStat = Object.values(runStat)[0]
           }
+
           const statThreshold = getTransactionThreshold(
             runStat.transaction,
             threshold.transactions,
@@ -151,8 +152,8 @@ class JahiaAnalyzePerfsReporter extends Command {
                   )
                 }
               } else if (
-                statThreshold[comp.metric as keyof JMeterTRunTransaction] ===
-                undefined
+                statThreshold[comp.metric as keyof JMeterTRunTransaction]
+                === undefined
               ) {
                 if (flags.verbose) {
                   this.log(
@@ -160,51 +161,52 @@ class JahiaAnalyzePerfsReporter extends Command {
                   )
                 }
               } else {
-                const runValue =
-                  runStat[comp.metric as keyof JMeterRunTransaction]
-                const thresholdValue =
-                  statThreshold[comp.metric as keyof JMeterTRunTransaction]
+                const runValue
+                  = runStat[comp.metric as keyof JMeterRunTransaction]
+                const thresholdValue
+                  = statThreshold[comp.metric as keyof JMeterTRunTransaction]
                 let thresholdError = false
                 if (thresholdValue !== undefined && comp.comparator === 'gt') {
                   if (runValue > thresholdValue) {
                     thresholdError = true
                   }
                 } else if (
-                  thresholdValue !== undefined &&
-                  comp.comparator === 'gte'
+                  thresholdValue !== undefined
+                  && comp.comparator === 'gte'
                 ) {
                   if (runValue >= thresholdValue) {
                     thresholdError = true
                   }
                 } else if (
-                  thresholdValue !== undefined &&
-                  comp.comparator === 'lt'
+                  thresholdValue !== undefined
+                  && comp.comparator === 'lt'
                 ) {
                   if (runValue < thresholdValue) {
                     thresholdError = true
                   }
                 } else if (
-                  thresholdValue !== undefined &&
-                  comp.comparator === 'lte'
+                  thresholdValue !== undefined
+                  && comp.comparator === 'lte'
+                  && runValue <= thresholdValue
                 ) {
-                  if (runValue <= thresholdValue) {
-                    thresholdError = true
-                  }
+                  thresholdError = true
                 }
+
                 if (thresholdError) {
                   if (flags.verbose) {
                     this.log(
                       `ERROR: run: ${run.name}, transaction: ${runStat.transaction}, metric: ${comp.metric} is failing threshold => Value: ${runValue} (Operator: ${comp.comparator}) Threshold: ${thresholdValue}`,
                     )
                   }
+
                   analysisReport.push({
-                    error: true,
-                    run: run.name,
-                    transaction: runStat.transaction,
-                    metric: comp.metric,
                     comparator: comp.comparator,
-                    runValue: runValue,
-                    thresholdValue: thresholdValue,
+                    error: true,
+                    metric: comp.metric,
+                    run: run.name,
+                    runValue,
+                    thresholdValue,
+                    transaction: runStat.transaction,
                   })
                 } else {
                   if (flags.verbose) {
@@ -212,14 +214,15 @@ class JahiaAnalyzePerfsReporter extends Command {
                       `OK: run: ${run.name}, transaction: ${runStat.transaction}, metric: ${comp.metric} is passing threshold => Value: ${runValue} (Operator: ${comp.comparator}) Threshold: ${thresholdValue}`,
                     )
                   }
+
                   analysisReport.push({
-                    error: false,
-                    run: run.name,
-                    transaction: runStat.transaction,
-                    metric: comp.metric,
                     comparator: comp.comparator,
-                    runValue: runValue,
-                    thresholdValue: thresholdValue,
+                    error: false,
+                    metric: comp.metric,
+                    run: run.name,
+                    runValue,
+                    thresholdValue,
+                    transaction: runStat.transaction,
                   })
                 }
               }
@@ -234,14 +237,14 @@ class JahiaAnalyzePerfsReporter extends Command {
       fs.writeFileSync(
         path.join(flags.reportFile),
         JSON.stringify({
+          analysis: analysisReport,
           startedAt: jMeterRuns.startedAt,
           tags: jMeterRuns.tags,
-          analysis: analysisReport,
         }),
       )
     }
 
-    if (analysisReport.filter(a => a.error === true).length > 0) {
+    if (analysisReport.some(a => a.error === true)) {
       this.log('The following values were failing threshold:')
       for (const error of analysisReport.filter(a => a.error === true)) {
         this.log(
@@ -256,6 +259,7 @@ class JahiaAnalyzePerfsReporter extends Command {
           }`,
         )
       }
+
       if (flags.failOnError) {
         this.log('Exiting with exit code: 1 (failed)')
         this.exit(1)
@@ -264,4 +268,4 @@ class JahiaAnalyzePerfsReporter extends Command {
   }
 }
 
-export = JahiaAnalyzePerfsReporter;
+export default JahiaAnalyzePerfsReporter

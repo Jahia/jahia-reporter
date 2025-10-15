@@ -2,11 +2,15 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "module": "commonjs",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "target": "es2020",
+    "target": "es2022",
+    "lib": ["es2022", "dom"],
     "baseUrl": "./",
     "paths": {
       "*": ["./types/*"]
@@ -18,7 +22,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

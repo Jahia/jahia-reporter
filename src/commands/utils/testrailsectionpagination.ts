@@ -1,60 +1,60 @@
-import {Command, flags} from '@oclif/command'
+import { Command, Flags } from '@oclif/core';
 
-import {TestRailClient} from '../../utils/testrail'
+import { TestRailClient } from '../../utils/testrail.js';
 
 class TestrailSectionsPagination extends Command {
   static description = 'Try out testrail pagination for sections';
 
   static flags = {
-    version: flags.version({char: 'v'}),
-    help: flags.help({char: 'h'}),
-    testrailUrl: flags.string({
-      description: 'TestRail url to submit the results from the report to',
-      default: 'https://jahia.testrail.net',
-    }),
-    testrailApiKey: flags.string({
+    help: Flags.help({ char: 'h' }),
+    testrailApiKey: Flags.string({
       description: 'TestRail to be used as an alternative to username/password',
       required: false,
     }),
-    testrailUsername: flags.string({
-      description: 'TestRail username',
-      required: true,
-    }),
-    testrailPassword: flags.string({
+    testrailPassword: Flags.string({
       description: 'TestRail password',
       required: true,
     }),
-    testrailProjectId: flags.integer({
+    testrailProjectId: Flags.integer({
       description: 'TestRail Project ID',
       required: true,
     }),
-    testrailSuiteId: flags.integer({
+    testrailSuiteId: Flags.integer({
       description: 'TestRail Suite ID within the project',
       required: true,
     }),
+    testrailUrl: Flags.string({
+      default: 'https://jahia.testrail.net',
+      description: 'TestRail url to submit the results from the report to',
+    }),
+    testrailUsername: Flags.string({
+      description: 'TestRail username',
+      required: true,
+    }),
+    version: Flags.version({ char: 'v' }),
   };
 
   async run() {
-    const {flags} = this.parse(TestrailSectionsPagination)
+    const { flags } = await this.parse(TestrailSectionsPagination);
 
     const testrail = new TestRailClient(
       flags.testrailUrl,
       flags.testrailUsername,
-      flags.testrailApiKey === undefined ?
-        flags.testrailPassword :
-        flags.testrailApiKey,
-    )
+      flags.testrailApiKey === undefined
+        ? flags.testrailPassword
+        : flags.testrailApiKey,
+    );
 
     const allSectionsInTestrail = testrail.getSections(
       flags.testrailProjectId,
       flags.testrailSuiteId,
-    )
+    );
 
     // for (const section of allSectionsInTestrail) {
     //   console.log(section);
     // }
-    this.log(`Total sections count: ${allSectionsInTestrail.length}`)
+    this.log(`Total sections count: ${allSectionsInTestrail.length}`);
   }
 }
 
-export = TestrailSectionsPagination;
+export default TestrailSectionsPagination;

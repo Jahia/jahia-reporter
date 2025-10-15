@@ -3,83 +3,83 @@ export interface JRTestfailure {
 }
 
 interface JRTestcase {
-  name: string;
-  time: number;
-  status: string;
   failures: JRTestfailure[];
+  name: string;
+  status: string;
   steps?: string;
+  time: number;
 }
 
 export interface JRTestsuite {
-  name: string;
   errors?: number;
   failures: number;
-  skipped: number;
+  name: string;
   pending: number;
-  timestamp: string;
-  time: number;
+  skipped: number;
   tests: JRTestcase[];
+  time: number;
+  timestamp: string;
 }
 
 // A report is a junit test file composed of multiple suites
 export interface JRReport {
-  name: string;
-  tests: number;
   failures: number;
-  skipped: number;
+  name: string;
   pending: number;
+  skipped: number;
+  tests: number;
+  testsuites: JRTestsuite[];
   time: number;
   timestamp?: string;
-  testsuites: JRTestsuite[];
 }
 
 // A run is composed of multiple junit files
 export interface JRRun {
-  tests: number;
   failures: number;
-  skipped: number;
   pending: number;
-  time: number;
   reports: JRReport[];
+  skipped: number;
+  tests: number;
+  time: number;
 }
 
 // A run is composed of multiple junit files
 export interface JRCase {
-  id: string;
-  name: string;
-  suite: string;
+  caseFailure: number;
+  caseSuccess: number;
+  caseTotal: number;
+  createdAt: string;
   duration: number;
-  state: string;
+  id: string;
   jahia: string;
   module: string;
-  caseTotal: number;
-  caseSuccess: number;
-  caseFailure: number;
-  createdAt: string;
+  name: string;
+  state: string;
+  suite: string;
 }
 
 export interface ZenCrepesDependency {
+  full: string;
   id: string;
   name: string;
-  version: string;
-  full: string;
   url?: string;
+  version: string;
 }
 
 export interface ZenCrepesStateNode {
+  cases: JRCase[];
+  createdAt: string;
+  dependencies: ZenCrepesDependency[];
+  full?: string;
   id: string;
   name: string;
-  version: string;
-  full?: string;
-  dependencies: ZenCrepesDependency[];
-  createdAt: string;
-  state: string;
-  cases: JRCase[];
-  url: string;
-  runTotal: number;
-  runSuccess: number;
-  runFailure: number;
   runDuration: number;
+  runFailure: number;
+  runSuccess: number;
+  runTotal: number;
+  state: string;
+  url: string;
+  version: string;
 }
 
 export interface JahiaModule {
@@ -89,66 +89,66 @@ export interface JahiaModule {
 }
 
 export interface UtilsVersions {
+  allModules: JahiaModule[];
+  dependencies: JahiaModule[];
   jahia: {
-    version: string;
     build: string;
     fullVersion: string;
+    version: string;
   };
   module: JahiaModule;
-  dependencies: JahiaModule[];
-  allModules: JahiaModule[];
 }
 
 export interface UtilsPlatform {
+  cluster: {
+    isActivated: boolean;
+  };
   jahia: {
-    version: {
-      build: string;
-      buildDate: string;
-      isSnapshot: string;
-      release: string;
-    };
     database: {
-      type: string;
-      name: string;
-      version: string;
       driverName: string;
       driverVersion: string;
+      name: string;
+      type: string;
       url: string;
+      version: string;
     };
     system: {
-      os: {
-        name: string;
-        architecture: string;
-        version: string;
-      };
       java: {
         runtimeName: string;
         runtimeVerison: string;
         vendor: string;
         vendorVersion: string;
       };
+      os: {
+        architecture: string;
+        name: string;
+        version: string;
+      };
     };
-  };
-  cluster: {
-    isActivated: boolean;
+    version: {
+      build: string;
+      buildDate: string;
+      isSnapshot: string;
+      release: string;
+    };
   };
 }
 
 export interface JMeterTRunTransaction {
-  name: string;
-  sampleCount?: number;
   errorCount?: number;
   errorPct?: number;
+  maxResTime?: number;
   meanResTime?: number;
   medianResTime?: number;
   minResTime?: number;
-  maxResTime?: number;
+  name: string;
   pct1ResTime?: number;
   pct2ResTime?: number;
   pct3ResTime?: number;
-  throughput?: number;
   receivedKBytesPerSec?: number;
+  sampleCount?: number;
   sentKBytesPerSec?: number;
+  throughput?: number;
 }
 
 export interface JMeterTRun {
@@ -157,8 +157,8 @@ export interface JMeterTRun {
 }
 
 export interface JMeterTMetricConstraint {
-  metric: string;
   comparator: 'gt' | 'gte' | 'lt' | 'lte';
+  metric: string;
 }
 
 export interface JMeterThresholds {
@@ -167,20 +167,20 @@ export interface JMeterThresholds {
 }
 
 export interface JMeterRunTransaction {
-  transaction: string;
-  sampleCount: number;
   errorCount: number;
   errorPct: number;
+  maxResTime: number;
   meanResTime: number;
   medianResTime: number;
   minResTime: number;
-  maxResTime: number;
   pct1ResTime: number;
   pct2ResTime: number;
   pct3ResTime: number;
-  throughput: number;
   receivedKBytesPerSec: number;
+  sampleCount: number;
   sentKBytesPerSec: number;
+  throughput: number;
+  transaction: string;
 }
 
 // export interface JMeterRunStatistics {
@@ -189,8 +189,8 @@ export interface JMeterRunTransaction {
 // }
 
 export interface JMeterRun {
-  name: string;
   duration: number;
+  name: string;
   statistics: Record<string, JMeterRunTransaction>;
 }
 
@@ -202,11 +202,11 @@ export interface JMeterExec {
 }
 
 export interface JMeterExecAnalysisReport {
-  error: boolean;
-  run: string;
-  transaction: string;
-  metric: string;
   comparator: string;
+  error: boolean;
+  metric: string;
+  run: string;
   runValue: number | string;
   thresholdValue: number | string | undefined;
+  transaction: string;
 }
