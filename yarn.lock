@@ -720,6 +720,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.27.1"
     "@oclif/core": "npm:^4.5.5"
     "@oclif/plugin-help": "npm:^6.2.33"
+    "@oclif/plugin-version": "npm:^2.2.33"
     "@oclif/test": "npm:^4.1.14"
     "@pagerduty/pdjs": "npm:^2.2.4"
     "@slack/web-api": "npm:^7.11.0"
@@ -1192,6 +1193,16 @@ __metadata:
   dependencies:
     "@oclif/core": "npm:^4"
   checksum: 10c0/d7ce64e7e68050cdefe2327552ac5c1ce7ddd4f820ace7fcc07b92afaa9fcae81577a21b08d16e6b26c4cbbc3db433052b448d6f460309fceee42f370b2ce20c
+  languageName: node
+  linkType: hard
+
+"@oclif/plugin-version@npm:^2.2.33":
+  version: 2.2.33
+  resolution: "@oclif/plugin-version@npm:2.2.33"
+  dependencies:
+    "@oclif/core": "npm:^4"
+    ansis: "npm:^3.17.0"
+  checksum: 10c0/7df1a7305642063058300f71f4d0df746d76580a81cddd792dfde332e4697a420ab60713db6c731259bf4152e2376dd1225b53426bb24943b2d049de4f156031
   languageName: node
   linkType: hard
 

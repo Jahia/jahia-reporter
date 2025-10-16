@@ -8,6 +8,7 @@
   "bugs": "https://github.com/Jahia/jahia-reporter/issues",
   "dependencies": {
     "@oclif/core": "^4.5.5",
+    "@oclif/plugin-version": "^2.2.33",
     "@pagerduty/pdjs": "^2.2.4",
     "@slack/web-api": "^7.11.0",
     "@types/node": "^18",
@@ -88,7 +89,8 @@
     "dirname": "jahia-reporter",
     "commands": "./lib/commands",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-version"
     ],
     "topicSeparator": ":",
     "topics": {

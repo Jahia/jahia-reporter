@@ -1,11 +1,11 @@
 import { ux } from '@oclif/core';
-import { Base64 } from 'js-base64';
 import { performance } from 'node:perf_hooks';
 
-import { Client, fetchExchange } from '@urql/core';
+import { Client } from '@urql/core';
 import { graphql } from 'gql.tada';
 
 import { sleep } from './sleep.js';
+import { getGraphqlClient } from './getGraphqlClient.js';
 
 const isAlive = (data: unknown): boolean => {
   if (
@@ -70,27 +70,7 @@ const waitAlive = async (
   const startTime = performance.now();
   ux.action.start('Waiting for Jahia to be online');
 
-  // Create a client object to be reused for each call
-  const authHeader = `Basic ${Base64.btoa(
-    jahiaUsername + ':' + jahiaPassword,
-  )}`;
-
-  // If a trailing slash is present, we remove it, this make the variable usable in both url and Origin
-  const normalizedUrl = jahiaUrl.endsWith('/')
-    ? jahiaUrl.slice(0, -1)
-    : jahiaUrl;
-
-  const client = new Client({
-    url: normalizedUrl + '/modules/graphql',
-    exchanges: [fetchExchange],
-    fetchOptions: {
-      headers: {
-        'Content-Type': 'application/json',
-        Origin: normalizedUrl,
-        Authorization: authHeader,
-      },
-    },
-  });
+  const client = await getGraphqlClient(jahiaUrl, jahiaUsername, jahiaPassword);
 
   const data = await checkStatus(client, timeout, 0);
   if (isAlive(data) === false) {

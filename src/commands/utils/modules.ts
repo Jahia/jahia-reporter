@@ -6,6 +6,7 @@ import { UtilsPlatform, UtilsVersions } from '../../global.type';
 import { waitForJournalSync } from '../../utils/journal-sync.js';
 import { getModules } from '../../utils/modules.js';
 import { getPlatform } from '../../utils/platform.js';
+import { getGraphqlClient } from '../../utils/getGraphqlClient.js';
 
 class JahiaUtilsModule extends Command {
   static description =
@@ -53,26 +54,23 @@ class JahiaUtilsModule extends Command {
 
     const jahiaFullUrl =
       flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/';
-    console.log(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`);
-    await waitForJournalSync(
-      flags.timeout,
-      jahiaFullUrl,
+
+    const client = await getGraphqlClient(
+      flags.jahiaUrl,
       flags.jahiaUsername,
       flags.jahiaPassword,
     );
+
+    console.log(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`);
+    await waitForJournalSync(flags.timeout, client);
     console.log('Done waiting for journal sync');
-    const version: UtilsVersions = getModules(
+    const version: UtilsVersions = await getModules(
       flags.moduleId,
       dependencies,
-      jahiaFullUrl,
-      flags.jahiaUsername,
-      flags.jahiaPassword,
+      client,
     );
-    const platform: UtilsPlatform | undefined = getPlatform(
-      jahiaFullUrl,
-      flags.jahiaUsername,
-      flags.jahiaPassword,
-    );
+
+    const platform: UtilsPlatform | undefined = await getPlatform(client);
 
     fs.writeFileSync(
       path.join(flags.filepath),
