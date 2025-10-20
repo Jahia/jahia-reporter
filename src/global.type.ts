@@ -1,3 +1,16 @@
+export interface Incident {
+  title: string;
+  description: string;
+  dedupKey: string;
+  success: boolean;
+  counts: {
+    total: number;
+    fail: number;
+    success: number;
+    skip: number;
+  };
+}
+
 export interface JRTestfailure {
   text: string;
 }

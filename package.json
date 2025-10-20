@@ -29,12 +29,13 @@
     "load-yaml-file": "1.0.0",
     "md5": "^2.3.0",
     "node-fetch": "^2.7.0",
+    "octokit": "^5.0.3",
     "parse-github-url": "^1.0.3",
     "ts-node": "^10.9.2",
     "ts-sync-request": "^1.4.1",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
-    "uuid": "^10.0.0",
+    "uuid": "^13.0.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
