@@ -1,15 +1,15 @@
-import { Client } from '@urql/core';
-import { graphql } from 'gql.tada';
+import {Client} from '@urql/core'
+import {graphql} from 'gql.tada'
 
-import { sleep } from './sleep.js';
+import {sleep} from './sleep.js'
 
 export const waitForJournalSync = (timeout: number, client: Client) => {
-  let isJournalSync: boolean = false;
+  let isJournalSync: boolean = false
 
   for (let i = 0; i < timeout; i++) {
     client
-      .query(
-        graphql(`
+    .query(
+      graphql(`
           query {
             admin {
               cluster {
@@ -30,24 +30,25 @@ export const waitForJournalSync = (timeout: number, client: Client) => {
             }
           }
         `),
-        {},
+      {},
+    )
+    .then(response => {
+      if (response.data === null) isJournalSync = true
+      if (
+        response.data?.admin?.cluster?.isActivated === undefined
+          || response.data?.admin?.cluster?.isActivated === false
       )
-      .then((response) => {
-        if (response.data === null) isJournalSync = true;
-        if (
-          response.data?.admin?.cluster?.isActivated === undefined ||
-          response.data?.admin?.cluster?.isActivated === false
-        )
-          isJournalSync = true;
-        if (
-          response.data?.admin?.cluster?.journal?.isClusterSync === true &&
-          response.data?.admin?.cluster?.isActivated === true
-        )
-          isJournalSync = true;
-      });
+        isJournalSync = true
+      if (
+        response.data?.admin?.cluster?.journal?.isClusterSync === true
+          && response.data?.admin?.cluster?.isActivated === true
+      )
+        isJournalSync = true
+    })
     if (isJournalSync) {
-      break;
+      break
     }
-    sleep(1000);
+
+    sleep(1000)
   }
-};
+}

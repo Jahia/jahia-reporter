@@ -1,5 +1,5 @@
-import { Client } from '@urql/core';
-import { graphql } from 'gql.tada';
+import {Client} from '@urql/core'
+import {graphql} from 'gql.tada'
 
 export const getPlatform = async (client: Client) => {
   const response = await client.query(
@@ -41,9 +41,9 @@ export const getPlatform = async (client: Client) => {
       }
     `),
     {},
-  );
+  )
   if (response.data !== null && response.error === undefined) {
-    console.log('Fetched full details about the platform');
-    return response.data.admin;
+    console.log('Fetched full details about the platform')
+    return response.data.admin
   }
-};
+}

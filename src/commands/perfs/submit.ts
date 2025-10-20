@@ -1,16 +1,16 @@
-import { Command, Flags } from '@oclif/core';
-import * as loadYamlFile from 'load-yaml-file';
-import * as crypto from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import * as fs from 'node:fs';
-import gh from 'parse-github-url';
-import { SyncRequestClient } from 'ts-sync-request/dist/index.js';
+import {Command, Flags} from '@oclif/core'
+import * as loadYamlFile from 'load-yaml-file'
+import * as crypto from 'node:crypto'
+import {readFileSync} from 'node:fs'
+import * as fs from 'node:fs'
+import gh from 'parse-github-url'
+import {SyncRequestClient} from 'ts-sync-request/dist/index.js'
 
 class JahiaPerfsReporter extends Command {
-  static description = 'Submit data about a junit/mocha report to ZenCrepes';
+  static description = 'Submit data about a junit/mocha report to ZenCrepes'
 
   static flags = {
-    help: Flags.help({ char: 'h' }),
+    help: Flags.help({char: 'h'}),
     repoUrl: Flags.string({
       description: 'Name of the run',
       required: true,
@@ -41,34 +41,34 @@ class JahiaPerfsReporter extends Command {
       description: 'The webhook secret',
       required: true,
     }),
-  };
+  }
 
   async run() {
-    const { flags } = await this.parse(JahiaPerfsReporter);
+    const {flags} = await this.parse(JahiaPerfsReporter)
 
-    let jMeterRuns = {};
+    let jMeterRuns = {}
     if (fs.existsSync(flags.runsFile)) {
-      const rawFile = readFileSync(flags.runsFile, 'utf8');
-      jMeterRuns = JSON.parse(rawFile.toString());
+      const rawFile = readFileSync(flags.runsFile, 'utf8')
+      jMeterRuns = JSON.parse(rawFile.toString())
     } else {
-      this.log(`Unable to read runsFile at: ${flags.runsFile}`);
-      this.exit(1);
+      this.log(`Unable to read runsFile at: ${flags.runsFile}`)
+      this.exit(1)
     }
 
-    let tfsettings: any = {};
+    let tfsettings: any = {}
     if (fs.existsSync(flags.tfsettingsFile)) {
-      tfsettings = await loadYamlFile(flags.tfsettingsFile);
+      tfsettings = await loadYamlFile(flags.tfsettingsFile)
     } else {
-      this.log(`Unable to read tfsettingsFile at: ${flags.tfsettingsFile}`);
-      this.exit(1);
+      this.log(`Unable to read tfsettingsFile at: ${flags.tfsettingsFile}`)
+      this.exit(1)
     }
 
-    const ghObj = gh(flags.repoUrl);
+    const ghObj = gh(flags.repoUrl)
     if (ghObj === null) {
-      this.log(`Unable to parse repo url: ${flags.repoUrl}`);
-      this.exit(1);
+      this.log(`Unable to parse repo url: ${flags.repoUrl}`)
+      this.exit(1)
     } else {
-      const resources = Object.entries(tfsettings.docker_containers);
+      const resources = Object.entries(tfsettings.docker_containers)
       const zcPayload: any = {
         name: flags.runName,
         platform: {
@@ -92,30 +92,30 @@ class JahiaPerfsReporter extends Command {
         })),
         url: flags.runUrl,
         ...jMeterRuns,
-      };
+      }
 
       // Prepare the payload signature, is used by ZenCrepes (zqueue)
       // to ensure submitted is authorized
-      const hmac = crypto.createHmac('sha1', flags.webhookSecret);
+      const hmac = crypto.createHmac('sha1', flags.webhookSecret)
       const digest = Buffer.from(
         'sha1=' + hmac.update(JSON.stringify(zcPayload)).digest('hex'),
         'utf8',
-      );
-      const xHubSignature = digest.toString();
+      )
+      const xHubSignature = digest.toString()
 
-      this.log(zcPayload);
+      this.log(zcPayload)
 
       try {
         new SyncRequestClient()
-          .addHeader('x-hub-signature', xHubSignature)
-          .addHeader('Content-Type', 'application/json')
-          .post(flags.webhook, zcPayload);
+        .addHeader('x-hub-signature', xHubSignature)
+        .addHeader('Content-Type', 'application/json')
+        .post(flags.webhook, zcPayload)
       } catch (error) {
-        this.log('ERROR: Unable to submit data to ZenCrepes');
-        this.log(JSON.stringify(error));
+        this.log('ERROR: Unable to submit data to ZenCrepes')
+        this.log(JSON.stringify(error))
       }
     }
   }
 }
 
-export default JahiaPerfsReporter;
+export default JahiaPerfsReporter

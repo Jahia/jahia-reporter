@@ -1,4 +1,4 @@
-import { SyncRequestClient } from 'ts-sync-request/dist/index.js';
+import {SyncRequestClient} from 'ts-sync-request/dist/index.js'
 
 import {
   AddCase,
@@ -17,28 +17,28 @@ import {
   Suite,
   Test,
   TestRailResult,
-} from './testrail.interface.js';
+} from './testrail.interface.js'
 
 export class TestRailClient {
-  public base: string;
+  public base: string
 
-  public password: string;
+  public password: string
 
-  public url: string;
+  public url: string
 
-  public username: string;
+  public username: string
 
-  private caseFields: CaseFields[] = [];
+  private caseFields: CaseFields[] = []
 
   constructor(base: string, username: string, password: string) {
-    this.base = base;
-    this.username = username;
-    this.password = password;
+    this.base = base
+    this.username = username
+    this.password = password
     if (this.base.slice(-1) !== '/') {
-      this.base += '/';
+      this.base += '/'
     }
 
-    this.url = this.base + 'index.php?/api/v2/';
+    this.url = this.base + 'index.php?/api/v2/'
   }
 
   public addCase(sectionId: number, addCase: AddCase): Test {
@@ -46,13 +46,13 @@ export class TestRailClient {
       'POST',
       'add_case/' + sectionId.toString(),
       addCase,
-    ) as Test;
+    ) as Test
   }
 
   public addMilestone(projectId: number, name: string): Milestone {
     return this.sendRequest('POST', 'add_milestone/' + projectId.toString(), {
       name,
-    }) as Milestone;
+    }) as Milestone
   }
 
   public addResults(
@@ -62,8 +62,8 @@ export class TestRailClient {
     return this.sendRequest(
       'POST',
       'add_results_for_cases/' + runId.toString(),
-      { results },
-    ) as TestRailResult[];
+      {results},
+    ) as TestRailResult[]
   }
 
   public addRun(projectId: number, addRun: AddRun): Run {
@@ -71,7 +71,7 @@ export class TestRailClient {
       'POST',
       'add_run/' + projectId.toString(),
       addRun,
-    ) as Run;
+    ) as Run
   }
 
   public addSection(
@@ -83,19 +83,19 @@ export class TestRailClient {
     let sectionParams: any = {
       name: section,
       suite_id: suiteId.toString(),
-    };
+    }
     if (parentId !== '') {
       sectionParams = {
         ...sectionParams,
         parent_id: parentId,
-      };
+      }
     }
 
     return this.sendRequest(
       'POST',
       'add_section/' + projectId.toString(),
       sectionParams,
-    ) as Section;
+    ) as Section
   }
 
   public closeRun(runId: number): Run {
@@ -103,11 +103,11 @@ export class TestRailClient {
       'POST',
       'close_run/' + runId.toString(),
       '/runs/close/' + runId.toString(),
-    ) as Run;
+    ) as Run
   }
 
   public getCaseFields(): CaseFields[] {
-    return this.sendRequest('GET', 'get_case_fields', '') as CaseFields[];
+    return this.sendRequest('GET', 'get_case_fields', '') as CaseFields[]
   }
 
   public getCases(
@@ -117,75 +117,75 @@ export class TestRailClient {
   ): Test[] {
     const casesObject = this.sendRequest(
       'GET',
-      'get_cases/' +
-        projectId.toString() +
-        '&suite_id=' +
-        suiteId.toString() +
-        '&section_id=' +
-        sectionId.toString(),
+      'get_cases/'
+        + projectId.toString()
+        + '&suite_id='
+        + suiteId.toString()
+        + '&section_id='
+        + sectionId.toString(),
       '',
-    ) as PaginatedTests;
+    ) as PaginatedTests
     if (casesObject.size > 0) {
-      return casesObject.cases as Test[];
+      return casesObject.cases as Test[]
     }
 
-    return [];
+    return []
     // throw new Error("Something went wrong. Can't find any test case")
   }
 
   public getCustomStatus(status: string): number {
     if (this.caseFields.length === 0) {
-      this.caseFields = this.getCaseFields();
+      this.caseFields = this.getCaseFields()
     }
 
     const statusField = this.caseFields.find(
-      (field) => field.system_name === 'custom_status',
-    );
+      field => field.system_name === 'custom_status',
+    )
     if (statusField === undefined) {
       throw new Error(
         "Something went wrong. Can't find custom field 'custom_status'",
-      );
+      )
     }
 
     // the returned items look like this:
     // "1, Incomplete/draft\n2, Complete\n3, In progress\n4, Needs to be checked/reworked
-    const listOfCustomStatus = statusField.configs[0].options.items.split('\n');
-    const foundStatus = listOfCustomStatus.find((s) => s.includes(status));
+    const listOfCustomStatus = statusField.configs[0].options.items.split('\n')
+    const foundStatus = listOfCustomStatus.find(s => s.includes(status))
     if (foundStatus === undefined) {
       throw new Error(
         `Something went wrong. Can't find custom status ${status}`,
-      );
+      )
     }
 
-    return Number(foundStatus.split(',')[0]);
+    return Number(foundStatus.split(',')[0])
   }
 
   public getCustomVersion(version: string): number[] {
     if (this.caseFields.length === 0) {
-      this.caseFields = this.getCaseFields();
+      this.caseFields = this.getCaseFields()
     }
 
     const versionField = this.caseFields.find(
-      (field) => field.system_name === 'custom_version',
-    );
+      field => field.system_name === 'custom_version',
+    )
     if (versionField === undefined) {
       throw new Error(
         "Something went wrong. Can't find custom field 'custom_version'",
-      );
+      )
     }
 
     // the returned items look like this:
     // 1, 7.2.0.0\n 2, 7.1.2.2\n....
-    const listOfCustomVersion =
-      versionField.configs[0].options.items.split('\n');
-    const foundVersion = listOfCustomVersion.find((v) => v.includes(version));
+    const listOfCustomVersion
+      = versionField.configs[0].options.items.split('\n')
+    const foundVersion = listOfCustomVersion.find(v => v.includes(version))
     if (foundVersion === undefined) {
       throw new Error(
         `Something went wrong. Can't find custom version ${version}`,
-      );
+      )
     }
 
-    return [Number(foundVersion.split(',')[0])];
+    return [Number(foundVersion.split(',')[0])]
   }
 
   public getMilestones(projectId: number): Milestone[] {
@@ -193,12 +193,12 @@ export class TestRailClient {
       'GET',
       'get_milestones/' + projectId.toString(),
       '',
-    ) as PaginatedMilestones;
+    ) as PaginatedMilestones
     if (milestonesObject.size > 0) {
-      return milestonesObject.milestones as Milestone[];
+      return milestonesObject.milestones as Milestone[]
     }
 
-    return [];
+    return []
     // throw new Error("Something went wrong. Can't find any milestone")
   }
 
@@ -207,33 +207,33 @@ export class TestRailClient {
       'GET',
       'get_projects',
       '',
-    ) as PaginatedProjects;
+    ) as PaginatedProjects
     if (projectsObject.size > 0) {
-      return projectsObject.projects as Project[];
+      return projectsObject.projects as Project[]
     }
 
-    throw new Error("Something went wrong. Can't find any project");
+    throw new Error("Something went wrong. Can't find any project")
   }
 
   public getResultFields(): ResultField[] {
-    return this.sendRequest('GET', 'get_result_fields', '') as ResultField[];
+    return this.sendRequest('GET', 'get_result_fields', '') as ResultField[]
   }
 
   public getSections(projectId: number, suiteId: number): Section[] {
-    const sections: Section[] = [];
+    const sections: Section[] = []
     const sectionsObject = this.sendRequest(
       'GET',
       `get_sections/${projectId.toString()}&suite_id=${suiteId.toString()}`,
       '',
-    ) as PaginatedSections;
+    ) as PaginatedSections
     if (sectionsObject.size > 0) {
       for (const s of sectionsObject.sections) {
-        sections.push(s);
+        sections.push(s)
       }
 
-      let lastCallSectionsCount = sectionsObject.sections.length;
-      const hardLimit = 50; // Hard limit the number of queries to avoid going in an infinite loop
-      let cpt = 0;
+      let lastCallSectionsCount = sectionsObject.sections.length
+      const hardLimit = 50 // Hard limit the number of queries to avoid going in an infinite loop
+      let cpt = 0
       while (lastCallSectionsCount > 0 && cpt <= hardLimit) {
         const sectionsObject = this.sendRequest(
           'GET',
@@ -241,23 +241,23 @@ export class TestRailClient {
             sections.length
           }`,
           '',
-        ) as PaginatedSections;
-        lastCallSectionsCount = sectionsObject.sections.length;
+        ) as PaginatedSections
+        lastCallSectionsCount = sectionsObject.sections.length
 
         console.log(
           `Fetched ${lastCallSectionsCount} sections (${sections.length} already fetched)`,
-        );
+        )
         for (const s of sectionsObject.sections) {
-          sections.push(s);
+          sections.push(s)
         }
 
-        cpt++;
+        cpt++
       }
 
-      return sections;
+      return sections
     }
 
-    return [];
+    return []
     // throw new Error("Something went wrong. Can't find any section")
   }
 
@@ -266,38 +266,38 @@ export class TestRailClient {
       'GET',
       'get_suites/' + projectId.toString(),
       '',
-    ) as PaginatedSuites;
-    return getSuites.suites as Suite[];
+    ) as PaginatedSuites
+    return getSuites.suites as Suite[]
   }
 
   private sendRequest(method: string, uri: string, data: {}): unknown {
     const encode = (str: string): string =>
-      Buffer.from(str, 'binary').toString('base64');
-    const url: string = this.url + uri;
+      Buffer.from(str, 'binary').toString('base64')
+    const url: string = this.url + uri
 
-    const auth: string = encode(this.username + ':' + this.password);
+    const auth: string = encode(this.username + ':' + this.password)
     for (let i = 0; i < 5; i++) {
       try {
         if (method === 'GET') {
           return new SyncRequestClient()
-            .addHeader('Authorization', 'Basic ' + auth)
-            .addHeader('Content-Type', 'application/json')
-            .get(url);
+          .addHeader('Authorization', 'Basic ' + auth)
+          .addHeader('Content-Type', 'application/json')
+          .get(url)
         }
 
         if (method === 'POST') {
           return new SyncRequestClient()
-            .addHeader('Authorization', 'Basic ' + auth)
-            .addHeader('Content-Type', 'application/json')
-            .post(url, data);
+          .addHeader('Authorization', 'Basic ' + auth)
+          .addHeader('Content-Type', 'application/json')
+          .post(url, data)
         }
       } catch (error) {
-        const err = error as { message?: string; statusCode?: number };
+        const err = error as { message?: string; statusCode?: number }
         if (err.statusCode === 429) {
           console.log(
             `Failed to send ${method} request to ${uri}. Maximum number of allowed API calls per minute reached. Waiting 90 seconds...`,
-          );
-          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90_000);
+          )
+          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 90_000)
         } else {
           console.log(
             `Failed to send ${method} request to ${uri} with data ${JSON.stringify(
@@ -305,18 +305,18 @@ export class TestRailClient {
               null,
               4,
             )}:\n${err.message || String(error)}`,
-          );
-          const randomWait: number = Math.floor(Math.random() * 200);
+          )
+          const randomWait: number = Math.floor(Math.random() * 200)
           Atomics.wait(
             new Int32Array(new SharedArrayBuffer(4)),
             0,
             0,
             randomWait,
-          );
+          )
         }
       }
     }
 
-    return null;
+    return null
   }
 }

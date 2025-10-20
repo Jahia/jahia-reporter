@@ -1,16 +1,12 @@
-import { v5 as uuidv5 } from 'uuid';
-
-import { JRRun, Incident } from '../../global.type.js';
+import { JRRun } from '../../global.type.js';
 
 // Taking a test report, this returns a summary of the results
 export const getSummary = ({
   report,
   sourceType = 'xml',
-  log,
 }: {
   report: JRRun;
   sourceType: string;
-  log: any;
 }): string => {
   const testTotal = report.tests;
   let testFailures = report.failures;

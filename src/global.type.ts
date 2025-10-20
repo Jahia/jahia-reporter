@@ -1,14 +1,23 @@
 export interface Incident {
-  title: string;
-  description: string;
-  dedupKey: string;
-  success: boolean;
+  assignee?: string;
   counts: {
-    total: number;
     fail: number;
-    success: number;
     skip: number;
+    success: number;
+    total: number;
   };
+  dedupKey: string;
+  description: string;
+  service: string;
+  sourceUrl: string;
+  title: string;
+}
+
+export interface GitHubIssue {
+  id: string;
+  number: number;
+  title: string;
+  url: string;
 }
 
 export interface JRTestfailure {

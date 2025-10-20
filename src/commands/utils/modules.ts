@@ -1,16 +1,16 @@
-import { Command, Flags } from '@oclif/core';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import {Command, Flags} from '@oclif/core'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
-import { UtilsPlatform, UtilsVersions } from '../../global.type';
-import { waitForJournalSync } from '../../utils/journal-sync.js';
-import { getModules } from '../../utils/modules.js';
-import { getPlatform } from '../../utils/platform.js';
-import { getGraphqlClient } from '../../utils/getGraphqlClient.js';
+import {UtilsPlatform, UtilsVersions} from '../../global.type'
+import {getGraphqlClient} from '../../utils/getGraphqlClient.js'
+import {waitForJournalSync} from '../../utils/journal-sync.js'
+import {getModules} from '../../utils/modules.js'
+import {getPlatform} from '../../utils/platform.js'
 
 class JahiaUtilsModule extends Command {
-  static description =
-    'For a provided module, returns the module version, Jahia version and list of installed modules';
+  static description
+    = 'For a provided module, returns the module version, Jahia version and list of installed modules'
 
   static flags = {
     dependencies: Flags.string({
@@ -21,7 +21,7 @@ class JahiaUtilsModule extends Command {
       description: 'Filepath to store the resulting JSON to',
       required: true,
     }),
-    help: Flags.help({ char: 'h' }),
+    help: Flags.help({char: 'h'}),
     jahiaPassword: Flags.string({
       default: 'root',
       description:
@@ -44,39 +44,39 @@ class JahiaUtilsModule extends Command {
       default: 120,
       description: 'Timeout for journal sync',
     }),
-    version: Flags.version({ char: 'v' }),
-  };
+    version: Flags.version({char: 'v'}),
+  }
 
   async run() {
-    const { flags } = await this.parse(JahiaUtilsModule);
+    const {flags} = await this.parse(JahiaUtilsModule)
 
-    const dependencies: string[] = flags.dependencies.split(',');
+    const dependencies: string[] = flags.dependencies.split(',')
 
-    const jahiaFullUrl =
-      flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/';
+    const jahiaFullUrl
+      = flags.jahiaUrl.slice(-1) === '/' ? flags.jahiaUrl : flags.jahiaUrl + '/'
 
     const client = await getGraphqlClient(
       flags.jahiaUrl,
       flags.jahiaUsername,
       flags.jahiaPassword,
-    );
+    )
 
-    console.log(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`);
-    await waitForJournalSync(flags.timeout, client);
-    console.log('Done waiting for journal sync');
+    console.log(`Waiting for Jahia journal to be in-sync at: ${jahiaFullUrl}`)
+    await waitForJournalSync(flags.timeout, client)
+    console.log('Done waiting for journal sync')
     const version: UtilsVersions = await getModules(
       flags.moduleId,
       dependencies,
       client,
-    );
+    )
 
-    const platform: UtilsPlatform | undefined = await getPlatform(client);
+    const platform: UtilsPlatform | undefined = await getPlatform(client)
 
     fs.writeFileSync(
       path.join(flags.filepath),
-      JSON.stringify({ ...version, platform }),
-    );
+      JSON.stringify({...version, platform}),
+    )
   }
 }
 
-export default JahiaUtilsModule;
+export default JahiaUtilsModule

@@ -1,59 +1,21 @@
-/* eslint max-depth: ["error", 5] */
 import { Command, Flags } from '@oclif/core';
-import { v5 as uuidv5 } from 'uuid';
-import * as fs from 'node:fs';
 
-import { searchForIssues } from '../../utils/github/searchForIssues.js';
-import ingestReport from '../../utils/ingest/index.js';
-import { JRRun, Incident } from '../../global.type';
-import { processIncidentFromTestReport } from '../../utils/incidents/processIncidentFromTestReport.js';
-import { processIncidentFromMessage } from '../../utils/incidents/processIncidentFromMessage.js';
-
-const buildDefaultIssueDescription = ({
-  service,
-  incidentMessage,
-  dedupKey,
-  incidentDetails,
-  runUrl,
-}: {
-  service: string;
-  incidentMessage: string;
-  dedupKey: string;
-  incidentDetails: string;
-  runUrl?: string;
-}): string => {
-  let description = 'An error occurred during the test execution workflow.\n\n';
-
-  if (incidentDetails && incidentDetails !== '') {
-    description += `**Details:**\n\n${incidentDetails}\n\n\n`;
-    return description;
-  } else {
-    description +=
-      'No test output is available, please look into the provided link below or the repository workflows \n\n';
-  }
-
-  // Add custom incident message if provided
-  if (incidentMessage) {
-    description += `**Details:** ${incidentMessage}\n\n\n`;
-  }
-
-  // Add source URL if provided
-  if (runUrl) {
-    description += `**Source URL:** ${runUrl}\n`;
-  }
-
-  // Add incident service context
-  if (service) {
-    description += `**Service:** ${service}\n`;
-  }
-
-  // Add custom incident message if provided
-  if (dedupKey) {
-    description += `**Dedup Key:** ${dedupKey}\n`;
-  }
-
-  return description;
-};
+import { Incident } from '../../global.type';
+import {
+  closeIncidentIssue,
+  createIncidentIssue,
+  getAssigneeFromCustomProperties,
+  reopenIncidentIssue,
+  searchForIssues,
+} from '../../utils/github/index.js';
+import {
+  processIncidentFromMessage,
+  processIncidentFromTestReport,
+} from '../../utils/incidents/index.js';
+import {
+  getWorksheetByName,
+  updateServiceRow,
+} from '../../utils/spreadsheet/index.js';
 
 class JahiaGitHubIncident extends Command {
   static description = 'Handles the creation of issues when incidents arise';
@@ -75,22 +37,48 @@ class JahiaGitHubIncident extends Command {
     }),
     githubToken: Flags.string({
       default: '',
-      env: 'GITHUB_TOKEN',
       description: 'GitHub token used for authentication',
+      env: 'GITHUB_TOKEN',
     }),
-    incidentService: Flags.string({
+    googleApiKey: Flags.string({
       default: '',
-      description: 'A string used to identify a unique incident service',
+      description:
+        'Google Client API key required to access the spreadsheet (base64)',
+      env: 'INCIDENT_GOOGLE_PRIVATE_KEY_BASE64',
+    }),
+    googleClientEmail: Flags.string({
+      default: '',
+      description: 'Google Client email required to access the spreadsheet',
+      env: 'INCIDENT_GOOGLE_CLIENT_EMAIL',
+    }),
+    googleSpreadsheetId: Flags.string({
+      default: '',
+      description:
+        'ID of the spreadsheet container user assignment for the service',
+      env: 'INCIDENT_GOOGLE_SPREADSHEET_ID',
+    }),
+    googleUpdateState: Flags.boolean({
+      default: false,
+      description:
+        'Update the State column to PASSED/FAILED based on the outcome of the tests',
+    }),
+    googleWorksheetName: Flags.string({
+      default: 'Pagerduty',
+      description: 'Name of the worksheet to use within the Spreadsheet',
+    }),
+    incidentDetailsPath: Flags.string({
+      default: '',
+      description:
+        'A file containing the details about the incident, this get copied into the issue description',
     }),
     incidentMessage: Flags.string({
       default: '',
       description:
         'A string containing a short incident message, this is used to generate the dedup key when a such message cannot be obtained from a test report',
     }),
-    incidentDetailsPath: Flags.string({
+    incidentService: Flags.string({
       default: '',
-      description:
-        'A file containing the details about the incident, this get copied into the issue description',
+      description: 'A string used to identify a unique incident service',
     }),
     sourcePath: Flags.string({
       default: '',
@@ -103,10 +91,13 @@ class JahiaGitHubIncident extends Command {
       description: 'The format of the report', // help description for flag
       options: ['xml', 'json', 'json-perf'], // only allow the value to be from a discrete set
     }),
+    sourceUrl: Flags.string({
+      default: '',
+      description: 'URL back to the service who initiated the incident',
+    }),
     version: Flags.version({ char: 'v' }),
   };
 
-  // eslint-disable-next-line complexity
   async run() {
     const { flags } = await this.parse(JahiaGitHubIncident);
 
@@ -118,22 +109,22 @@ class JahiaGitHubIncident extends Command {
 
     let incidentContent: Incident | undefined;
 
-    if (flags.sourcePath !== '') {
-      incidentContent = await processIncidentFromTestReport({
-        sourceType: flags.sourceType,
-        sourcePath: flags.sourcePath,
-        service: flags.incidentService,
-        log: this.log.bind(this),
-      });
-    } else {
-      incidentContent = await processIncidentFromMessage({
-        service: flags.incidentService,
-        message: flags.incidentMessage,
-        incidentDetailsPath: flags.incidentDetailsPath,
-      });
-    }
+    incidentContent = await (flags.sourcePath === ''
+      ? processIncidentFromMessage({
+          incidentDetailsPath: flags.incidentDetailsPath,
+          message: flags.incidentMessage,
+          service: flags.incidentService,
+        })
+      : processIncidentFromTestReport({
+          log: this.log.bind(this),
+          service: flags.incidentService,
+          sourcePath: flags.sourcePath,
+          sourceType: flags.sourceType,
+        }));
 
-    console.log(incidentContent);
+    if (flags.sourceUrl !== '') {
+      incidentContent.sourceUrl = flags.sourceUrl;
+    }
 
     if (flags.forceSuccess) {
       this.log(
@@ -149,9 +140,53 @@ class JahiaGitHubIncident extends Command {
       };
     }
 
-    console.log(incidentContent);
+    // Updated Status in Google Spreadsheet and collect data about assignee
+    if (flags.googleSpreadsheetId === '') {
+      this.log('Google Spreadsheet ID has not been set, exiting.');
+      this.exit(0);
+    }
 
-    this.exit(0);
+    this.log(`Google Spreadsheet ID is set to: ${flags.googleSpreadsheetId}`);
+    const gWorksheet = await getWorksheetByName(
+      flags.googleSpreadsheetId,
+      flags.googleClientEmail || '',
+      flags.googleApiKey || '',
+      flags.googleWorksheetName,
+      this.log.bind(this),
+    );
+    const serviceRow = await updateServiceRow(
+      gWorksheet,
+      flags.incidentService,
+      incidentContent,
+      this.log.bind(this),
+    );
+
+    let assignee = serviceRow.get('PagerDuty User ID') || '';
+    if (assignee === '[REPO_CHAMPION]') {
+      this.log(
+        'Assignee is set to [REPO_CHAMPION], its value will be fetched from the repository custom properties (Champion field)',
+      );
+      assignee = await getAssigneeFromCustomProperties(
+        flags.githubToken,
+        flags.githubRepository,
+      );
+    }
+
+    if (assignee === '') {
+      this.log(
+        `Unable to find assignee for service ${flags.incidentService}, the process will exit.`,
+      );
+      this.exit(0);
+    }
+
+    // Updating the incident object with the assignee
+    incidentContent = {
+      ...incidentContent,
+      assignee,
+    };
+
+    this.log('Incident Content:');
+    console.log(incidentContent);
 
     console.log('Starting GitHub Incident creation process');
     // Begin by searching for all issues matching the provided incident service
@@ -164,48 +199,68 @@ class JahiaGitHubIncident extends Command {
       `Found ${issues.length} issues for service ${flags.incidentService}`,
     );
 
-    // Set default values for key elements
-    let dedupKey = uuidv5(
-      'Unable to access reports',
-      '92ca6951-5785-4d62-9f33-3512aaa91a9b',
-    );
-
-    let incidentDetails = '';
-    if (fs.existsSync(flags.incidentDetailsPath)) {
-      console.log(
-        `Reading incident details from file: ${flags.incidentDetailsPath}`,
-      );
-      incidentDetails = fs.readFileSync(flags.incidentDetailsPath, 'utf8');
-    } else {
-      const jrRun: JRRun = await ingestReport(
-        flags.sourceType,
-        flags.sourcePath,
+    // If no issue exists, and if failures are present, create a new issue
+    if (issues.length === 0 && incidentContent.counts.fail > 0) {
+      this.log(`No issues found for service ${flags.incidentService}`);
+      await createIncidentIssue(
+        flags.githubToken,
+        flags.githubRepository,
+        incidentContent,
         this.log.bind(this),
       );
-    }
-
-    let incidentTitle = `${flags.service} - Incident during test execution`;
-    let incidentDescription = buildDefaultIssueDescription({
-      service: flags.incidentService,
-      incidentMessage: flags.incidentMessage,
-      dedupKey,
-      incidentDetails,
-      runUrl: flags.runUrl,
-    });
-
-    console.log(incidentDescription);
-
-    if (flags.incidentMessage && flags.incidentMessage !== '') {
-      incidentTitle = `${flags.service} - ${flags.incidentMessage}`;
-      dedupKey = uuidv5(
-        flags.incidentMessage,
-        '92ca6951-5785-4d62-9f33-3512aaa91a9b',
+    } else {
+      this.log(
+        `Total number of existing issues for service ${flags.incidentService}: ${issues.length}`,
       );
+      console.log(issues);
+      if (incidentContent.counts.fail === 0) {
+        const openedIssues = issues.filter((i) => i.state === 'OPEN');
+        if (openedIssues.length === 0) {
+          this.log(
+            `No open issues found for service ${flags.incidentService}, nothing to be done.`,
+          );
+        } else {
+          this.log(
+            `Found ${openedIssues.length} open issues for service ${flags.incidentService}, will proceed to close them.`,
+          );
+          for (const issue of openedIssues) {
+            await closeIncidentIssue(
+              flags.githubToken,
+              issue,
+              incidentContent,
+              this.log.bind(this),
+            );
+          }
+        }
+      } else if (incidentContent.counts.fail > 0) {
+        // If tests are failing and issues exist, we need to determine if they need to be re-opened or if a new issue is required
+        // We are onlky re-opening one issue per dedup key
+        const matchingIssues = issues.filter(
+          (i) =>
+            i.state === 'CLOSED' && i.body.includes(incidentContent?.dedupKey),
+        );
+        this.log(
+          `Number of issues CLOSED referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
+        );
+
+        if (matchingIssues.length > 0) {
+          // sort matching issues by createdAt
+          matchingIssues.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          );
+
+          await reopenIncidentIssue(
+            flags.githubToken,
+            matchingIssues[0],
+            incidentContent,
+            this.log.bind(this),
+          );
+        }
+
+        console.log('Matching issue', matchingIssues);
+      }
     }
-    // Determine the dedup key
-    // This key is a unique representation of what the current failure actually is
-    // If the run was successful and an open issue is found matching this incident service and dedup key, it will get closed automatically with a comment
-    // The comment will contain a link to the run that resolved the incident
   }
 }
 

@@ -1,13 +1,13 @@
-import { Octokit } from '@octokit/core';
-import { paginateGraphQL } from '@octokit/plugin-paginate-graphql';
+import {Octokit} from '@octokit/core'
+import {paginateGraphQL} from '@octokit/plugin-paginate-graphql'
 
 export const searchForIssues = async (
   githubToken: string,
   repository: string,
   searchString: string,
 ): Promise<any[]> => {
-  const MyOctokit = Octokit.plugin(paginateGraphQL);
-  const octokit = new MyOctokit({ auth: githubToken });
+  const MyOctokit = Octokit.plugin(paginateGraphQL)
+  const octokit = new MyOctokit({auth: githubToken})
 
   const query = `
     query($searchQuery: String!, $cursor: String) {
@@ -36,23 +36,23 @@ export const searchForIssues = async (
         }
       }
     }
-  `;
+  `
 
-  const searchQuery = `repo:${repository} ${searchString}`;
+  const searchQuery = `repo:${repository} ${searchString}`
 
   const fetchPage = async (cursor?: string): Promise<any[]> => {
     const response = await octokit.graphql(query, {
-      searchQuery,
       cursor,
-    });
+      searchQuery,
+    })
 
-    const { edges, pageInfo } = (response as any).search;
-    const issues = edges.map((edge: any) => edge.node);
+    const {edges, pageInfo} = (response as any).search
+    const issues = edges.map((edge: any) => edge.node)
 
     return pageInfo.hasNextPage
       ? [...issues, ...(await fetchPage(pageInfo.endCursor))]
-      : issues;
-  };
+      : issues
+  }
 
-  return fetchPage();
-};
+  return fetchPage()
+}

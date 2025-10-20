@@ -1,7 +1,6 @@
-import { Base64 } from 'js-base64';
-
-import { Client, fetchExchange } from '@urql/core';
-import { graphql } from 'gql.tada';
+import {Client, fetchExchange} from '@urql/core'
+import {graphql} from 'gql.tada'
+import {Base64} from 'js-base64'
 
 export const getGraphqlClient = async (
   jahiaUrl: string,
@@ -11,24 +10,24 @@ export const getGraphqlClient = async (
   // Create a client object to be reused for each call
   const authHeader = `Basic ${Base64.btoa(
     jahiaUsername + ':' + jahiaPassword,
-  )}`;
+  )}`
 
   // If a trailing slash is present, we remove it, this make the variable usable in both url and Origin
   const normalizedUrl = jahiaUrl.endsWith('/')
     ? jahiaUrl.slice(0, -1)
-    : jahiaUrl;
+    : jahiaUrl
 
   const client = new Client({
-    url: normalizedUrl + '/modules/graphql',
     exchanges: [fetchExchange],
     fetchOptions: {
       headers: {
+        Authorization: authHeader,
         'Content-Type': 'application/json',
         Origin: normalizedUrl,
-        Authorization: authHeader,
       },
     },
-  });
+    url: normalizedUrl + '/modules/graphql',
+  })
 
   // Basic test of the connection
   const response = await client.query(
@@ -40,13 +39,13 @@ export const getGraphqlClient = async (
       }
     `),
     {},
-  );
+  )
 
   if (!response.data || response.data.currentUser === null) {
     throw new Error(
       'Authentication failed: Unable to authenticate with the provided credentials',
-    );
+    )
   }
 
-  return client;
-};
+  return client
+}
