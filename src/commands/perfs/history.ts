@@ -1,8 +1,9 @@
-import {Command, Flags} from '@oclif/core'
-import {format} from 'date-fns'
-import * as glob from 'glob'
-import {lstatSync, readFileSync} from 'node:fs'
-import * as fs from 'node:fs'
+import { Command, Flags } from '@oclif/core';
+import { format } from 'date-fns';
+import * as glob from 'glob';
+import { lstatSync, readFileSync } from 'node:fs';
+import * as fs from 'node:fs';
+import Table from 'tty-table';
 
 interface TransactionError {
   metric: string;
@@ -21,7 +22,7 @@ interface ReportAnalysis {
 }
 
 class JahiaAnalyzePerfsReporter extends Command {
-  static description = 'Provide an historical view over multiple run analysis'
+  static description = 'Provide an historical view over multiple run analysis';
 
   static flags = {
     analysisFailureAlert: Flags.integer({
@@ -40,142 +41,161 @@ class JahiaAnalyzePerfsReporter extends Command {
       description: 'Number of historical runs to analyze and display',
       required: false,
     }),
-    help: Flags.help({char: 'h'}),
-  }
+    help: Flags.help({ char: 'h' }),
+  };
 
   async run() {
-    const {flags} = await this.parse(JahiaAnalyzePerfsReporter)
+    const { flags } = await this.parse(JahiaAnalyzePerfsReporter);
 
     if (
-      !fs.existsSync(flags.analysisPath)
-      || !lstatSync(flags.analysisPath).isDirectory()
+      !fs.existsSync(flags.analysisPath) ||
+      !lstatSync(flags.analysisPath).isDirectory()
     ) {
-      this.log(`Unable to find the following folder: ${flags.analysisPath}`)
-      this.exit(1)
+      this.log(`Unable to find the following folder: ${flags.analysisPath}`);
+      this.exit(1);
     }
 
-    const reportFiles = glob.sync(flags.analysisPath + '/**/*.json', {})
+    const reportFiles = glob.sync(flags.analysisPath + '/**/*.json', {});
 
-    const reportWindow = reportFiles.sort().slice(-flags.analysisWindow)
+    const reportWindow = reportFiles.sort().slice(-flags.analysisWindow);
 
-    const reports: Array<any> = []
+    const reports: Array<any> = [];
     // Load all report files in memory
     for (const f of reportWindow) {
-      const rawFile = readFileSync(f, 'utf8')
-      const jsonReport = JSON.parse(rawFile)
-      reports.push(jsonReport)
+      const rawFile = readFileSync(f, 'utf8');
+      const jsonReport = JSON.parse(rawFile);
+      reports.push(jsonReport);
     }
 
     // Create an array of all transactions with errors in the report
-    const errors: Array<TransactionError> = []
-    const runs: Array<string> = []
+    const errors: Array<TransactionError> = [];
+    const runs: Array<string> = [];
     for (const r of reports) {
       for (const a of r.analysis.filter(
         (a: ReportAnalysis) => a.error === true,
       )) {
         if (!runs.includes(a.run)) {
-          runs.push(a.run)
+          runs.push(a.run);
         }
 
         if (
           errors.find(
-            e => e.transaction === a.transaction && e.run === a.run,
+            (e) => e.transaction === a.transaction && e.run === a.run,
           ) === undefined
         ) {
           errors.push({
             metric: a.metric,
             run: a.run,
             transaction: a.transaction,
-          })
+          });
         }
       }
     }
 
     // Create a table of all values across the specified window
-    const errorsTable: Array<any> = errors.map(e => {
-      const transactions = reports.map(r => ({
+    const errorsTable: Array<any> = errors.map((e) => {
+      const transactions = reports.map((r) => ({
         analysis: r.analysis.find(
           (a: ReportAnalysis) =>
-            e.transaction === a.transaction
-            && e.metric === a.metric
-            && e.run === a.run,
+            e.transaction === a.transaction &&
+            e.metric === a.metric &&
+            e.run === a.run,
         ),
         startedAt: r.startedAt,
-      }))
+      }));
       return {
         ...e,
         analysis: transactions,
-      }
-    })
+      };
+    });
 
     // Format the data to be displayed in oclif table (https://oclif.io/docs/table)
     // A bit of dirty data wrangling
-    let triggerFailure = false
+    let triggerFailure = false;
     for (const run of runs) {
-      this.log(`Displaying errors for run: ${run}`)
+      this.log(`Displaying errors for run: ${run}`);
       // Each run gets its own table
-      const currentTransation = errorsTable.find(e => e.run === run)
-      const columns: any = {
-        metric: {},
+      const currentTransation = errorsTable.find((e) => e.run === run);
+      const columns: any = [
+        {
+          value: 'transaction',
+          alias: 'Transactions',
+          align: 'left',
+        },
+        {
+          value: 'metric',
+          alias: 'Metric',
+        },
         // oclif table configuration
-        transaction: {},
-      }
+      ];
       // Add one column per report
       for (const a of currentTransation.analysis) {
-        const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm')
-        columns[currentDate] = {}
+        const currentDate = format(new Date(a.startedAt), 'MM/dd-HH:mm');
+        columns.push({
+          value: currentDate,
+          align: 'right',
+        });
       }
 
-      columns['Send Alert'] = {}
-      columns.threshold = {}
+      columns.push({
+        value: 'Send Alert',
+        align: 'right',
+      });
+
+      columns.push({
+        value: 'threshold',
+        alias: 'Threshold',
+        align: 'right',
+      });
 
       const formattedTable = errorsTable
-      .filter(e => e.run === run)
-      .map(e => {
-        const row: any = {
-          metric: e.metric,
-          // oclif table row
-          transaction: e.transaction,
-        }
-        for (const a of e.analysis) {
-          const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm')
-          if (a.analysis === undefined) {
-            // The value could be undefined when creating new thresholds
-            row[currentDate] = 'N/A'
-          } else {
-            const cellValue = Math.round(a.analysis.runValue)
-            row[currentDate]
-                = a.analysis.error === true ? `${cellValue}*` : cellValue
+        .filter((e) => e.run === run)
+        .map((e) => {
+          const row: any = {
+            metric: e.metric,
+            // oclif table row
+            transaction: e.transaction,
+          };
+          for (const a of e.analysis) {
+            const currentDate = format(new Date(a.startedAt), 'MM/dd-HH:mm');
+            if (a.analysis === undefined) {
+              // The value could be undefined when creating new thresholds
+              row[currentDate] = 'N/A';
+            } else {
+              const cellValue = Math.round(a.analysis.runValue);
+              row[currentDate] =
+                a.analysis.error === true ? `${cellValue}*` : cellValue;
+            }
           }
-        }
 
-        const alertWindow = e.analysis.slice(-flags.analysisFailureAlert)
-        const alertCount = alertWindow.reduce((acc: number, a: any) => {
-          if (a.analysis === undefined) return acc
-          return acc + (a.analysis.error === true ? 1 : 0)
-        }, 0)
-        if (alertCount === flags.analysisFailureAlert) {
-          triggerFailure = true
-        }
+          const alertWindow = e.analysis.slice(-flags.analysisFailureAlert);
+          const alertCount = alertWindow.reduce((acc: number, a: any) => {
+            if (a.analysis === undefined) return acc;
+            return acc + (a.analysis.error === true ? 1 : 0);
+          }, 0);
+          if (alertCount === flags.analysisFailureAlert) {
+            triggerFailure = true;
+          }
 
-        row.threshold
-            = e.analysis.at(-1).analysis === undefined
-            ? 'N/A'
-            : e.analysis.at(-1).analysis.thresholdValue
-        row['Send Alert']
-            = alertCount === flags.analysisFailureAlert ? 'YES' : 'NO'
-        return row
-      })
-      this.log('* (Above threshold)')
-      // TODO: Replace with proper table output in OCLIF v4
-      this.log(JSON.stringify(formattedTable, null, 2))
+          row.threshold =
+            e.analysis.at(-1).analysis === undefined
+              ? 'N/A'
+              : e.analysis.at(-1).analysis.thresholdValue;
+          row['Send Alert'] =
+            alertCount === flags.analysisFailureAlert ? 'YES' : 'NO';
+          return row;
+        });
+      this.log('* (Above threshold)');
+
+      let ANSI = Table(columns, formattedTable).render();
+      this.log(ANSI);
     }
 
     if (triggerFailure) {
-      this.log('Exiting with exit code: 1 (failed)')
-      this.exit(1)
+      this.log('Exiting with exit code: 1 (failed)');
+      this.exit(1);
     }
   }
 }
 
-export default JahiaAnalyzePerfsReporter
+export default JahiaAnalyzePerfsReporter;

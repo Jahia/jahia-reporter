@@ -19,7 +19,7 @@ export const getIncidentDescription = ({
   }
 
   description
-      += 'No test output is available, please look into the provided link below or the repository workflows \n\n'
+    += 'No test output is available, please look into the provided link below or the repository workflows \n\n'
 
   // Add custom incident message if provided
   if (incidentMessage) {

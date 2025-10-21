@@ -50,7 +50,6 @@ export default class SummaryCommand extends Command {
     }
 
     const summary = getSummary({
-      log: this.log.bind(this),
       report,
       sourceType: flags.sourceType,
     })

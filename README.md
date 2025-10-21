@@ -21,17 +21,17 @@ If you need to design another ingester, or another command making use of the ing
 
 The model is composed of the following levels:
 
-* __JRRun__: A Jahia Reporter run, composed of multiple reports
-* __JRReport__: A report is composed of multiple test suites
-* __JRTestsuite__: A test suite is composed of multiple test cases
-* __JRTestcase__: A test case is composed of 0 or more failures
-* __JRTestfailure__: Failure in one of the test
+- **JRRun**: A Jahia Reporter run, composed of multiple reports
+- **JRReport**: A report is composed of multiple test suites
+- **JRTestsuite**: A test suite is composed of multiple test cases
+- **JRTestcase**: A test case is composed of 0 or more failures
+- **JRTestfailure**: Failure in one of the test
 
-The most important piece of analysis is __JRTestcase__ which is an individual test that has the status `PASS` or `FAIL` depending of the presence of failures. From that point on, all metrics are bubbled-up all the way to JRRun.
+The most important piece of analysis is **JRTestcase** which is an individual test that has the status `PASS` or `FAIL` depending of the presence of failures. From that point on, all metrics are bubbled-up all the way to JRRun.
 
 ## Available Commands
 
-Main commands are stored under `src/commands`, those commands must all make use of the data model and use test report as their primary data source. 
+Main commands are stored under `src/commands`, those commands must all make use of the data model and use test report as their primary data source.
 Utilities commands are available in `src/commands/utils`, those are performing satellite activities (such as fetching installed modules versions).
 
 More details can be obtained about all of the commands by using `--help` with the command (or by looking at the source code).
@@ -45,11 +45,12 @@ Given an existing project name, submit data to testrail. All of the missing elem
 Given a Slack webhook, submit a formatted message to slack to report about test execution status.
 
 Sample:
+
 ```
 Test summary for: MODULE_NAME - 35 tests - 4 failures
 Suite: TEST-org.jahia.test.graphql.GraphQLPublicationTest.xml - 6 tests - 4 failures
- |-- shouldPublishNoSubtree(org.jahia.test.graphql.GraphQLPublicationTest) (5s) - 2 failures 
- |-- shouldGetErrorNotRetrieveAggregatedPublicationInfoFromLive(org.jahia.test.graphql.GraphQLPublicationTest) (3s) - 2 failures 
+ |-- shouldPublishNoSubtree(org.jahia.test.graphql.GraphQLPublicationTest) (5s) - 2 failures
+ |-- shouldGetErrorNotRetrieveAggregatedPublicationInfoFromLive(org.jahia.test.graphql.GraphQLPublicationTest) (3s) - 2 failures
 ```
 
 Various parameters are available to customize the message (notification icon, ...), notify particular individuals, ...
@@ -138,3 +139,8 @@ Since the tool takes actual files as primary input, it is necessary to make them
 docker run --rm -v $PWD/junit/json2:/root/:ro jahia/jahia-reporter:latest /bin/bash -c "jahia-reporter slack /root/ WEBHOOK_URL -t json -u http://www.circleci.com -n \<@SLACK_USERNAME\> -w jahia -m augmented-search"
 ```
 
+## Manual Testing
+
+Although some automated tests are implemented, they do not cover all use cases, in particular when it comes to testing communication with external services.
+
+You will find a dedicated readme refering to manual testing of the OCLIF commands in the "docs/" folder.

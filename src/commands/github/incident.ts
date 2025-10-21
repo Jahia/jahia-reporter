@@ -179,6 +179,16 @@ class JahiaGitHubIncident extends Command {
       this.exit(0);
     }
 
+    if (
+      serviceRow.get('PagerDuty Enabled') !== undefined &&
+      serviceRow.get('PagerDuty Enabled').toLowerCase() === 'no'
+    ) {
+      this.log(
+        `Notifications are disabled for this service (Column: PagerDuty Enabled), the process will exit.`,
+      );
+      this.exit(0);
+    }
+
     // Updating the incident object with the assignee
     incidentContent = {
       ...incidentContent,
@@ -188,14 +198,14 @@ class JahiaGitHubIncident extends Command {
     this.log('Incident Content:');
     console.log(incidentContent);
 
-    console.log('Starting GitHub Incident creation process');
+    this.log('Starting GitHub Incident creation process');
     // Begin by searching for all issues matching the provided incident service
     const issues = await searchForIssues(
       flags.githubToken,
       flags.githubRepository,
       flags.incidentService,
     );
-    console.log(
+    this.log(
       `Found ${issues.length} issues for service ${flags.incidentService}`,
     );
 
@@ -212,7 +222,6 @@ class JahiaGitHubIncident extends Command {
       this.log(
         `Total number of existing issues for service ${flags.incidentService}: ${issues.length}`,
       );
-      console.log(issues);
       if (incidentContent.counts.fail === 0) {
         const openedIssues = issues.filter((i) => i.state === 'OPEN');
         if (openedIssues.length === 0) {
@@ -224,6 +233,7 @@ class JahiaGitHubIncident extends Command {
             `Found ${openedIssues.length} open issues for service ${flags.incidentService}, will proceed to close them.`,
           );
           for (const issue of openedIssues) {
+            // eslint-disable-next-line no-await-in-loop
             await closeIncidentIssue(
               flags.githubToken,
               issue,

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 interface BundleInfo {
-  [key: string]: unknown
+  [key: string]: unknown;
 }
 
 const uninstallModule = async (
@@ -10,7 +10,7 @@ const uninstallModule = async (
   jahiaPassword: string,
   moduleId: string,
   moduleVersion: string,
-// eslint-disable-next-line max-params
+  // eslint-disable-next-line max-params
 ): Promise<BundleInfo> => {
   // If module is a snaphsot, the key is different than the version, with a . instead of a -
   let moduleKey: string = moduleId + '/' + moduleVersion
@@ -18,16 +18,23 @@ const uninstallModule = async (
     moduleKey = moduleKey.replace('-SNAPSHOT', '.SNAPSHOT')
   }
 
-  let installResponse: {data?: {bundleInfos?: BundleInfo}} = {}
+  let installResponse: { data?: { bundleInfos?: BundleInfo } } = {}
   try {
-    installResponse = await axios.post(jahiaUrl + 'modules/api/bundles/org.jahia.modules/' + moduleKey + '/_uninstall', null, {
-      auth: {
-        password: jahiaPassword,
-        username: jahiaUsername,
+    installResponse = await axios.post(
+      jahiaUrl
+        + 'modules/api/bundles/org.jahia.modules/'
+        + moduleKey
+        + '/_uninstall',
+      null,
+      {
+        auth: {
+          password: jahiaPassword,
+          username: jahiaUsername,
+        },
+        maxBodyLength: Number.POSITIVE_INFINITY,
+        maxContentLength: Number.POSITIVE_INFINITY,
       },
-      maxBodyLength: Number.POSITIVE_INFINITY,
-      maxContentLength: Number.POSITIVE_INFINITY,
-    })
+    )
   } catch (error) {
     console.log(error)
     process.exit(1)

@@ -56,7 +56,7 @@ export const processIncidentFromTestReport = async ({
       total: report.tests,
     },
     dedupKey: getDedupKeyFromTests(report, service),
-    description: getSummary({log, report, sourceType}),
+    description: getSummary({report, sourceType}),
     service,
     sourceUrl: '',
     title: incidentTitle,
