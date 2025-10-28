@@ -1,21 +1,21 @@
-import {JWT} from 'google-auth-library'
-import {GoogleSpreadsheet} from 'google-spreadsheet'
+import { JWT } from 'google-auth-library';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 const findSheetByTitle = (doc: any, title: string, log: any): any => {
-  const {sheetCount} = doc
+  const { sheetCount } = doc;
   for (let i = 0; i < sheetCount; i++) {
     if (doc.sheetsByIndex[i].title === title) {
       log(
         `Reviewing sheet with title: ${doc.sheetsByIndex[i].title} <- SHEET FOUND`,
-      )
-      return doc.sheetsByIndex[i]
+      );
+      return doc.sheetsByIndex[i];
     }
 
-    log(`Reviewing sheet with title: ${doc.sheetsByIndex[i].title}`)
+    log(`Reviewing sheet with title: ${doc.sheetsByIndex[i].title}`);
   }
 
-  return null
-}
+  return null;
+};
 
 const getSpreadsheet = async (
   serviceAccountAuth: JWT,
@@ -23,18 +23,18 @@ const getSpreadsheet = async (
   worksheetTitle: string,
   log: any,
 ) => {
-  const doc = new GoogleSpreadsheet(googleSpreadsheetId, serviceAccountAuth)
-  await doc.loadInfo()
-  log(`Loaded spreadsheet: ${doc.title}`)
-  const sheet = findSheetByTitle(doc, worksheetTitle, log)
+  const doc = new GoogleSpreadsheet(googleSpreadsheetId, serviceAccountAuth);
+  await doc.loadInfo();
+  log(`Loaded spreadsheet: ${doc.title}`);
+  const sheet = findSheetByTitle(doc, worksheetTitle, log);
   if (sheet === null) {
     log(
       `Worksheet with title "${worksheetTitle}" not found in spreadsheet "${doc.title}"`,
-    )
+    );
   }
 
-  return sheet
-}
+  return sheet;
+};
 
 export const getWorksheetByName = async (
   googleSpreadsheetId: string,
@@ -49,12 +49,12 @@ export const getWorksheetByName = async (
     email: googleClientEmail,
     key: Buffer.from(googleApiKey, 'base64').toString(),
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  })
+  });
 
-  let spRows: any = null
+  let spRows: any = null;
   for (let cpt = 1; cpt < 4; cpt++) {
     if (spRows === null) {
-      log(`Connecting to spreadsheet: ${cpt}/3`)
+      log(`Connecting to spreadsheet: ${cpt}/3`);
       try {
         // eslint-disable-next-line no-await-in-loop
         spRows = await getSpreadsheet(
@@ -62,12 +62,12 @@ export const getWorksheetByName = async (
           googleSpreadsheetId,
           googleWorksheetName,
           log,
-        )
+        );
       } catch {
-        log('Unable to connect to spreadsheet')
+        log('Unable to connect to spreadsheet');
       }
     }
   }
 
-  return spRows
-}
+  return spRows;
+};

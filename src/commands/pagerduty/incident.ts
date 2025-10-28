@@ -10,12 +10,15 @@ import { JRRun } from '../../global.type';
 import ingestReport from '../../utils/ingest/index.js';
 import { resolveIncidents } from '../../utils/pagerduty/resolve-incidents.js';
 
-const findSheetByTitle = (doc: any, title: string): any => {
-  const { sheetCount } = doc;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const findSheetByTitle = (doc: GoogleSpreadsheet, title: string): any => {
+  const { sheetCount, sheetsByIndex } = doc;
   for (let i = 0; i < sheetCount; i++) {
-    console.log(`Found sheet with title: ${doc.sheetsByIndex[i].title}`);
-    if (doc.sheetsByIndex[i].title === title) {
-      return doc.sheetsByIndex[i];
+    const currentSheet = sheetsByIndex[i];
+    const { title: sheetTitle } = currentSheet;
+    console.log(`Found sheet with title: ${sheetTitle}`);
+    if (sheetTitle === title) {
+      return currentSheet;
     }
   }
 
@@ -97,18 +100,18 @@ class JahiaPagerDutyIncident extends Command {
     }),
     pdApiKey: Flags.string({
       description: 'Pagerduty API Key',
-      required: true,
       env: 'INCIDENT_PAGERDUTY_API_KEY',
+      required: true,
     }),
     pdReporterEmail: Flags.string({
       description: 'Pagerduty email of the user who created the incident',
-      required: true,
       env: 'INCIDENT_PAGERDUTY_REPORTER_EMAIL',
+      required: true,
     }),
     pdReporterId: Flags.string({
       description: 'Pagerduty ID of the user who created the incident',
-      required: true,
       env: 'INCIDENT_PAGERDUTY_REPORTER_ID',
+      required: true,
     }),
     pdServiceId: Flags.string({
       default: '',
@@ -279,6 +282,7 @@ class JahiaPagerDutyIncident extends Command {
         `Fetching data from Google Spreadsheet ${flags.googleSpreadsheetId}`,
       );
       // There are sometimes some unavailability of the GitHub API
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let spRows: any[] = [];
       for (let cpt = 1; cpt < 4; cpt++) {
         if (spRows.length === 0) {

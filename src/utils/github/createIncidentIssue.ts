@@ -1,4 +1,4 @@
-import {Octokit} from '@octokit/core'
+import { Octokit } from '@octokit/core';
 
 const buildDefaultIssueDescription = ({
   dedupKey,
@@ -11,30 +11,30 @@ const buildDefaultIssueDescription = ({
   service: string;
   sourceUrl?: string;
 }): string => {
-  let body = 'An error occurred during the execution of a CI/CD workflow.\n\n'
+  let body = 'An error occurred during the execution of a CI/CD workflow.\n\n';
 
   if (description && description !== '') {
-    body += '### Failure Details'
-    body += `\n\n \`\`\`\n${description}\n\`\`\``
+    body += '### Failure Details';
+    body += `\n\n \`\`\`\n${description}\n\`\`\``;
   } else {
-    body
-      += 'No test output is available, please look into the provided link below or the repository workflows \n\n'
+    body +=
+      'No test output is available, please look into the provided link below or the repository workflows \n\n';
   }
 
   // Add incident service context
   if (service) {
-    body += `\n\n**Service:** ${service}`
+    body += `\n\n**Service:** ${service}`;
   }
 
-  body += `\n**Date:** ${new Date().toISOString()}`
+  body += `\n**Date:** ${new Date().toISOString()}`;
   // Add source URL if provided
   if (sourceUrl) {
-    body += `\n**Source URL:** ${sourceUrl}`
+    body += `\n**Source URL:** ${sourceUrl}`;
   }
 
   // Add custom incident message if provided
   if (dedupKey) {
-    body += `\n**Dedup Key:** ${dedupKey}`
+    body += `\n**Dedup Key:** ${dedupKey}`;
   }
 
   body += `\n\n
@@ -54,10 +54,10 @@ The following logic is present:\n
 The Dedup key is generated from the list of failed test cases sorted alphabetically. \n\n
 
 </details>\n\n
-`
+`;
 
-  return body
-}
+  return body;
+};
 
 export const createIncidentIssue = async (
   githubToken: string,
@@ -65,9 +65,9 @@ export const createIncidentIssue = async (
   incidentContent: any,
   log: any,
 ): Promise<any> => {
-  const octokit = new Octokit({auth: githubToken})
+  const octokit = new Octokit({ auth: githubToken });
 
-  const [owner, repo] = repository.split('/')
+  const [owner, repo] = repository.split('/');
 
   const response = await octokit.request('POST /repos/{owner}/{repo}/issues', {
     assignees: [incidentContent.assignee],
@@ -84,9 +84,9 @@ export const createIncidentIssue = async (
     owner,
     repo,
     title: incidentContent.title,
-  })
+  });
 
-  log(`Created issue: ${response.data.html_url}`)
+  log(`Created issue: ${response.data.html_url}`);
 
-  return response
-}
+  return response;
+};

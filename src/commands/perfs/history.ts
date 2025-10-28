@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import * as glob from 'glob';
 import { lstatSync, readFileSync } from 'node:fs';
 import * as fs from 'node:fs';
-import Table from 'tty-table';
+import { default as Table } from 'tty-table';
 
 interface TransactionError {
   metric: string;
@@ -59,7 +59,10 @@ class JahiaAnalyzePerfsReporter extends Command {
 
     const reportWindow = reportFiles.sort().slice(-flags.analysisWindow);
 
-    const reports: Array<any> = [];
+    const reports: Array<{
+      analysis: ReportAnalysis[];
+      startedAt: string;
+    }> = [];
     // Load all report files in memory
     for (const f of reportWindow) {
       const rawFile = readFileSync(f, 'utf8');
@@ -79,9 +82,9 @@ class JahiaAnalyzePerfsReporter extends Command {
         }
 
         if (
-          errors.find(
+          !errors.some(
             (e) => e.transaction === a.transaction && e.run === a.run,
-          ) === undefined
+          )
         ) {
           errors.push({
             metric: a.metric,
@@ -93,7 +96,14 @@ class JahiaAnalyzePerfsReporter extends Command {
     }
 
     // Create a table of all values across the specified window
-    const errorsTable: Array<any> = errors.map((e) => {
+    const errorsTable: Array<
+      {
+        analysis: Array<{
+          analysis?: ReportAnalysis;
+          startedAt: string;
+        }>;
+      } & TransactionError
+    > = errors.map((e) => {
       const transactions = reports.map((r) => ({
         analysis: r.analysis.find(
           (a: ReportAnalysis) =>
@@ -116,15 +126,21 @@ class JahiaAnalyzePerfsReporter extends Command {
       this.log(`Displaying errors for run: ${run}`);
       // Each run gets its own table
       const currentTransation = errorsTable.find((e) => e.run === run);
-      const columns: any = [
+      if (!currentTransation) continue;
+
+      const columns: Array<{
+        alias?: string;
+        align?: string;
+        value: string;
+      }> = [
         {
-          value: 'transaction',
           alias: 'Transactions',
           align: 'left',
+          value: 'transaction',
         },
         {
-          value: 'metric',
           alias: 'Metric',
+          value: 'metric',
         },
         // oclif table configuration
       ];
@@ -132,26 +148,27 @@ class JahiaAnalyzePerfsReporter extends Command {
       for (const a of currentTransation.analysis) {
         const currentDate = format(new Date(a.startedAt), 'MM/dd-HH:mm');
         columns.push({
-          value: currentDate,
           align: 'right',
+          value: currentDate,
         });
       }
 
-      columns.push({
-        value: 'Send Alert',
-        align: 'right',
-      });
-
-      columns.push({
-        value: 'threshold',
-        alias: 'Threshold',
-        align: 'right',
-      });
+      columns.push(
+        {
+          align: 'right',
+          value: 'Send Alert',
+        },
+        {
+          alias: 'Threshold',
+          align: 'right',
+          value: 'threshold',
+        },
+      );
 
       const formattedTable = errorsTable
         .filter((e) => e.run === run)
         .map((e) => {
-          const row: any = {
+          const row: Record<string, number | string> = {
             metric: e.metric,
             // oclif table row
             transaction: e.transaction,
@@ -169,25 +186,28 @@ class JahiaAnalyzePerfsReporter extends Command {
           }
 
           const alertWindow = e.analysis.slice(-flags.analysisFailureAlert);
-          const alertCount = alertWindow.reduce((acc: number, a: any) => {
-            if (a.analysis === undefined) return acc;
-            return acc + (a.analysis.error === true ? 1 : 0);
-          }, 0);
+          let alertCount = 0;
+          for (const a of alertWindow) {
+            if (a.analysis === undefined) continue;
+            if (a.analysis.error === true) alertCount++;
+          }
+
           if (alertCount === flags.analysisFailureAlert) {
             triggerFailure = true;
           }
 
           row.threshold =
-            e.analysis.at(-1).analysis === undefined
+            e.analysis.at(-1)?.analysis === undefined
               ? 'N/A'
-              : e.analysis.at(-1).analysis.thresholdValue;
+              : (e.analysis.at(-1)?.analysis?.thresholdValue ?? 'N/A');
           row['Send Alert'] =
             alertCount === flags.analysisFailureAlert ? 'YES' : 'NO';
           return row;
         });
       this.log('* (Above threshold)');
 
-      let ANSI = Table(columns, formattedTable).render();
+      // eslint-disable-next-line new-cap
+      const ANSI = Table(columns, formattedTable).render();
       this.log(ANSI);
     }
 

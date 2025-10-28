@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { Command, Flags } from '@oclif/core';
 
 export default class SlackCommand extends Command {

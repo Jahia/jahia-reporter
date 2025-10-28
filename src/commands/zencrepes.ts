@@ -1,8 +1,8 @@
-import {Command, Flags} from '@oclif/core'
-import * as crypto from 'node:crypto'
-import * as fs from 'node:fs'
-import {SyncRequestClient} from 'ts-sync-request/dist/index.js'
-import {v5 as uuidv5} from 'uuid'
+import { Command, Flags } from '@oclif/core';
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import { SyncRequestClient } from 'ts-sync-request/dist/index.js';
+import { v5 as uuidv5 } from 'uuid';
 
 import {
   JRCase,
@@ -10,11 +10,11 @@ import {
   UtilsVersions,
   ZenCrepesDependency,
   ZenCrepesStateNode,
-} from '../global.type'
-import ingestReport from '../utils/ingest/index.js'
+} from '../global.type';
+import ingestReport from '../utils/ingest/index.js';
 
 const prepString = (s: string): string =>
-  s.replaceAll(/[^\dA-Za-z]/g, '').toLowerCase()
+  s.replaceAll(/[^\dA-Za-z]/g, '').toLowerCase();
 
 // This generate an unique id based on the combination the component and its dependencies
 // The ID is simply a UUID genreated from the concatenation of all elements
@@ -24,29 +24,29 @@ const getId = (
   version: string,
   dependencies: ZenCrepesDependency[],
 ): string => {
-  let idStr = prepString(name) + prepString(version)
+  let idStr = prepString(name) + prepString(version);
 
   dependencies
-  .sort((a: ZenCrepesDependency, b: ZenCrepesDependency) => {
-    // Sort by name
-    if (a.name > b.name) return 1
-    if (a.name < b.name) return -1
-    // If names are equal, then sort by version
-    if (a.version > b.version) return 1
-    if (a.version < b.version) return -1
-    return 0
-  })
-  .forEach((d: ZenCrepesDependency) => {
-    idStr = idStr + prepString(d.name) + prepString(d.version)
-  })
+    .sort((a: ZenCrepesDependency, b: ZenCrepesDependency) => {
+      // Sort by name
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      // If names are equal, then sort by version
+      if (a.version > b.version) return 1;
+      if (a.version < b.version) return -1;
+      return 0;
+    })
+    .forEach((d: ZenCrepesDependency) => {
+      idStr = idStr + prepString(d.name) + prepString(d.version);
+    });
 
-  const UUID_NAMESPACE = 'c72d8f12-1818-4cb9-bead-44634c441c11'
-  return uuidv5(idStr, UUID_NAMESPACE)
-}
+  const UUID_NAMESPACE = 'c72d8f12-1818-4cb9-bead-44634c441c11';
+  return uuidv5(idStr, UUID_NAMESPACE);
+};
 
 export default class ZencrepesCommand extends Command {
-  static override description
-    = 'Submit data about a junit/mocha report to ZenCrepes'
+  static override description =
+    'Submit data about a junit/mocha report to ZenCrepes';
 
   static override flags = {
     dependencies: Flags.string({
@@ -91,56 +91,56 @@ export default class ZencrepesCommand extends Command {
       description: 'The webhook secret',
       required: true,
     }),
-  }
+  };
 
   public async run(): Promise<void> {
-    const {flags} = await this.parse(ZencrepesCommand)
+    const { flags } = await this.parse(ZencrepesCommand);
 
     // Extract a report object from the actual report files (either XML or JSON)
     const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
       this.log.bind(this),
-    )
+    );
 
     // If dependencies were previously fetched, use those for the module
-    let dependencies = JSON.parse(flags.dependencies)
-    let name = ''
-    let {version} = flags
-    let jahiaVersion = ''
-    let moduleVersion = ''
+    let dependencies = JSON.parse(flags.dependencies);
+    let name = '';
+    let { version } = flags;
+    let jahiaVersion = '';
+    let moduleVersion = '';
     if (flags.moduleFilepath !== undefined) {
-      const versionFile: any = fs.readFileSync(flags.moduleFilepath)
-      const versions: UtilsVersions = JSON.parse(versionFile)
+      const versionFile: any = fs.readFileSync(flags.moduleFilepath);
+      const versions: UtilsVersions = JSON.parse(versionFile);
       if (versions.jahia.version !== '') {
-        jahiaVersion = `Jahia ${versions.jahia.version}`
+        jahiaVersion = `Jahia ${versions.jahia.version}`;
       }
 
       if (versions.module.id !== '' && versions.module.version !== '') {
-        moduleVersion = `${versions.module.id}-${versions.module.version}`
+        moduleVersion = `${versions.module.id}-${versions.module.version}`;
       }
 
       if (versions.jahia.build === '') {
-        dependencies.push({name: 'Jahia', version: versions.jahia.version})
+        dependencies.push({ name: 'Jahia', version: versions.jahia.version });
       } else {
         dependencies.push({
           name: 'Jahia',
           version: `${versions.jahia.version}-${versions.jahia.build}`,
-        })
+        });
       }
 
-      dependencies = [...dependencies, ...versions.dependencies]
-      version = versions.module.version
-      name = versions.module.id
+      dependencies = [...dependencies, ...versions.dependencies];
+      version = versions.module.version;
+      name = versions.module.id;
     }
 
     // If name could not be fetched from the module file, fallback on the flag value
     if (name === '') {
-      name = flags.name
+      name = flags.name;
     }
 
     // Get all individual test cases in an array
-    const testCases: JRCase[] = []
+    const testCases: JRCase[] = [];
     for (const r of report.reports) {
       for (const suite of r.testsuites) {
         for (const test of suite.tests) {
@@ -159,7 +159,7 @@ export default class ZencrepesCommand extends Command {
             name: test.name,
             state: test.status,
             suite: suite.name,
-          })
+          });
         }
       }
     }
@@ -178,27 +178,27 @@ export default class ZencrepesCommand extends Command {
       state: report.failures === 0 ? 'PASS' : 'FAIL',
       url: flags.runUrl,
       version,
-    }
+    };
 
     // Prepare the payload signature, is used by ZenCrepes (zqueue)
     // to ensure submitted is authorized
-    const hmac = crypto.createHmac('sha1', flags.webhookSecret)
+    const hmac = crypto.createHmac('sha1', flags.webhookSecret);
     const digest = Buffer.from(
       'sha1=' + hmac.update(JSON.stringify(zcPayload)).digest('hex'),
       'utf8',
-    )
-    const xHubSignature = digest.toString()
+    );
+    const xHubSignature = digest.toString();
 
-    this.log(JSON.stringify(zcPayload))
+    this.log(JSON.stringify(zcPayload));
 
     try {
       new SyncRequestClient()
-      .addHeader('x-hub-signature', xHubSignature)
-      .addHeader('Content-Type', 'application/json')
-      .post(flags.webhook, zcPayload)
+        .addHeader('x-hub-signature', xHubSignature)
+        .addHeader('Content-Type', 'application/json')
+        .post(flags.webhook, zcPayload);
     } catch (error) {
-      this.log('ERROR: Unable to submit data to ZenCrepes')
-      this.log(JSON.stringify(error))
+      this.log('ERROR: Unable to submit data to ZenCrepes');
+      this.log(JSON.stringify(error));
     }
   }
 }

@@ -1,9 +1,9 @@
 // This is a re-implementation of the logic present in jahia-cypress
 // https://github.com/Jahia/jahia-cypress/blob/main/src/utils/SAMHelper.ts
 
-import {Client} from '@urql/core'
-import {graphql} from 'gql.tada'
-import {performance} from 'node:perf_hooks'
+import { Client } from '@urql/core';
+import { graphql } from 'gql.tada';
+import { performance } from 'node:perf_hooks';
 
 /**
  * Simple health check query
@@ -51,11 +51,11 @@ const healthCheck = async ({
         }
       }
     `),
-    {probeHealthFilter, probeNamesFilter, severity},
-  )
+    { probeHealthFilter, probeNamesFilter, severity },
+  );
 
-  return response?.data?.admin?.jahia?.healthCheck
-}
+  return response?.data?.admin?.jahia?.healthCheck;
+};
 
 /**
  * Wait until the health check returns the expected health
@@ -87,16 +87,16 @@ export const waitUntilSAMStatus = async ({
   statusMatchCount?: number;
   timeout?: number;
 }): Promise<any> => {
-  const startTime = performance.now()
-  let statusCount = 0
-  let lastGraphqlResponse = {}
+  const startTime = performance.now();
+  let statusCount = 0;
+  let lastGraphqlResponse = {};
 
   // Convert interval from seconds to milliseconds
-  const intervalMs = interval * 1000
+  const intervalMs = interval * 1000;
 
   return new Promise((resolve, reject) => {
     const poll = async () => {
-      const elapsed = performance.now() - startTime
+      const elapsed = performance.now() - startTime;
 
       if (elapsed >= timeout) {
         const error = new Error(
@@ -104,9 +104,9 @@ export const waitUntilSAMStatus = async ({
             lastGraphqlResponse,
           )}`,
         );
-        (error as any).healthCheckPayload = lastGraphqlResponse
-        reject(error)
-        return
+        (error as any).healthCheckPayload = lastGraphqlResponse;
+        reject(error);
+        return;
       }
 
       try {
@@ -115,30 +115,30 @@ export const waitUntilSAMStatus = async ({
           probeHealthFilter,
           probeNamesFilter,
           severity,
-        })
+        });
 
-        lastGraphqlResponse = result
-        const healthStatus = result?.status
+        lastGraphqlResponse = result;
+        const healthStatus = result?.status;
 
         if (healthStatus) {
           if (healthStatus.health === expectedHealth) {
-            statusCount++
+            statusCount++;
             console.log(
               `[${new Date().toISOString()}] Status match ${statusCount}/${statusMatchCount}: ${
                 healthStatus.health
               } (elapsed: ${Math.round(
                 elapsed / 1000,
               )}ms -- timeout: ${Math.round(timeout / 1000)}s)`,
-            )
+            );
 
             if (statusCount >= statusMatchCount) {
               console.log(
                 `[${new Date().toISOString()}] [Success] SAM status ${expectedHealth} reached after ${Math.round(
                   elapsed / 1000,
                 )}s`,
-              )
-              resolve(lastGraphqlResponse)
-              return
+              );
+              resolve(lastGraphqlResponse);
+              return;
             }
           } else {
             if (statusCount > 0) {
@@ -148,7 +148,7 @@ export const waitUntilSAMStatus = async ({
                 }, resetting count (elapsed: ${Math.round(
                   elapsed / 1000,
                 )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
-              )
+              );
             } else {
               console.log(
                 `[${new Date().toISOString()}] Status: ${
@@ -156,37 +156,37 @@ export const waitUntilSAMStatus = async ({
                 } (elapsed: ${Math.round(
                   elapsed / 1000,
                 )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
-              )
+              );
             }
 
-            statusCount = 0
+            statusCount = 0;
           }
         } else {
           console.log(
             `[${new Date().toISOString()}] No health status in response (elapsed: ${Math.round(
               elapsed / 1000,
             )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
-          )
-          statusCount = 0
+          );
+          statusCount = 0;
         }
       } catch (error) {
         // Be robust - don't fail on individual errors, just log and continue
-        const errorMessage
-          = error instanceof Error ? error.message : String(error)
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         console.log(
           `[${new Date().toISOString()}] Error during health check: ${errorMessage} (elapsed: ${Math.round(
             elapsed / 1000,
           )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
-        )
-        statusCount = 0
-        lastGraphqlResponse = {error: errorMessage}
+        );
+        statusCount = 0;
+        lastGraphqlResponse = { error: errorMessage };
       }
 
       // Schedule next poll using the interval in milliseconds
-      setTimeout(poll, intervalMs)
-    }
+      setTimeout(poll, intervalMs);
+    };
 
     // Start polling
-    poll()
-  })
-}
+    poll();
+  });
+};

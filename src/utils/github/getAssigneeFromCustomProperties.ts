@@ -1,4 +1,4 @@
-import {Octokit} from '@octokit/core'
+import { Octokit } from '@octokit/core';
 
 export const getAssigneeFromCustomProperties = async (
   githubToken: string,
@@ -7,9 +7,9 @@ export const getAssigneeFromCustomProperties = async (
 ): Promise<string> => {
   const octokit = new Octokit({
     auth: githubToken,
-  })
+  });
 
-  const [owner, repo] = repository.split('/')
+  const [owner, repo] = repository.split('/');
   const properties = await octokit.request(
     'GET /repos/{owner}/{repo}/properties/values',
     {
@@ -19,18 +19,18 @@ export const getAssigneeFromCustomProperties = async (
       owner,
       repo,
     },
-  )
+  );
 
-  let assignee: string = ''
+  let assignee: string = '';
   for (const property of properties.data) {
     if (
-      property.property_name === propertyName
-      && typeof property.value === 'string'
+      property.property_name === propertyName &&
+      typeof property.value === 'string'
     ) {
-      assignee = property.value
-      break
+      assignee = property.value;
+      break;
     }
   }
 
-  return assignee
-}
+  return assignee;
+};

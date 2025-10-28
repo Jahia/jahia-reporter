@@ -184,7 +184,7 @@ class JahiaGitHubIncident extends Command {
       serviceRow.get('PagerDuty Enabled').toLowerCase() === 'no'
     ) {
       this.log(
-        `Notifications are disabled for this service (Column: PagerDuty Enabled), the process will exit.`,
+        'Notifications are disabled for this service (Column: PagerDuty Enabled), the process will exit.',
       );
       this.exit(0);
     }

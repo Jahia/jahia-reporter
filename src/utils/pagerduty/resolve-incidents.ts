@@ -1,4 +1,4 @@
-import {sleep} from '../sleep.js'
+import { sleep } from '../sleep.js';
 
 export const resolveIncidents = async (
   pdClient: any,
@@ -8,21 +8,21 @@ export const resolveIncidents = async (
 ) => {
   const allIncidents = await pdClient.all(
     `/incidents?service_ids%5B%5D=${serviceId}&statuses%5B%5D=acknowledged&statuses%5B%5D=triggered`,
-  )
+  );
   const allOpenIncidents = allIncidents.data
-  .reduce((acc: any, i: any) => {
-    if (i.incidents !== undefined && i.incidents.length > 0) {
-      acc = [...acc, ...i.incidents]
-    }
+    .reduce((acc: any, i: any) => {
+      if (i.incidents !== undefined && i.incidents.length > 0) {
+        acc = [...acc, ...i.incidents];
+      }
 
-    return acc
-  }, [])
-  .filter((i: any) => i.title.split(' - Tests: ')[0] === testService)
+      return acc;
+    }, [])
+    .filter((i: any) => i.title.split(' - Tests: ')[0] === testService);
   console.log(
     `${allOpenIncidents.length} incidents still open in pagerduty for service: ${testService}`,
-  )
+  );
   if (allOpenIncidents.length > 0) {
-    console.log('These incidents will be resolved')
+    console.log('These incidents will be resolved');
   }
 
   for (const incident of allOpenIncidents) {
@@ -35,19 +35,19 @@ export const resolveIncidents = async (
           type: 'incident',
         },
       },
-    })
+    });
     if (
-      incidentResponse.data !== undefined
-      && incidentResponse.data.incident !== undefined
+      incidentResponse.data !== undefined &&
+      incidentResponse.data.incident !== undefined
     ) {
       console.log(
         `Incident: ${incidentResponse.data.incident.incident_number} was resolved`,
-      )
+      );
     } else {
-      console.log(`Unable to resolve incident: ${incident.id}`)
+      console.log(`Unable to resolve incident: ${incident.id}`);
     }
 
     // Sleep for 1s to avoid hitting pagerduty service limits
-    sleep(1000)
+    sleep(1000);
   }
-}
+};
