@@ -11,9 +11,9 @@ name: Super Linter
 #############################
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ['main', 'master']
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ['main', 'master']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -49,7 +49,7 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
           # Enable specific linters
           VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_TYPESCRIPT_STANDARD: true
@@ -59,13 +59,9 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_DOCKERFILE: true
           VALIDATE_GITHUB_ACTIONS: true
-          
-          # Disable problematic linters
-          VALIDATE_JSCPD: false
-          VALIDATE_NATURAL_LANGUAGE: false
-          
+
           # TypeScript specific config
           TYPESCRIPT_ES_CONFIG_FILE: .eslintrc
-          
+
           # Only validate changed files on PR
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
