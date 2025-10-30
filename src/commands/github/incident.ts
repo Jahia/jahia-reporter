@@ -30,6 +30,12 @@ class JahiaGitHubIncident extends Command {
       description:
         'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
     }),
+    githubCustomPropertyName: Flags.string({
+      default: 'Champion',
+      description:
+        'Name of a repository custom property to use for assignee lookup (e.g. Champion)',
+      env: 'GITHUB_CUSTOM_PROPERTY_NAME',
+    }),
     githubIssueLabel: Flags.string({
       default: '',
       description: 'GitHub issue label to apply',
@@ -169,12 +175,13 @@ class JahiaGitHubIncident extends Command {
     );
 
     let assignee = serviceRow.get('PagerDuty User ID') || '';
-    if (assignee === '[REPO_CHAMPION]') {
+    if (assignee === `[$${flags.githubCustomPropertyName}]`) {
       this.log(
-        'Assignee is set to [REPO_CHAMPION], its value will be fetched from the repository custom properties (Champion field)',
+        `Assignee is set to [${flags.githubCustomPropertyName}], its value will be fetched from the repository custom properties (${flags.githubCustomPropertyName} field)`,
       );
       assignee = await getAssigneeFromCustomProperties({
         githubToken: flags.githubToken,
+        propertyName: flags.githubCustomPropertyName,
         repository: flags.githubRepository,
       });
     }
@@ -244,8 +251,8 @@ class JahiaGitHubIncident extends Command {
             // eslint-disable-next-line no-await-in-loop
             await closeIncidentIssue({
               githubToken: flags.githubToken,
-              issue,
               incidentContent,
+              issue,
               log: this.log.bind(this),
             });
           }
@@ -273,8 +280,8 @@ class JahiaGitHubIncident extends Command {
 
           await reopenIncidentIssue({
             githubToken: flags.githubToken,
-            issue: matchingIssues[0],
             incidentContent,
+            issue: matchingIssues[0],
             log: this.log.bind(this),
           });
         }

@@ -4,13 +4,13 @@ import { GitHubIssue, Incident } from '../../global.type';
 
 export const reopenIncidentIssue = async ({
   githubToken,
-  issue,
   incidentContent,
+  issue,
   log,
 }: {
   githubToken: string;
-  issue: GitHubIssue;
   incidentContent: Incident;
+  issue: GitHubIssue;
   log: (message: string) => void;
 }): Promise<void> => {
   const octokit = new Octokit({ auth: githubToken });

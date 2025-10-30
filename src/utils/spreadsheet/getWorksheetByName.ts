@@ -1,7 +1,6 @@
 import { JWT } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const findSheetByTitle = (doc: any, title: string, log: any): any => {
   const { sheetCount, sheetsByIndex } = doc;
   for (let i = 0; i < sheetCount; i++) {
@@ -21,7 +20,6 @@ const getSpreadsheet = async (
   serviceAccountAuth: JWT,
   googleSpreadsheetId: string,
   worksheetTitle: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log: any,
 ) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId, serviceAccountAuth);
@@ -46,7 +44,6 @@ interface SpreadsheetOptions {
 
 export const getWorksheetByName = async (
   options: SpreadsheetOptions,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log: any,
 ) => {
   const {
@@ -63,7 +60,6 @@ export const getWorksheetByName = async (
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let spRows: any = null;
   for (let cpt = 1; cpt < 4; cpt++) {
     if (spRows === null) {
@@ -82,6 +78,5 @@ export const getWorksheetByName = async (
     }
   }
 
-   
   return spRows;
 };

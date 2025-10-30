@@ -73,43 +73,30 @@ class JahiaSam extends Command {
         JSON.stringify(healthCheckPayload, null, 2),
       );
     } catch (error) {
-      this.handleSamError(error);
-    }
-  }
+      // Check if the error contains health check payload
+      if (error instanceof Error && (error as any).healthCheckPayload) {
+        const payload = (error as any).healthCheckPayload;
+        this.log('SAM failed to reach GREEN status. Health check payload:');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private displayProbeErrors(probes: any[]): void {
-    const errorProbes = probes.filter(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (probe: any) =>
-        probe.status?.health === 'RED' ||
-        probe.status?.health === 'YELLOW',
-    );
+        // Display specific errors from probes if available
+        if (payload?.probes && Array.isArray(payload.probes)) {
+          const errorProbes = payload.probes.filter(
+            (probe: any) =>
+              probe.status?.health === 'RED' ||
+              probe.status?.health === 'YELLOW',
+          );
 
-    if (errorProbes.length > 0) {
-      this.log('\nProbes with issues:');
-      for (const probe of errorProbes) {
-        this.log(
-          `- ${probe.name} (${probe.severity}): ${
-            probe.status.health
-          } - ${probe.status.message || 'No message'}`,
-        );
-      }
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private handleSamError(error: any): void {
-    // Check if the error contains health check payload
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (error instanceof Error && (error as any).healthCheckPayload) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const payload = (error as any).healthCheckPayload;
-      this.log('SAM failed to reach GREEN status. Health check payload:');
-
-      // Display specific errors from probes if available
-      if (payload?.probes && Array.isArray(payload.probes)) {
-        this.displayProbeErrors(payload.probes);
+          if (errorProbes.length > 0) {
+            this.log('\nProbes with issues:');
+            for (const probe of errorProbes) {
+              this.log(
+                `- ${probe.name} (${probe.severity}): ${
+                  probe.status.health
+                } - ${probe.status.message || 'No message'}`,
+              );
+            }
+          }
+        }
       }
     }
   }

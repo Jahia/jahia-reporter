@@ -1,7 +1,6 @@
 import { Incident } from '../../global.type';
 
 // Get the row matching a specific service from a Google Spreadsheet
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getServiceRow = async (worksheet: any, service: string, log: any) => {
   log(`Searching for row matching service: ${service}`);
   const allRows = await worksheet.getRows();
@@ -17,14 +16,11 @@ const getServiceRow = async (worksheet: any, service: string, log: any) => {
 };
 
 export const updateServiceRow = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   worksheet: any,
   service: string,
   incidentContent: Incident,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log: any,
 ) => {
-   
   const row = await getServiceRow(worksheet, service, log);
   if (row) {
     row.set('State', incidentContent.counts.fail > 0 ? 'FAILED' : 'PASSED');
