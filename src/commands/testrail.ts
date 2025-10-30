@@ -332,7 +332,7 @@ export default class TestrailCommand extends Command {
       }
 
       this.log('The following custom fields are present on testrail:');
-      // TODO: Replace with proper table output in OCLIF v4
+      // Display custom fields in JSON format for review
       this.log(JSON.stringify(testrailCustomFields, null, 2));
       testrailCustomFields = testrailCustomFields.filter(
         (f) => f.enabledOnProject === true,

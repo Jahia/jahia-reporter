@@ -8,7 +8,7 @@ import * as fs from 'node:fs';
 
 import { JRRun } from '../../global.type';
 import ingestReport from '../../utils/ingest/index.js';
-import { resolveIncidents } from '../../utils/pagerduty/resolve-incidents.js';
+import { resolveIncidents } from '../../utils/pagerduty/resolveIncidents.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const findSheetByTitle = (doc: GoogleSpreadsheet, title: string): any => {

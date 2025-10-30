@@ -7,6 +7,7 @@ export enum Status {
 }
 
 export interface TestRailResult {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any; // Allow custom fields
   case_id: number;
   comment?: string;
@@ -123,6 +124,7 @@ export interface Test {
 
 export interface AddCase {
   custom_status: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   custom_steps_separated?: any[];
   custom_version: number[];
   title: string;

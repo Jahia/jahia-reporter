@@ -220,7 +220,7 @@ export interface JMeterExec {
   duration: number;
   runs: JMeterRun[];
   startedAt: string;
-  tags: Array<any>;
+  tags: Array<{ name: string }>;
 }
 
 export interface JMeterExecAnalysisReport {

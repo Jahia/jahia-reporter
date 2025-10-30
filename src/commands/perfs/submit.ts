@@ -55,6 +55,7 @@ class JahiaPerfsReporter extends Command {
       this.exit(1);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let tfsettings: any = {};
     if (fs.existsSync(flags.tfsettingsFile)) {
       const file = fs.readFileSync(flags.tfsettingsFile, 'utf8');
@@ -70,6 +71,7 @@ class JahiaPerfsReporter extends Command {
       this.exit(1);
     } else {
       const resources = Object.entries(tfsettings.docker_containers);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const zcPayload: any = {
         name: flags.runName,
         platform: {
@@ -85,6 +87,7 @@ class JahiaPerfsReporter extends Command {
           },
           url: flags.repoUrl,
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resources: resources.map((r: any) => ({
           image: r[1].image,
           name: r[1].name,

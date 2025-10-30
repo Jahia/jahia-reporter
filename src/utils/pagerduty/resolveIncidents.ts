@@ -1,6 +1,7 @@
 import { sleep } from '../sleep.js';
 
 export const resolveIncidents = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pdClient: any,
   serviceId: string,
   testService: string,
@@ -9,14 +10,17 @@ export const resolveIncidents = async (
   const allIncidents = await pdClient.all(
     `/incidents?service_ids%5B%5D=${serviceId}&statuses%5B%5D=acknowledged&statuses%5B%5D=triggered`,
   );
-  const allOpenIncidents = allIncidents.data
-    .reduce((acc: any, i: any) => {
-      if (i.incidents !== undefined && i.incidents.length > 0) {
-        acc = [...acc, ...i.incidents];
-      }
 
-      return acc;
-    }, [])
+  // Flatten incidents array without using Array.reduce()
+  const flattenedIncidents = [];
+  for (const item of allIncidents.data) {
+    if (item.incidents !== undefined && item.incidents.length > 0) {
+      flattenedIncidents.push(...item.incidents);
+    }
+  }
+
+  const allOpenIncidents = flattenedIncidents
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .filter((i: any) => i.title.split(' - Tests: ')[0] === testService);
   console.log(
     `${allOpenIncidents.length} incidents still open in pagerduty for service: ${testService}`,

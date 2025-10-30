@@ -81,15 +81,18 @@ export const waitUntilSAMStatus = async ({
   client: Client;
   expectedHealth: string;
   interval?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   probeHealthFilter?: any;
   probeNamesFilter?: null | string[];
   severity?: string;
   statusMatchCount?: number;
   timeout?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Promise<any> => {
   const startTime = performance.now();
   let statusCount = 0;
-  let lastGraphqlResponse = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let lastGraphqlResponse: any = {};
 
   // Convert interval from seconds to milliseconds
   const intervalMs = interval * 1000;
@@ -104,6 +107,7 @@ export const waitUntilSAMStatus = async ({
             lastGraphqlResponse,
           )}`,
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error as any).healthCheckPayload = lastGraphqlResponse;
         reject(error);
         return;

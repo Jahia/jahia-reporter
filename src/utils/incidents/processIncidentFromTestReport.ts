@@ -36,7 +36,7 @@ export const processIncidentFromTestReport = async ({
   sourcePath,
   sourceType,
 }: {
-  log: any;
+  log: (message: string) => void;
   service: string;
   sourcePath: string;
   sourceType: string;

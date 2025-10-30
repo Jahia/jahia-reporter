@@ -1,4 +1,6 @@
-import { Octokit } from '@octokit/core';
+import { Octokit } from 'octokit';
+
+import { Incident } from '../../global.type';
 
 const buildDefaultIssueDescription = ({
   dedupKey,
@@ -59,12 +61,19 @@ The Dedup key is generated from the list of failed test cases sorted alphabetica
   return body;
 };
 
-export const createIncidentIssue = async (
-  githubToken: string,
-  repository: string,
-  incidentContent: any,
-  log: any,
-): Promise<any> => {
+export const createIncidentIssue = async ({
+  githubToken,
+  incidentContent,
+  issueLabel,
+  log,
+  repository,
+}: {
+  githubToken: string;
+  incidentContent: Incident;
+  issueLabel: string;
+  log: (message: string) => void;
+  repository: string;
+}) => {
   const octokit = new Octokit({ auth: githubToken });
 
   const [owner, repo] = repository.split('/');
@@ -80,7 +89,7 @@ export const createIncidentIssue = async (
     headers: {
       'X-GitHub-Api-Version': '2022-11-28',
     },
-    labels: ['automated-incident'],
+    labels: [issueLabel],
     owner,
     repo,
     title: incidentContent.title,

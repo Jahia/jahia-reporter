@@ -1,13 +1,18 @@
-import { Octokit } from '@octokit/core';
+import { Octokit } from 'octokit';
 
 import { GitHubIssue, Incident } from '../../global.type';
 
-export const closeIncidentIssue = async (
-  githubToken: string,
-  issue: GitHubIssue,
-  incidentContent: Incident,
-  log: any,
-): Promise<any> => {
+export const closeIncidentIssue = async ({
+  githubToken,
+  issue,
+  incidentContent,
+  log,
+}: {
+  githubToken: string;
+  issue: GitHubIssue;
+  incidentContent: Incident;
+  log: (message: string) => void;
+}): Promise<void> => {
   const octokit = new Octokit({ auth: githubToken });
 
   log(`Issue #${issue.number} will be closed (${issue.url}`);

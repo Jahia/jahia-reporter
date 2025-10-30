@@ -1,10 +1,14 @@
-import { Octokit } from '@octokit/core';
+import { Octokit } from 'octokit';
 
-export const getAssigneeFromCustomProperties = async (
-  githubToken: string,
-  repository: string,
-  propertyName: string = 'Champion',
-): Promise<string> => {
+export const getAssigneeFromCustomProperties = async ({
+  githubToken,
+  repository,
+  propertyName = 'Champion',
+}: {
+  githubToken: string;
+  repository: string;
+  propertyName?: string;
+}): Promise<string> => {
   const octokit = new Octokit({
     auth: githubToken,
   });

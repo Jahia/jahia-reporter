@@ -30,7 +30,7 @@ const parseFile = (reportType: string, filePath: string) => {
 const ingestReport = async (
   reportType: string,
   reportFilePath: string,
-  log: any,
+  log: (message: string) => void,
   silent = false,
 ) => {
   const supportedFormats = new Set(['json', 'xml', 'json-perf']);

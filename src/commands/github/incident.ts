@@ -30,6 +30,11 @@ class JahiaGitHubIncident extends Command {
       description:
         'If provided, will force the failure count to 0, disrespective of the actual failure in the reports',
     }),
+    githubIssueLabel: Flags.string({
+      default: '',
+      description: 'GitHub issue label to apply',
+      env: 'GITHUB_ISSUE_LABEL',
+    }),
     githubRepository: Flags.string({
       default: '',
       description:
@@ -148,10 +153,12 @@ class JahiaGitHubIncident extends Command {
 
     this.log(`Google Spreadsheet ID is set to: ${flags.googleSpreadsheetId}`);
     const gWorksheet = await getWorksheetByName(
-      flags.googleSpreadsheetId,
-      flags.googleClientEmail || '',
-      flags.googleApiKey || '',
-      flags.googleWorksheetName,
+      {
+        googleApiKey: flags.googleApiKey || '',
+        googleClientEmail: flags.googleClientEmail || '',
+        googleSpreadsheetId: flags.googleSpreadsheetId,
+        googleWorksheetName: flags.googleWorksheetName,
+      },
       this.log.bind(this),
     );
     const serviceRow = await updateServiceRow(
@@ -166,10 +173,10 @@ class JahiaGitHubIncident extends Command {
       this.log(
         'Assignee is set to [REPO_CHAMPION], its value will be fetched from the repository custom properties (Champion field)',
       );
-      assignee = await getAssigneeFromCustomProperties(
-        flags.githubToken,
-        flags.githubRepository,
-      );
+      assignee = await getAssigneeFromCustomProperties({
+        githubToken: flags.githubToken,
+        repository: flags.githubRepository,
+      });
     }
 
     if (assignee === '') {
@@ -212,12 +219,13 @@ class JahiaGitHubIncident extends Command {
     // If no issue exists, and if failures are present, create a new issue
     if (issues.length === 0 && incidentContent.counts.fail > 0) {
       this.log(`No issues found for service ${flags.incidentService}`);
-      await createIncidentIssue(
-        flags.githubToken,
-        flags.githubRepository,
+      await createIncidentIssue({
+        githubToken: flags.githubToken,
         incidentContent,
-        this.log.bind(this),
-      );
+        issueLabel: flags.githubIssueLabel,
+        log: this.log.bind(this),
+        repository: flags.githubRepository,
+      });
     } else {
       this.log(
         `Total number of existing issues for service ${flags.incidentService}: ${issues.length}`,
@@ -234,12 +242,12 @@ class JahiaGitHubIncident extends Command {
           );
           for (const issue of openedIssues) {
             // eslint-disable-next-line no-await-in-loop
-            await closeIncidentIssue(
-              flags.githubToken,
+            await closeIncidentIssue({
+              githubToken: flags.githubToken,
               issue,
               incidentContent,
-              this.log.bind(this),
-            );
+              log: this.log.bind(this),
+            });
           }
         }
       } else if (incidentContent.counts.fail > 0) {
@@ -259,16 +267,17 @@ class JahiaGitHubIncident extends Command {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           );
-
-          await reopenIncidentIssue(
-            flags.githubToken,
-            matchingIssues[0],
-            incidentContent,
-            this.log.bind(this),
+          this.log(
+            `Re-opening the most recent issue for dedupKey ${incidentContent?.dedupKey} - ${matchingIssues[0].url}`,
           );
-        }
 
-        console.log('Matching issue', matchingIssues);
+          await reopenIncidentIssue({
+            githubToken: flags.githubToken,
+            issue: matchingIssues[0],
+            incidentContent,
+            log: this.log.bind(this),
+          });
+        }
       }
     }
   }

@@ -19,6 +19,10 @@ import {
   TestRailResult,
 } from './testrail.interface.js';
 
+// Utility function for basic auth encoding
+const encode = (str: string): string =>
+  Buffer.from(str, 'binary').toString('base64');
+
 export class TestRailClient {
   public base: string;
 
@@ -80,6 +84,7 @@ export class TestRailClient {
     section: string,
     parentId = '',
   ): Section {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let sectionParams: any = {
       name: section,
       suite_id: suiteId.toString(),
@@ -270,9 +275,11 @@ export class TestRailClient {
     return getSuites.suites as Suite[];
   }
 
-  private sendRequest(method: string, uri: string, data: {}): unknown {
-    const encode = (str: string): string =>
-      Buffer.from(str, 'binary').toString('base64');
+  private sendRequest(
+    method: string,
+    uri: string,
+    data: object | string,
+  ): unknown {
     const url: string = this.url + uri;
 
     const auth: string = encode(this.username + ':' + this.password);
