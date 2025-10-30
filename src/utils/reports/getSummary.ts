@@ -6,7 +6,7 @@ export const getSummary = ({
   sourceType = 'xml',
 }: {
   report: JRRun;
-  sourceType: string;
+  sourceType?: string;
 }): string => {
   const testTotal = report.tests;
   let testFailures = report.failures;
@@ -45,6 +45,7 @@ export const getSummary = ({
         summary += `\n | Suite: ${r.name} - Total tests: ${r.tests} - Skipped: ${r.skipped} - Executed in ${r.time}s`;
         for (const s of r.testsuites.filter((s) => s.skipped > 0)) {
           summary += `\n |   | - ${s.name}`;
+          // eslint-disable-next-line max-depth
           for (const t of s.tests.filter((t) => t.status === 'FAIL')) {
             summary += `\n |   |    | - SKIPPED: ${t.name}`;
           }
@@ -58,6 +59,7 @@ export const getSummary = ({
         summary += `\n | Suite: ${r.name} - Total tests: ${r.tests} - Pending: ${r.pending} - Executed in ${r.time}s`;
         for (const s of r.testsuites.filter((s) => s.pending > 0)) {
           summary += `\n |   | - ${s.name}`;
+          // eslint-disable-next-line max-depth
           for (const t of s.tests.filter((t) => t.status === 'FAIL')) {
             summary += `\n |   |    | - PENDING: ${t.name}`;
           }

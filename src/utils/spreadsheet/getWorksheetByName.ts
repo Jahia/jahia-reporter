@@ -1,7 +1,11 @@
 import { JWT } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-const findSheetByTitle = (doc: any, title: string, log: any): any => {
+const findSheetByTitle = (
+  doc: any,
+  title: string,
+  log: (message: string) => void,
+): any => {
   const { sheetCount, sheetsByIndex } = doc;
   for (let i = 0; i < sheetCount; i++) {
     const currentSheet = sheetsByIndex[i];
@@ -20,7 +24,7 @@ const getSpreadsheet = async (
   serviceAccountAuth: JWT,
   googleSpreadsheetId: string,
   worksheetTitle: string,
-  log: any,
+  log: (message: string) => void,
 ) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId, serviceAccountAuth);
   await doc.loadInfo();
@@ -44,7 +48,7 @@ interface SpreadsheetOptions {
 
 export const getWorksheetByName = async (
   options: SpreadsheetOptions,
-  log: any,
+  log: (message: string) => void,
 ) => {
   const {
     googleApiKey,
