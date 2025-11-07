@@ -1,28 +1,42 @@
 /* eslint max-depth: ["error", 5] */
-import { Command, Flags } from '@oclif/core';
+import { Command, Flags, ux } from '@oclif/core';
 import { formatToTimeZone } from 'date-fns-timezone';
 import * as fs from 'node:fs';
-import { existsSync, lstatSync, readFileSync } from 'node:fs';
 
-import { JRRun, JRTestfailure } from '../global.type';
+import { JRRun } from '../global.type';
 import ingestReport from '../utils/ingest/index.js';
+
 import {
   AddCase,
   AddRun,
   Project,
-  ResultField,
   Run,
   Section,
   Status,
   Suite,
   Test,
   TestRailResult,
+  TestWithStatus,
 } from '../utils/testrail.interface.js';
-import { TestRailClient } from '../utils/testrail.js';
 
-interface TestWithStatus extends Test {
-  status: string;
-}
+import {
+  parseTestsFromReports,
+  createTestrailConfig,
+  getTestrailProjects,
+  getTestrailSuites,
+  getTestrailSections,
+  addTestrailSection,
+  getTestrailMilestones,
+  addTestrailMilestone,
+  getTestrailCustomFields,
+  getTestrailCustomStatus,
+  getTestrailCustomVersion,
+  getTestrailCases,
+  addTestrailCase,
+  addTestrailRun,
+  closeTestrailRun,
+  addTestrailResults,
+} from '../utils/testrail/index.js';
 
 export default class TestrailCommand extends Command {
   static override description =
@@ -110,6 +124,10 @@ export default class TestrailCommand extends Command {
   public async run(): Promise<void> {
     const { flags } = await this.parse(TestrailCommand);
 
+    // In most cases, the expected format for runs in testrail is
+    // AE - <projectName>-<date>
+    // If the runName is not default, then it's up to the user to format the runName
+    // in a way that would make it possible to differentiate it from others in testrail
     if (flags.runName === 'AE - ') {
       const date = new Date();
       const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)';
@@ -122,76 +140,66 @@ export default class TestrailCommand extends Command {
           : `${flags.parentSection}-${runDate}`;
     }
 
+    this.log(`Testrail name will be: ${flags.runName}`);
+
     // Parse files into objects
     const jrRun: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
       this.log.bind(this),
     );
-    const tests: TestWithStatus[] = [];
-    for (const report of jrRun.reports) {
-      this.log(`- Analyzed report: ${report.name}`);
-      for (const testsuite of report.testsuites) {
-        this.log(`   |- Analyzed suite: ${testsuite.name}`);
-        for (const test of testsuite.tests) {
-          if (!test.name.includes('hook for')) {
-            const sectionName = testsuite.name.includes('(')
-              ? testsuite.name.slice(
-                  0,
-                  Math.max(0, testsuite.name.indexOf('(') - 1),
-                )
-              : testsuite.name;
-            const testName = test.name.includes(sectionName)
-              ? test.name.slice(Math.max(0, sectionName.length + 1))
-              : test.name;
-            const testToPush: TestWithStatus = {
-              section: sectionName.trim(),
-              status: test.status,
-              steps: test.steps,
-              time: test.time.toString(),
-              title: testName.trim(),
-            };
-            if (test.failures.length > 0) {
-              testToPush.comment =
-                test.failures
-                  .filter((f: JRTestfailure) => f !== undefined)
-                  .map((f: JRTestfailure) => f.text)
-                  .join(',') || test.failures.join(',');
-            }
 
-            this.log(
-              `   |    |- Analyzed test: ${test.name} - Status: ${test.status}`,
-            );
-            tests.push(testToPush);
-          }
-        }
-      }
-    }
-
-    const testrail = new TestRailClient(
-      flags.testrailUrl,
-      flags.testrailUsername,
-      flags.testrailApiKey === undefined
-        ? flags.testrailPassword
-        : flags.testrailApiKey,
+    // Format the test in a way that can be processed for testrail
+    const tests: TestWithStatus[] = parseTestsFromReports(
+      jrRun,
+      this.log.bind(this),
     );
 
-    this.log('Get all testrail projects');
-    // get the testrail project
-    const testrailProject = testrail
-      .getProjects()
-      .find((project) => project.name === flags.projectName);
+    // Create a testrail configuration object that will be passed to all subsequent
+    // calls to testrail
+
+    const testrailConfig = createTestrailConfig({
+      base: flags.testrailUrl,
+      username: flags.testrailUsername,
+      password:
+        flags.testrailApiKey === undefined
+          ? flags.testrailPassword
+          : flags.testrailApiKey,
+    });
+
+    ux.action.start('Fetching projects from Testrail');
+    const testrailProjects = await getTestrailProjects(testrailConfig);
+    ux.action.stop(`${testrailProjects.length} projects fetched`);
+
+    this.log(
+      `List of projects: ${testrailProjects.map((p) => p.name).join(', ')}`,
+    );
+
+    const testrailProject = testrailProjects.find(
+      (project) => project.name === flags.projectName,
+    );
     if (testrailProject === undefined) {
       this.error(`Failed to find project named '${flags.projectName}'`);
     } else {
       testrailProject as Project;
     }
 
-    // Get the testrail suite
-    this.log(`Get all suites for project ${testrailProject.id}`);
-    const testrailSuite = testrail
-      .getSuites(testrailProject.id)
-      .find((suite) => suite.name === flags.suiteName);
+    this.log(
+      `Found project '${testrailProject.name}' with ID: ${testrailProject.id} and url: ${testrailConfig.base}index.php?/projects/view/${testrailProject.id}`,
+    );
+
+    ux.action.start('Fetching test suites from project');
+    const testrailSuites = await getTestrailSuites(
+      testrailConfig,
+      testrailProject.id,
+    );
+    ux.action.stop(`${testrailSuites.length} suites fetched`);
+
+    this.log(`List of suites: ${testrailSuites.map((p) => p.name).join(', ')}`);
+
+    const testrailSuite = testrailSuites.find(
+      (suite) => suite.name === flags.suiteName,
+    );
     if (testrailSuite === undefined) {
       this.error(
         `Failed to find suite named: '${flags.suiteName}' in project: '${flags.projectName}'`,
@@ -200,31 +208,46 @@ export default class TestrailCommand extends Command {
       testrailSuite as Suite;
     }
 
-    // Get parent section from test rail if parent_section was set
-    this.log(
-      `Get all sections for project: ${testrailProject.id} and suite: ${testrailSuite.id}`,
+    ux.action.start(
+      `Fetching sections from project ID: ${testrailProject.id} and suite ID: ${testrailSuite.id}`,
     );
-    let allSectionsInTestrail = testrail.getSections(
+    let testrailSections = await getTestrailSections(
+      testrailConfig,
       testrailProject.id,
       testrailSuite.id,
     );
+    ux.action.stop(`${testrailSections.length} sections fetched`);
+
     let parentSectionId = '';
     if (flags.parentSection !== '') {
-      let foundSection = allSectionsInTestrail.find(
+      let foundSection = testrailSections.find(
         (section) => section.name === flags.parentSection,
       );
       if (foundSection === undefined) {
         this.log(
           `Failed to find section named '${flags.parentSection}' in project '${flags.projectName}'. Creating the section now.`,
         );
-        foundSection = testrail.addSection(
+        foundSection = await addTestrailSection(
+          testrailConfig,
           testrailProject.id,
-          testrailSuite.id,
-          flags.parentSection,
+          {
+            parentId: '',
+            section: flags.parentSection,
+            suiteId: testrailSuite.id,
+          },
         );
-        allSectionsInTestrail = testrail.getSections(
+        this.log(
+          `Created section '${flags.parentSection}' with ID: ${foundSection.id}`,
+        );
+        this.log(`Refreshing the list of sections from TestRail`);
+        testrailSections = await getTestrailSections(
+          testrailConfig,
           testrailProject.id,
           testrailSuite.id,
+        );
+      } else {
+        this.log(
+          `Found existing section '${flags.parentSection}' with ID: ${foundSection.id}`,
         );
       }
 
@@ -232,112 +255,53 @@ export default class TestrailCommand extends Command {
     }
 
     // Get Milestone
-    this.log(`Get all milestones for project: ${testrailProject.id}`);
-    const milestone: { id: number; name: string } | undefined = testrail
-      .getMilestones(testrailProject.id)
-      .find((milestone) => milestone.name === flags.milestone);
-    let milestone_id = -1;
-    if (flags.skip) {
-      this.log(`Milestone: ${flags.milestone}`);
-    } else {
-      this.log(
-        `Add milestone to project: ${testrailProject.id}, milestone: ${flags.milestone}`,
-      );
-      milestone_id = milestone
-        ? milestone.id
-        : testrail.addMilestone(testrailProject.id, flags.milestone).id;
-    }
+    ux.action.start(
+      `Fetching milestones from project ID: ${testrailProject.id}`,
+    );
+    let testrailMilestones = await getTestrailMilestones(
+      testrailConfig,
+      testrailProject.id,
+    );
+    ux.action.stop(`${testrailMilestones.length} milestones fetched`);
+    let testrailMilestone = testrailMilestones.find(
+      (milestone) => milestone.name === flags.milestone,
+    );
 
-    this.log(`Using milestone ${flags.milestone} with id: ${milestone_id}`);
-
-    let testrailCustomFields: ResultField[] = [];
-    if (
-      flags.testrailCustomResultFields !== undefined &&
-      flags.testrailCustomResultFields !== ''
-    ) {
-      // Parse the provided json file
-      if (!existsSync(flags.testrailCustomResultFields)) {
-        throw new Error(
-          `Something went wrong. The provided path: ${flags.testrailCustomResultFields} does not exist.`,
-        );
-      }
-
-      if (!lstatSync(flags.testrailCustomResultFields).isFile()) {
-        throw new Error(
-          `Something went wrong. The provided path: ${flags.testrailCustomResultFields} is not a file`,
-        );
-      }
-
-      this.log(
-        `${flags.testrailCustomResultFields}, exists, parsing its content`,
-      );
-      const rawFile = readFileSync(flags.testrailCustomResultFields, 'utf8');
-      const customFieldsSubmission = JSON.parse(rawFile.toString());
-
-      // Get all configured Testrail custom fields for that account
-      // Decorate it with value and project details
-      this.log('Get all configured custom fields');
-      testrailCustomFields = testrail.getResultFields().map((t) => {
-        // See static type list here: https://support.gurock.com/hc/en-us/articles/7077871398036-Result-Fields
-        const staticTypes = [
-          '',
-          'String',
-          'Integer',
-          'Text',
-          'URL',
-          'Checkbox',
-          'Dropdown',
-          'User',
-          'Date',
-          'Milestone',
-          'Step Results',
-          'Multi-select',
-        ];
-        let isEnabledOnProject = false;
-        for (const c of t.configs) {
-          if (
-            c.context.is_global === true ||
-            c.context.project_ids.includes(testrailProject.id)
-          ) {
-            isEnabledOnProject = true;
-          }
-        }
-
-        // Search in the submission to find a match
-        return {
-          ...t,
-          enabledOnProject: isEnabledOnProject, // Is that custom field valid for the current project
-          type: staticTypes[t.type_id],
-          value: customFieldsSubmission[t.system_name],
+    if (testrailMilestone === undefined) {
+      if (flags.skip) {
+        testrailMilestone = {
+          id: -1,
+          project_id: testrailProject.id,
+          name: flags.milestone,
+          url: '',
         };
-      });
-      // Finally, add the system fields (if present in the json file)
-      if (customFieldsSubmission.version !== undefined) {
-        testrailCustomFields.push({
-          configs: [],
-          description: 'Version (System field)',
-          display_order: 1,
-          enabledOnProject: true,
-          id: 1000,
-          include_all: 1,
-          is_active: true,
-          label: 'Version',
-          name: 'Version (System)',
-          system_name: 'version',
-          template_ids: [],
-          type: 'String',
-          type_id: 1,
-          value: customFieldsSubmission.version,
-        });
+        this.log(`Milestone: ${flags.milestone}`);
+      } else {
+        this.log(
+          `Adding milestone to project: ${testrailProject.id}, milestone: ${flags.milestone}`,
+        );
+        testrailMilestone = await addTestrailMilestone(
+          testrailConfig,
+          testrailProject.id,
+          flags.milestone,
+        );
       }
-
-      this.log('The following custom fields are present on testrail:');
-      // Display custom fields in JSON format for review
-      this.log(JSON.stringify(testrailCustomFields, null, 2));
-      testrailCustomFields = testrailCustomFields.filter(
-        (f) => f.enabledOnProject === true,
-      );
     }
+    if (testrailMilestone === undefined) {
+      this.error(`Failed to create or find milestone: ${flags.milestone}`);
+    }
+
+    this.log(
+      `Using milestone ${testrailMilestone.name} with id: ${testrailMilestone.id} and URL: ${testrailMilestone.url}`,
+    );
+
+    // Custom fields make it possible to add additional metadata to testrail results
+    const testrailCustomFields = await getTestrailCustomFields({
+      testrailCustomResultFields: flags.testrailCustomResultFields,
+      config: testrailConfig,
+      project: testrailProject,
+      log: this.log.bind(this),
+    });
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
     const executedSections: Section[] = [];
@@ -345,14 +309,10 @@ export default class TestrailCommand extends Command {
     const executedSectionsNames: string[] = [
       ...new Set(tests.map((test) => test.section)),
     ];
-    this.log('The following section names were found');
-    for (const sectionName of executedSectionsNames) {
-      this.log(sectionName);
-    }
 
     // Make sure those sections exist in TestRail
     for (const executedSectionName of executedSectionsNames) {
-      const foundSectionInTestrail = allSectionsInTestrail.find(
+      const foundSectionInTestrail = testrailSections.find(
         (sectionInTestrail) =>
           sectionInTestrail.name === executedSectionName &&
           (sectionInTestrail.parent_id
@@ -365,14 +325,16 @@ export default class TestrailCommand extends Command {
           `Section '${executedSectionName}' wasn't found. Creating it (project ID: ${testrailProject.id}, suite ID: ${testrailSuite.id}, section name: ${executedSectionName}, parent section ID: ${parentSectionId}).`,
         );
         if (!flags.skip) {
-          executedSections.push(
-            testrail.addSection(
-              testrailProject.id,
-              testrailSuite.id,
-              executedSectionName,
-              parentSectionId,
-            ),
+          const newSection = await addTestrailSection(
+            testrailConfig,
+            testrailProject.id,
+            {
+              parentId: parentSectionId,
+              section: executedSectionName,
+              suiteId: testrailSuite.id,
+            },
           );
+          executedSections.push(newSection);
         }
       } else {
         executedSections.push(foundSectionInTestrail);
@@ -384,13 +346,17 @@ export default class TestrailCommand extends Command {
     const testCasesInTestrail: Record<string, Test[]> = {};
     for (const executedSection of executedSections) {
       if (!flags.skip) {
-        this.log(
-          `Get cases for project: ${testrailProject.id}, suite: ${testrailSuite.id}, section: ${executedSection.id}`,
+        ux.action.start(
+          `Get cases for section: ${executedSection.name} (id: ${executedSection.id})`,
         );
-        testCasesInTestrail[executedSection.name] = testrail.getCases(
+        testCasesInTestrail[executedSection.name] = await getTestrailCases(
+          testrailConfig,
           testrailProject.id,
           testrailSuite.id,
           executedSection.id,
+        );
+        ux.action.stop(
+          `${testCasesInTestrail[executedSection.name].length} cases fetched`,
         );
       }
     }
@@ -406,12 +372,20 @@ export default class TestrailCommand extends Command {
         );
         // if it's not found we are creating it
         if (foundTestCaseInTestRail === undefined) {
-          this.log(
+          ux.action.start(
             `Test '${test.title}' was not found in TestRail. Creating it.`,
           );
+          const customStatus = await getTestrailCustomStatus(
+            testrailConfig,
+            'Complete',
+          );
+          const customVersion = await getTestrailCustomVersion(
+            testrailConfig,
+            '8.0.1.0',
+          );
           const newTestCase: AddCase = {
-            custom_status: testrail.getCustomStatus('Complete'),
-            custom_version: testrail.getCustomVersion('8.0.1.0'),
+            custom_status: customStatus,
+            custom_version: customVersion,
             title: test.title,
           };
           // Only Cypress reports at the moment are expected to have the steps field
@@ -433,7 +407,13 @@ export default class TestrailCommand extends Command {
               `Something unexpected happened. Section ${test.section} was not found and not created.`,
             );
           } else {
-            test.id = testrail.addCase(section.id, newTestCase).id;
+            const createdCase = await addTestrailCase(
+              testrailConfig,
+              section.id,
+              newTestCase,
+            );
+            test.id = createdCase.id;
+            ux.action.stop(`created (ID: ${createdCase.id})`);
           }
         } else {
           // the test exists in TestRail, so we'll just keep the ID
@@ -450,7 +430,7 @@ export default class TestrailCommand extends Command {
       case_ids: caseIds,
       description: flags.defaultRunDescription,
       include_all: false,
-      milestone_id,
+      milestone_id: testrailMilestone.id,
       name: flags.runName,
       suite_id: testrailSuite.id,
     };
@@ -458,7 +438,7 @@ export default class TestrailCommand extends Command {
     if (flags.skip) {
       this.log(`Created test run ${flags.runName}`);
     } else {
-      run = testrail.addRun(testrailProject.id, newRun);
+      run = await addTestrailRun(testrailConfig, testrailProject.id, newRun);
       this.log(
         `Created test run ${run.id.toString()} (https://jahia.testrail.net/index.php?/runs/view/${run.id.toString()})`,
       );
@@ -500,7 +480,7 @@ export default class TestrailCommand extends Command {
         }
 
         this.log(
-          `Puhsing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`,
+          `Will be pushing to testrail - Title: ${test.title} - case_id: ${test.id} - status_id: ${status_id}`,
         );
 
         // Adding custom fields when applicable
@@ -519,12 +499,14 @@ export default class TestrailCommand extends Command {
     if (flags.skip) {
       this.log(`Results: ${JSON.stringify(results)}`);
     } else {
-      testrail.addResults(run.id, results);
+      await addTestrailResults(testrailConfig, run.id, results);
     }
 
     this.log('Closing test run');
     if (!flags.skip) {
-      testrail.closeRun(run.id);
+      await closeTestrailRun(testrailConfig, run.id);
     }
+
+    this.log('All done!');
   }
 }

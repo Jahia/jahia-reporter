@@ -1,11 +1,15 @@
 import { JWT } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-const findSheetByTitle = (
-  doc: any,
-  title: string,
-  log: (message: string) => void,
-): any => {
+const findSheetByTitle = ({
+  doc,
+  log,
+  title,
+}: {
+  doc: any;
+  log: (message: string) => void;
+  title: string;
+}): any => {
   const { sheetCount, sheetsByIndex } = doc;
   for (let i = 0; i < sheetCount; i++) {
     const currentSheet = sheetsByIndex[i];
@@ -20,16 +24,21 @@ const findSheetByTitle = (
   return null;
 };
 
-const getSpreadsheet = async (
-  serviceAccountAuth: JWT,
-  googleSpreadsheetId: string,
-  worksheetTitle: string,
-  log: (message: string) => void,
-) => {
+const getSpreadsheet = async ({
+  googleSpreadsheetId,
+  log,
+  serviceAccountAuth,
+  worksheetTitle,
+}: {
+  googleSpreadsheetId: string;
+  log: (message: string) => void;
+  serviceAccountAuth: JWT;
+  worksheetTitle: string;
+}) => {
   const doc = new GoogleSpreadsheet(googleSpreadsheetId, serviceAccountAuth);
   await doc.loadInfo();
   log(`Loaded spreadsheet: ${doc.title}`);
-  const sheet = findSheetByTitle(doc, worksheetTitle, log);
+  const sheet = findSheetByTitle({ doc, log, title: worksheetTitle });
   if (sheet === null) {
     log(
       `Worksheet with title "${worksheetTitle}" not found in spreadsheet "${doc.title}"`,
@@ -70,12 +79,12 @@ export const getWorksheetByName = async (
       log(`Connecting to spreadsheet: ${cpt}/3`);
       try {
         // eslint-disable-next-line no-await-in-loop
-        spRows = await getSpreadsheet(
-          serviceAccountAuth,
+        spRows = await getSpreadsheet({
           googleSpreadsheetId,
-          googleWorksheetName,
           log,
-        );
+          serviceAccountAuth,
+          worksheetTitle: googleWorksheetName,
+        });
       } catch {
         log('Unable to connect to spreadsheet');
       }

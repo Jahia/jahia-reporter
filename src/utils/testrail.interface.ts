@@ -86,6 +86,7 @@ export interface Milestone {
   id: number;
   name: string;
   project_id: number;
+  url?: string;
 }
 
 export interface PaginatedSections {
@@ -120,6 +121,10 @@ export interface Test {
   steps?: string;
   time: string;
   title: string;
+}
+
+export interface TestWithStatus extends Test {
+  status: string;
 }
 
 export interface AddCase {

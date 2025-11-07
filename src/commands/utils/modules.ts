@@ -4,8 +4,8 @@ import * as path from 'node:path';
 
 import { UtilsPlatform, UtilsVersions } from '../../global.type';
 import { getGraphqlClient } from '../../utils/getGraphqlClient.js';
-import { getModules } from '../../utils/modules.js';
-import { getPlatform } from '../../utils/platform.js';
+import { getModules } from '../../utils/getModules.js';
+import { getPlatform } from '../../utils/getPlatform.js';
 import { waitForJournalSync } from '../../utils/waitForJournalSync.js';
 
 class JahiaUtilsModule extends Command {
@@ -74,7 +74,7 @@ class JahiaUtilsModule extends Command {
 
     fs.writeFileSync(
       path.join(flags.filepath),
-      JSON.stringify({ ...version, platform }),
+      JSON.stringify({ ...version, platform }, null, 2),
     );
   }
 }

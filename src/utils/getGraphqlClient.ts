@@ -2,6 +2,38 @@ import { Client, fetchExchange } from '@urql/core';
 import { graphql } from 'gql.tada';
 import { Base64 } from 'js-base64';
 
+// Verify that the provided credentials are valid by querying the current user
+// and checking that the username matches the expected one
+const isConnectionValid = async (
+  client: Client,
+  username: string,
+): Promise<boolean> => {
+  const response = await client.query(
+    graphql(`
+      query {
+        currentUser {
+          username
+        }
+      }
+    `),
+    {},
+  );
+
+  if (!response.data || response.data.currentUser === null) {
+    throw new Error(
+      'Authentication failed: Unable to authenticate with the provided credentials',
+    );
+  }
+
+  if (response.data.currentUser.username !== username) {
+    throw new Error(
+      `Authentication failed: Authenticated user "${response.data.currentUser.username}" does not match expected username "${username}"`,
+    );
+  }
+
+  return true;
+};
+
 export const getGraphqlClient = async (
   jahiaUrl: string,
   jahiaUsername: string,
@@ -29,19 +61,9 @@ export const getGraphqlClient = async (
     url: normalizedUrl + '/modules/graphql',
   });
 
-  // Basic test of the connection
-  const response = await client.query(
-    graphql(`
-      query {
-        currentUser {
-          username
-        }
-      }
-    `),
-    {},
-  );
+  const checkConnection = await isConnectionValid(client, jahiaUsername);
 
-  if (!response.data || response.data.currentUser === null) {
+  if (!checkConnection) {
     throw new Error(
       'Authentication failed: Unable to authenticate with the provided credentials',
     );

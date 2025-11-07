@@ -13,7 +13,6 @@ const isAlive = (data: unknown): boolean => {
     typeof data !== 'object' ||
     !data ||
     !('jcr' in data) ||
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (data as any).jcr?.workspace !== 'EDIT'
   ) {
     return false;

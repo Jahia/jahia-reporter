@@ -231,6 +231,53 @@ Displaying errors for run: Jahia Perf at 120mn
 Exiting with exit code: 1 (failed)
 ```
 
+## Testrail
+
+Secrets to access Testrail are located here: https://it.jahia.com/index.php/pwd/view/2335
+
+This parameters takes the following parameters:
+
+- TESTRAIL_USERNAME: Account for testrail
+- TESTRAIL_PASSWORD: Password for testrail
+- PATH_SOURCE_XML_REPORTS: A path to a folder (or individual file) containing test results, this can be easily obtained by downloading artifacts from a previous test run, for example [from here](https://github.com/Jahia/jahia-ee/actions/workflows/nightly.yml).
+- TESTRAIL_METADATA: A file that can be downloaded from a previous nightly run, for example [from here](https://github.com/Jahia/jahia-ee/actions/workflows/nightly.yml). These are metadata elements that are attached to testrail runs.
+
+Sample Metadata content:
+
+```json
+{
+  "custom_url": "https://github.com/Jahia/jahia-ee/actions/runs/19053732432",
+  "version": "8.2.3.0-SNAPSHOT - Build: 6f1e237",
+  "custom_database": "PostgreSQL - Version: 16.10",
+  "custom_java": "OpenJDK Runtime Environment - Version: 17.0.16+8",
+  "custom_os": "Linux (amd64) - Version: 6.8.0-1039-aws"
+}
+```
+
+```bash
+export TESTRAIL_USERNAME="CHANGE_ME"
+export TESTRAIL_PASSWORD="CHANGE_ME"
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+export TESTRAIL_METADATA="./test-data/testrail-metadata.json"
+```
+
+Make sure to use a project that does exists in Testrail for the "--projectName" parameter.
+
+```bash
+./bin/run.mjs testrail \
+  --testrailUsername="${TESTRAIL_USERNAME}" \
+  --testrailPassword="${TESTRAIL_PASSWORD}" \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}" \
+  --projectName="Sandbox Module" \
+  --milestone="Default" \
+  --defaultRunDescription="This test a sample run description" \
+  --testrailCustomResultFields="${TESTRAIL_METADATA}" \
+  --linkRunFile="/tmp/testrail-link.txt"
+
+2025-10-21T14:18:53.675Z - Time since start: 0 ms
+Waiting for Jahia to be online... Jahia became reachable after 170 ms
+```
+
 ## Utils
 
 ### Alive
