@@ -1,6 +1,8 @@
-import { PaginatedSuites, Suite } from '../testrail.interface.js';
+import { ux } from '@oclif/core';
+
+import { PaginatedSuites, Suite, Project } from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import { TestRailConfig } from './config.js';
+import type { TestRailConfig } from '../testrail.interface.js';
 
 // Suite-related functions
 export const getSuites = (
@@ -28,4 +30,34 @@ export const getTestrailSuites = async (
     '',
   )) as PaginatedSuites;
   return getSuites.suites as Suite[];
+};
+
+export const getTestrailSuite = async (
+  config: TestRailConfig,
+  project: Project,
+  suiteName: string,
+  log: (msg: string) => void,
+): Promise<Suite> => {
+  ux.action.start(`Searching suite: ${suiteName} in Testrail`);
+
+  const testrailSuites = await getTestrailSuites(config, project.id);
+
+  log(
+    `List of suites in Testrail: ${testrailSuites.map((p) => p.name).join(', ')}`,
+  );
+
+  const testrailSuite = testrailSuites.find(
+    (suite) => suite.name === suiteName,
+  );
+  if (testrailSuite === undefined) {
+    throw new Error(
+      `Failed to find suite named: '${suiteName}' in project: '${project.name}'`,
+    );
+  }
+
+  ux.action.stop(
+    `Suite found: ${testrailSuite.name} with ID: ${testrailSuite.id}`,
+  );
+
+  return testrailSuite as Suite;
 };

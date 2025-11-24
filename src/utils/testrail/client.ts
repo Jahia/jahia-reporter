@@ -1,6 +1,6 @@
 import { SyncRequestClient } from 'ts-sync-request/dist/index.js';
 
-import { TestRailConfig, encode } from './config.js';
+import type { TestRailConfig } from '../testrail.interface.js';
 
 // HTTP request functionality
 export const sendRequest = (
@@ -10,20 +10,19 @@ export const sendRequest = (
   data: object | string,
 ): unknown => {
   const url: string = config.url + uri;
-  const auth: string = encode(config.username + ':' + config.password);
 
   for (let i = 0; i < 5; i++) {
     try {
       if (method === 'GET') {
         return new SyncRequestClient()
-          .addHeader('Authorization', 'Basic ' + auth)
+          .addHeader('Authorization', 'Basic ' + config.encodedAuth)
           .addHeader('Content-Type', 'application/json')
           .get(url);
       }
 
       if (method === 'POST') {
         return new SyncRequestClient()
-          .addHeader('Authorization', 'Basic ' + auth)
+          .addHeader('Authorization', 'Basic ' + config.encodedAuth)
           .addHeader('Content-Type', 'application/json')
           .post(url, data);
       }

@@ -1,3 +1,16 @@
+export interface TestRailConfig {
+  base: string;
+  enableRateLimiting?: boolean;
+  encodedAuth: string;
+  url: string;
+}
+
+export interface RequestParams {
+  data?: object | string;
+  method: 'GET' | 'POST';
+  uri: string;
+}
+
 export enum Status {
   Blocked = 2,
   Failed = 5,

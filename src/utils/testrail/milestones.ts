@@ -1,6 +1,6 @@
 import { Milestone, PaginatedMilestones } from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import { TestRailConfig } from './config.js';
+import type { TestRailConfig } from '../testrail.interface.js';
 
 // Milestone-related functions
 export const addMilestone = (

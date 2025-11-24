@@ -9,11 +9,9 @@ import ingestReport from '../utils/ingest/index.js';
 import {
   AddCase,
   AddRun,
-  Project,
   Run,
   Section,
   Status,
-  Suite,
   Test,
   TestRailResult,
   TestWithStatus,
@@ -22,9 +20,9 @@ import {
 import {
   parseTestsFromReports,
   createTestrailConfig,
-  getTestrailProjects,
-  getTestrailSuites,
+  getTestrailProject,
   getTestrailSections,
+  getTestrailParentSection,
   addTestrailSection,
   getTestrailMilestones,
   addTestrailMilestone,
@@ -36,6 +34,7 @@ import {
   addTestrailRun,
   closeTestrailRun,
   addTestrailResults,
+  getTestrailSuite,
 } from '../utils/testrail/index.js';
 
 export default class TestrailCommand extends Command {
@@ -140,9 +139,9 @@ export default class TestrailCommand extends Command {
           : `${flags.parentSection}-${runDate}`;
     }
 
-    this.log(`Testrail name will be: ${flags.runName}`);
+    this.log(`Will be creating a Testrail run with name: ${flags.runName}`);
 
-    // Parse files into objects
+    // Parse the test results from the provided report files
     const jrRun: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
@@ -150,6 +149,7 @@ export default class TestrailCommand extends Command {
     );
 
     // Format the test in a way that can be processed for testrail
+    // This takes the nested structure of JRRun and flattens it into a list of tests with status
     const tests: TestWithStatus[] = parseTestsFromReports(
       jrRun,
       this.log.bind(this),
@@ -157,7 +157,6 @@ export default class TestrailCommand extends Command {
 
     // Create a testrail configuration object that will be passed to all subsequent
     // calls to testrail
-
     const testrailConfig = createTestrailConfig({
       base: flags.testrailUrl,
       username: flags.testrailUsername,
@@ -167,46 +166,22 @@ export default class TestrailCommand extends Command {
           : flags.testrailApiKey,
     });
 
-    ux.action.start('Fetching projects from Testrail');
-    const testrailProjects = await getTestrailProjects(testrailConfig);
-    ux.action.stop(`${testrailProjects.length} projects fetched`);
-
-    this.log(
-      `List of projects: ${testrailProjects.map((p) => p.name).join(', ')}`,
-    );
-
-    const testrailProject = testrailProjects.find(
-      (project) => project.name === flags.projectName,
-    );
-    if (testrailProject === undefined) {
-      this.error(`Failed to find project named '${flags.projectName}'`);
-    } else {
-      testrailProject as Project;
-    }
-
-    this.log(
-      `Found project '${testrailProject.name}' with ID: ${testrailProject.id} and url: ${testrailConfig.base}index.php?/projects/view/${testrailProject.id}`,
-    );
-
-    ux.action.start('Fetching test suites from project');
-    const testrailSuites = await getTestrailSuites(
+    // Fetch the project from Testrail
+    // The command will not attempt to create a project if it doesn't exist
+    const testrailProject = await getTestrailProject(
       testrailConfig,
-      testrailProject.id,
+      flags.projectName,
+      this.log.bind(this),
     );
-    ux.action.stop(`${testrailSuites.length} suites fetched`);
 
-    this.log(`List of suites: ${testrailSuites.map((p) => p.name).join(', ')}`);
-
-    const testrailSuite = testrailSuites.find(
-      (suite) => suite.name === flags.suiteName,
+    // Fetch the suite from Testrail within the provided project
+    // The command will not attempt to create a suite if it doesn't exist
+    const testrailSuite = await getTestrailSuite(
+      testrailConfig,
+      testrailProject,
+      flags.suiteName,
+      this.log.bind(this),
     );
-    if (testrailSuite === undefined) {
-      this.error(
-        `Failed to find suite named: '${flags.suiteName}' in project: '${flags.projectName}'`,
-      );
-    } else {
-      testrailSuite as Suite;
-    }
 
     ux.action.start(
       `Fetching sections from project ID: ${testrailProject.id} and suite ID: ${testrailSuite.id}`,
@@ -218,41 +193,28 @@ export default class TestrailCommand extends Command {
     );
     ux.action.stop(`${testrailSections.length} sections fetched`);
 
-    let parentSectionId = '';
-    if (flags.parentSection !== '') {
-      let foundSection = testrailSections.find(
-        (section) => section.name === flags.parentSection,
-      );
-      if (foundSection === undefined) {
-        this.log(
-          `Failed to find section named '${flags.parentSection}' in project '${flags.projectName}'. Creating the section now.`,
-        );
-        foundSection = await addTestrailSection(
-          testrailConfig,
-          testrailProject.id,
-          {
-            parentId: '',
-            section: flags.parentSection,
-            suiteId: testrailSuite.id,
-          },
-        );
-        this.log(
-          `Created section '${flags.parentSection}' with ID: ${foundSection.id}`,
-        );
-        this.log(`Refreshing the list of sections from TestRail`);
-        testrailSections = await getTestrailSections(
-          testrailConfig,
-          testrailProject.id,
-          testrailSuite.id,
-        );
-      } else {
-        this.log(
-          `Found existing section '${flags.parentSection}' with ID: ${foundSection.id}`,
-        );
-      }
+    // Fetch the parent section if provided
+    // If a parent section is not found, it will be created
+    // If no parent section is provided, null is returned
+    const parentSection = await getTestrailParentSection(
+      testrailConfig,
+      flags.parentSection,
+      testrailProject,
+      testrailSuite,
+      testrailSections,
+      this.log.bind(this),
+    );
 
-      parentSectionId = foundSection.id.toString();
+    // If a parent section was created, make sure it's in the list of sections
+    // if not, add it
+    if (
+      parentSection !== null &&
+      testrailSections.find((s) => s.id === parentSection.id) === null
+    ) {
+      testrailSections.push(parentSection);
     }
+    const parentSectionId =
+      parentSection !== null ? parentSection.id.toString() : '';
 
     // Get Milestone
     ux.action.start(
@@ -495,7 +457,7 @@ export default class TestrailCommand extends Command {
     }
 
     // Bulk update results
-    this.log('Updating test run');
+    this.log(`Updating test run in batch for ${results.length} results`);
     if (flags.skip) {
       this.log(`Results: ${JSON.stringify(results)}`);
     } else {

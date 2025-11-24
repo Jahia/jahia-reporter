@@ -1,38 +1,8 @@
-// TestRail client configuration and types
-export interface TestRailConfig {
-  base: string;
-  enableRateLimiting?: boolean;
-  password: string;
-  url: string;
-  username: string;
-}
-
-export interface RequestParams {
-  data?: object | string;
-  method: 'GET' | 'POST';
-  uri: string;
-}
+import type { TestRailConfig } from '../testrail.interface.js';
 
 // Utility function for basic auth encoding
-export const encode = (str: string): string =>
+const encode = (str: string): string =>
   Buffer.from(str, 'binary').toString('base64');
-
-// Create TestRail configuration
-export const createConfig = (
-  base: string,
-  username: string,
-  password: string,
-  enableRateLimiting?: boolean,
-): TestRailConfig => {
-  const normalizedBase = base.slice(-1) === '/' ? base : base + '/';
-  return {
-    base: normalizedBase,
-    enableRateLimiting,
-    password,
-    url: normalizedBase + 'index.php?/api/v2/',
-    username,
-  };
-};
 
 export const createTestrailConfig = ({
   base,
@@ -49,8 +19,7 @@ export const createTestrailConfig = ({
   return {
     base: normalizedBase,
     enableRateLimiting,
-    username,
-    password,
+    encodedAuth: encode(username + ':' + password),
     url: normalizedBase + 'index.php?/api/v2/',
   };
 };

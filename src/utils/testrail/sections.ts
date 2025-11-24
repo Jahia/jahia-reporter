@@ -1,6 +1,11 @@
-import { PaginatedSections, Section } from '../testrail.interface.js';
+import type {
+  PaginatedSections,
+  Section,
+  Project,
+  TestRailConfig,
+  Suite,
+} from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import { TestRailConfig } from './config.js';
 
 // Section-related functions
 export const addSection = (
@@ -165,4 +170,38 @@ export const addTestrailSection = async (
     'add_section/' + projectId.toString(),
     sectionParams,
   )) as Section;
+};
+
+export const getTestrailParentSection = async (
+  config: TestRailConfig,
+  parentSectionName: string,
+  project: Project,
+  suite: Suite,
+  testrailSections: Section[],
+  log: (msg: string) => void,
+): Promise<Section | null> => {
+  if (parentSectionName === '') {
+    return null;
+  }
+  let foundSection = testrailSections.find(
+    (section) => section.name === parentSectionName,
+  );
+  if (foundSection !== undefined) {
+    log(
+      `Found existing section '${foundSection.name}' with ID: ${foundSection.id}`,
+    );
+    return foundSection;
+  }
+
+  log(
+    `Failed to find section named '${parentSectionName}' in project '${project.name}'. Creating the section now.`,
+  );
+  const newSection = await addTestrailSection(config, project.id, {
+    parentId: '',
+    section: parentSectionName,
+    suiteId: suite.id,
+  });
+  log(`Created section '${newSection.name}' with ID: ${newSection.id}`);
+
+  return newSection;
 };

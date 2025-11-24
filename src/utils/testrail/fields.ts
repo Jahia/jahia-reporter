@@ -2,7 +2,7 @@ import { ux } from '@oclif/core';
 
 import { CaseFields, ResultField, Project } from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import { TestRailConfig } from './config.js';
+import type { TestRailConfig } from '../testrail.interface.js';
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 
 // Cache for case fields to avoid repeated API calls
