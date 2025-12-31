@@ -387,7 +387,7 @@ The command displays the JSON object submitted to ZenCrepes.
 
 ## utils:alive
 
-Wait until able to perform a GraphQL query to get the current EDIT workspace.
+Wait until being able to perform a GraphQL query to get the current EDIT workspace.
 
 ### Try it
 
