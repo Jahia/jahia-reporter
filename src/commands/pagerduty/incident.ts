@@ -288,7 +288,7 @@ class JahiaPagerDutyIncident extends Command {
         if (spRows.length === 0) {
           this.log(`Connecting to spreadsheet: ${cpt}/3`);
           try {
-            // eslint-disable-next-line no-await-in-loop
+             
             spRows = await getSpreadsheetRows(
               flags.googleSpreadsheetId,
               flags.googleClientEmail,
@@ -338,7 +338,7 @@ class JahiaPagerDutyIncident extends Command {
             this.log(
               `Saving Google Spreadsheet row for: ${row.get('Test Service')}`,
             );
-            // eslint-disable-next-line no-await-in-loop
+             
             await row.save();
           }
         }

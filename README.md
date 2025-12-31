@@ -29,12 +29,89 @@ The model is composed of the following levels:
 
 The most important piece of analysis is **JRTestcase** which is an individual test that has the status `PASS` or `FAIL` depending of the presence of failures. From that point on, all metrics are bubbled-up all the way to JRRun.
 
-## Available Commands
+# Available Commands
 
 Main commands are stored under `src/commands`, those commands must all make use of the data model and use test report as their primary data source.
 Utilities commands are available in `src/commands/utils`, those are performing satellite activities (such as fetching installed modules versions).
 
 More details can be obtained about all of the commands by using `--help` with the command (or by looking at the source code).
+
+## github:incident
+
+The goal of this command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
+
+Issues are assigned to users and project boards based on a configuration stored in a google spreadsheet (link: https://docs.google.com/spreadsheets/d/1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg/edit?gid=0#gid=0).
+
+A deduplication key (dedup key) is generated for each incident to avoid duplicate issues being created for the same test failure.
+
+When running, the command will search for all existing issues (OPEN or CLOSED) for that service within the provide repository.
+
+- If it does not find any existing GitHub Issues and failures are present in the test report, it will create a new GitHub Issue
+- If existing GitHub Issues are found for the service:
+  - If there are no failures in the test report, it will close all OPEN GitHub Issues for that service
+  - If failures are present:
+    - It will search for CLOSED GitHub Issues matching the dedup key, if found, it will re-open the most recent one
+    - If no matching closed issues are found, it will create a new issue
+
+Finally, if an issue was created or re-opened, it will be updated on a GitHub Project board based on the configuration specified in the google spreadsheet.
+
+### Try it
+
+Secrets to access the google spreadsheet are located here: https://it.jahia.com/index.php/pwd/view/2335
+
+This command takes the following parameters:
+
+- GITHUB_TOKEN: A GitHub personal api token with correct permissions to create issues in a repository
+- INCIDENT_GOOGLE_PRIVATE_KEY_BASE64: A **base64 encoded** version of the private key. The secret in it.jahia.coml is not base64 encoded.
+- INCIDENT_GOOGLE_CLIENT_EMAIL: The user email
+- INCIDENT_GOOGLE_SPREADSHEET_ID: The ID of the spreadsheet, this can also be obtained by looking at the URL
+- PATH_TO_REPORT_FILE: A path to a folder (or individual file) containing test results, this can be easily obtained by downloading artifacts from a previous test run, for example [from here](https://github.com/Jahia/jahia-ee/actions/workflows/nightly.yml).
+
+```bash
+export GITHUB_TOKEN="CHANGE_MD"
+export INCIDENT_GOOGLE_PRIVATE_KEY_BASE64="CHANGE_MD"
+export INCIDENT_GOOGLE_CLIENT_EMAIL="CHANGE_MD"
+export INCIDENT_GOOGLE_SPREADSHEET_ID="1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg"
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+```
+
+```bash
+./bin/run.mjs github:incident \
+  --githubRepository=Jahia/sandbox \
+  --incidentService=testnotif2 \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}" \
+  --sourceUrl=http://some.url.jahia.com/run/1234
+
+Google Spreadsheet ID is set to: 1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg
+Connecting to spreadsheet: 1/3
+Loaded spreadsheet: Global view - Repositories, Modules, Ownership
+Reviewing sheet with title: Repositories
+Reviewing sheet with title: Releases
+Reviewing sheet with title: Pagerduty <- SHEET FOUND
+Searching for row matching service: testnotif2
+Found service testnotif2 at row number: 153
+Updated service testnotif2 located at row number: 153
+Assignee is set to [REPO_CHAMPION], its value will be fetched from the repository custom properties (Champion field)
+Incident Content:
+{
+  counts: { fail: 1, skip: 0, success: 158, total: 159 },
+  dedupKey: '350a1efb-1f19-5a49-a312-3e853acbbdcf',
+  description: 'Total Tests: 159 - Failure: 1 (skipped: 0, pending: 0) - Executed in 1156s\n' +
+    'FAILURES:\n' +
+    ' | Suite: Mocha Tests - Total tests: 3 - Failure: 1 - Executed in 10s\n' +
+    ' |   | - Absence of errors in SAM\n' +
+    ' |   |    | - FAIL: Absence of errors in SAM Check that SAM Jahia errors probe is present with GREEN status',
+  service: 'testnotif2',
+  sourceUrl: 'http://www.google.com',
+  title: 'testnotif2 - 1/159 FAILED test during test execution',
+  assignee: 'Fgerthoffert'
+}
+Starting GitHub Incident creation process
+Found 1 issues for service testnotif2
+Total number of existing issues for service testnotif2: 1
+Number of issues CLOSED referencing dedupKey 350a1efb-1f19-5a49-a312-3e853acbbdcf: 0
+Matching issue []
+```
 
 ### Testrail
 

@@ -1,5 +1,7 @@
 import { Octokit } from 'octokit';
 
+import type { GitHubProject } from '../../global.type';
+
 export const getProjectByNumber = async ({
   githubToken,
   log,
@@ -10,7 +12,7 @@ export const getProjectByNumber = async ({
   log: (message: string) => void;
   projectNumber: number;
   projectOrg: string;
-}): Promise<void> => {
+}): Promise<GitHubProject> => {
   const octokit = new Octokit({ auth: githubToken });
 
   log(

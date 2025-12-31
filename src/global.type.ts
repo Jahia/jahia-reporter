@@ -13,6 +13,11 @@ export interface Incident {
   title: string;
 }
 
+export interface GitHubProject {
+  id: string;
+  number: number;
+}
+
 export interface GitHubIssue {
   id: string;
   number: number;

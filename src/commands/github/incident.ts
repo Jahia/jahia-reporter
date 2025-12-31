@@ -1,6 +1,6 @@
 import { Command, Flags } from '@oclif/core';
 
-import { Incident } from '../../global.type';
+import { GitHubProject, Incident } from '../../global.type';
 import {
   addIssueToProject,
   closeIncidentIssue,
@@ -111,6 +111,7 @@ class JahiaGitHubIncident extends Command {
     version: Flags.version({ char: 'v' }),
   };
 
+  // eslint-disable-next-line complexity
   async run() {
     const { flags } = await this.parse(JahiaGitHubIncident);
 
@@ -215,17 +216,17 @@ class JahiaGitHubIncident extends Command {
     // - A project Team
     // - A Project Status
     // - A Project Priority
-    let githubProject: any = null;
+    let githubProject: GitHubProject | null = null;
     if (
       serviceRow.get('Project Number') !== undefined &&
-      Number.parseInt(serviceRow.get('Project Number')) > 0
+      Number.parseInt(serviceRow.get('Project Number'), 10) > 0
     ) {
       const projectOrg = flags.githubRepository.split('/')[0];
       // A GitHub project is specified in the column, meaning we have to fetch its data
       githubProject = await getProjectByNumber({
         githubToken: flags.githubToken,
         log: this.log.bind(this),
-        projectNumber: Number.parseInt(serviceRow.get('Project Number')),
+        projectNumber: Number.parseInt(serviceRow.get('Project Number'), 10),
         projectOrg,
       });
     }
@@ -253,18 +254,20 @@ class JahiaGitHubIncident extends Command {
     );
 
     let currentIssue = null;
-    if (issues.length === 0 && incidentContent.counts.fail > 0) {
-      // If no issue exists, and if failures are present, create a new issue
-      this.log(
-        `No existing issues found for service ${flags.incidentService}, creating a new one`,
-      );
-      currentIssue = await createIncidentIssue({
-        githubToken: flags.githubToken,
-        incidentContent,
-        issueLabel: flags.githubIssueLabel,
-        log: this.log.bind(this),
-        repository: flags.githubRepository,
-      });
+    if (issues.length === 0) {
+      if (incidentContent.counts.fail > 0) {
+        // If no issue exists, and if failures are present, create a new issue
+        this.log(
+          `No existing issues found for service ${flags.incidentService}, creating a new one`,
+        );
+        currentIssue = await createIncidentIssue({
+          githubToken: flags.githubToken,
+          incidentContent,
+          issueLabel: flags.githubIssueLabel,
+          log: this.log.bind(this),
+          repository: flags.githubRepository,
+        });
+      }
     } else {
       this.log(
         `Total number of existing issues for service ${flags.incidentService}: ${issues.length}`,
@@ -282,7 +285,7 @@ class JahiaGitHubIncident extends Command {
             `Found ${openedIssues.length} open issues for service ${flags.incidentService}, will proceed to close them.`,
           );
           for (const issue of openedIssues) {
-            // eslint-disable-next-line no-await-in-loop
+             
             await closeIncidentIssue({
               githubToken: flags.githubToken,
               incidentContent,
@@ -320,6 +323,17 @@ class JahiaGitHubIncident extends Command {
           });
 
           currentIssue = matchingIssues[0];
+        } else {
+          this.log(
+            `No matching closed issues found for dedupKey ${incidentContent?.dedupKey}, creating a new issue`,
+          );
+          currentIssue = await createIncidentIssue({
+            githubToken: flags.githubToken,
+            incidentContent,
+            issueLabel: flags.githubIssueLabel,
+            log: this.log.bind(this),
+            repository: flags.githubRepository,
+          });
         }
       }
     }

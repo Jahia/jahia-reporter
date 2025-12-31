@@ -78,7 +78,7 @@ export const getWorksheetByName = async (
     if (spRows === null) {
       log(`Connecting to spreadsheet: ${cpt}/3`);
       try {
-        // eslint-disable-next-line no-await-in-loop
+         
         spRows = await getSpreadsheet({
           googleSpreadsheetId,
           log,

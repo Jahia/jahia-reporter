@@ -30,7 +30,7 @@ export const resolveIncidents = async (
   }
 
   for (const incident of allOpenIncidents) {
-    // eslint-disable-next-line no-await-in-loop
+     
     const incidentResponse = await pdClient.put(`/incidents/${incident.id}`, {
       data: {
         incident: {
