@@ -372,7 +372,6 @@ Though not deprecated yet, we should aim at replacing it by features natively pr
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
 export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
-
 ```
 
 ```bash
@@ -399,6 +398,29 @@ Wait until being able to perform a GraphQL query to get the current EDIT workspa
 
 2025-10-21T14:18:53.675Z - Time since start: 0 ms
 Waiting for Jahia to be online... Jahia became reachable after 170 ms
+```
+
+## utils:checkreport
+
+Previously useful for debugging, displays all tests results and their status
+
+### Try it
+
+```bash
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+```
+
+```bash
+./bin/run.mjs utils:checkreport \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}"
+
+
+Root Stats => Tests: 159 Failures: 1 Time: 1156 Reports count: 44
+[0] Report: Mocha Tests => Tests: 9 Failures: 0 Time: 15 Suites count: 2
+[0][0] Suite: Provisioning operations validation for non-Jahia module bundles => Failures: 0 Time: 0 Timestamp: 2025-10-15T01:07:37 Tests count: 6
+[0][0][0] Test: Provisioning operations validation for non-Jahia module bundles Should reject provisioning operation: installBundle on non-Jahia module bundle => Failures: 0 Time: 0 Status: PASS
+[0][0][1] Test: Provisioning operations validation for non-Jahia module bundles Should reject provisioning operation: installModule on non-Jahia module bundle => Failures: 0 Time: 0 Status: PASS
+...
 ```
 
 #### modules
