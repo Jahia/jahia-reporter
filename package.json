@@ -107,11 +107,11 @@
   "repository": "Jahia/jahia-reporter",
   "scripts": {
     "build": "tsc -b",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "posttest": "eslint src --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif readme",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "eslint . --ext .js,.ts --fix",
+    "lint": "eslint src --ext .js,.ts --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },

@@ -37,7 +37,6 @@ export const updateServiceRow = async (
   const newRow = await worksheet.addRow({
     Failures: incidentContent.counts.fail,
     Link: incidentContent.sourceUrl,
-    'PagerDuty User ID': '[REPO_CHAMPION]',
     State: incidentContent.counts.fail > 0 ? 'FAILED' : 'PASSED',
     'Test Service': service,
     Total: incidentContent.counts.total,

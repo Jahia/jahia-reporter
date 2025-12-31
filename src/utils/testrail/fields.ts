@@ -1,87 +1,15 @@
 import { ux } from '@oclif/core';
-
-import { CaseFields, ResultField, Project } from '../testrail.interface.js';
-import { sendRequest } from './client.js';
-import type { TestRailConfig } from '../testrail.interface.js';
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 
-// Cache for case fields to avoid repeated API calls
-let cachedCaseFields: CaseFields[] = [];
+import type { TestRailConfig } from '../testrail.interface.js';
 
-// Function to clear cache (useful for testing)
-export const clearFieldsCache = (): void => {
-  cachedCaseFields = [];
-};
-
-// Field-related functions
-export const getCaseFields = (config: TestRailConfig): CaseFields[] =>
-  sendRequest(config, 'GET', 'get_case_fields', {}) as CaseFields[];
-
-export const getResultFields = (config: TestRailConfig): ResultField[] =>
-  sendRequest(config, 'GET', 'get_result_fields', {}) as ResultField[];
-
-export const getCustomStatus = (
-  config: TestRailConfig,
-  status: string,
-): number => {
-  if (cachedCaseFields.length === 0) {
-    cachedCaseFields = getCaseFields(config);
-  }
-
-  const statusField = cachedCaseFields.find(
-    (field) => field.system_name === 'custom_status',
-  );
-  if (statusField === undefined) {
-    throw new Error(
-      "Something went wrong. Can't find custom field 'custom_status'",
-    );
-  }
-
-  // the returned items look like this:
-  // "1, Incomplete/draft\n2, Complete\n3, In progress\n4, Needs to be checked/reworked
-  const listOfCustomStatus = statusField.configs[0].options.items.split('\n');
-  const foundStatus = listOfCustomStatus.find((s) => s.includes(status));
-  if (foundStatus === undefined) {
-    throw new Error(`Something went wrong. Can't find custom status ${status}`);
-  }
-
-  return Number(foundStatus.split(',')[0]);
-};
-
-export const getCustomVersion = (
-  config: TestRailConfig,
-  version: string,
-): number[] => {
-  if (cachedCaseFields.length === 0) {
-    cachedCaseFields = getCaseFields(config);
-  }
-
-  const versionField = cachedCaseFields.find(
-    (field) => field.system_name === 'custom_version',
-  );
-  if (versionField === undefined) {
-    throw new Error(
-      "Something went wrong. Can't find custom field 'custom_version'",
-    );
-  }
-
-  // the returned items look like this:
-  // 1, 7.2.0.0\n 2, 7.1.2.2\n....
-  const listOfCustomVersion = versionField.configs[0].options.items.split('\n');
-  const foundVersion = listOfCustomVersion.find((v) => v.includes(version));
-  if (foundVersion === undefined) {
-    throw new Error(
-      `Something went wrong. Can't find custom version ${version}`,
-    );
-  }
-
-  return [Number(foundVersion.split(',')[0])];
-};
+import { CaseFields, Project, ResultField } from '../testrail.interface.js';
+import { sendRequest } from './client.js';
 
 export const getTestrailResultFields = async (
   config: TestRailConfig,
   project: Project,
-  customFieldsSubmission: { [key: string]: string | number | boolean },
+  customFieldsSubmission: { [key: string]: boolean | number | string },
 ): Promise<ResultField[]> => {
   const rawFields = (await sendRequest(
     config,
@@ -127,15 +55,15 @@ export const getTestrailResultFields = async (
 };
 
 export const getTestrailCustomFields = async ({
-  testrailCustomResultFields,
   config,
-  project,
   log,
+  project,
+  testrailCustomResultFields,
 }: {
-  testrailCustomResultFields: string;
   config: TestRailConfig;
-  project: Project;
   log: (msg: string) => void;
+  project: Project;
+  testrailCustomResultFields: string;
 }): Promise<ResultField[]> => {
   if (
     testrailCustomResultFields === undefined ||
@@ -143,6 +71,7 @@ export const getTestrailCustomFields = async ({
   ) {
     return [];
   }
+
   // Parse the provided json file
   if (!existsSync(testrailCustomResultFields)) {
     throw new Error(
@@ -199,11 +128,12 @@ export const getTestrailCustomFields = async ({
   log(
     'The following custom fields are present on testrail and enabled on the project:',
   );
-  testrailEnabledCustomFields.forEach((f) => {
+  for (const f of testrailEnabledCustomFields) {
     log(
       `Custom field: '${f.label}' - system_name: '${f.system_name}' - value: '${f.value}'`,
     );
-  });
+  }
+
   return testrailEnabledCustomFields;
 };
 
@@ -215,14 +145,10 @@ export const getTestrailCaseFields = async (
   >;
 
 export const getTestrailCustomStatus = async (
-  config: TestRailConfig,
+  testrailCaseFields: CaseFields[],
   status: string,
 ): Promise<number> => {
-  if (cachedCaseFields.length === 0) {
-    cachedCaseFields = await getTestrailCaseFields(config);
-  }
-
-  const statusField = cachedCaseFields.find(
+  const statusField = testrailCaseFields.find(
     (field) => field.system_name === 'custom_status',
   );
   if (statusField === undefined) {
@@ -243,14 +169,10 @@ export const getTestrailCustomStatus = async (
 };
 
 export const getTestrailCustomVersion = async (
-  config: TestRailConfig,
+  testrailCaseFields: CaseFields[],
   version: string,
 ): Promise<number[]> => {
-  if (cachedCaseFields.length === 0) {
-    cachedCaseFields = await getTestrailCaseFields(config);
-  }
-
-  const versionField = cachedCaseFields.find(
+  const versionField = testrailCaseFields.find(
     (field) => field.system_name === 'custom_version',
   );
   if (versionField === undefined) {

@@ -15,7 +15,7 @@ export const reopenIncidentIssue = async ({
 }): Promise<void> => {
   const octokit = new Octokit({ auth: githubToken });
 
-  log(`Issue #${issue.number} will be Re-opened (${issue.url}`);
+  log(`Issue #${issue.number} will be Re-opened (${issue.url})`);
 
   let commentBody =
     '❌ A CI/CD workflow run with the same dedup key has failed, re-opening the issue.';

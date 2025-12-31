@@ -2,9 +2,11 @@ import { Command, Flags } from '@oclif/core';
 
 import { Incident } from '../../global.type';
 import {
+  addIssueToProject,
   closeIncidentIssue,
   createIncidentIssue,
   getAssigneeFromCustomProperties,
+  getProjectByNumber,
   reopenIncidentIssue,
   searchForIssues,
 } from '../../utils/github/index.js';
@@ -167,6 +169,9 @@ class JahiaGitHubIncident extends Command {
       },
       this.log.bind(this),
     );
+
+    // Fetch the service row matching the incident service
+    // If it does not find a matching row, it will create a new one for that service
     const serviceRow = await updateServiceRow(
       gWorksheet,
       flags.incidentService,
@@ -174,7 +179,18 @@ class JahiaGitHubIncident extends Command {
       this.log.bind(this),
     );
 
-    let assignee = serviceRow.get('PagerDuty User ID') || '';
+    // Exit if notifications are disabled
+    if (
+      serviceRow.get('Enable Notifications') !== undefined &&
+      serviceRow.get('Enable Notifications').toLowerCase() === 'no'
+    ) {
+      this.log(
+        'Notifications are disabled for this service (Column: Enable Notifications), the process will exit.',
+      );
+      this.exit(0);
+    }
+
+    let assignee = serviceRow.get('Assignee') || '';
     if (assignee === `[$${flags.githubCustomPropertyName}]`) {
       this.log(
         `Assignee is set to [${flags.githubCustomPropertyName}], its value will be fetched from the repository custom properties (${flags.githubCustomPropertyName} field)`,
@@ -186,6 +202,7 @@ class JahiaGitHubIncident extends Command {
       });
     }
 
+    // Exit if assignee cannot be found
     if (assignee === '') {
       this.log(
         `Unable to find assignee for service ${flags.incidentService}, the process will exit.`,
@@ -193,17 +210,28 @@ class JahiaGitHubIncident extends Command {
       this.exit(0);
     }
 
+    // If a GitHub Project is specified, we retrieve its configuration for
+    // assigning the issue to:
+    // - A project Team
+    // - A Project Status
+    // - A Project Priority
+    let githubProject: any = null;
     if (
-      serviceRow.get('PagerDuty Enabled') !== undefined &&
-      serviceRow.get('PagerDuty Enabled').toLowerCase() === 'no'
+      serviceRow.get('Project Number') !== undefined &&
+      Number.parseInt(serviceRow.get('Project Number')) > 0
     ) {
-      this.log(
-        'Notifications are disabled for this service (Column: PagerDuty Enabled), the process will exit.',
-      );
-      this.exit(0);
+      const projectOrg = flags.githubRepository.split('/')[0];
+      // A GitHub project is specified in the column, meaning we have to fetch its data
+      githubProject = await getProjectByNumber({
+        githubToken: flags.githubToken,
+        log: this.log.bind(this),
+        projectNumber: Number.parseInt(serviceRow.get('Project Number')),
+        projectOrg,
+      });
     }
 
     // Updating the incident object with the assignee
+    // At that point, the assignee must be a valid GitHub username
     incidentContent = {
       ...incidentContent,
       assignee,
@@ -213,7 +241,8 @@ class JahiaGitHubIncident extends Command {
     console.log(incidentContent);
 
     this.log('Starting GitHub Incident creation process');
-    // Begin by searching for all issues matching the provided incident service
+    // Begin by searching for/retrieving all issues matching the provided incident service
+    // We will want to find any existing issues (including closed issues) with the same dedup key
     const issues = await searchForIssues(
       flags.githubToken,
       flags.githubRepository,
@@ -223,10 +252,13 @@ class JahiaGitHubIncident extends Command {
       `Found ${issues.length} issues for service ${flags.incidentService}`,
     );
 
-    // If no issue exists, and if failures are present, create a new issue
+    let currentIssue = null;
     if (issues.length === 0 && incidentContent.counts.fail > 0) {
-      this.log(`No issues found for service ${flags.incidentService}`);
-      await createIncidentIssue({
+      // If no issue exists, and if failures are present, create a new issue
+      this.log(
+        `No existing issues found for service ${flags.incidentService}, creating a new one`,
+      );
+      currentIssue = await createIncidentIssue({
         githubToken: flags.githubToken,
         incidentContent,
         issueLabel: flags.githubIssueLabel,
@@ -238,6 +270,8 @@ class JahiaGitHubIncident extends Command {
         `Total number of existing issues for service ${flags.incidentService}: ${issues.length}`,
       );
       if (incidentContent.counts.fail === 0) {
+        // If there are no failures, any open issues will be closed
+        // The dedup key is not relevant at that point
         const openedIssues = issues.filter((i) => i.state === 'OPEN');
         if (openedIssues.length === 0) {
           this.log(
@@ -284,8 +318,31 @@ class JahiaGitHubIncident extends Command {
             issue: matchingIssues[0],
             log: this.log.bind(this),
           });
+
+          currentIssue = matchingIssues[0];
         }
       }
+    }
+
+    // If currentIssue is not null, this means:
+    //  - A new issue was created
+    //  - An issues was reopened
+    // then we know the issue should be added to a project as per the
+    // configuration in the spreadsheet
+    // If an issue was already open, we don't modify its status
+    if (currentIssue !== null && githubProject !== null) {
+      const githubProjectStatus = serviceRow.get('Project Status');
+      const githubProjectTeam = serviceRow.get('Project Team');
+      const githubProjectPriority = serviceRow.get('Project Priority');
+      await addIssueToProject({
+        githubProject,
+        githubProjectPriority,
+        githubProjectStatus,
+        githubProjectTeam,
+        githubToken: flags.githubToken,
+        issue: currentIssue,
+        log: this.log.bind(this),
+      });
     }
   }
 }

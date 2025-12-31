@@ -97,5 +97,5 @@ export const createIncidentIssue = async ({
 
   log(`Created issue: ${response.data.html_url}`);
 
-  return response;
+  return response.data;
 };

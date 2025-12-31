@@ -1,8 +1,9 @@
 import { ux } from '@oclif/core';
 
+import type { TestRailConfig } from '../testrail.interface.js';
+
 import { PaginatedProjects, Project } from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import type { TestRailConfig } from '../testrail.interface.js';
 
 export const getTestrailProjects = async (
   config: TestRailConfig,

@@ -1,12 +1,13 @@
-import { createTestrailConfig } from '../src/utils/testrail/config.js';
 import type { TestRailConfig } from '../src/utils/testrail.interface.js';
+
+import { createTestrailConfig } from '../src/utils/testrail/config.js';
 
 describe('TestRail Config', () => {
   describe('createTestrailConfig', () => {
     const defaultParams = {
       base: 'https://testrail.example.com',
-      username: 'testuser',
       password: 'testpass',
+      username: 'testuser',
     };
 
     describe('URL normalization', () => {
@@ -87,8 +88,8 @@ describe('TestRail Config', () => {
       it('should encode username and password correctly using Buffer', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'testuser',
           password: 'testpass',
+          username: 'testuser',
         });
 
         // Verify the encoding matches Buffer.from().toString('base64')
@@ -102,8 +103,8 @@ describe('TestRail Config', () => {
       it('should handle special characters in credentials', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'user@example.com',
           password: 'p@ssw0rd!',
+          username: 'user@example.com',
         });
 
         const expectedAuth = Buffer.from(
@@ -116,8 +117,8 @@ describe('TestRail Config', () => {
       it('should handle empty password', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'testuser',
           password: '',
+          username: 'testuser',
         });
 
         const expectedAuth = Buffer.from('testuser:', 'binary').toString(
@@ -129,8 +130,8 @@ describe('TestRail Config', () => {
       it('should handle username with colon', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'domain\\user:test',
           password: 'password',
+          username: 'domain\\user:test',
         });
 
         const expectedAuth = Buffer.from(
@@ -143,8 +144,8 @@ describe('TestRail Config', () => {
       it('should produce valid base64 encoding', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'admin',
           password: 'secret123',
+          username: 'admin',
         });
 
         // Test that the encoded string is valid base64
@@ -190,9 +191,9 @@ describe('TestRail Config', () => {
       it('should return a complete TestRailConfig object with all required properties', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com/',
-          username: 'admin',
-          password: 'secret123',
           enableRateLimiting: true,
+          password: 'secret123',
+          username: 'admin',
         });
 
         const expectedAuth = Buffer.from('admin:secret123', 'binary').toString(
@@ -201,9 +202,9 @@ describe('TestRail Config', () => {
 
         expect(config).toEqual({
           base: 'https://testrail.example.com/',
-          url: 'https://testrail.example.com/index.php?/api/v2/',
-          encodedAuth: expectedAuth,
           enableRateLimiting: true,
+          encodedAuth: expectedAuth,
+          url: 'https://testrail.example.com/index.php?/api/v2/',
         });
       });
 
@@ -221,8 +222,8 @@ describe('TestRail Config', () => {
       it('should handle empty base URL', () => {
         const config = createTestrailConfig({
           base: '',
-          username: 'user',
           password: 'pass',
+          username: 'user',
         });
 
         expect(config.base).toBe('/');
@@ -232,8 +233,8 @@ describe('TestRail Config', () => {
       it('should handle base URL with only slash', () => {
         const config = createTestrailConfig({
           base: '/',
-          username: 'user',
           password: 'pass',
+          username: 'user',
         });
 
         expect(config.base).toBe('/');
@@ -245,8 +246,8 @@ describe('TestRail Config', () => {
           'https://very-long-subdomain.extremely-long-domain-name.example.com/very/long/path/to/testrail/instance';
         const config = createTestrailConfig({
           base: longBase,
-          username: 'user',
           password: 'pass',
+          username: 'user',
         });
 
         expect(config.base).toBe(longBase + '/');
@@ -256,8 +257,8 @@ describe('TestRail Config', () => {
       it('should handle unicode characters in credentials', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: 'üser',
           password: 'pæssword',
+          username: 'üser',
         });
 
         const expectedAuth = Buffer.from('üser:pæssword', 'binary').toString(
@@ -269,8 +270,8 @@ describe('TestRail Config', () => {
       it('should handle empty username and password', () => {
         const config = createTestrailConfig({
           base: 'https://testrail.example.com',
-          username: '',
           password: '',
+          username: '',
         });
 
         const expectedAuth = Buffer.from(':', 'binary').toString('base64');
@@ -289,22 +290,22 @@ describe('TestRail Config', () => {
           'testrail.local/instance/',
         ];
 
-        testCases.forEach((base) => {
+        for (const base of testCases) {
           const config = createTestrailConfig({
             base,
-            username: 'user',
             password: 'pass',
+            username: 'user',
           });
 
           expect(config.url).toMatch(/\/index\.php\?\/api\/v2\/$/);
-        });
+        }
       });
 
       it('should maintain base URL protocol and host in API endpoint', () => {
         const config = createTestrailConfig({
           base: 'https://secure.testrail.company.com:8443/app',
-          username: 'user',
           password: 'pass',
+          username: 'user',
         });
 
         expect(config.url).toBe(
@@ -317,9 +318,9 @@ describe('TestRail Config', () => {
       it('should handle typical production configuration', () => {
         const config = createTestrailConfig({
           base: 'https://company.testrail.io',
-          username: 'ci-user@company.com',
-          password: 'api-token-xyz123',
           enableRateLimiting: true,
+          password: 'api-token-xyz123',
+          username: 'ci-user@company.com',
         });
 
         expect(config.base).toBe('https://company.testrail.io/');
@@ -338,8 +339,8 @@ describe('TestRail Config', () => {
       it('should handle self-hosted TestRail instance', () => {
         const config = createTestrailConfig({
           base: 'http://testrail.internal.company.com:8080/testrail',
-          username: 'admin',
           password: 'complex_P@ssw0rd!',
+          username: 'admin',
         });
 
         expect(config.base).toBe(
@@ -354,9 +355,9 @@ describe('TestRail Config', () => {
       it('should handle development environment', () => {
         const config = createTestrailConfig({
           base: 'http://localhost:3000',
-          username: 'dev',
-          password: 'dev',
           enableRateLimiting: false,
+          password: 'dev',
+          username: 'dev',
         });
 
         expect(config.base).toBe('http://localhost:3000/');

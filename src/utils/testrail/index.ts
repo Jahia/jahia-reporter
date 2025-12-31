@@ -1,4 +1,5 @@
 export * from './cases.js';
+export * from './client.js';
 export * from './config.js';
 export * from './fields.js';
 export * from './milestones.js';
@@ -8,4 +9,3 @@ export * from './results.js';
 export * from './runs.js';
 export * from './sections.js';
 export * from './suites.js';
-export * from './client.js';

@@ -1,13 +1,15 @@
+import { ux } from '@oclif/core';
+
+import type {
+  PaginatedProjects,
+  Project,
+  TestRailConfig,
+} from '../src/utils/testrail.interface.js';
+
 import {
   getTestrailProject,
   getTestrailProjects,
 } from '../src/utils/testrail/projects.js';
-import type {
-  TestRailConfig,
-  Project,
-  PaginatedProjects,
-} from '../src/utils/testrail.interface.js';
-import { ux } from '@oclif/core';
 
 // Mock the client module
 jest.mock('../src/utils/testrail/client.js', () => ({
@@ -30,35 +32,35 @@ const mockUx = ux as jest.Mocked<typeof ux>;
 describe('TestRail Projects', () => {
   const mockConfig: TestRailConfig = {
     base: 'https://testrail.example.com/',
-    url: 'https://testrail.example.com/index.php?/api/v2/',
-    encodedAuth: 'encoded_auth',
     enableRateLimiting: false,
+    encodedAuth: 'encoded_auth',
+    url: 'https://testrail.example.com/index.php?/api/v2/',
   };
 
   const mockProjects: Project[] = [
     {
       id: 1,
-      name: 'Project Alpha',
-      url: 'https://testrail.example.com/project/1',
       is_completed: false,
+      name: 'Project Alpha',
       show_announcement: false,
       suite_mode: 1,
+      url: 'https://testrail.example.com/project/1',
     },
     {
       id: 2,
-      name: 'Project Beta',
-      url: 'https://testrail.example.com/project/2',
       is_completed: false,
+      name: 'Project Beta',
       show_announcement: false,
       suite_mode: 2,
+      url: 'https://testrail.example.com/project/2',
     },
     {
       id: 3,
-      name: 'Sandbox Module',
-      url: 'https://testrail.example.com/project/3',
       is_completed: false,
+      name: 'Sandbox Module',
       show_announcement: false,
       suite_mode: 1,
+      url: 'https://testrail.example.com/project/3',
     },
   ];
 
@@ -232,19 +234,19 @@ describe('TestRail Projects', () => {
       const specialProjects: Project[] = [
         {
           id: 1,
-          name: 'Project with "quotes" & symbols!',
-          url: 'https://testrail.example.com/project/1',
           is_completed: false,
+          name: 'Project with "quotes" & symbols!',
           show_announcement: false,
           suite_mode: 1,
+          url: 'https://testrail.example.com/project/1',
         },
         {
           id: 2,
-          name: 'Project-with-dashes_and_underscores',
-          url: 'https://testrail.example.com/project/2',
           is_completed: false,
+          name: 'Project-with-dashes_and_underscores',
           show_announcement: false,
           suite_mode: 1,
+          url: 'https://testrail.example.com/project/2',
         },
       ];
 
@@ -273,11 +275,11 @@ describe('TestRail Projects', () => {
       const longNameProjects: Project[] = [
         {
           id: 1,
-          name: longProjectName,
-          url: 'https://testrail.example.com/project/1',
           is_completed: false,
+          name: longProjectName,
           show_announcement: false,
           suite_mode: 1,
+          url: 'https://testrail.example.com/project/1',
         },
       ];
 
@@ -314,11 +316,11 @@ describe('TestRail Projects', () => {
       const standardProjects: Project[] = [
         {
           id: 1,
-          name: 'Test Project',
-          url: 'https://testrail.example.com/project/1',
           is_completed: false,
+          name: 'Test Project',
           show_announcement: false,
           suite_mode: 1,
+          url: 'https://testrail.example.com/project/1',
         },
       ];
 

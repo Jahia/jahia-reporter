@@ -1,16 +1,7 @@
-import { TestRailResult } from '../testrail.interface.js';
-import { sendRequest } from './client.js';
 import type { TestRailConfig } from '../testrail.interface.js';
 
-// Result-related functions
-export const addResults = (
-  config: TestRailConfig,
-  runId: number,
-  results: TestRailResult[],
-): TestRailResult[] =>
-  sendRequest(config, 'POST', 'add_results_for_cases/' + runId.toString(), {
-    results,
-  }) as TestRailResult[];
+import { TestRailResult } from '../testrail.interface.js';
+import { sendRequest } from './client.js';
 
 export const addTestrailResults = async (
   config: TestRailConfig,

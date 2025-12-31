@@ -1,22 +1,12 @@
 import { ux } from '@oclif/core';
 
-import { PaginatedSuites, Suite, Project } from '../testrail.interface.js';
+import {
+  PaginatedSuites,
+  Project,
+  Suite,
+  TestRailConfig,
+} from '../testrail.interface.js';
 import { sendRequest } from './client.js';
-import type { TestRailConfig } from '../testrail.interface.js';
-
-// Suite-related functions
-export const getSuites = (
-  config: TestRailConfig,
-  projectId: number,
-): Suite[] => {
-  const getSuites = sendRequest(
-    config,
-    'GET',
-    'get_suites/' + projectId.toString(),
-    '',
-  ) as PaginatedSuites;
-  return getSuites.suites as Suite[];
-};
 
 // Suite-related functions
 export const getTestrailSuites = async (

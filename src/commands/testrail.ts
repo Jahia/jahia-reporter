@@ -5,7 +5,6 @@ import * as fs from 'node:fs';
 
 import { JRRun } from '../global.type';
 import ingestReport from '../utils/ingest/index.js';
-
 import {
   AddCase,
   AddRun,
@@ -16,25 +15,25 @@ import {
   TestRailResult,
   TestWithStatus,
 } from '../utils/testrail.interface.js';
-
 import {
-  parseTestsFromReports,
-  createTestrailConfig,
-  getTestrailProject,
-  getTestrailSections,
-  getTestrailParentSection,
-  addTestrailSection,
-  getTestrailMilestones,
+  addTestrailCase,
   addTestrailMilestone,
+  addTestrailResults,
+  addTestrailRun,
+  addTestrailSection,
+  closeTestrailRun,
+  createTestrailConfig,
+  getTestrailCaseFields,
+  getTestrailCases,
   getTestrailCustomFields,
   getTestrailCustomStatus,
   getTestrailCustomVersion,
-  getTestrailCases,
-  addTestrailCase,
-  addTestrailRun,
-  closeTestrailRun,
-  addTestrailResults,
+  getTestrailMilestones,
+  getTestrailParentSection,
+  getTestrailProject,
+  getTestrailSections,
   getTestrailSuite,
+  parseTestsFromReports,
 } from '../utils/testrail/index.js';
 
 export default class TestrailCommand extends Command {
@@ -159,12 +158,20 @@ export default class TestrailCommand extends Command {
     // calls to testrail
     const testrailConfig = createTestrailConfig({
       base: flags.testrailUrl,
-      username: flags.testrailUsername,
       password:
         flags.testrailApiKey === undefined
           ? flags.testrailPassword
           : flags.testrailApiKey,
+      username: flags.testrailUsername,
     });
+
+    // Retrieve the case fields from Testrail
+    // These settings are global across all projects
+    // They can be configured here: https://jahia.testrail.net/index.php?/admin/custom/overview#
+    const testrailCaseFields = await getTestrailCaseFields(testrailConfig);
+    this.log(
+      `Fetched TestRail case fields: ${JSON.stringify(testrailCaseFields)}`,
+    );
 
     // Fetch the project from Testrail
     // The command will not attempt to create a project if it doesn't exist
@@ -186,7 +193,7 @@ export default class TestrailCommand extends Command {
     ux.action.start(
       `Fetching sections from project ID: ${testrailProject.id} and suite ID: ${testrailSuite.id}`,
     );
-    let testrailSections = await getTestrailSections(
+    const testrailSections = await getTestrailSections(
       testrailConfig,
       testrailProject.id,
       testrailSuite.id,
@@ -213,14 +220,15 @@ export default class TestrailCommand extends Command {
     ) {
       testrailSections.push(parentSection);
     }
+
     const parentSectionId =
-      parentSection !== null ? parentSection.id.toString() : '';
+      parentSection === null ? '' : parentSection.id.toString();
 
     // Get Milestone
     ux.action.start(
       `Fetching milestones from project ID: ${testrailProject.id}`,
     );
-    let testrailMilestones = await getTestrailMilestones(
+    const testrailMilestones = await getTestrailMilestones(
       testrailConfig,
       testrailProject.id,
     );
@@ -233,8 +241,8 @@ export default class TestrailCommand extends Command {
       if (flags.skip) {
         testrailMilestone = {
           id: -1,
-          project_id: testrailProject.id,
           name: flags.milestone,
+          project_id: testrailProject.id,
           url: '',
         };
         this.log(`Milestone: ${flags.milestone}`);
@@ -249,6 +257,7 @@ export default class TestrailCommand extends Command {
         );
       }
     }
+
     if (testrailMilestone === undefined) {
       this.error(`Failed to create or find milestone: ${flags.milestone}`);
     }
@@ -259,10 +268,10 @@ export default class TestrailCommand extends Command {
 
     // Custom fields make it possible to add additional metadata to testrail results
     const testrailCustomFields = await getTestrailCustomFields({
-      testrailCustomResultFields: flags.testrailCustomResultFields,
       config: testrailConfig,
-      project: testrailProject,
       log: this.log.bind(this),
+      project: testrailProject,
+      testrailCustomResultFields: flags.testrailCustomResultFields,
     });
 
     // In order to make sure that all the test cases exist in TestRail we need to first make sure all the sections exist
@@ -337,12 +346,16 @@ export default class TestrailCommand extends Command {
           ux.action.start(
             `Test '${test.title}' was not found in TestRail. Creating it.`,
           );
+
+          // Search for the ID of the custom status "Complete"
           const customStatus = await getTestrailCustomStatus(
-            testrailConfig,
+            testrailCaseFields,
             'Complete',
           );
+
+          // Search for the ID corrsponding to the provided Jahia version
           const customVersion = await getTestrailCustomVersion(
-            testrailConfig,
+            testrailCaseFields,
             '8.0.1.0',
           );
           const newTestCase: AddCase = {

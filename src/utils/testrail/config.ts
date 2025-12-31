@@ -6,14 +6,14 @@ const encode = (str: string): string =>
 
 export const createTestrailConfig = ({
   base,
-  username,
-  password,
   enableRateLimiting = false,
+  password,
+  username,
 }: {
   base: string;
-  username: string;
-  password: string;
   enableRateLimiting?: boolean;
+  password: string;
+  username: string;
 }): TestRailConfig => {
   const normalizedBase = base.slice(-1) === '/' ? base : base + '/';
   return {
