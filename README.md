@@ -36,6 +36,10 @@ Utilities commands are available in `src/commands/utils`, those are performing s
 
 More details can be obtained about all of the commands by using `--help` with the command (or by looking at the source code).
 
+```
+./bin/run.mjs --help
+```
+
 ## github:incident
 
 The goal of this command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
@@ -113,30 +117,289 @@ Number of issues CLOSED referencing dedupKey 350a1efb-1f19-5a49-a312-3e853acbbdc
 Matching issue []
 ```
 
-### Testrail
+## pagerduty:incident
 
-Given an existing project name, submit data to testrail. All of the missing elements (milestones, runs, cases) are automatically created if non-existing. Projects are not automatically created.
+The pagerduty:incident was the command previously used to create incidents in PagerDuty in case of test failures. It is being replaced by "github:incident" (thus not much documentation will be provided).
 
-### Slack
+It remains present to smooth the migration, but should be considered deprecated and will be removed in future versions.
 
-Given a Slack webhook, submit a formatted message to slack to report about test execution status.
+### Try it
 
-Sample:
-
+```bash
+export INCIDENT_PAGERDUTY_API_KEY="CHANGE_MD"
+export INCIDENT_PAGERDUTY_REPORTER_EMAIL="CHANGE_MD"
+export INCIDENT_PAGERDUTY_REPORTER_ID="CHANGE_MD"
+export INCIDENT_GOOGLE_PRIVATE_KEY_BASE64="CHANGE_MD"
+export INCIDENT_GOOGLE_CLIENT_EMAIL="CHANGE_MD"
+export INCIDENT_GOOGLE_SPREADSHEET_ID="1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg"
+export PATH_SOURCE_XML_REPORTS="./test-data/results-success/xml_reports/"
 ```
-Test summary for: MODULE_NAME - 35 tests - 4 failures
-Suite: TEST-org.jahia.test.graphql.GraphQLPublicationTest.xml - 6 tests - 4 failures
- |-- shouldPublishNoSubtree(org.jahia.test.graphql.GraphQLPublicationTest) (5s) - 2 failures
- |-- shouldGetErrorNotRetrieveAggregatedPublicationInfoFromLive(org.jahia.test.graphql.GraphQLPublicationTest) (3s) - 2 failures
+
+```bash
+./bin/run.mjs pagerduty:incident \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}"\
+  --sourceType=xml \
+  --pdTwoStepsAssign \
+  --googleUpdateState \
+  --service=jcustomer2 \
+  --sourceUrl="http://some.url.jahia.com/run/1234"
 ```
 
-Various parameters are available to customize the message (notification icon, ...), notify particular individuals, ...
+## perfs:submit
 
-### ZenCrepes
+The perfs commands are primariraly used by https://github.com/Jahia/core-perf-test-terraform to analyze and submit performance tests results.
+
+You will need the secret: ZENCREPES_WEBHOOK_SECRET available at https://it.jahia.com/index.php/pwd/view/2335
+
+Note that you'll need to encode the secret as it contains special characters that will not be handled otherwise by bash, you can encode it using: `python3 -c 'import urllib.parse; print(urllib.parse.quote("CHANGE_ME"))'`
+
+### Try it
+
+```bash
+export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
+```
+
+```bash
+./bin/run.mjs perfs:submit \
+  --webhook="https://zencrepes.jahia.com/zqueue/perfs/webhook" \
+  --webhookSecret=${ZENCREPES_WEBHOOK_SECRET} \
+  --runsFile="./test-data/jmeter-runs.json" \
+  --tfsettingsFile="../core-perf-test-terraform/terraform/tfsettings.yaml" \
+  --runName="Jahia Core Perf - j8sn-jsx" \
+  --repoUrl="Jahia/core-perf-test-terraform" \
+  --runUrl="https://github.com/Jahia/core-perf-test-terraform/actions/runs/18549891152/job/52891151094"
+
+{
+  name: 'Jahia Core Perf - j8sn-jsx',
+  platform: { region: 'us-west-2', tenant: 'jahia-sandbox', vendor: 'AWS' },
+  repository: {
+    name: 'core-perf-test-terraform',
+    owner: { login: 'Jahia', url: 'https://github.com/Jahia' },
+    url: 'Jahia/core-perf-test-terraform'
+  },
+  ... TRUNCATED ...
+  runs: [
+    { name: 'Jahia Perf at 15mn', duration: 15, statistics: [Array] },
+    { name: 'Jahia Perf at 30mn', duration: 30, statistics: [Array] },
+    { name: 'Jahia Perf at 45mn', duration: 45, statistics: [Array] },
+    { name: 'Jahia Perf at 60mn', duration: 60, statistics: [Array] },
+    { name: 'Jahia Perf at 75mn', duration: 75, statistics: [Array] },
+    { name: 'Jahia Perf at 90mn', duration: 90, statistics: [Array] },
+    { name: 'Jahia Perf at 105mn', duration: 105, statistics: [Array] },
+    { name: 'Jahia Perf at 120mn', duration: 120, statistics: [Array] },
+    { name: 'Jahia Perf at 135mn', duration: 135, statistics: [Array] },
+    { name: 'Jahia Perf at 150mn', duration: 150, statistics: [Array] }
+  ],
+  startedAt: '2025-10-16T05:23:58Z',
+  tags: [ { name: 'Jahia 8.2.3.0-SNAPSHOT' } ]
+}
+```
+
+## perfs:analyze
+
+The goal of this command is to check if any of the transactions is above a specified threshold
+
+### Try it
+
+The analysis command takes three paths:
+
+- PATH_TO_RUNS_FILE: This json file is the ouput of a performance test run, it is available as test artifacts from run executed on: https://github.com/Jahia/core-perf-test-terraform
+- PATH_TO_THRESHOLD_FILE: This is the path to a file from the core-perf-test-terraform repository containing thresholds above which errors should be raised.
+- PATH_TO_REPORT_FILE: This is the file where the output of the command will be stored.
+
+```bash
+export PATH_TO_RUNS_FILE="./test-data/jmeter-runs.json"
+export PATH_TO_THRESHOLD_FILE="../core-perf-test-terraform/thresholds-runs.json"
+export PATH_TO_REPORT_FILE="./test-data/perf-analysis.json"
+```
+
+```bash
+./bin/run.mjs perfs:analyze \
+  --runsFile="${PATH_TO_THRESHOLD_FILE}" \
+  --thresholdsFile=${PATH_TO_THRESHOLD_FILE} \
+  --reportFile=${PATH_TO_REPORT_FILE}
+
+Starting analysis
+More details about the threshold format can be found at: https://github.com/Jahia/core-perf-test
+Analyzing run: Jahia Perf at 15mn, using threshold: *
+Analyzing run: Jahia Perf at 30mn, using threshold: *
+Analyzing run: Jahia Perf at 45mn, using threshold: *
+Analyzing run: Jahia Perf at 60mn, using threshold: *
+Analyzing run: Jahia Perf at 75mn, using threshold: *
+Analyzing run: Jahia Perf at 90mn, using threshold: *
+Analyzing run: Jahia Perf at 105mn, using threshold: *
+Analyzing run: Jahia Perf at 120mn, using threshold: Jahia Perf at 120mn
+Analyzing run: Jahia Perf at 135mn, using threshold: *
+Analyzing run: Jahia Perf at 150mn, using threshold: *
+Saving report to: ./test-data/perf-analysis.json
+The following values were failing threshold:
+ERROR: run: Jahia Perf at 120mn, transaction: E3-C9b Publish list page / Queue publish job+reload, metric: pct1ResTime is failing threshold => Value: 2043 (Operator: gt) Threshold: 1500
+ERROR: run: Jahia Perf at 120mn, transaction: E3-U1d Edit news entry list page / Save+reload, metric: pct1ResTime is failing threshold => Value: 1502 (Operator: gt) Threshold: 1500
+ERROR: run: Jahia Perf at 120mn, transaction: E3-C7b Add news entry / Save+reload, metric: pct1ResTime is failing threshold => Value: 1511 (Operator: gt) Threshold: 1500
+ERROR: run: Jahia Perf at 120mn, transaction: E3-C8b Publish page / Queue publish job+reload, metric: pct1ResTime is failing threshold => Value: 1568 (Operator: gt) Threshold: 1500
+ERROR: run: Jahia Perf at 120mn, transaction: E3-U2c Publish update / Queue publish job+reload, metric: pct1ResTime is failing threshold => Value: 2068 (Operator: gt) Threshold: 1500
+```
+
+## perfs:history
+
+The history command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs:analyze` command) and generate a table view of past executions.
+
+Such runs are stored at this location: https://github.com/Jahia/core-perf-test-terraform/tree/main/runs_history/
+
+### Try it
+
+```bash
+export PATH_ANALYSIS="../core-perf-test-terraform/runs_history/j8sn-jsx/"
+```
+
+```bash
+./bin/run.mjs perfs:history \
+  --analysisWindow=8 \
+  --analysisFailureAlert=3 \
+  --analysisPath="${PATH_ANALYSIS}"
+
+Displaying errors for run: Jahia Perf at 120mn
+* (Above threshold)
+
+  ┌─────────────────────────────────────────────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────┬───────────┐
+  │                    Transactions                     │   Metric    │ 10/05-17:15 │ 10/05-23:11 │ 10/06-14:03 │ 10/06-19:04 │ 10/07-09:35 │ 10/09-07:28 │ 10/14-07:26 │ 10/16-07:23 │ Send Alert │ Threshold │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-C9b Publish list page / Queue publish job+reload │ pct1ResTime │       2012* │       2015* │       2086* │       1977* │        1270 │       2111* │       2015* │       2043* │        YES │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-U1d Edit news entry list page / Save+reload      │ pct1ResTime │       1777* │        1491 │        1500 │       1593* │        1267 │       1801* │       1597* │       1502* │        YES │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E2c View list page in edit mode                     │ pct1ResTime │       1415* │        1161 │        1160 │        1269 │        1032 │        1201 │        1179 │        1207 │         NO │      1400 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-C7b Add news entry / Save+reload                 │ pct1ResTime │       1843* │        1441 │        1304 │       1549* │        1357 │       1781* │       1510* │       1511* │        YES │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-U1d Edit rich text page / Save+reload            │ pct1ResTime │       1668* │        1362 │        1365 │        1395 │        1210 │        1401 │        1353 │        1337 │         NO │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-C8b Publish page / Queue publish job+reload      │ pct1ResTime │       1766* │        1358 │       1596* │       1594* │        1181 │       1639* │       1669* │       1568* │        YES │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-U2c Publish update / Queue publish job+reload    │ pct1ResTime │       2201* │       2044* │       1938* │       2066* │        1225 │       2067* │       2050* │       2068* │        YES │      1500 │
+  ├─────────────────────────────────────────────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────┼───────────┤
+  │ E3-U1b Edit content / Close locked engine+reload    │ pct1ResTime │         985 │       1076* │         851 │         990 │         858 │       1326* │         976 │         715 │         NO │      1000 │
+  └─────────────────────────────────────────────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴────────────┴───────────┘
+Exiting with exit code: 1 (failed)
+```
+
+## testrail
+
+Given an existing project name, submit data to testrail. All of the missing elements (milestones, runs, cases) are automatically created if non-existing.
+
+Projects are not automatically created.
+
+### Try it
+
+Secrets to access Testrail are located here: https://it.jahia.com/index.php/pwd/view/2335
+
+This parameters takes the following parameters:
+
+- TESTRAIL_USERNAME: Account for testrail
+- TESTRAIL_PASSWORD: Password for testrail
+- PATH_SOURCE_XML_REPORTS: A path to a folder (or individual file) containing test results, this can be easily obtained by downloading artifacts from a previous test run, for example [from here](https://github.com/Jahia/jahia-ee/actions/workflows/nightly.yml).
+- TESTRAIL_METADATA: A file that can be downloaded from a previous nightly run, for example [from here](https://github.com/Jahia/jahia-ee/actions/workflows/nightly.yml). These are metadata elements that are attached to testrail runs.
+
+Sample Metadata content:
+
+```json
+{
+  "custom_url": "https://github.com/Jahia/jahia-ee/actions/runs/19053732432",
+  "version": "8.2.3.0-SNAPSHOT - Build: 6f1e237",
+  "custom_database": "PostgreSQL - Version: 16.10",
+  "custom_java": "OpenJDK Runtime Environment - Version: 17.0.16+8",
+  "custom_os": "Linux (amd64) - Version: 6.8.0-1039-aws"
+}
+```
+
+```bash
+export TESTRAIL_USERNAME="CHANGE_ME"
+export TESTRAIL_PASSWORD="CHANGE_ME"
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+export TESTRAIL_METADATA="./test-data/testrail-metadata.json"
+```
+
+Make sure to use a project that does exists in Testrail for the "--projectName" parameter.
+
+```bash
+./bin/run.mjs testrail \
+  --testrailUsername="${TESTRAIL_USERNAME}" \
+  --testrailPassword="${TESTRAIL_PASSWORD}" \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}" \
+  --projectName="Sandbox Module" \
+  --milestone="Default" \
+  --defaultRunDescription="This test a sample run description" \
+  --testrailCustomResultFields="${TESTRAIL_METADATA}" \
+  --linkRunFile="/tmp/testrail-link.txt"
+
+2025-10-21T14:18:53.675Z - Time since start: 0 ms
+Waiting for Jahia to be online... Jahia became reachable after 170 ms
+```
+
+## slack
+
+The slack command is deprecated, it does not submit slack message but instead prints a deprecation warning.
+
+## summary
+
+The summary command provides a brief overview of the test execution results, including the number of tests run, passed, and failed.
+
+### Try it
+
+```bash
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+```
+
+```bash
+./bin/run.mjs summary \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}"
+
+Total Tests: 159 - Failure: 1 (skipped: 0, pending: 0) - Executed in 1156s
+FAILURES:
+ | Suite: Mocha Tests - Total tests: 3 - Failure: 1 - Executed in 10s
+ |   | - Absence of errors in SAM
+ |   |    | - FAIL: Absence of errors in SAM Check that SAM Jahia errors probe is present with GREEN status
+```
+
+## zencrepes
 
 Given a ZenCrepes webhook, sends the outcome of a test run to ZenCrepes with the objective of building a test matrix of all latest runs for all possible combinations (Augmented Search 2.1.0, tested on 2020-08-10, with Jahia 8.0.1.0 and Elasticsearch 7.8.0).
 
-### Utils
+Though not deprecated yet, we should aim at replacing it by features natively provided by test management platforms.
+
+### Try it
+
+```bash
+export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
+export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
+
+```
+
+```bash
+./bin/run.mjs zencrepes \
+  --sourcePath="${PATH_SOURCE_XML_REPORTS}" \
+  --webhook="https://zencrepes.jahia.com/zqueue/testing/webhook" \
+  --webhookSecret="${ZENCREPES_WEBHOOK_SECRET}" \
+  --name="testService"
+```
+
+The command displays the JSON object submitted to ZenCrepes.
+
+## utils:alive
+
+Wait until able to perform a GraphQL query to get the current EDIT workspace.
+
+### Try it
+
+```bash
+./bin/run.mjs utils:alive \
+  --jahiaUrl="http://localhost:8080" \
+  --jahiaUsername="root" \
+  --jahiaPassword="root1234"
+
+2025-10-21T14:18:53.675Z - Time since start: 0 ms
+Waiting for Jahia to be online... Jahia became reachable after 170 ms
+```
 
 #### modules
 
