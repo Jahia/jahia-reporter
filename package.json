@@ -17,6 +17,7 @@
     "@types/uuid": "^10.0.0",
     "@urql/core": "^6.0.1",
     "axios": "^1.12.2",
+    "baseline-browser-mapping": "^2.9.15",
     "browser-or-node": "2.0.0",
     "date-fns": "^4.1.0",
     "date-fns-timezone": "^0.1.4",
