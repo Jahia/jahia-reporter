@@ -39,7 +39,7 @@ class JahiaGitHubIncident extends Command {
       env: 'GITHUB_CUSTOM_PROPERTY_NAME',
     }),
     githubIssueLabel: Flags.string({
-      default: '',
+      default: 'automated-incident',
       description: 'GitHub issue label to apply',
       env: 'GITHUB_ISSUE_LABEL',
     }),
@@ -192,7 +192,7 @@ class JahiaGitHubIncident extends Command {
     }
 
     let assignee = serviceRow.get('Assignee') || '';
-    if (assignee === `[$${flags.githubCustomPropertyName}]`) {
+    if (assignee === `[${flags.githubCustomPropertyName}]`) {
       this.log(
         `Assignee is set to [${flags.githubCustomPropertyName}], its value will be fetched from the repository custom properties (${flags.githubCustomPropertyName} field)`,
       );
@@ -201,6 +201,9 @@ class JahiaGitHubIncident extends Command {
         propertyName: flags.githubCustomPropertyName,
         repository: flags.githubRepository,
       });
+      this.log(
+        `Assignee fetched from repository custom properties: ${assignee}`,
+      );
     }
 
     // Exit if assignee cannot be found
@@ -285,7 +288,6 @@ class JahiaGitHubIncident extends Command {
             `Found ${openedIssues.length} open issues for service ${flags.incidentService}, will proceed to close them.`,
           );
           for (const issue of openedIssues) {
-             
             await closeIncidentIssue({
               githubToken: flags.githubToken,
               incidentContent,

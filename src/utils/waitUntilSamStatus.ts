@@ -54,6 +54,10 @@ const healthCheck = async ({
     { probeHealthFilter, probeNamesFilter, severity },
   );
 
+  if (response.error) {
+    return response.error.message;
+  }
+
   return response?.data?.admin?.jahia?.healthCheck;
 };
 
@@ -103,8 +107,10 @@ export const waitUntilSAMStatus = async ({
 
       if (elapsed >= timeout) {
         const error = new Error(
-          `Timeout after ${timeout}ms waiting for SAM to be ${expectedHealth} for severity: ${severity} and probeHealthFilter: ${probeHealthFilter}. Last GraphQL response: ${JSON.stringify(
+          `Timeout after ${timeout}ms waiting for SAM to be ${expectedHealth} for severity: ${severity} and probeHealthFilter: ${probeHealthFilter}.\nLast GraphQL response:\n${JSON.stringify(
             lastGraphqlResponse,
+            null,
+            2,
           )}`,
         );
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,7 +138,7 @@ export const waitUntilSAMStatus = async ({
                 healthStatus.health
               } (elapsed: ${Math.round(
                 elapsed / 1000,
-              )}ms -- timeout: ${Math.round(timeout / 1000)}s)`,
+              )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
             );
 
             if (statusCount >= statusMatchCount) {
@@ -167,7 +173,7 @@ export const waitUntilSAMStatus = async ({
           }
         } else {
           console.log(
-            `[${new Date().toISOString()}] No health status in response (elapsed: ${Math.round(
+            `[${new Date().toISOString()}] No health status in response. Verify server is reachable and credentials are correct (elapsed: ${Math.round(
               elapsed / 1000,
             )}s -- timeout: ${Math.round(timeout / 1000)}s)`,
           );

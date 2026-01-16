@@ -49,6 +49,7 @@ class JahiaSam extends Command {
         flags.jahiaUrl,
         flags.jahiaUsername,
         flags.jahiaPassword,
+        true,
       );
 
       this.log(
@@ -73,31 +74,9 @@ class JahiaSam extends Command {
         JSON.stringify(healthCheckPayload, null, 2),
       );
     } catch (error) {
-      // Check if the error contains health check payload
-      if (error instanceof Error && (error as any).healthCheckPayload) {
-        const payload = (error as any).healthCheckPayload;
-        this.log('SAM failed to reach GREEN status. Health check payload:');
-
-        // Display specific errors from probes if available
-        if (payload?.probes && Array.isArray(payload.probes)) {
-          const errorProbes = payload.probes.filter(
-            (probe: any) =>
-              probe.status?.health === 'RED' ||
-              probe.status?.health === 'YELLOW',
-          );
-
-          if (errorProbes.length > 0) {
-            this.log('\nProbes with issues:');
-            for (const probe of errorProbes) {
-              this.log(
-                `- ${probe.name} (${probe.severity}): ${
-                  probe.status.health
-                } - ${probe.status.message || 'No message'}`,
-              );
-            }
-          }
-        }
-      }
+      this.log('SAM failed to reach GREEN status, error is:');
+      this.log(error instanceof Error ? error.message : String(error));
+      this.exit(1);
     }
   }
 }

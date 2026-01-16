@@ -21,7 +21,7 @@ const isConnectionValid = async (
 
   if (!response.data || response.data.currentUser === null) {
     throw new Error(
-      'Authentication failed: Unable to authenticate with the provided credentials',
+      `Authentication failed: Unable to authenticate with the provided credentials. Error: ${response.error?.message || JSON.stringify(response.error)}`,
     );
   }
 
@@ -38,6 +38,7 @@ export const getGraphqlClient = async (
   jahiaUrl: string,
   jahiaUsername: string,
   jahiaPassword: string,
+  skipConnectionCheck: boolean = false,
 ): Promise<Client> => {
   // Create a client object to be reused for each call
   const authHeader = `Basic ${Base64.btoa(
@@ -60,6 +61,13 @@ export const getGraphqlClient = async (
     },
     url: normalizedUrl + '/modules/graphql',
   });
+
+  // The skipConnectionCheck flag can be used in scenarios where the connection
+  // validation is not required or should be skipped (e.g., while waiting
+  // for Jahia to become available when using the SAM check
+  if (skipConnectionCheck) {
+    return client;
+  }
 
   const checkConnection = await isConnectionValid(client, jahiaUsername);
 

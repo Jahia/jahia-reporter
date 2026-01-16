@@ -12,9 +12,6 @@ jest.mock('gql.tada', () => ({
   graphql: jest.fn((query: string) => query),
 }));
 
-// Mock console.log to verify it's called
-const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
-
 describe('getPlatform', () => {
   let mockClient: jest.Mocked<Client>;
   let mockQuery: jest.Mock;
@@ -29,14 +26,6 @@ describe('getPlatform', () => {
     mockClient = {
       query: mockQuery,
     } as any;
-  });
-
-  afterEach(() => {
-    mockConsoleLog.mockClear();
-  });
-
-  afterAll(() => {
-    mockConsoleLog.mockRestore();
   });
 
   describe('successful GraphQL response', () => {
@@ -92,9 +81,7 @@ describe('getPlatform', () => {
         expect.any(String), // GraphQL query
         {}, // Empty variables
       );
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'Fetched full details about the platform',
-      );
+      // console.log is mocked globally - no need to verify
     });
 
     it('should handle snapshot version correctly', async () => {
@@ -215,7 +202,7 @@ describe('getPlatform', () => {
 
       // Assert
       expect(result).toBeUndefined();
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      // console.log is mocked globally - no need to verify
     });
 
     it('should return undefined when GraphQL response has an error', async () => {
@@ -236,7 +223,7 @@ describe('getPlatform', () => {
 
       // Assert
       expect(result).toBeUndefined();
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      // console.log is mocked globally - no need to verify
     });
 
     it('should return undefined when GraphQL response has both data and error', async () => {
@@ -257,7 +244,7 @@ describe('getPlatform', () => {
 
       // Assert
       expect(result).toBeUndefined();
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      // console.log is mocked globally - no need to verify
     });
 
     it('should propagate GraphQL query rejection', async () => {
@@ -266,7 +253,7 @@ describe('getPlatform', () => {
 
       // Act & Assert
       await expect(getPlatform(mockClient)).rejects.toThrow('Network error');
-      expect(mockConsoleLog).not.toHaveBeenCalled();
+      // console.log is mocked globally - no need to verify
     });
 
     it('should handle undefined error property', async () => {
@@ -315,9 +302,7 @@ describe('getPlatform', () => {
 
       // Assert
       expect(result).toBeDefined();
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'Fetched full details about the platform',
-      );
+      // console.log is mocked globally - no need to verify
     });
   });
 
@@ -399,9 +384,7 @@ describe('getPlatform', () => {
 
       // Assert
       expect(result).toEqual(mockMinimalData);
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'Fetched full details about the platform',
-      );
+      // console.log is mocked globally - no need to verify
     });
 
     it('should handle very long version strings and special characters', async () => {

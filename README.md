@@ -7,6 +7,35 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
 [![Downloads/week](https://img.shields.io/npm/dw/jahia-testrail-reporter.svg)](https://npmjs.org/package/jahia-testrail-reporter)
 [![License](https://img.shields.io/npm/l/jahia-testrail-reporter.svg)](https://github.com/VladRadan/jahia-testrail-reporter/blob/master/package.json)
 
+## Table of Contents
+
+- [Application Design](#application-design)
+- [Data Model](#data-model)
+- [Available Commands](#available-commands)
+  - [github:incident](#githubincident)
+  - [pagerduty:incident](#pagerdutyincident)
+  - [perfs](#perfs)
+  - [perfs:analyze](#perfsanalyze)
+  - [perfs:history](#perfshistory)
+  - [perfs:submit](#perfssubmit)
+  - [testrail](#testrail)
+  - [slack](#slack)
+  - [summary](#summary)
+  - [zencrepes](#zencrepes)
+  - [utils:alive](#utilsalive)
+  - [utils:checkreport](#utilscheckreport)
+  - [utils:modules](#utilsmodules)
+  - [utils:sam](#utilssam)
+- [Development](#development)
+  - [Code Quality and Linting](#code-quality-and-linting)
+    - [Running Linter Locally](#running-linter-locally)
+    - [Manual Linting](#manual-linting)
+  - [Release](#release)
+- [Usage](#usage)
+  - [With NPM](#with-npm)
+  - [With Docker](#with-docker)
+- [Manual Testing](#manual-testing)
+
 ## Application Design
 
 The main idea is to ingest a diverse set of test reports (Junit XML, mocha) and import those in a common data model. The data can then be manipulated/processed by various utilities to obtain a standardized, platform-agnostic output.
@@ -423,13 +452,82 @@ Root Stats => Tests: 159 Failures: 1 Time: 1156 Reports count: 44
 ...
 ```
 
-#### modules
+## utils:modules
 
 Given a Jahia host (and credentials), fetches the Jahia version (and build number) and version of all modules and save this results in a JSON file. Data model used is detailed here: `src/global.type.ts`
 
-This file can then be used as input for other Jahia-Repoter first-level commands.
+The generated JSON file can then be used as input for other Jahia-Repoter first-level commands.
 
-## Development
+### Try it
+
+```bash
+export JAHIA_URL="http://localhost:8080"
+export JAHIA_USERNAME="root"
+export JAHIA_PASSWORD="root1234"
+```
+
+```bash
+./bin/run.mjs utils:modules --jahiaUrl="${JAHIA_URL}" --jahiaUsername="${JAHIA_USERNAME}" --jahiaPassword="${JAHIA_PASSWORD}" --moduleId=sitemap --dependencies=tools,tasks --filepath=./test-data/modules.json
+
+Waiting for Jahia journal to be in-sync at: http://localhost:8080/
+Done waiting for journal sync
+Fetched full details about the platform
+```
+
+## utils:sam
+
+Given a Jahia host, wait until SAM returns GREEN status for the provided severity (default to MEDIUM).
+
+It not only waits for a single GREEN status, but will actually wait for a number of consecutive GREEN statuses (default to 10) to avoid transient states.
+
+This can be customized with the following parameters:
+
+- interval (default: 2): Number of seconds between each SAM status check
+- severity (default: MEDIUM): Severity level to check for (LOW, MEDIUM, HIGH)
+- greenMatchCount (default: 10): Number of consecutive GREEN status required to consider SAM as healthy
+- timeout (default: 120): Maximum number of seconds to wait before failing
+
+Note that timeout is for the entire runtime, so if interval=2 and greenMatchCount=10, the script will take 20 seconds to reach the 10 green status. But since you might actually be waiting for a server startup, or for some operations to complete, the timeout should be considerably higher.
+
+The main goal for this utility is to be used in CI pipelines to ensure that SAM is healthy before proceeding with test execution. In such a case, the timeout is there to avoid running the workflow job until it reaches its own timeout.
+
+For example:
+
+- if your overall test execution is taking on average 45mn,
+- if your workflow job timeout is set to 60mn
+- if you expect the tests to ALWAYS start within 5mn of triggering Jahia starteup
+  Then you can set a timeout of 5mn (300s).
+  In such a case, if Jahia fails to start properly (or fail to provision properly), then your job will begin shutting down after 5mn instead of waiting for the full 60mn job timeout.
+
+### Try it
+
+```bash
+export JAHIA_URL="http://localhost:8080"
+export JAHIA_USERNAME="root"
+export JAHIA_PASSWORD="root1234"
+```
+
+Sample (with SAM failure):
+
+```bash
+./bin/run.mjs utils:sam --jahiaUrl="${JAHIA_URL}" --jahiaUsername="${JAHIA_USERNAME}" --jahiaPassword="${JAHIA_PASSWORD}" --timeout=15
+
+Waiting for SAM status GREEN with severity MEDIUM (timeout: 15s)
+[2026-01-06T15:50:23.959Z] Status: RED (elapsed: 0s -- timeout: 15s)
+[2026-01-06T15:50:26.002Z] Status: RED (elapsed: 2s -- timeout: 15s)
+[2026-01-06T15:50:28.042Z] Status: RED (elapsed: 4s -- timeout: 15s)
+[2026-01-06T15:50:30.073Z] Status: RED (elapsed: 6s -- timeout: 15s)
+[2026-01-06T15:50:32.112Z] Status: RED (elapsed: 8s -- timeout: 15s)
+[2026-01-06T15:50:34.151Z] Status: RED (elapsed: 10s -- timeout: 15s)
+[2026-01-06T15:50:36.215Z] Status: RED (elapsed: 12s -- timeout: 15s)
+[2026-01-06T15:50:38.288Z] Status: RED (elapsed: 14s -- timeout: 15s)
+SAM failed to reach GREEN status. Health check payload:
+
+Probes with issues:
+- ModuleState (MEDIUM): RED - At least one module is not started. Module javascript-modules-engine is in Installed state.
+```
+
+# Development
 
 To add a new command, simply create the corresponding `.ts` file in the `./src/commands/` folder.
 
@@ -440,7 +538,7 @@ npm install
 
 If adding a utility, please add this into the `utils` folder
 
-### Code Quality and Linting
+## Code Quality and Linting
 
 This project uses [Super Linter](https://github.com/super-linter/super-linter) to ensure code quality and consistency. The linting configuration includes:
 

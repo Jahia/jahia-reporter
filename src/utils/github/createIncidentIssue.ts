@@ -78,7 +78,7 @@ export const createIncidentIssue = async ({
 
   const [owner, repo] = repository.split('/');
 
-  const response = await octokit.request('POST /repos/{owner}/{repo}/issues', {
+  const payload = {
     assignees: [incidentContent.assignee],
     body: buildDefaultIssueDescription({
       dedupKey: incidentContent.dedupKey,
@@ -93,7 +93,13 @@ export const createIncidentIssue = async ({
     owner,
     repo,
     title: incidentContent.title,
-  });
+  };
+
+  log(`Creating issue: ${JSON.stringify(payload, null, 2)}`);
+  const response = await octokit.request(
+    'POST /repos/{owner}/{repo}/issues',
+    payload,
+  );
 
   log(`Created issue: ${response.data.html_url}`);
 

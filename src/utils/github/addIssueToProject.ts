@@ -74,6 +74,8 @@ export const addIssueToProject = async ({
 
   log(`Adding issue #${issue.number} to the project (${githubProject.url})`);
 
+  const contentId = issue.node_id === undefined ? issue.id : issue.node_id;
+
   const query = `
     mutation AddIssueToProject($projectId: ID!, $contentId: ID!) {
       addProjectV2ItemById(input: {
@@ -88,7 +90,7 @@ export const addIssueToProject = async ({
   `;
 
   const response = await octokit.graphql(query, {
-    contentId: issue.id,
+    contentId,
     projectId: githubProject.id,
   });
 

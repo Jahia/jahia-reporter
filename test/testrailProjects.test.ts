@@ -148,7 +148,7 @@ describe('TestRail Projects', () => {
       );
 
       expect(mockUx.action.start).toHaveBeenCalledWith(
-        'Fetching project: Sandbox Module from Testrail',
+        'Searching project: Sandbox Module in Testrail',
       );
       expect(mockSendRequest).toHaveBeenCalledWith(
         mockConfig,
@@ -161,7 +161,7 @@ describe('TestRail Projects', () => {
       );
       expect(result).toEqual(mockProjects[2]); // Sandbox Module
       expect(mockUx.action.stop).toHaveBeenCalledWith(
-        'Project fetched: Sandbox Module with URL: https://testrail.example.com/project/3',
+        'Project found: Sandbox Module with URL: https://testrail.example.com/project/3',
       );
     });
 
@@ -174,10 +174,10 @@ describe('TestRail Projects', () => {
 
       expect(result).toEqual(mockProjects[0]);
       expect(mockUx.action.start).toHaveBeenCalledWith(
-        'Fetching project: Project Alpha from Testrail',
+        'Searching project: Project Alpha in Testrail',
       );
       expect(mockUx.action.stop).toHaveBeenCalledWith(
-        'Project fetched: Project Alpha with URL: https://testrail.example.com/project/1',
+        'Project found: Project Alpha with URL: https://testrail.example.com/project/1',
       );
     });
 
@@ -187,7 +187,7 @@ describe('TestRail Projects', () => {
       ).rejects.toThrow("Failed to find project named 'Nonexistent Project'");
 
       expect(mockUx.action.start).toHaveBeenCalledWith(
-        'Fetching project: Nonexistent Project from Testrail',
+        'Searching project: Nonexistent Project in Testrail',
       );
       expect(mockLog).toHaveBeenCalledWith(
         'List of projects in Testrail: Project Alpha, Project Beta, Sandbox Module',
@@ -215,7 +215,7 @@ describe('TestRail Projects', () => {
       ).rejects.toThrow('Network timeout');
 
       expect(mockUx.action.start).toHaveBeenCalledWith(
-        'Fetching project: Any Project from Testrail',
+        'Searching project: Any Project in Testrail',
       );
       expect(mockUx.action.stop).not.toHaveBeenCalled();
     });
@@ -299,7 +299,7 @@ describe('TestRail Projects', () => {
 
       expect(result).toEqual(longNameProjects[0]);
       expect(mockUx.action.start).toHaveBeenCalledWith(
-        `Fetching project: ${longProjectName} from Testrail`,
+        `Searching project: ${longProjectName} in Testrail`,
       );
     });
 
