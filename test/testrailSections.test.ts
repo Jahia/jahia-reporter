@@ -209,14 +209,14 @@ describe('TestRail Sections', () => {
     const mockLog = jest.fn();
 
     it('should return null when parentSectionName is empty', async () => {
-      const result = await getTestrailParentSection(
-        mockConfig,
-        '',
-        mockProject,
-        mockSuite,
-        [],
-        mockLog,
-      );
+      const result = await getTestrailParentSection({
+        config: mockConfig,
+        log: mockLog,
+        parentSectionName: '',
+        project: mockProject,
+        suite: mockSuite,
+        testrailSections: [],
+      });
 
       expect(result).toBeNull();
       expect(mockSendRequest).not.toHaveBeenCalled();
@@ -228,14 +228,14 @@ describe('TestRail Sections', () => {
         { id: 2, name: 'Other Section', parent_id: 0 },
       ];
 
-      const result = await getTestrailParentSection(
-        mockConfig,
-        'Parent Section',
-        mockProject,
-        mockSuite,
-        existingSections,
-        mockLog,
-      );
+      const result = await getTestrailParentSection({
+        config: mockConfig,
+        log: mockLog,
+        parentSectionName: 'Parent Section',
+        project: mockProject,
+        suite: mockSuite,
+        testrailSections: existingSections,
+      });
 
       expect(result).toEqual({ id: 1, name: 'Parent Section', parent_id: 0 });
       expect(mockLog).toHaveBeenCalledWith(
@@ -248,14 +248,14 @@ describe('TestRail Sections', () => {
       const newSection = { id: 100, name: 'New Parent', parent_id: 0 };
       mockSendRequest.mockReturnValue(newSection);
 
-      const result = await getTestrailParentSection(
-        mockConfig,
-        'New Parent',
-        mockProject,
-        mockSuite,
-        existingSections,
-        mockLog,
-      );
+      const result = await getTestrailParentSection({
+        config: mockConfig,
+        log: mockLog,
+        parentSectionName: 'New Parent',
+        project: mockProject,
+        suite: mockSuite,
+        testrailSections: existingSections,
+      });
 
       expect(result).toEqual(newSection);
       expect(mockLog).toHaveBeenCalledWith(
@@ -270,14 +270,14 @@ describe('TestRail Sections', () => {
       const newSection = { id: 101, name: 'Created Section', parent_id: 0 };
       mockSendRequest.mockReturnValue(newSection);
 
-      await getTestrailParentSection(
-        mockConfig,
-        'Created Section',
-        mockProject,
-        mockSuite,
-        [],
-        mockLog,
-      );
+      await getTestrailParentSection({
+        config: mockConfig,
+        log: mockLog,
+        parentSectionName: 'Created Section',
+        project: mockProject,
+        suite: mockSuite,
+        testrailSections: [],
+      });
 
       expect(mockSendRequest).toHaveBeenCalledWith(
         mockConfig,
