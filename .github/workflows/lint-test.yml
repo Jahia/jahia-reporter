@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - run: corepack enable
       - run: yarn
       - run: yarn run lint --max-warnings 1
       - run: yarn run test
@@ -30,6 +31,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - run: corepack enable
       - run: yarn
       - run: npm install -g typescript@4.4.4
       - run: tsc -v
