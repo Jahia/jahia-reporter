@@ -90,14 +90,23 @@ export const addTestrailSection = async (
   )) as Section;
 };
 
-export const getTestrailParentSection = async (
-  config: TestRailConfig,
-  parentSectionName: string,
-  project: Project,
-  suite: Suite,
-  testrailSections: Section[],
-  log: (msg: string) => void,
-): Promise<Section | null> => {
+interface GetTestrailParentSectionOptions {
+  config: TestRailConfig;
+  log: (msg: string) => void;
+  parentSectionName: string;
+  project: Project;
+  suite: Suite;
+  testrailSections: Section[];
+}
+
+export const getTestrailParentSection = async ({
+  config,
+  log,
+  parentSectionName,
+  project,
+  suite,
+  testrailSections,
+}: GetTestrailParentSectionOptions): Promise<Section | null> => {
   if (parentSectionName === '') {
     return null;
   }

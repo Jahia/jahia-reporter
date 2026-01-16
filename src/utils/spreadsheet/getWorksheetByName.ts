@@ -6,9 +6,11 @@ const findSheetByTitle = ({
   log,
   title,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   doc: any;
   log: (message: string) => void;
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): any => {
   const { sheetCount, sheetsByIndex } = doc;
   for (let i = 0; i < sheetCount; i++) {
@@ -73,12 +75,12 @@ export const getWorksheetByName = async (
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let spRows: any = null;
   for (let cpt = 1; cpt < 4; cpt++) {
     if (spRows === null) {
       log(`Connecting to spreadsheet: ${cpt}/3`);
       try {
-         
         spRows = await getSpreadsheet({
           googleSpreadsheetId,
           log,

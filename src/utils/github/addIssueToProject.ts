@@ -62,6 +62,7 @@ export const addIssueToProject = async ({
   issue,
   log,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   githubProject: any;
   githubProjectPriority: string;
   githubProjectStatus: string;
@@ -105,6 +106,7 @@ export const addIssueToProject = async ({
 
   // Handle project status
   const projectStatus = githubProject.status.options.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (option: any) => option.name === githubProjectStatus,
   );
 
@@ -128,6 +130,7 @@ export const addIssueToProject = async ({
 
   // Handle project team
   const projectTeam = githubProject.teams.options.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (option: any) => option.name === githubProjectTeam,
   );
 
@@ -149,6 +152,7 @@ export const addIssueToProject = async ({
 
   // Handle project priority
   const projectPriority = githubProject.priorities.options.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (option: any) => option.name === githubProjectPriority,
   );
 

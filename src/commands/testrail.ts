@@ -203,14 +203,14 @@ export default class TestrailCommand extends Command {
     // Fetch the parent section if provided
     // If a parent section is not found, it will be created
     // If no parent section is provided, null is returned
-    const parentSection = await getTestrailParentSection(
-      testrailConfig,
-      flags.parentSection,
-      testrailProject,
-      testrailSuite,
+    const parentSection = await getTestrailParentSection({
+      config: testrailConfig,
+      log: this.log.bind(this),
+      parentSectionName: flags.parentSection,
+      project: testrailProject,
+      suite: testrailSuite,
       testrailSections,
-      this.log.bind(this),
-    );
+    });
 
     // If a parent section was created, make sure it's in the list of sections
     // if not, add it
