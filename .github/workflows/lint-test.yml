@@ -33,6 +33,6 @@ jobs:
       - uses: actions/checkout@v2
       - run: corepack enable
       - run: yarn
-      - run: npm install -g typescript@4.4.4
+      - run: npm install -g typescript@5.9.3
       - run: tsc -v
       - run: tsc -b
