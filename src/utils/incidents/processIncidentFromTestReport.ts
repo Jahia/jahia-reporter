@@ -1,6 +1,6 @@
 import { v5 as uuidv5 } from 'uuid';
 
-import { Incident, JRRun } from '../../global.type';
+import { Incident, JRRun } from '../../types/index.js';
 import ingestReport from '../../utils/ingest/index.js';
 import { getSummary } from '../../utils/reports/getSummary.js';
 

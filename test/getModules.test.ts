@@ -1,6 +1,6 @@
 import { Client } from '@urql/core';
 
-import { JahiaModule } from '../src/global.type.js';
+import { JahiaModule } from '../src/types/index.js';
 import { getModules } from '../src/utils/getModules.js';
 
 // Mock the @urql/core module

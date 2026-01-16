@@ -1,7 +1,7 @@
 /* eslint max-depth: ["error", 5] */
 import { Command, Flags } from '@oclif/core';
 
-import { JRRun } from '../../global.type';
+import { JRRun } from '../../types/index.js';
 import ingestReport from '../../utils/ingest/index.js';
 
 class JahiaCheckReport extends Command {

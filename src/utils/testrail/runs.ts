@@ -1,6 +1,4 @@
-import type { TestRailConfig } from '../testrail.interface.js';
-
-import { AddRun, Run } from '../testrail.interface.js';
+import { AddRun, Run, TestRailConfig } from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 // Run-related functions

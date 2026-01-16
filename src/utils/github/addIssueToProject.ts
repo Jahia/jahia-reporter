@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-import { GitHubIssue } from '../../global.type';
+import { GitHubIssue } from '../../types/index.js';
 import { sleep } from '../sleep.js';
 
 const updateCardStatus = async ({

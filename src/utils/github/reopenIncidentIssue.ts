@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-import { GitHubIssue, Incident } from '../../global.type';
+import { GitHubIssue, Incident } from '../../types/index.js';
 
 export const reopenIncidentIssue = async ({
   githubToken,

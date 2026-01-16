@@ -11,7 +11,7 @@ import {
   JMeterRunTransaction,
   JMeterTRunTransaction,
   JMeterThresholds,
-} from '../../global.type';
+} from '../../types/index.js';
 
 const getRunThreshold = (runName: string, thresholds: JMeterThresholds) => {
   // First use exact match

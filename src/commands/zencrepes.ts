@@ -10,7 +10,7 @@ import {
   UtilsVersions,
   ZenCrepesDependency,
   ZenCrepesStateNode,
-} from '../global.type';
+} from '../types/index.js';
 import ingestReport from '../utils/ingest/index.js';
 
 const prepString = (s: string): string =>

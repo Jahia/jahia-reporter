@@ -1,6 +1,9 @@
-import type { TestRailConfig } from '../testrail.interface.js';
-
-import { AddCase, PaginatedTests, Test } from '../testrail.interface.js';
+import {
+  AddCase,
+  PaginatedTests,
+  Test,
+  TestRailConfig,
+} from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 export const getTestrailCases = async (

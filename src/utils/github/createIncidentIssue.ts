@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-import { Incident } from '../../global.type';
+import { Incident } from '../../types/index.js';
 
 const buildDefaultIssueDescription = ({
   dedupKey,

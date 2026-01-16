@@ -1,6 +1,8 @@
-import type { TestRailConfig } from '../testrail.interface.js';
-
-import { Milestone, PaginatedMilestones } from '../testrail.interface.js';
+import {
+  Milestone,
+  PaginatedMilestones,
+  TestRailConfig,
+} from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 export const getTestrailMilestones = async (

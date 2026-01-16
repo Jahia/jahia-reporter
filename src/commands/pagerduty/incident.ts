@@ -6,7 +6,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import md5 from 'md5';
 import * as fs from 'node:fs';
 
-import { JRRun } from '../../global.type';
+import { JRRun } from '../../types/index.js';
 import ingestReport from '../../utils/ingest/index.js';
 import { resolveIncidents } from '../../utils/pagerduty/resolveIncidents.js';
 
@@ -288,7 +288,6 @@ class JahiaPagerDutyIncident extends Command {
         if (spRows.length === 0) {
           this.log(`Connecting to spreadsheet: ${cpt}/3`);
           try {
-             
             spRows = await getSpreadsheetRows(
               flags.googleSpreadsheetId,
               flags.googleClientEmail,
@@ -338,7 +337,7 @@ class JahiaPagerDutyIncident extends Command {
             this.log(
               `Saving Google Spreadsheet row for: ${row.get('Test Service')}`,
             );
-             
+
             await row.save();
           }
         }

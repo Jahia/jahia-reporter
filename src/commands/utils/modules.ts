@@ -2,7 +2,7 @@ import { Command, Flags } from '@oclif/core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { UtilsPlatform, UtilsVersions } from '../../global.type';
+import { UtilsPlatform, UtilsVersions } from '../../types/index.js';
 import { getGraphqlClient } from '../../utils/getGraphqlClient.js';
 import { getModules } from '../../utils/getModules.js';
 import { getPlatform } from '../../utils/getPlatform.js';

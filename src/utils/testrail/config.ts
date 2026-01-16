@@ -1,4 +1,4 @@
-import type { TestRailConfig } from '../testrail.interface.js';
+import type { TestRailConfig } from '../../types/index.js';
 
 // Utility function for basic auth encoding
 const encode = (str: string): string =>

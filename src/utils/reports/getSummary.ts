@@ -1,4 +1,4 @@
-import { JRRun } from '../../global.type.js';
+import { JRRun } from '../../types/index.js';
 
 // Taking a test report, this returns a summary of the results
 export const getSummary = ({

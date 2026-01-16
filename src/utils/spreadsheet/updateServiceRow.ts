@@ -1,4 +1,4 @@
-import { Incident } from '../../global.type';
+import { Incident } from '../../types/index.js';
 
 // Get the row matching a specific service from a Google Spreadsheet
 const getServiceRow = async (worksheet: any, service: string, log: any) => {

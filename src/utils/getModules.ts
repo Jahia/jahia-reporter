@@ -1,7 +1,7 @@
 import { Client } from '@urql/core';
 import { graphql } from 'gql.tada';
 
-import { JahiaModule } from '../global.type';
+import { JahiaModule } from '../types/index.js';
 
 // Retrieves the list of modules installed on the JJahia instance along with the Jahia version
 export const getModules = async (

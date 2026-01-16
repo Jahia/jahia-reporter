@@ -4,7 +4,7 @@ import type {
   PaginatedProjects,
   Project,
   TestRailConfig,
-} from '../src/utils/testrail.interface.js';
+} from '../src/types/index.js';
 
 import {
   getTestrailProject,

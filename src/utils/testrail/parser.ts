@@ -1,5 +1,4 @@
-import type { JRRun } from '../../global.type.js';
-import type { TestWithStatus } from '../testrail.interface.js';
+import type { JRRun, TestWithStatus } from '../../types/index.js';
 
 /**
  * Parses test reports from a JRRun and converts them into TestRail-compatible format

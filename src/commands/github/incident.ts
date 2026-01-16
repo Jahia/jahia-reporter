@@ -1,6 +1,6 @@
 import { Command, Flags } from '@oclif/core';
 
-import { GitHubProject, Incident } from '../../global.type';
+import { GitHubProject, Incident } from '../../types/index.js';
 import {
   addIssueToProject,
   closeIncidentIssue,

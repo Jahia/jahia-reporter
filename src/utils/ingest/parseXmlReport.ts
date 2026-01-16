@@ -1,6 +1,6 @@
 import { basename } from 'node:path';
 
-import { JRReport, JRRun } from '../../global.type';
+import { JRReport, JRRun } from '../../types/index.js';
 
 // Format individual test cases
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

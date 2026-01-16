@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import { v5 as uuidv5 } from 'uuid';
 
-import { Incident } from '../../global.type';
+import { Incident } from '../../types/index.js';
 
 export const processIncidentFromMessage = async ({
   incidentDetailsPath,

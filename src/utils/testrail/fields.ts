@@ -1,9 +1,12 @@
 import { ux } from '@oclif/core';
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 
-import type { TestRailConfig } from '../testrail.interface.js';
-
-import { CaseFields, Project, ResultField } from '../testrail.interface.js';
+import {
+  CaseFields,
+  Project,
+  ResultField,
+  TestRailConfig,
+} from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 export const getTestrailResultFields = async (

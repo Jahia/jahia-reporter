@@ -1,6 +1,6 @@
 import { basename } from 'node:path';
 
-import { JRReport, JRRun } from '../../global.type';
+import { JRReport, JRRun } from '../../types/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mochaParser = (rawReports: any[]): JRRun => {

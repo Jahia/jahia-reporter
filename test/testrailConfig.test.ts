@@ -1,4 +1,4 @@
-import type { TestRailConfig } from '../src/utils/testrail.interface.js';
+import type { TestRailConfig } from '../src/types/index.js';
 
 import { createTestrailConfig } from '../src/utils/testrail/config.js';
 

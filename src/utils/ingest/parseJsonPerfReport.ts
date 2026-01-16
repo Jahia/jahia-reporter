@@ -1,4 +1,8 @@
-import { JMeterExecAnalysisReport, JRReport, JRRun } from '../../global.type';
+import {
+  JMeterExecAnalysisReport,
+  JRReport,
+  JRRun,
+} from '../../types/index.js';
 
 // Take an array of performance reports and parsing it
 export const parseJsonPerf = (

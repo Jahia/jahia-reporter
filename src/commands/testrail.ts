@@ -3,18 +3,18 @@ import { Command, Flags, ux } from '@oclif/core';
 import { formatToTimeZone } from 'date-fns-timezone';
 import * as fs from 'node:fs';
 
-import { JRRun } from '../global.type';
-import ingestReport from '../utils/ingest/index.js';
 import {
   AddCase,
   AddRun,
+  JRRun,
   Run,
   Section,
   Status,
   Test,
   TestRailResult,
   TestWithStatus,
-} from '../utils/testrail.interface.js';
+} from '../types/index.js';
+import ingestReport from '../utils/ingest/index.js';
 import {
   addTestrailCase,
   addTestrailMilestone,

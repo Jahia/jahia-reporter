@@ -21,6 +21,8 @@ module.exports = {
     'src/**/*.{ts,js}',
     '!src/**/*.d.ts',
     '!src/index.ts', // Entry point, typically just exports
+    '!src/types/**', // Type definitions (interfaces + enums)
+    '!src/commands/**', // Commands are integration points, tested via utilities
     '!**/node_modules/**',
   ],
   coverageDirectory: 'coverage',

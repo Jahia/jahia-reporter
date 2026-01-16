@@ -3,7 +3,7 @@ import { Command, Flags } from '@oclif/core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { JRRun } from '../global.type';
+import { JRRun } from '../types/index.js';
 import ingestReport from '../utils/ingest/index.js';
 import { getSummary } from '../utils/reports/getSummary.js';
 

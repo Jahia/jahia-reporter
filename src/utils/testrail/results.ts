@@ -1,6 +1,4 @@
-import type { TestRailConfig } from '../testrail.interface.js';
-
-import { TestRailResult } from '../testrail.interface.js';
+import { TestRailConfig, TestRailResult } from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 export const addTestrailResults = async (

@@ -5,7 +5,7 @@ import {
   Project,
   Suite,
   TestRailConfig,
-} from '../testrail.interface.js';
+} from '../../types/index.js';
 import { sendRequest } from './client.js';
 
 // Suite-related functions

@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-import type { GitHubProject } from '../../global.type';
+import type { GitHubProject } from '../../types/index.js';
 
 export const getProjectByNumber = async ({
   githubToken,

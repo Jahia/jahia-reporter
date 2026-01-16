@@ -1,6 +1,6 @@
 import { SyncRequestClient } from 'ts-sync-request/dist/index.js';
 
-import type { TestRailConfig } from '../testrail.interface.js';
+import type { TestRailConfig } from '../../types/index.js';
 
 // HTTP request functionality
 export const sendRequest = (

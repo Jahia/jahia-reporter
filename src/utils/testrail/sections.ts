@@ -4,7 +4,7 @@ import type {
   Section,
   Suite,
   TestRailConfig,
-} from '../testrail.interface.js';
+} from '../../types/index.js';
 
 import { sendRequest } from './client.js';
 
