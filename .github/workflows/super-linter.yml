@@ -50,13 +50,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          # Disable ESLint validators - super-linter runs in a Docker container
-          # and cannot access project node_modules. ESLint is run separately
-          # in lint-test.yml with proper dependency installation.
-          VALIDATE_TYPESCRIPT_ES: false
-          VALIDATE_JAVASCRIPT_ES: false
-
-          # Enable other linters
+          # Only run these specific linters (ESLint is handled by lint-test.yml)
           VALIDATE_JSON: true
           VALIDATE_YAML: true
           VALIDATE_MARKDOWN: true
