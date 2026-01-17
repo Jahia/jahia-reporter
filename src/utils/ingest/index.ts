@@ -33,7 +33,7 @@ const ingestReport = async (
   log: (message: string) => void,
   silent = false,
 ) => {
-  const supportedFormats = new Set(['json', 'xml', 'json-perf']);
+  const supportedFormats = new Set(['json', 'json-perf', 'xml']);
   let reportFiles: string[] = [];
   if (!supportedFormats.has(reportType)) {
     log(`${reportType} is not a supported format`);

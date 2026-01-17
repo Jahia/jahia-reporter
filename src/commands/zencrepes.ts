@@ -47,8 +47,7 @@ const getId = (
 export default class ZencrepesCommand extends Command {
   static override description =
     'Submit data about a junit/mocha report to ZenCrepes';
-
-  static override flags = {
+static override flags = {
     dependencies: Flags.string({
       default: '[]',
       description:

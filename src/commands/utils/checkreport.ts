@@ -6,8 +6,7 @@ import ingestReport from '../../utils/ingest/index.js';
 
 class JahiaCheckReport extends Command {
   static description = 'Submit data about a junit/mocha report to TestRail';
-
-  static flags = {
+static flags = {
     help: Flags.help({ char: 'h' }),
     sourcePath: Flags.string({
       description:

@@ -1,0 +1,44 @@
+import oclif from 'eslint-config-oclif';
+import prettier from 'eslint-config-prettier';
+
+export default [
+  ...oclif,
+  prettier,
+  {
+    ignores: [
+      'dist/**',
+      'lib/**',
+      'coverage/**',
+      'test/**',
+      '*.config.js',
+      '*.config.ts',
+      'scripts/**',
+      'node_modules/**',
+    ],
+  },
+  {
+    rules: {
+      'unicorn/no-process-exit': 'off',
+      'n/no-process-exit': 'off',
+      'no-await-in-loop': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'unicorn/no-array-reduce': 'warn',
+      'unicorn/consistent-destructuring': 'warn',
+      'unicorn/filename-case': [
+        'error',
+        {
+          case: 'camelCase',
+        },
+      ],
+      camelcase: [
+        'error',
+        {
+          properties: 'never',
+          allow: [
+            '^(client_email|private_key|milestone_id|display_order|include_all|is_active|system_name|template_ids|type_id|custom_status|custom_version|custom_steps_separated|case_ids|suite_id|status_id|case_id|incident_key|thread_ts|icon_emoji|parent_id)$',
+          ],
+        },
+      ],
+    },
+  },
+];

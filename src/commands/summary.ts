@@ -1,7 +1,7 @@
 /* eslint max-depth: ["error", 5] */
 import { Command, Flags } from '@oclif/core';
 import * as fs from 'node:fs';
-import * as path from 'node:path';
+import path from 'node:path';
 
 import { JRRun } from '../types/index.js';
 import ingestReport from '../utils/ingest/index.js';
@@ -9,7 +9,6 @@ import { getSummary } from '../utils/reports/getSummary.js';
 
 export default class SummaryCommand extends Command {
   static override description = 'Display a summary of the test results';
-
   static override flags = {
     savePath: Flags.string({
       default: '',

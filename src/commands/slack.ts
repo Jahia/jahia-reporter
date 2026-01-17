@@ -3,8 +3,7 @@ import { Command, Flags } from '@oclif/core';
 export default class SlackCommand extends Command {
   static override description =
     'Submit data about a junit/mocha report to Slack';
-
-  static override flags = {
+static override flags = {
     channelAllId: Flags.string({
       default: '',
       description:

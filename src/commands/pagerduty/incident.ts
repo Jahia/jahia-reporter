@@ -46,8 +46,7 @@ const getSpreadsheetRows = async (
 
 class JahiaPagerDutyIncident extends Command {
   static description = 'Create a pagerduty event based on a test report';
-
-  static flags = {
+static flags = {
     dryRun: Flags.boolean({
       default: false,
       description: 'Do not send the data but only print it to console',

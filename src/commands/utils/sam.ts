@@ -5,8 +5,7 @@ import { waitUntilSAMStatus } from '../../utils/waitUntilSamStatus.js';
 
 class JahiaSam extends Command {
   static description = 'Wait until SAM returns GREEN for the provided severity';
-
-  static flags = {
+static flags = {
     greenMatchCount: Flags.integer({
       default: 10,
       description: 'Number of consecutive GREEN statuses to match',

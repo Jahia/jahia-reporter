@@ -63,13 +63,15 @@ const healthCheck = async ({
 
 /**
  * Wait until the health check returns the expected health
- * @param expectedHealth the expected health status
- * @param severity the severity of the health check, default is MEDIUM
- * @param probeHealthFilter return only probes with health status matching or above, default is null
- * @param probeNamesFilter return and calculate health status only for the probes with the given names, default is null
- * @param timeout the timeout in milliseconds, default is 60000
- * @param interval the interval in seconds, default is 500
- * @param statusMatchCount the number of consecutive status matches before the waitUntil resolves, default is 3
+ * @param options - Configuration options
+ * @param options.client - The GraphQL client
+ * @param options.expectedHealth - The expected health status
+ * @param options.severity - The severity of the health check, default is MEDIUM
+ * @param options.probeHealthFilter - Return only probes with health status matching or above, default is null
+ * @param options.probeNamesFilter - Return and calculate health status only for the probes with the given names, default is null
+ * @param options.timeout - The timeout in milliseconds, default is 60000
+ * @param options.interval - The interval in seconds, default is 500
+ * @param options.statusMatchCount - The number of consecutive status matches before the waitUntil resolves, default is 3
  * @returns Promise that resolves with health check payload when expected health is reached or rejects with error containing payload on timeout
  */
 export const waitUntilSAMStatus = async ({

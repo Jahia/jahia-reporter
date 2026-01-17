@@ -58,9 +58,7 @@ const buildSuites = (xmlSuites: any, testFilename: string) =>
       // a name, if this is the case, we replace null by the name of the file
       errors: Math.round(s.attributes.errors),
       failures:
-        Math.round(s.attributes.failures) < 0
-          ? 0
-          : Math.round(s.attributes.failures),
+        Math.max(Math.round(s.attributes.failures), 0),
       // which is more informative
       name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
       pending:
@@ -112,9 +110,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
         const report = {
           ...i.attributes,
           failures:
-            Math.round(i.attributes.failures) < 0
-              ? 0
-              : Math.round(i.attributes.failures),
+            Math.max(Math.round(i.attributes.failures), 0),
           name:
             i.attributes.name === 'null'
               ? basename(rawContent.filepath)

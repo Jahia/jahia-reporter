@@ -106,7 +106,7 @@ export const getTestrailParentSection = async ({
   project,
   suite,
   testrailSections,
-}: GetTestrailParentSectionOptions): Promise<Section | null> => {
+}: GetTestrailParentSectionOptions): Promise<null | Section> => {
   if (parentSectionName === '') {
     return null;
   }

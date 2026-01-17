@@ -8,8 +8,7 @@ import YAML from 'yaml';
 
 class JahiaPerfsReporter extends Command {
   static description = 'Submit data about a junit/mocha report to ZenCrepes';
-
-  static flags = {
+static flags = {
     help: Flags.help({ char: 'h' }),
     repoUrl: Flags.string({
       description: 'Name of the run',
@@ -19,15 +18,15 @@ class JahiaPerfsReporter extends Command {
       description: 'Name of the run',
       required: true,
     }),
-    runUrl: Flags.string({
-      default: '',
-      description: 'URL of the run',
-      required: false,
-    }),
     runsFile: Flags.string({
       description:
         'A json file containing the perf report provided by the jmeter container',
       required: true,
+    }),
+    runUrl: Flags.string({
+      default: '',
+      description: 'URL of the run',
+      required: false,
     }),
     tfsettingsFile: Flags.string({
       description: 'A Terraform tfsettings file',

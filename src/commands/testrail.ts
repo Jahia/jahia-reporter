@@ -39,8 +39,7 @@ import {
 export default class TestrailCommand extends Command {
   static override description =
     'Submit data about a junit/mocha report to TestRail';
-
-  static override flags = {
+static override flags = {
     defaultRunDescription: Flags.string({
       char: 'd',
       default: 'This test run was manually triggered',

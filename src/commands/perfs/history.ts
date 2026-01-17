@@ -23,8 +23,7 @@ interface ReportAnalysis {
 
 class JahiaAnalyzePerfsReporter extends Command {
   static description = 'Provide an historical view over multiple run analysis';
-
-  static flags = {
+static flags = {
     analysisFailureAlert: Flags.integer({
       default: 2,
       description:
@@ -97,12 +96,12 @@ class JahiaAnalyzePerfsReporter extends Command {
 
     // Create a table of all values across the specified window
     const errorsTable: Array<
-      {
+      TransactionError & {
         analysis: Array<{
           analysis?: ReportAnalysis;
           startedAt: string;
         }>;
-      } & TransactionError
+      }
     > = errors.map((e) => {
       const transactions = reports.map((r) => ({
         analysis: r.analysis.find(

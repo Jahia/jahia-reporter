@@ -3,14 +3,14 @@
 import { Command, Flags } from '@oclif/core';
 import { readFileSync } from 'node:fs';
 import * as fs from 'node:fs';
-import * as path from 'node:path';
+import path from 'node:path';
 
 import {
   JMeterExec,
   JMeterExecAnalysisReport,
   JMeterRunTransaction,
-  JMeterTRunTransaction,
   JMeterThresholds,
+  JMeterTRunTransaction,
 } from '../../types/index.js';
 
 const getRunThreshold = (runName: string, thresholds: JMeterThresholds) => {
@@ -58,7 +58,6 @@ const getTransactionThreshold = (
 class JahiaAnalyzePerfsReporter extends Command {
   static description =
     'Analyze a runs file against values included in a threshold file.';
-
   static flags = {
     failOnError: Flags.boolean({
       default: false,

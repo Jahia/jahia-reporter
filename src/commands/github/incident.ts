@@ -21,8 +21,7 @@ import {
 
 class JahiaGitHubIncident extends Command {
   static description = 'Handles the creation of issues when incidents arise';
-
-  static flags = {
+static flags = {
     dryRun: Flags.boolean({
       default: false,
       description: 'Do not send the data but only print it to console',

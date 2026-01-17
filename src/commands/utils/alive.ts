@@ -5,8 +5,7 @@ import waitAlive from '../../utils/waitAlive.js';
 class JahiaUtilsAlive extends Command {
   static description =
     'Indefinitely waits until a Jahia instance becomes available';
-
-  static flags = {
+static flags = {
     help: Flags.help({ char: 'h' }),
     jahiaPassword: Flags.string({
       default: 'root',

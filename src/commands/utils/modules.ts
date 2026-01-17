@@ -1,6 +1,6 @@
 import { Command, Flags } from '@oclif/core';
 import * as fs from 'node:fs';
-import * as path from 'node:path';
+import path from 'node:path';
 
 import { UtilsPlatform, UtilsVersions } from '../../types/index.js';
 import { getGraphqlClient } from '../../utils/getGraphqlClient.js';
@@ -11,7 +11,6 @@ import { waitForJournalSync } from '../../utils/waitForJournalSync.js';
 class JahiaUtilsModule extends Command {
   static description =
     'For a provided module, returns the module version, Jahia version and list of installed modules';
-
   static flags = {
     dependencies: Flags.string({
       default: '',
@@ -70,7 +69,7 @@ class JahiaUtilsModule extends Command {
       client,
     );
 
-    const platform: UtilsPlatform | undefined = await getPlatform(client);
+    const platform: undefined | UtilsPlatform = await getPlatform(client);
 
     fs.writeFileSync(
       path.join(flags.filepath),
