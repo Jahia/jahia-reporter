@@ -20,7 +20,7 @@ jest.mock('node:perf_hooks', () => ({
 // Mock process.exit to prevent actual exit
 const mockProcessExit = jest
   .spyOn(process, 'exit')
-  .mockImplementation((code?: number) => {
+  .mockImplementation((code?: string | number | null) => {
     throw new Error(`Process exit called with code: ${code}`);
   });
 
