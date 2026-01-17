@@ -1,8 +1,9 @@
 import { Incident } from '../../types/index.js';
 
 // Get the row matching a specific service from a Google Spreadsheet
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const getServiceRow = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   worksheet: any,
   service: string,
   log: (message: string) => void,
