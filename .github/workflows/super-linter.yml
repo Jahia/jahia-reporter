@@ -42,6 +42,15 @@ jobs:
           fetch-depth: 0
 
       ################################
+      # Install dependencies for ESLint
+      ################################
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install Dependencies
+        run: yarn install --immutable
+
+      ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
@@ -53,7 +62,7 @@ jobs:
           # Look for linter config files in the repository root
           LINTER_RULES_PATH: .
 
-          # Enable specific linters
+          # Enable linters
           VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_JSON: true

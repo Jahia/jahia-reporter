@@ -14,10 +14,9 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
 - [Available Commands](#available-commands)
   - [github:incident](#githubincident)
   - [pagerduty:incident](#pagerdutyincident)
-  - [perfs](#perfs)
+  - [perfs:submit](#perfssubmit)
   - [perfs:analyze](#perfsanalyze)
   - [perfs:history](#perfshistory)
-  - [perfs:submit](#perfssubmit)
   - [testrail](#testrail)
   - [slack](#slack)
   - [summary](#summary)
@@ -28,8 +27,8 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
   - [utils:sam](#utilssam)
 - [Development](#development)
   - [Code Quality and Linting](#code-quality-and-linting)
-    - [Running Linter Locally](#running-linter-locally)
-    - [Manual Linting](#manual-linting)
+  - [Running Linter Locally](#running-linter-locally)
+  - [Manual Linting](#manual-linting)
   - [Release](#release)
 - [Usage](#usage)
   - [With NPM](#with-npm)
@@ -58,14 +57,14 @@ The model is composed of the following levels:
 
 The most important piece of analysis is **JRTestcase** which is an individual test that has the status `PASS` or `FAIL` depending of the presence of failures. From that point on, all metrics are bubbled-up all the way to JRRun.
 
-# Available Commands
+## Available Commands
 
 Main commands are stored under `src/commands`, those commands must all make use of the data model and use test report as their primary data source.
 Utilities commands are available in `src/commands/utils`, those are performing satellite activities (such as fetching installed modules versions).
 
 More details can be obtained about all of the commands by using `--help` with the command (or by looking at the source code).
 
-```
+```bash
 ./bin/run.mjs --help
 ```
 
@@ -73,7 +72,7 @@ More details can be obtained about all of the commands by using `--help` with th
 
 The goal of this command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
 
-Issues are assigned to users and project boards based on a configuration stored in a google spreadsheet (link: https://docs.google.com/spreadsheets/d/1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg/edit?gid=0#gid=0).
+Issues are assigned to users and project boards based on a configuration stored in a [google spreadsheet](https://docs.google.com/spreadsheets/d/1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg/edit?gid=0#gid=0).
 
 A deduplication key (dedup key) is generated for each incident to avoid duplicate issues being created for the same test failure.
 
@@ -88,9 +87,9 @@ When running, the command will search for all existing issues (OPEN or CLOSED) f
 
 Finally, if an issue was created or re-opened, it will be updated on a GitHub Project board based on the configuration specified in the google spreadsheet.
 
-### Try it
+### Example
 
-Secrets to access the google spreadsheet are located here: https://it.jahia.com/index.php/pwd/view/2335
+Secrets to access the google spreadsheet are located here: <https://it.jahia.com/index.php/pwd/view/2335>
 
 This command takes the following parameters:
 
@@ -152,7 +151,7 @@ The pagerduty:incident was the command previously used to create incidents in Pa
 
 It remains present to smooth the migration, but should be considered deprecated and will be removed in future versions.
 
-### Try it
+### Example
 
 ```bash
 export INCIDENT_PAGERDUTY_API_KEY="CHANGE_MD"
@@ -178,11 +177,11 @@ export PATH_SOURCE_XML_REPORTS="./test-data/results-success/xml_reports/"
 
 The perfs commands are primariraly used by https://github.com/Jahia/core-perf-test-terraform to analyze and submit performance tests results.
 
-You will need the secret: ZENCREPES_WEBHOOK_SECRET available at https://it.jahia.com/index.php/pwd/view/2335
+You will need the secret: ZENCREPES_WEBHOOK_SECRET available at <https://it.jahia.com/index.php/pwd/view/2335>
 
 Note that you'll need to encode the secret as it contains special characters that will not be handled otherwise by bash, you can encode it using: `python3 -c 'import urllib.parse; print(urllib.parse.quote("CHANGE_ME"))'`
 
-### Try it
+### Example
 
 ```bash
 export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
@@ -228,7 +227,7 @@ export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
 
 The goal of this command is to check if any of the transactions is above a specified threshold
 
-### Try it
+### Example
 
 The analysis command takes three paths:
 
@@ -273,9 +272,9 @@ ERROR: run: Jahia Perf at 120mn, transaction: E3-U2c Publish update / Queue publ
 
 The history command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs:analyze` command) and generate a table view of past executions.
 
-Such runs are stored at this location: https://github.com/Jahia/core-perf-test-terraform/tree/main/runs_history/
+Such runs are stored at this location: <https://github.com/Jahia/core-perf-test-terraform/tree/main/runs_history/>
 
-### Try it
+### Example
 
 ```bash
 export PATH_ANALYSIS="../core-perf-test-terraform/runs_history/j8sn-jsx/"
@@ -318,9 +317,9 @@ Given an existing project name, submit data to testrail. All of the missing elem
 
 Projects are not automatically created.
 
-### Try it
+### Example
 
-Secrets to access Testrail are located here: https://it.jahia.com/index.php/pwd/view/2335
+Secrets to access Testrail are located here: <https://it.jahia.com/index.php/pwd/view/2335>
 
 This parameters takes the following parameters:
 
@@ -373,7 +372,7 @@ The slack command is deprecated, it does not submit slack message but instead pr
 
 The summary command provides a brief overview of the test execution results, including the number of tests run, passed, and failed.
 
-### Try it
+### Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -396,7 +395,7 @@ Given a ZenCrepes webhook, sends the outcome of a test run to ZenCrepes with the
 
 Though not deprecated yet, we should aim at replacing it by features natively provided by test management platforms.
 
-### Try it
+### Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -417,7 +416,7 @@ The command displays the JSON object submitted to ZenCrepes.
 
 Wait until being able to perform a GraphQL query to get the current EDIT workspace.
 
-### Try it
+### Example
 
 ```bash
 ./bin/run.mjs utils:alive \
@@ -433,7 +432,7 @@ Waiting for Jahia to be online... Jahia became reachable after 170 ms
 
 Previously useful for debugging, displays all tests results and their status
 
-### Try it
+### Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -458,7 +457,7 @@ Given a Jahia host (and credentials), fetches the Jahia version (and build numbe
 
 The generated JSON file can then be used as input for other Jahia-Repoter first-level commands.
 
-### Try it
+### Example
 
 ```bash
 export JAHIA_URL="http://localhost:8080"
@@ -495,11 +494,12 @@ For example:
 
 - if your overall test execution is taking on average 45mn,
 - if your workflow job timeout is set to 60mn
-- if you expect the tests to ALWAYS start within 5mn of triggering Jahia starteup
-  Then you can set a timeout of 5mn (300s).
-  In such a case, if Jahia fails to start properly (or fail to provision properly), then your job will begin shutting down after 5mn instead of waiting for the full 60mn job timeout.
+- if you expect the tests to ALWAYS start within 5mn of triggering Jahia startup
 
-### Try it
+Then you can set a timeout of 5mn (300s).
+In such a case, if Jahia fails to start properly (or fail to provision properly), then your job will begin shutting down after 5mn instead of waiting for the full 60mn job timeout.
+
+### Example
 
 ```bash
 export JAHIA_URL="http://localhost:8080"
@@ -527,7 +527,7 @@ Probes with issues:
 - ModuleState (MEDIUM): RED - At least one module is not started. Module javascript-modules-engine is in Installed state.
 ```
 
-# Development
+## Development
 
 To add a new command, simply create the corresponding `.ts` file in the `./src/commands/` folder.
 
@@ -548,7 +548,7 @@ This project uses [Super Linter](https://github.com/super-linter/super-linter) t
 - Dockerfile linting
 - GitHub Actions workflow validation
 
-#### Running Linter Locally
+### Running Linter Locally
 
 To run the super-linter locally before submitting a PR:
 
@@ -559,7 +559,7 @@ To run the super-linter locally before submitting a PR:
 
 This will run the same linting checks that are executed in the CI pipeline.
 
-#### Manual Linting
+### Manual Linting
 
 You can also run specific linters manually:
 
