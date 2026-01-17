@@ -50,6 +50,9 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+          # Look for linter config files in the repository root
+          LINTER_RULES_PATH: .
+
           # Enable specific linters
           VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_JAVASCRIPT_ES: true
