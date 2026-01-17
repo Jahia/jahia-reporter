@@ -52,16 +52,16 @@ jobs:
 
           # Enable specific linters
           VALIDATE_TYPESCRIPT_ES: true
-          VALIDATE_TYPESCRIPT_STANDARD: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_JSON: true
           VALIDATE_YAML: true
           VALIDATE_MARKDOWN: true
-          VALIDATE_DOCKERFILE: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_GITHUB_ACTIONS: true
 
-          # TypeScript specific config
-          TYPESCRIPT_ES_CONFIG_FILE: .eslintrc
+          # ESLint 9 flat config file
+          TYPESCRIPT_ES_CONFIG_FILE: eslint.config.js
+          JAVASCRIPT_ES_CONFIG_FILE: eslint.config.js
 
           # Only validate changed files on PR
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
