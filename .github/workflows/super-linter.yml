@@ -42,15 +42,6 @@ jobs:
           fetch-depth: 0
 
       ################################
-      # Install dependencies for ESLint
-      ################################
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install Dependencies
-        run: yarn install --immutable
-
-      ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
@@ -59,21 +50,18 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          # Look for linter config files in the repository root
-          LINTER_RULES_PATH: .
+          # Disable ESLint validators - super-linter runs in a Docker container
+          # and cannot access project node_modules. ESLint is run separately
+          # in lint-test.yml with proper dependency installation.
+          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_JAVASCRIPT_ES: false
 
-          # Enable linters
-          VALIDATE_TYPESCRIPT_ES: true
-          VALIDATE_JAVASCRIPT_ES: true
+          # Enable other linters
           VALIDATE_JSON: true
           VALIDATE_YAML: true
           VALIDATE_MARKDOWN: true
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_GITHUB_ACTIONS: true
-
-          # ESLint 9 flat config file
-          TYPESCRIPT_ES_CONFIG_FILE: eslint.config.js
-          JAVASCRIPT_ES_CONFIG_FILE: eslint.config.js
 
           # Only validate changed files on PR
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
