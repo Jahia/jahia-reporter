@@ -12,19 +12,19 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
 - [Application Design](#application-design)
 - [Data Model](#data-model)
 - [Available Commands](#available-commands)
-  - [github:incident](#githubincident)
-  - [pagerduty:incident](#pagerdutyincident)
-  - [perfs:submit](#perfssubmit)
-  - [perfs:analyze](#perfsanalyze)
-  - [perfs:history](#perfshistory)
+  - [github-incident](#github-incident)
+  - [pagerduty-incident](#pagerduty-incident)
+  - [perfs-submit](#perfs-submit)
+  - [perfs-analyze](#perfs-analyze)
+  - [perfs-history](#perfs-history)
   - [testrail](#testrail)
   - [slack](#slack)
   - [summary](#summary)
   - [zencrepes](#zencrepes)
-  - [utils:alive](#utilsalive)
-  - [utils:checkreport](#utilscheckreport)
-  - [utils:modules](#utilsmodules)
-  - [utils:sam](#utilssam)
+  - [utils-alive](#utils-alive)
+  - [utils-checkreport](#utils-checkreport)
+  - [utils-modules](#utils-modules)
+  - [utils-sam](#utils-sam)
 - [Development](#development)
   - [Code Quality and Linting](#code-quality-and-linting)
   - [Running Linter Locally](#running-linter-locally)
@@ -68,7 +68,7 @@ More details can be obtained about all of the commands by using `--help` with th
 ./bin/run.mjs --help
 ```
 
-## github:incident
+## github-incident
 
 The goal of this command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
 
@@ -87,7 +87,7 @@ When running, the command will search for all existing issues (OPEN or CLOSED) f
 
 Finally, if an issue was created or re-opened, it will be updated on a GitHub Project board based on the configuration specified in the google spreadsheet.
 
-### Example
+### github-incident Example
 
 Secrets to access the google spreadsheet are located here: <https://it.jahia.com/index.php/pwd/view/2335>
 
@@ -145,13 +145,13 @@ Number of issues CLOSED referencing dedupKey 350a1efb-1f19-5a49-a312-3e853acbbdc
 Matching issue []
 ```
 
-## pagerduty:incident
+## pagerduty-incident
 
 The pagerduty:incident was the command previously used to create incidents in PagerDuty in case of test failures. It is being replaced by "github:incident" (thus not much documentation will be provided).
 
 It remains present to smooth the migration, but should be considered deprecated and will be removed in future versions.
 
-### Example
+### pagerduty-incident Example
 
 ```bash
 export INCIDENT_PAGERDUTY_API_KEY="CHANGE_MD"
@@ -173,15 +173,15 @@ export PATH_SOURCE_XML_REPORTS="./test-data/results-success/xml_reports/"
   --sourceUrl="http://some.url.jahia.com/run/1234"
 ```
 
-## perfs:submit
+## perfs-submit
 
-The perfs commands are primariraly used by https://github.com/Jahia/core-perf-test-terraform to analyze and submit performance tests results.
+The perfs commands are primarily used by <https://github.com/Jahia/core-perf-test-terraform> to analyze and submit performance tests results.
 
 You will need the secret: ZENCREPES_WEBHOOK_SECRET available at <https://it.jahia.com/index.php/pwd/view/2335>
 
 Note that you'll need to encode the secret as it contains special characters that will not be handled otherwise by bash, you can encode it using: `python3 -c 'import urllib.parse; print(urllib.parse.quote("CHANGE_ME"))'`
 
-### Example
+### perfs-submit Example
 
 ```bash
 export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
@@ -223,15 +223,15 @@ export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
 }
 ```
 
-## perfs:analyze
+## perfs-analyze
 
 The goal of this command is to check if any of the transactions is above a specified threshold
 
-### Example
+### perfs-analyze Example
 
 The analysis command takes three paths:
 
-- PATH_TO_RUNS_FILE: This json file is the ouput of a performance test run, it is available as test artifacts from run executed on: https://github.com/Jahia/core-perf-test-terraform
+- PATH_TO_RUNS_FILE: This json file is the output of a performance test run, it is available as test artifacts from run executed on: <https://github.com/Jahia/core-perf-test-terraform>
 - PATH_TO_THRESHOLD_FILE: This is the path to a file from the core-perf-test-terraform repository containing thresholds above which errors should be raised.
 - PATH_TO_REPORT_FILE: This is the file where the output of the command will be stored.
 
@@ -268,13 +268,13 @@ ERROR: run: Jahia Perf at 120mn, transaction: E3-C8b Publish page / Queue publis
 ERROR: run: Jahia Perf at 120mn, transaction: E3-U2c Publish update / Queue publish job+reload, metric: pct1ResTime is failing threshold => Value: 2068 (Operator: gt) Threshold: 1500
 ```
 
-## perfs:history
+## perfs-history
 
-The history command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs:analyze` command) and generate a table view of past executions.
+The history command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs-analyze` command) and generate a table view of past executions.
 
 Such runs are stored at this location: <https://github.com/Jahia/core-perf-test-terraform/tree/main/runs_history/>
 
-### Example
+### perfs-history Example
 
 ```bash
 export PATH_ANALYSIS="../core-perf-test-terraform/runs_history/j8sn-jsx/"
@@ -317,7 +317,7 @@ Given an existing project name, submit data to testrail. All of the missing elem
 
 Projects are not automatically created.
 
-### Example
+### testrail Example
 
 Secrets to access Testrail are located here: <https://it.jahia.com/index.php/pwd/view/2335>
 
@@ -372,7 +372,7 @@ The slack command is deprecated, it does not submit slack message but instead pr
 
 The summary command provides a brief overview of the test execution results, including the number of tests run, passed, and failed.
 
-### Example
+### summary Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -395,7 +395,7 @@ Given a ZenCrepes webhook, sends the outcome of a test run to ZenCrepes with the
 
 Though not deprecated yet, we should aim at replacing it by features natively provided by test management platforms.
 
-### Example
+### zencrepes Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -412,11 +412,11 @@ export ZENCREPES_WEBHOOK_SECRET="CHANGE_ME"
 
 The command displays the JSON object submitted to ZenCrepes.
 
-## utils:alive
+## utils-alive
 
 Wait until being able to perform a GraphQL query to get the current EDIT workspace.
 
-### Example
+### utils-alive Example
 
 ```bash
 ./bin/run.mjs utils:alive \
@@ -428,11 +428,11 @@ Wait until being able to perform a GraphQL query to get the current EDIT workspa
 Waiting for Jahia to be online... Jahia became reachable after 170 ms
 ```
 
-## utils:checkreport
+## utils-checkreport
 
 Previously useful for debugging, displays all tests results and their status
 
-### Example
+### utils-checkreport Example
 
 ```bash
 export PATH_SOURCE_XML_REPORTS="./test-data/results-failure/xml_reports/"
@@ -451,13 +451,13 @@ Root Stats => Tests: 159 Failures: 1 Time: 1156 Reports count: 44
 ...
 ```
 
-## utils:modules
+## utils-modules
 
 Given a Jahia host (and credentials), fetches the Jahia version (and build number) and version of all modules and save this results in a JSON file. Data model used is detailed here: `src/global.type.ts`
 
 The generated JSON file can then be used as input for other Jahia-Repoter first-level commands.
 
-### Example
+### utils-modules Example
 
 ```bash
 export JAHIA_URL="http://localhost:8080"
@@ -473,7 +473,7 @@ Done waiting for journal sync
 Fetched full details about the platform
 ```
 
-## utils:sam
+## utils-sam
 
 Given a Jahia host, wait until SAM returns GREEN status for the provided severity (default to MEDIUM).
 
@@ -499,7 +499,7 @@ For example:
 Then you can set a timeout of 5mn (300s).
 In such a case, if Jahia fails to start properly (or fail to provision properly), then your job will begin shutting down after 5mn instead of waiting for the full 60mn job timeout.
 
-### Example
+### utils-sam Example
 
 ```bash
 export JAHIA_URL="http://localhost:8080"
@@ -531,7 +531,7 @@ Probes with issues:
 
 To add a new command, simply create the corresponding `.ts` file in the `./src/commands/` folder.
 
-```
+```bash
 npm install
 ./bin/run yourcommand --help
 ```
@@ -582,20 +582,20 @@ CI/CD on this repository is performed with GitHub actions, publication to NPM an
 
 ### With NPM
 
-```
+```bash
 npm install -g @jahia/jahia-reporter@latest
 jahia-reporter testrail --help
 ```
 
 ### With Docker
 
-```
+```bash
 docker run jahia/jahia-reporter:latest jahia-reporter slack --help
 ```
 
 Since the tool takes actual files as primary input, it is necessary to make them available to the tool during the run, this can be done by mounting the volume like this:
 
-```
+```bash
 docker run --rm -v $PWD/junit/json2:/root/:ro jahia/jahia-reporter:latest /bin/bash -c "jahia-reporter slack /root/ WEBHOOK_URL -t json -u http://www.circleci.com -n \<@SLACK_USERNAME\> -w jahia -m augmented-search"
 ```
 
