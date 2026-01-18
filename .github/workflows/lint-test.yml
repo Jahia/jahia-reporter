@@ -1,6 +1,7 @@
 name: Lint and test
 # This workflow is triggered on pushes and pull requests
 on:
+  workflow_dispatch:
   push:
     branches:
       - '**'
@@ -10,7 +11,46 @@ on:
 
 jobs:
   lint:
-    name: Linting and test
+    name: Linting
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: corepack enable
+      - run: yarn
+
+      # Linting for the JS/TS codebase
+      - run: yarn run lint --max-warnings 1
+
+      # Also Lint with Super Linter for other file types
+      - name: Run Super Linter
+        uses: super-linter/super-linter@v8
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # Only run these specific linters (ESLint is handled by lint-test.yml)
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_GITHUB_ACTIONS: true
+
+          # Only validate changed files on PR
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+  tests:
+    name: Tests and coverage
     runs-on: ubuntu-latest
 
     permissions:
@@ -25,7 +65,6 @@ jobs:
           node-version: 'lts/*'
       - run: corepack enable
       - run: yarn
-      - run: yarn run lint --max-warnings 1
 
       # Run tests and post coverage report to PR
       - name: Jest Coverage Report
@@ -41,7 +80,7 @@ jobs:
         run: yarn run test
 
   build:
-    needs: [lint]
+    needs: [lint, tests]
     name: Build
     runs-on: ubuntu-latest
 

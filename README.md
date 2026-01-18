@@ -70,7 +70,7 @@ More details can be obtained about all of the commands by using `--help` with th
 
 ## github-incident
 
-The goal of this command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
+The goal of the `github:incident` command is to create/update GitHub issues based on test results whose primary goal is to alert a team about failing tests.
 
 Issues are assigned to users and project boards based on a configuration stored in a [google spreadsheet](https://docs.google.com/spreadsheets/d/1pkU_t_wrdeIXnQAwnExHtu81cZUfH2HIZKOrDCKbolg/edit?gid=0#gid=0).
 
@@ -147,7 +147,7 @@ Matching issue []
 
 ## pagerduty-incident
 
-The pagerduty:incident was the command previously used to create incidents in PagerDuty in case of test failures. It is being replaced by "github:incident" (thus not much documentation will be provided).
+The `pagerduty:incident` was the command previously used to create incidents in PagerDuty in case of test failures. It is being replaced by "github:incident" (thus not much documentation will be provided).
 
 It remains present to smooth the migration, but should be considered deprecated and will be removed in future versions.
 
@@ -270,7 +270,7 @@ ERROR: run: Jahia Perf at 120mn, transaction: E3-U2c Publish update / Queue publ
 
 ## perfs-history
 
-The history command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs-analyze` command) and generate a table view of past executions.
+The `perfs:history` command takes a folder containing previous runs (to be more specific, previous outputs from the `perfs-analyze` command) and generate a table view of past executions.
 
 Such runs are stored at this location: <https://github.com/Jahia/core-perf-test-terraform/tree/main/runs_history/>
 
