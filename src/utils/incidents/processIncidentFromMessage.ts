@@ -3,6 +3,9 @@ import { v5 as uuidv5 } from 'uuid';
 
 import { Incident } from '../../types/index.js';
 
+// This processes an incident based on a message and optional details file
+// This is an alternative to processing from a test report, it is especially useful
+// for non-test related incidents (performance, build, sonar, ...)
 export const processIncidentFromMessage = async ({
   incidentDetailsPath,
   message,

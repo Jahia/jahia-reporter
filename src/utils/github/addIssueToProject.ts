@@ -3,6 +3,7 @@ import { Octokit } from 'octokit';
 import { GitHubIssue } from '../../types/index.js';
 import { sleep } from '../sleep.js';
 
+// Update the status of a project card
 const updateCardStatus = async ({
   githubToken,
   log,
@@ -53,6 +54,8 @@ const updateCardStatus = async ({
   );
 };
 
+// Adds an issue to a GitHub project and sets its fields
+// This includes an hardcoded logic specifically sets three fields: status, team, priority
 export const addIssueToProject = async ({
   githubProject,
   githubProjectPriority,
@@ -100,7 +103,7 @@ export const addIssueToProject = async ({
   log(`Issue added to project, project card ID is: ${projectCardId}`);
 
   // Adding a sleep to give time for project data to be updated by GitHub
-  // Otherwise, the a workflow might kick off and overwrite our changes
+  // Otherwise, a workflow might kick off and overwrite our changes
   log(`Sleeping for 5 seconds to allow GitHub to update project data...`);
   await sleep(5000);
 

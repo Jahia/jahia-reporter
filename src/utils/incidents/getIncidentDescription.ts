@@ -1,3 +1,4 @@
+// This constructs the incident description for the issue body
 export const getIncidentDescription = ({
   dedupKey,
   incidentDetails,

@@ -2,6 +2,7 @@ import { Octokit } from 'octokit';
 
 import { GitHubIssue, Incident } from '../../types/index.js';
 
+// If an incident reoccurs, its issue is re-opened and a comment is added
 export const reopenIncidentIssue = async ({
   githubToken,
   incidentContent,

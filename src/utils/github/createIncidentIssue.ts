@@ -2,6 +2,7 @@ import { Octokit } from 'octokit';
 
 import { Incident } from '../../types/index.js';
 
+// Based on the received incident content, this method builds a default issue description
 const buildDefaultIssueDescription = ({
   dedupKey,
   description,
@@ -61,6 +62,8 @@ The Dedup key is generated from the list of failed test cases sorted alphabetica
   return body;
 };
 
+// This creates a GitHub issue for the given incident
+// The issue description is built using a separate method.
 export const createIncidentIssue = async ({
   githubToken,
   incidentContent,

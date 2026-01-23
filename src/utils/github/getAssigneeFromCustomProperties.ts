@@ -1,5 +1,7 @@
 import { Octokit } from 'octokit';
 
+// This retrieves an assignee from the custom repository properties
+// At the time of writing this method, only REST API supports repository custom properties
 export const getAssigneeFromCustomProperties = async ({
   githubToken,
   propertyName = 'Champion',

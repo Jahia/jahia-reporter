@@ -1,5 +1,6 @@
 import { Octokit } from 'octokit';
 
+// Using GitHub GraphQL API to search for issues in a repository matching a search string
 export const searchForIssues = async (
   githubToken: string,
   repository: string,

@@ -30,6 +30,7 @@ const getDedupKeyFromTests = (
   );
 };
 
+// This processes an incident based on test report results
 export const processIncidentFromTestReport = async ({
   log,
   service,

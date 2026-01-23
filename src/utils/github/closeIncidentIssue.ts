@@ -2,6 +2,8 @@ import { Octokit } from 'octokit';
 
 import { GitHubIssue, Incident } from '../../types/index.js';
 
+// If an incident is resolved, its issue can be closed.
+// This adds a comment to the issue and closes it.
 export const closeIncidentIssue = async ({
   githubToken,
   incidentContent,

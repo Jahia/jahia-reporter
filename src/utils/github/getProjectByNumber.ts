@@ -2,6 +2,9 @@ import { Octokit } from 'octokit';
 
 import type { GitHubProject } from '../../types/index.js';
 
+// Given a project number and organization, returns the GitHub project details
+// This is neeeded to fetch Status, Team and Priority fields needed when attaching
+// an issue to a project
 export const getProjectByNumber = async ({
   githubToken,
   log,
