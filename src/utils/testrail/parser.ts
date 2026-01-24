@@ -42,7 +42,7 @@ export function parseTestsFromReports(
             const status =
               testcase.status === 'skipped' || testcase.status === 'pending'
                 ? 'SKIP'
-                : 'FAIL';
+                : testcase.status;
 
             if (logger) {
               logger(`   |    |- Analyzed test: ${title} - Status: ${status}`);
