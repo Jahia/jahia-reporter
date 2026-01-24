@@ -79,6 +79,12 @@
       "@oclif/plugin-help",
       "@oclif/plugin-version"
     ],
+    "additionalVersionFlags": [
+      "-v"
+    ],
+    "additionalHelpFlags": [
+      "-h"
+    ],
     "topicSeparator": ":",
     "topics": {
       "utils": {
