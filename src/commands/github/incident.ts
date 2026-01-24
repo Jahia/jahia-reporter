@@ -21,7 +21,7 @@ import {
 
 class JahiaGitHubIncident extends Command {
   static description = 'Handles the creation of issues when incidents arise';
-static flags = {
+  static flags = {
     dryRun: Flags.boolean({
       default: false,
       description: 'Do not send the data but only print it to console',
@@ -113,6 +113,7 @@ static flags = {
   // eslint-disable-next-line complexity
   async run() {
     const { flags } = await this.parse(JahiaGitHubIncident);
+    this.log(`About to process test run for service: ${flags.incidentService}`);
 
     // Begin by collecting as much data as possible about the trigger
     // There are two main type of triggers
