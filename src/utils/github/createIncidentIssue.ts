@@ -41,7 +41,11 @@ const buildDefaultIssueDescription = ({
   }
 
   body += `\n\n
+
+_Details about the process or how to disable notifications is available on this [confluence page ](https://jahia-confluence.atlassian.net/wiki/spaces/PR/pages/605978631/GitHub+Incident+issues)._\n\n
+
 <details>\n
+
 <summary>Expand to learn more about these issues</summary>\n\n
 
 ### About\n\n
