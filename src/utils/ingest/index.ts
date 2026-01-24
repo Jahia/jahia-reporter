@@ -42,7 +42,7 @@ const ingestReport = async (
 
   if (reportType === 'json-perf') {
     if (lstatSync(reportFilePath).isFile()) {
-      log(`${reportFilePath} is a file`);
+      log(`Processing file ${reportFilePath}`);
       const reportContent = parseFile(reportType, reportFilePath);
       return parseJsonPerf(reportContent);
     }

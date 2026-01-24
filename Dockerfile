@@ -1,10 +1,10 @@
 # Imported from: https://github.com/oclif/docker/blob/master/Dockerfile
 FROM node:alpine
 
-LABEL Jahia Dev Team
+LABEL org.opencontainers.image.authors="Jahia Dev Team"
 
 # Add bash
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash=5.3.3-r1
 
 WORKDIR /usr/share/jahia-reporter/
 

@@ -39,6 +39,9 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+          # Excluding since these files are synced globally global
+          FILTER_REGEX_EXCLUDE: '.*\.github/ISSUE_TEMPLATE/.*'
+
           # Only run these specific linters (ESLint is handled by lint-test.yml)
           VALIDATE_JSON: true
           VALIDATE_YAML: true
