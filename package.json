@@ -1,56 +1,53 @@
 {
   "name": "@jahia/jahia-reporter",
   "description": "Testrail and ZenCrepes reporter that accepts mocha json and jest xml reports",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "author": "Jahia",
-  "bin": {
-    "jahia-reporter": "./bin/run"
-  },
+  "type": "module",
+  "bin": "./bin/run.mjs",
   "bugs": "https://github.com/Jahia/jahia-reporter/issues",
   "dependencies": {
-    "browser-or-node": "2.0.0",
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
-    "@slack/web-api": "^6.3.0",
-    "@pagerduty/pdjs": "^2.2.3",
-    "@types/node": "^10",
-    "@types/node-fetch": "^2.5.7",
-    "@types/parse-github-url": "^1.0.0",
-    "@types/uuid": "^8.3.0",
-    "axios": "^0.21.1",
-    "cli-ux": "^5.5.1",
+    "@oclif/core": "^4.8.0",
+    "@oclif/plugin-version": "^2.2.36",
+    "@pagerduty/pdjs": "^2.2.4",
+    "@types/node": "^25.0.9",
+    "@types/parse-github-url": "^1.0.3",
+    "@types/uuid": "^11.0.0",
+    "@urql/core": "^6.0.1",
+    "browser-or-node": "^3.0.0",
+    "date-fns": "^4.1.0",
     "date-fns-timezone": "^0.1.4",
-    "glob": "^7.1.6",
+    "glob": "^13.0.0",
     "global": "^4.4.0",
-    "google-spreadsheet": "^3.1.15",
-    "js-base64": "^3.6.0",
-    "load-yaml-file": "0.2.0",
-    "node-fetch": "^2.6.1",
-    "parse-github-url": "^1.0.2",
-    "ts-node": "^8",
-    "ts-sync-request": "^1.4.1",
-    "tslib": "^1",
-    "typescript": "^4.4.4",
+    "google-auth-library": "^10.5.0",
+    "google-spreadsheet": "^5.0.2",
+    "gql.tada": "^1.9.0",
+    "js-base64": "^3.7.8",
     "md5": "^2.3.0",
-    "uuid": "^8.3.1",
-    "xml-js": "^1.6.11"
+    "octokit": "^5.0.5",
+    "parse-github-url": "^1.0.3",
+    "ts-node": "^10.9.2",
+    "ts-sync-request": "^1.4.1",
+    "tslib": "^2.8.1",
+    "tty-table": "^5.0.0",
+    "typescript": "^5.9.3",
+    "uuid": "^13.0.0",
+    "xml-js": "^1.6.11",
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.16.0",
-    "@oclif/dev-cli": "^1",
-    "@oclif/test": "^1",
-    "@types/chai": "^4",
-    "@types/google-spreadsheet": "^3.1.5",
-    "@types/jest": "^27.0.2",
-    "@types/md5": "^2.3.1",
-    "chai": "^4",
-    "eslint": "^5.13",
-    "eslint-config-oclif": "^3.1",
-    "eslint-config-oclif-typescript": "^0.1",
-    "jest": "^27.3.1",
-    "nyc": "^14",
-    "ts-jest": "^27.0.7"
+    "@oclif/plugin-help": "^6.2.36",
+    "@types/google-spreadsheet": "^4.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/md5": "^2.3.6",
+    "eslint": "^9",
+    "eslint-config-oclif": "^6.0.130",
+    "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.2.0",
+    "oclif": "^4.22.68",
+    "prettier": "^3.8.0",
+    "ts-jest": "^29.4.6",
+    "typescript-eslint": "^8.53.0"
   },
   "overrides": {
     "@pagerduty/pdjs": {
@@ -59,9 +56,10 @@
   },
   "resolutions": {
     "browser-or-node": "2.0.0"
-  },  
+  },
+  "packageManager": "yarn@4.10.3+sha512.c38cafb5c7bb273f3926d04e55e1d8c9dfa7d9c3ea1f36a4868fa028b9e5f72298f0b7f401ad5eb921749eb012eb1c3bb74bf7503df3ee43fd600d14a018266f",
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=22.0.0"
   },
   "files": [
     "/bin",
@@ -74,20 +72,33 @@
   "license": "MIT",
   "main": "lib/index.js",
   "oclif": {
-    "commands": "./lib/commands",
     "bin": "jahia-reporter",
+    "dirname": "jahia-reporter",
+    "commands": "./lib/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-version"
+    ],
+    "topicSeparator": ":",
     "topics": {
       "utils": {
-        "description": "Set of small utility funtions"
+        "description": "Set of small utility functions"
       }
     }
   },
-  "repository": "Jahia/jahia-reporter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jahia/jahia-reporter.git"
+  },
   "scripts": {
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-    "test": "nyc --extension .ts jest",
-    "lint": "eslint . --ext .js,.ts --fix"
+    "build": "tsc -b",
+    "posttest": "eslint src",
+    "prepack": "rm -rf lib && tsc -b && oclif readme",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },
   "types": "lib/index.d.ts"
 }

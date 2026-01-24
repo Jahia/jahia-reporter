@@ -1,36 +1,96 @@
 name: Lint and test
-# This workflow is triggered on pushes to the repository.
+# This workflow is triggered on pushes and pull requests
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - '**'
+  pull_request:
     branches:
       - '**'
 
 jobs:
   lint:
-    name: Linting and test
+    name: Linting
     runs-on: ubuntu-latest
 
-    container:
-      image: node:lts-alpine
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: corepack enable
       - run: yarn
+
+      # Linting for the JS/TS codebase
       - run: yarn run lint --max-warnings 1
-      - run: yarn run test
+
+      # Also Lint with Super Linter for other file types
+      - name: Run Super Linter
+        uses: super-linter/super-linter@v8
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # Only run these specific linters (ESLint is handled by lint-test.yml)
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_GITHUB_ACTIONS: true
+
+          # Only validate changed files on PR
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+  tests:
+    name: Tests and coverage
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: corepack enable
+      - run: yarn
+
+      # Run tests and post coverage report to PR
+      - name: Jest Coverage Report
+        if: github.event_name == 'pull_request'
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          package-manager: yarn
+          test-script: yarn run test
+
+      # Run tests normally on push (non-PR)
+      - name: Run tests
+        if: github.event_name != 'pull_request'
+        run: yarn run test
 
   build:
-    needs: [lint]
+    needs: [lint, tests]
     name: Build
     runs-on: ubuntu-latest
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-
-    container:
-      image: node:lts-alpine
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: corepack enable
       - run: yarn
-      - run: npm install -g typescript@4.4.4
+      - run: npm install -g typescript@5.9.3
       - run: tsc -v
       - run: tsc -b
