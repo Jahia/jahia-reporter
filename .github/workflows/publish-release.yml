@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
+      - run: corepack enable
       - run: yarn
       - run: npm --no-git-tag-version version ${{ github.event.release.tag_name }}
       - run: yarn run build
