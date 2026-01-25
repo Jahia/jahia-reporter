@@ -209,7 +209,7 @@ class JahiaGitHubIncident extends Command {
     // Exit if assignee cannot be found
     if (assignee === '') {
       this.log(
-        `Unable to find assignee for service ${flags.incidentService}, the process will exit.`,
+        `No assignee set for the service ${flags.incidentService} in the corresponding row, the process will exit (state was: ${incidentContent.counts.fail > 0 ? 'FAILED' : 'PASSED'}).`,
       );
       this.exit(0);
     }
