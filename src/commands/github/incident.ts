@@ -299,15 +299,27 @@ class JahiaGitHubIncident extends Command {
       } else if (incidentContent.counts.fail > 0) {
         // If tests are failing and issues exist, we need to determine if they need to be re-opened or if a new issue is required
         // We are onlky re-opening one issue per dedup key
-        const matchingIssues = issues.filter(
-          (i) =>
-            i.state === 'CLOSED' && i.body.includes(incidentContent?.dedupKey),
+        const matchingIssues = issues.filter((i) =>
+          i.body.includes(incidentContent?.dedupKey),
         );
         this.log(
-          `Number of issues CLOSED referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
+          `Number of issues referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
         );
 
-        if (matchingIssues.length > 0) {
+        const matchingOpenIssues = matchingIssues.filter(
+          (i) => i.state === 'OPEN',
+        );
+        if (
+          matchingOpenIssues.length > 0 &&
+          matchingOpenIssues[0].state === 'OPEN'
+        ) {
+          // An issue is already open for that dedup key, no issue to be created or re-opened
+          this.log(
+            `An issue is already OPEN for dedupKey ${incidentContent?.dedupKey} - ${matchingOpenIssues[0].url}, nothing to be done.`,
+          );
+          // Setting it to null to indicate no changes should be made (such as changing the project status)
+          currentIssue = null;
+        } else if (matchingIssues.length > 0) {
           // sort matching issues by createdAt
           matchingIssues.sort(
             (a, b) =>
