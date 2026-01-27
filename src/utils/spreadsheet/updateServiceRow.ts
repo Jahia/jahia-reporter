@@ -21,15 +21,23 @@ const getServiceRow = async (
   return null;
 };
 
-export const updateServiceRow = async (
+export const updateServiceRow = async ({
+  incidentContent,
+  log,
+  repository,
+  service,
+  worksheet,
+}: {
+  incidentContent: Incident;
+  log: (message: string) => void;
+  repository: string;
+  service: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  worksheet: any,
-  service: string,
-  incidentContent: Incident,
-  log: (message: string) => void,
-) => {
+  worksheet: any;
+}) => {
   const row = await getServiceRow(worksheet, service, log);
   if (row) {
+    row.set('Repository', repository);
     row.set('State', incidentContent.counts.fail > 0 ? 'FAILED' : 'PASSED');
     row.set('Updated', new Date().toISOString());
     row.set('Total', incidentContent.counts.total);
@@ -44,6 +52,7 @@ export const updateServiceRow = async (
   const newRow = await worksheet.addRow({
     Failures: incidentContent.counts.fail,
     Link: incidentContent.sourceUrl,
+    Repository: repository,
     State: incidentContent.counts.fail > 0 ? 'FAILED' : 'PASSED',
     'Test Service': service,
     Total: incidentContent.counts.total,

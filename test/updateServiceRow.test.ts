@@ -48,8 +48,15 @@ describe('updateServiceRow', () => {
     const mockWorksheet = createMockWorksheet([mockRow]);
     const incident = createMockIncident();
 
-    await updateServiceRow(mockWorksheet, 'my-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'my-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
+    expect(mockRow.set).toHaveBeenCalledWith('Repository', 'my-repo');
     expect(mockRow.set).toHaveBeenCalledWith('State', 'FAILED');
     expect(mockRow.set).toHaveBeenCalledWith('Total', 10);
     expect(mockRow.set).toHaveBeenCalledWith('Failures', 2);
@@ -76,7 +83,13 @@ describe('updateServiceRow', () => {
       counts: { fail: 0, skip: 0, success: 10, total: 10 },
     });
 
-    await updateServiceRow(mockWorksheet, 'my-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'my-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(mockRow.set).toHaveBeenCalledWith('State', 'PASSED');
   });
@@ -85,10 +98,17 @@ describe('updateServiceRow', () => {
     const mockWorksheet = createMockWorksheet([]);
     const incident = createMockIncident();
 
-    await updateServiceRow(mockWorksheet, 'new-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'new-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(mockWorksheet.addRow).toHaveBeenCalledWith({
       Failures: 2,
+      Repository: 'my-repo',
       Link: 'https://ci.example.com/run/123',
       State: 'FAILED',
       'Test Service': 'new-service',
@@ -109,7 +129,13 @@ describe('updateServiceRow', () => {
       counts: { fail: 0, skip: 0, success: 5, total: 5 },
     });
 
-    await updateServiceRow(mockWorksheet, 'service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(mockWorksheet.addRow).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -135,7 +161,13 @@ describe('updateServiceRow', () => {
     const mockWorksheet = createMockWorksheet([row1, row2]);
     const incident = createMockIncident();
 
-    await updateServiceRow(mockWorksheet, 'my-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'my-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(row1.save).not.toHaveBeenCalled();
     expect(row2.save).toHaveBeenCalled();
@@ -148,7 +180,13 @@ describe('updateServiceRow', () => {
     const mockWorksheet = createMockWorksheet([]);
     const incident = createMockIncident();
 
-    await updateServiceRow(mockWorksheet, 'test-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'test-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(mockLog).toHaveBeenCalledWith(
       'Searching for row matching service: test-service',
@@ -159,7 +197,13 @@ describe('updateServiceRow', () => {
     const mockWorksheet = createMockWorksheet([]);
     const incident = createMockIncident();
 
-    await updateServiceRow(mockWorksheet, 'missing-service', incident, mockLog);
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'missing-service',
+      incidentContent: incident,
+      repository: 'my-repo',
+      log: mockLog,
+    });
 
     expect(mockLog).toHaveBeenCalledWith(
       'No service row found for: missing-service',

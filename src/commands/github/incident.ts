@@ -173,12 +173,13 @@ class JahiaGitHubIncident extends Command {
 
     // Fetch the service row matching the incident service
     // If it does not find a matching row, it will create a new one for that service
-    const serviceRow = await updateServiceRow(
-      gWorksheet,
-      flags.incidentService,
+    const serviceRow = await updateServiceRow({
       incidentContent,
-      this.log.bind(this),
-    );
+      log: this.log.bind(this),
+      repository: flags.githubRepository,
+      service: flags.incidentService,
+      worksheet: gWorksheet,
+    });
 
     // Exit if notifications are disabled
     if (
