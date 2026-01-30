@@ -299,7 +299,7 @@ class JahiaGitHubIncident extends Command {
         }
       } else if (incidentContent.counts.fail > 0) {
         // If tests are failing and issues exist, we need to determine if they need to be re-opened or if a new issue is required
-        // We are onlky re-opening one issue per dedup key
+        // We are only re-opening one issue per dedup key
         const matchingIssues = issues.filter((i) =>
           i.body.includes(incidentContent?.dedupKey),
         );
@@ -307,19 +307,28 @@ class JahiaGitHubIncident extends Command {
           `Number of issues referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
         );
 
-        const matchingOpenIssues = matchingIssues.filter(
-          (i) => i.state === 'OPEN',
-        );
-        if (
-          matchingOpenIssues.length > 0 &&
-          matchingOpenIssues[0].state === 'OPEN'
-        ) {
-          // An issue is already open for that dedup key, no issue to be created or re-opened
+        const openIssues = issues.filter((i) => i.state === 'OPEN');
+
+        // const matchingOpenIssues = matchingIssues.filter(
+        //   (i) => i.state === 'OPEN',
+        // );
+        if (openIssues.length > 0 && openIssues[0].state === 'OPEN') {
+          // An issue is already open for that service key, no issue to be created or re-opened
           this.log(
-            `An issue is already OPEN for dedupKey ${incidentContent?.dedupKey} - ${matchingOpenIssues[0].url}, nothing to be done.`,
+            `An issue is already OPEN for service ${flags.incidentService} - ${openIssues[0].url}, nothing to be done.`,
           );
           // Setting it to null to indicate no changes should be made (such as changing the project status)
           currentIssue = null;
+          // } else if (
+          //   matchingOpenIssues.length > 0 &&
+          //   matchingOpenIssues[0].state === 'OPEN'
+          // ) {
+          //   // An issue is already open for that dedup key, no issue to be created or re-opened
+          //   this.log(
+          //     `An issue is already OPEN for dedupKey ${incidentContent?.dedupKey} - ${matchingOpenIssues[0].url}, nothing to be done.`,
+          //   );
+          //   // Setting it to null to indicate no changes should be made (such as changing the project status)
+          //   currentIssue = null;
         } else if (matchingIssues.length > 0) {
           // sort matching issues by createdAt
           matchingIssues.sort(
