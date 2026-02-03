@@ -248,7 +248,7 @@ class JahiaGitHubIncident extends Command {
     this.log('Starting GitHub Incident creation process');
     // Begin by searching for/retrieving all issues matching the provided incident service
     // We will want to find any existing issues (including closed issues) with the same dedup key
-    const issues = await searchForIssues(
+    let issues = await searchForIssues(
       flags.githubToken,
       flags.githubRepository,
       flags.incidentService,
@@ -256,6 +256,11 @@ class JahiaGitHubIncident extends Command {
     this.log(
       `Found ${issues.length} issues for service ${flags.incidentService}`,
     );
+
+    // Filter down to only issues created by Jahia Reporter
+    // Only keeping issues containing the "Dedup Key" string
+    // This to avoid getting in the list issues unrelated to incidents
+    issues = issues.filter((i) => i.body.includes('Dedup Key'));
 
     let currentIssue = null;
     if (issues.length === 0) {
