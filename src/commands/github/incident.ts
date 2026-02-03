@@ -260,7 +260,7 @@ class JahiaGitHubIncident extends Command {
     // Filter down to only issues created by Jahia Reporter
     // Only keeping issues containing the "Dedup Key" string
     // This to avoid getting in the list issues unrelated to incidents
-    issues = issues.filter((i) => i.body.includes('Dedup Key'));
+    issues = issues.filter((i) => i.body && i.body.includes('Dedup Key'));
 
     let currentIssue = null;
     if (issues.length === 0) {
