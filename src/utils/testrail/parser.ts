@@ -27,10 +27,17 @@ export function parseTestsFromReports(
         .filter((testcase) => !testcase.name.includes('hook'))
         .map((testcase) => {
           const section = testsuite.name.replace(/ \(.*\)$/, '').trim();
-          // Remove section name from test name if present
+          // Remove section name from test name if present (anywhere in the string)
           let title = testcase.name.replace(/ \(.*\)$/, '').trim();
-          if (title.startsWith(section + ' ')) {
-            title = title.slice(Math.max(0, section.length + 1));
+
+          // Remove section substring from title wherever it appears
+          if (title.includes(section)) {
+            title = title.replace(section, '').trim();
+          }
+
+          // Ensure title doesn't exceed 240 characters (keep last 240 if too long)
+          if (title.length > 240) {
+            title = title.slice(-240);
           }
 
           if (testcase.failures.length > 0) {
@@ -45,7 +52,9 @@ export function parseTestsFromReports(
                 : testcase.status;
 
             if (logger) {
-              logger(`   |    |- Analyzed test: ${title} - Status: ${status}`);
+              logger(
+                `   |    |- Analyzed test: ${testcase.name} - Status: ${status}`,
+              );
             }
 
             return {
