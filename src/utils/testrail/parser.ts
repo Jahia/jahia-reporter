@@ -40,6 +40,10 @@ export function parseTestsFromReports(
             title = title.slice(-240);
           }
 
+          if (title === '') {
+            title = 'Unable to detect test suite name';
+          }
+
           if (testcase.failures.length > 0) {
             const comment = testcase.failures
               .filter((failure) => failure && failure.text) // Filter out undefined failures
