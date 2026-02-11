@@ -2,6 +2,71 @@ import { basename } from 'node:path';
 
 import { JRReport, JRRun } from '../../types/index.js';
 
+interface MochaJSONTest {
+  code: string;
+  duration: number;
+  err: {
+    estack: string;
+  };
+  fail: boolean;
+  pending: boolean;
+  title: string;
+}
+
+interface MochaJSONSuite {
+  failures: string[];
+  pending: string[];
+  skipped: string[];
+  suites: MochaJSONSuite[];
+  tests: MochaJSONTest[];
+  title: string;
+  uuid: string;
+}
+
+// Ensure suites are only present in the allSuites array once
+const addSuite = (
+  suite: MochaJSONSuite,
+  parentName: string,
+  allSuites: MochaJSONSuite[],
+) => {
+  if (!allSuites.some((s) => s.uuid === suite.uuid)) {
+    const suiteTitle =
+      parentName === '' ? suite.title : `${parentName} > ${suite.title}`;
+    allSuites.push({ ...suite, title: suiteTitle });
+  }
+
+  return allSuites;
+};
+
+// This logic is needed to handled nested test suites (a describe() within a describe())
+// In such a case, the test suite name will be the concatenation of
+// the parent suite and child suite, separated by " > "
+// All suites names will be placed at the same level
+const processTestSuite = (
+  parentName: string,
+  currentSuite: MochaJSONSuite,
+  allSuites: MochaJSONSuite[],
+) => {
+  if (currentSuite.suites && currentSuite.suites.length > 0) {
+    for (const childSuite of currentSuite.suites) {
+      const childSuites = processTestSuite(
+        currentSuite.title,
+        childSuite,
+        allSuites,
+      );
+      for (const suite of childSuites) {
+        allSuites = addSuite(suite, currentSuite.title, allSuites);
+      }
+    }
+  }
+
+  if (currentSuite.tests && currentSuite.tests.length > 0) {
+    allSuites = addSuite(currentSuite, parentName, allSuites);
+  }
+
+  return allSuites;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mochaParser = (rawReports: any[]): JRRun => {
   // Each file has one single report and one single suite, different in that from the xml report
@@ -14,6 +79,13 @@ const mochaParser = (rawReports: any[]): JRRun => {
   // Process reports without using Array.reduce()
   const reports: JRReport[] = [];
   for (const rawContent of filteredReports) {
+    // Create a flat list of suites with concatenated names to represent the hierarchy, instead of nested suites
+    let testSuites: MochaJSONSuite[] = [];
+    for (const testSpec of rawContent.content.results) {
+      const specSuites = processTestSuite('', testSpec, []);
+      testSuites = [...testSuites, ...specSuites];
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parsedReport: any = {
       failures: rawContent.content.stats.failures,
@@ -21,33 +93,33 @@ const mochaParser = (rawReports: any[]): JRRun => {
       pending: rawContent.content.stats.pending,
       skipped: rawContent.content.stats.skipped,
       tests: rawContent.content.stats.tests,
-      testsuites: rawContent.content.results.map(
+      testsuites: testSuites.map(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (mochaReport: any) => ({
-          failures: mochaReport.suites[0].failures.length,
-          name: mochaReport.suites[0].title,
-          pending: mochaReport.suites[0].pending.length,
-          skipped: mochaReport.suites[0].skipped.length,
-          tests: mochaReport.suites[0].tests.map(
+        (suite: any) => ({
+          failures: suite.failures.length,
+          name: suite.title,
+          pending: suite.pending.length,
+          skipped: suite.skipped.length,
+          tests: suite.tests.map(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (mochaTest: any) => {
+            (test: any) => {
               let status = 'PASS';
-              if (mochaTest.fail === true) {
+              if (test.fail === true) {
                 status = 'FAIL';
-              } else if (mochaTest.pending === true) {
+              } else if (test.pending === true) {
                 status = 'PENDING';
               }
 
               return {
-                failures: [{ text: mochaTest.err.estack }],
-                name: mochaTest.title,
+                failures: [{ text: test.err.estack }],
+                name: test.title,
                 status,
-                steps: mochaTest.code,
-                time: mochaTest.duration,
+                steps: test.code,
+                time: test.duration,
               };
             },
           ),
-          time: mochaReport.suites[0].duration,
+          time: suite.duration,
           timestamp: '',
         }),
       ),
