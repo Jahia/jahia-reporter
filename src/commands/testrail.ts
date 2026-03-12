@@ -62,6 +62,11 @@ class JahiaTestrailReporter extends Command {
       description: 'Path to a file containing values (in a key:value JSON object) to be added to the result fields',
       default: '',
     }),
+    testsProfile: flags.string({
+      char: 'f',
+      description: 'The profile of the tests (e.g. category, group or type)',
+      default: 'e2e',
+    }),
     projectName: flags.string({
       char: 'n',
       description: 'TestRail Project name',
@@ -117,7 +122,11 @@ class JahiaTestrailReporter extends Command {
       const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       })
-      if (flags.parentSection === '') {
+      const testsProfile = flags.testsProfile.trim()
+      if (testsProfile !== '') {
+        const cypressProfileName = /\.ts$/i.test(testsProfile) ? testsProfile : `cypress.config-${testsProfile}.ts`
+        flags.runName += `${cypressProfileName}-${runDate}`
+      } else if (flags.parentSection === '') {
         flags.runName += `${flags.projectName}-${runDate}`
       } else {
         flags.runName += `${flags.parentSection}-${runDate}`
