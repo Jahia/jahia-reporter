@@ -64,6 +64,11 @@ static override flags = {
       default: '',
       description: 'TestRail default run description',
     }),
+    profile: Flags.string({
+      default: '',
+      description: 'Execution profile name used in the run name',
+      env: 'PROFILE',
+    }),
     projectName: Flags.string({
       char: 'n',
       default: 'Jahia',
@@ -131,10 +136,15 @@ static override flags = {
       const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
       });
+      const profile = flags.profile.trim();
+      const runSource =
+        profile !== ''
+          ? profile
+          : flags.parentSection === ''
+            ? flags.projectName
+            : flags.parentSection;
       flags.runName +=
-        flags.parentSection === ''
-          ? `${flags.projectName}-${runDate}`
-          : `${flags.parentSection}-${runDate}`;
+        `${runSource}-${runDate}`;
     }
 
     this.log(`Will be creating a Testrail run with name: ${flags.runName}`);
