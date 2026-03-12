@@ -1,0 +1,57 @@
+import { sleep } from '../sleep.js';
+
+export const resolveIncidents = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pdClient: any,
+  serviceId: string,
+  testService: string,
+  sourceUrl: string,
+) => {
+  const allIncidents = await pdClient.all(
+    `/incidents?service_ids%5B%5D=${serviceId}&statuses%5B%5D=acknowledged&statuses%5B%5D=triggered`,
+  );
+
+  // Flatten incidents array without using Array.reduce()
+  const flattenedIncidents = [];
+  for (const item of allIncidents.data) {
+    if (item.incidents !== undefined && item.incidents.length > 0) {
+      flattenedIncidents.push(...item.incidents);
+    }
+  }
+
+  const allOpenIncidents = flattenedIncidents
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .filter((i: any) => i.title.split(' - Tests: ')[0] === testService);
+  console.log(
+    `${allOpenIncidents.length} incidents still open in pagerduty for service: ${testService}`,
+  );
+  if (allOpenIncidents.length > 0) {
+    console.log('These incidents will be resolved');
+  }
+
+  for (const incident of allOpenIncidents) {
+     
+    const incidentResponse = await pdClient.put(`/incidents/${incident.id}`, {
+      data: {
+        incident: {
+          resolution: `Incident was automatically resolved by jahia-reporter since the last run (${sourceUrl}) was successful`,
+          status: 'resolved',
+          type: 'incident',
+        },
+      },
+    });
+    if (
+      incidentResponse.data !== undefined &&
+      incidentResponse.data.incident !== undefined
+    ) {
+      console.log(
+        `Incident: ${incidentResponse.data.incident.incident_number} was resolved`,
+      );
+    } else {
+      console.log(`Unable to resolve incident: ${incident.id}`);
+    }
+
+    // Sleep for 1s to avoid hitting pagerduty service limits
+    sleep(1000);
+  }
+};

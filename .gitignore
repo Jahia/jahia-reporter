@@ -2,8 +2,11 @@
 *-error.log
 .DS_Store
 /.nyc_output
+/coverage
 /dist
 /lib
 /package-lock.json
 /tmp
 node_modules
+
+test-data

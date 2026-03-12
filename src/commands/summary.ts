@@ -1,60 +1,58 @@
-import {Command, flags} from '@oclif/command'
+/* eslint max-depth: ["error", 5] */
+import { Command, Flags } from '@oclif/core';
+import * as fs from 'node:fs';
+import path from 'node:path';
 
-import ingestReport from '../utils/ingest'
+import { JRRun } from '../types/index.js';
+import ingestReport from '../utils/ingest/index.js';
+import { getSummary } from '../utils/reports/getSummary.js';
 
-class JahiaSummaryReporter extends Command {
-  static description = 'Display a summary of the test results';
-
-  static flags = {
-    help: flags.help({char: 'h'}),
-    sourcePath: flags.string({
+export default class SummaryCommand extends Command {
+  static override description = 'Display a summary of the test results';
+  static override flags = {
+    savePath: Flags.string({
+      default: '',
+      description: 'Path to save the report as JSON',
+    }),
+    silent: Flags.boolean({
+      char: 's',
+      default: false,
+      description:
+        'Should report ingestion be silent (not to display identified files)',
+    }),
+    sourcePath: Flags.string({
       description:
         'A json/xml report or a folder containing one or multiple json/xml reports',
       required: true,
     }),
-    sourceType: flags.string({
+    sourceType: Flags.string({
       char: 't', // shorter flag version
+      default: 'xml',
       description: 'The format of the report', // help description for flag
       options: ['xml', 'json'], // only allow the value to be from a discrete set
-      default: 'xml',
-    }),
-    silent: flags.boolean({
-      char: 's',
-      description:
-        'Should report ingestion be silent (not to display identified files)',
-      default: false,
     }),
   };
 
-  async run() {
-    const {flags} = this.parse(JahiaSummaryReporter)
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(SummaryCommand);
 
     // Extract a report object from the actual report files (either XML or JSON)
-    const report = await ingestReport(
+    const report: JRRun = await ingestReport(
       flags.sourceType,
       flags.sourcePath,
-      this.log,
+      this.log.bind(this),
       flags.silent,
-    )
-    this.log(
-      `Total Tests: ${report.tests} - Failure: ${report.failures} - Executed in ${report.time}s`,
-    )
-    if (report.failures > 0) {
-      this.log('FAILURES:')
-      for (const r of report.reports.filter(r => r.failures > 0)) {
-        this.log(
-          ` | Suite: ${r.name} - Total tests: ${r.tests} - Failure: ${r.failures} - Executed in ${r.time}s`,
-        )
-        for (const s of r.testsuites.filter(s => s.failures > 0)) {
-          this.log(` |   | - ${s.name}`)
-          for (const t of s.tests.filter(t => t.status === 'FAIL')) {
-            this.log(` |   |    | - FAIL: ${t.name}`)
-          }
-        }
-      }
+    );
+
+    if (flags.savePath !== '') {
+      fs.writeFileSync(path.join(flags.savePath), JSON.stringify(report));
     }
-    // console.log(report);
+
+    const summary = getSummary({
+      report,
+      sourceType: flags.sourceType,
+    });
+
+    this.log(summary);
   }
 }
-
-export = JahiaSummaryReporter;

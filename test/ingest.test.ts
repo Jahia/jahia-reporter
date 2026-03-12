@@ -1,8 +1,8 @@
+import * as path from 'node:path'
+
 import ingestReport from '../src/utils/ingest'
-import * as path from 'path'
 
 const log = (msg: string) => {
-  // eslint-disable-next-line no-console
   console.log(msg)
 }
 

@@ -1,0 +1,38 @@
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  extensionsToTreatAsEsm: ['.ts'],
+  setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
+  transform: {
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  // Coverage configuration
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.{ts,js}',
+    '!src/**/*.d.ts',
+    '!src/index.ts', // Entry point, typically just exports
+    '!src/types/**', // Type definitions (interfaces + enums)
+    '!src/commands/**', // Commands are integration points, tested via utilities
+    '!**/node_modules/**',
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'text-summary', 'html', 'lcov'],
+  coverageThreshold: {
+    global: {
+      branches: 19,
+      functions: 34,
+      lines: 18,
+      statements: 19,
+    },
+  },
+};

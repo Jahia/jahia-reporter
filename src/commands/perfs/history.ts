@@ -1,54 +1,50 @@
-/* eslint-disable complexity */
-/* eslint-disable max-depth */
-import { Command, flags } from '@oclif/command';
-import { lstatSync, readFileSync } from 'fs';
-import * as fs from 'fs';
-import * as glob from 'glob';
+import { Command, Flags } from '@oclif/core';
 import { format } from 'date-fns';
-
-import { cli } from 'cli-ux';
+import * as glob from 'glob';
+import { lstatSync, readFileSync } from 'node:fs';
+import * as fs from 'node:fs';
+import { default as Table } from 'tty-table';
 
 interface TransactionError {
+  metric: string;
   run: string;
   transaction: string;
-  metric: string;
 }
 
 interface ReportAnalysis {
-  error: boolean;
-  run: string;
-  transaction: string;
-  metric: string;
   comparator: string;
+  error: boolean;
+  metric: string;
+  run: string;
   runValue: number;
   thresholdValue: number;
+  transaction: string;
 }
 
 class JahiaAnalyzePerfsReporter extends Command {
   static description = 'Provide an historical view over multiple run analysis';
-
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    analysisPath: flags.string({
+static flags = {
+    analysisFailureAlert: Flags.integer({
+      default: 2,
+      description:
+        'Will trigger an alert if the last X runs were below threshold for a transaction',
+      required: false,
+    }),
+    analysisPath: Flags.string({
       description:
         'A json file containing the perf report provided by the jmeter container',
       required: true,
     }),
-    analysisWindow: flags.integer({
-      description: 'Number of historical runs to analyze and display',
+    analysisWindow: Flags.integer({
       default: 6,
+      description: 'Number of historical runs to analyze and display',
       required: false,
     }),
-    analysisFailureAlert: flags.integer({
-      description:
-        'Will trigger an alert if the last X runs were below threshold for a transaction',
-      default: 2,
-      required: false,
-    }),
+    help: Flags.help({ char: 'h' }),
   };
 
   async run() {
-    const { flags } = this.parse(JahiaAnalyzePerfsReporter);
+    const { flags } = await this.parse(JahiaAnalyzePerfsReporter);
 
     if (
       !fs.existsSync(flags.analysisPath) ||
@@ -62,7 +58,10 @@ class JahiaAnalyzePerfsReporter extends Command {
 
     const reportWindow = reportFiles.sort().slice(-flags.analysisWindow);
 
-    const reports: Array<any> = [];
+    const reports: Array<{
+      analysis: ReportAnalysis[];
+      startedAt: string;
+    }> = [];
     // Load all report files in memory
     for (const f of reportWindow) {
       const rawFile = readFileSync(f, 'utf8');
@@ -80,33 +79,39 @@ class JahiaAnalyzePerfsReporter extends Command {
         if (!runs.includes(a.run)) {
           runs.push(a.run);
         }
+
         if (
-          errors.find(
+          !errors.some(
             (e) => e.transaction === a.transaction && e.run === a.run,
-          ) === undefined
+          )
         ) {
           errors.push({
+            metric: a.metric,
             run: a.run,
             transaction: a.transaction,
-            metric: a.metric,
           });
         }
       }
     }
 
     // Create a table of all values across the specified window
-    const errorsTable: Array<any> = errors.map((e) => {
-      const transactions = reports.map((r) => {
-        return {
-          startedAt: r.startedAt,
-          analysis: r.analysis.find(
-            (a: ReportAnalysis) =>
-              e.transaction === a.transaction &&
-              e.metric === a.metric &&
-              e.run === a.run,
-          ),
-        };
-      });
+    const errorsTable: Array<
+      TransactionError & {
+        analysis: Array<{
+          analysis?: ReportAnalysis;
+          startedAt: string;
+        }>;
+      }
+    > = errors.map((e) => {
+      const transactions = reports.map((r) => ({
+        analysis: r.analysis.find(
+          (a: ReportAnalysis) =>
+            e.transaction === a.transaction &&
+            e.metric === a.metric &&
+            e.run === a.run,
+        ),
+        startedAt: r.startedAt,
+      }));
       return {
         ...e,
         analysis: transactions,
@@ -119,50 +124,90 @@ class JahiaAnalyzePerfsReporter extends Command {
     for (const run of runs) {
       this.log(`Displaying errors for run: ${run}`);
       // Each run gets its own table
-      const currentTransations = errorsTable.filter((e) => e.run === run);
-      const columns: any = {
+      const currentTransation = errorsTable.find((e) => e.run === run);
+      if (!currentTransation) continue;
+
+      const columns: Array<{
+        alias?: string;
+        align?: string;
+        value: string;
+      }> = [
+        {
+          alias: 'Transactions',
+          align: 'left',
+          value: 'transaction',
+        },
+        {
+          alias: 'Metric',
+          value: 'metric',
+        },
         // oclif table configuration
-        transaction: {},
-        metric: {},
-      };
+      ];
       // Add one column per report
-      for (const a of currentTransations[0].analysis) {
-        const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm');
-        columns[currentDate] = {};
+      for (const a of currentTransation.analysis) {
+        const currentDate = format(new Date(a.startedAt), 'MM/dd-HH:mm');
+        columns.push({
+          align: 'right',
+          value: currentDate,
+        });
       }
-      columns['Send Alert'] = {};
-      columns['threshold'] = {};
+
+      columns.push(
+        {
+          align: 'right',
+          value: 'Send Alert',
+        },
+        {
+          alias: 'Threshold',
+          align: 'right',
+          value: 'threshold',
+        },
+      );
 
       const formattedTable = errorsTable
         .filter((e) => e.run === run)
         .map((e) => {
-          const row: any = {
+          const row: Record<string, number | string> = {
+            metric: e.metric,
             // oclif table row
             transaction: e.transaction,
-            metric: e.metric,
           };
           for (const a of e.analysis) {
-            const cellValue = Math.round(a.analysis.runValue);
-            const currentDate = format(new Date(a.startedAt), 'MM/DD-HH:mm');
-            row[currentDate] =
-              a.analysis.error === true ? `${cellValue}*` : cellValue
+            const currentDate = format(new Date(a.startedAt), 'MM/dd-HH:mm');
+            if (a.analysis === undefined) {
+              // The value could be undefined when creating new thresholds
+              row[currentDate] = 'N/A';
+            } else {
+              const cellValue = Math.round(a.analysis.runValue);
+              row[currentDate] =
+                a.analysis.error === true ? `${cellValue}*` : cellValue;
+            }
           }
+
           const alertWindow = e.analysis.slice(-flags.analysisFailureAlert);
-          const alertCount = alertWindow.reduce(
-            (acc: number, a: any) => acc + (a.analysis.error === true ? 1 : 0),
-            0,
-          );
+          let alertCount = 0;
+          for (const a of alertWindow) {
+            if (a.analysis === undefined) continue;
+            if (a.analysis.error === true) alertCount++;
+          }
+
           if (alertCount === flags.analysisFailureAlert) {
             triggerFailure = true;
           }
-          row['threshold'] =
-            e.analysis[e.analysis.length - 1].analysis.thresholdValue;
+
+          row.threshold =
+            e.analysis.at(-1)?.analysis === undefined
+              ? 'N/A'
+              : (e.analysis.at(-1)?.analysis?.thresholdValue ?? 'N/A');
           row['Send Alert'] =
             alertCount === flags.analysisFailureAlert ? 'YES' : 'NO';
           return row;
         });
       this.log('* (Above threshold)');
-      cli.table(formattedTable, columns);
+
+      // eslint-disable-next-line new-cap
+      const ANSI = Table(columns, formattedTable).render();
+      this.log(ANSI);
     }
 
     if (triggerFailure) {
@@ -172,4 +217,4 @@ class JahiaAnalyzePerfsReporter extends Command {
   }
 }
 
-export = JahiaAnalyzePerfsReporter;
+export default JahiaAnalyzePerfsReporter;
