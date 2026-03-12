@@ -140,16 +140,18 @@ static override flags = {
       const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)';
       const runDate = formatToTimeZone(date, format, {
         timeZone: 'Europe/Paris',
-      })
-      const testsProfile = flags.testsProfile.trim()
+      });
+      const testsProfile = flags.testsProfile.trim();
+      const projectOrSection =
+        flags.parentSection === '' ? flags.projectName : flags.parentSection;
+      const nameParts: string[] = [projectOrSection];
       if (testsProfile !== '') {
-        const cypressProfileName = /\.ts$/i.test(testsProfile) ? testsProfile : `cypress.config-${testsProfile}.ts`
-        flags.runName += `${cypressProfileName}-${runDate}`
-      } else if (flags.parentSection === '') {
-        flags.runName += `${flags.projectName}-${runDate}`
-      } else {
-        flags.runName += `${flags.parentSection}-${runDate}`
+        const cypressProfileName = /\.ts$/i.test(testsProfile)
+          ? testsProfile
+          : `cypress.config-${testsProfile}.ts`;
+        nameParts.push(cypressProfileName);
       }
+      flags.runName += `${nameParts.join('-')}-${runDate}`;
     }
 
     this.log(`Will be creating a Testrail run with name: ${flags.runName}`);
