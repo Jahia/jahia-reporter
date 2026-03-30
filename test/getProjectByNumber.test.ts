@@ -109,7 +109,7 @@ describe('getProjectByNumber', () => {
 
     const query = mockGraphql.mock.calls[0][0];
     expect(query).toContain('status: field(name: "Status")');
-    expect(query).toContain('teams: field(name: "Team")');
+    expect(query).toContain('teams: field(name: "Squad")');
     expect(query).toContain('priorities: field(name: "Priority")');
   });
 

@@ -39,7 +39,7 @@ export const getProjectByNumber = async ({
               }
             }
           }
-          teams: field(name: "Team") {
+          teams: field(name: "Squad") {
             ... on ProjectV2SingleSelectField {
               id
               name
