@@ -110,8 +110,13 @@ const mochaParser = (rawReports: any[]): JRRun => {
                 status = 'PENDING';
               }
 
+              // Some TestRail responses contain "context" attribute, containing TestRail specific data, e.g.:
+              // "configs":[{"context":{"is_global":true,"project_ids":[24,20,29,7,6,4 ...] ...
+              // thus use separate attribute "meta: test.context", for manipulations with
+              // test result's context and to avoid confusion with those
               return {
                 failures: [{ text: test.err.estack }],
+                meta: test.context,
                 name: test.title,
                 status,
                 steps: test.code,

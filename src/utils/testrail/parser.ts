@@ -1,6 +1,33 @@
 import type { JRRun, TestWithStatus } from '../../types/index.js';
 
 /**
+ * Safely parses and validates test context from JSON string
+ * @param {string | undefined} metaJson - JSON string containing context metadata
+ * @returns Valid context object or empty object if parsing fails
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseMeta(metaJson: string | undefined): Record<string, any> {
+  // Undefined, empty string, or whitespace-only JSON - return empty object
+  if (!metaJson || metaJson.trim() === '') {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(metaJson);
+    // Ensure it's a valid object (Record<string, any>)
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed;
+    }
+
+    // Return empty object if "context" has unexpected format
+    return {};
+  } catch {
+    // Invalid JSON or improper format - return empty object
+    return {};
+  }
+}
+
+/**
  * Parses test reports from a JRRun and converts them into TestRail-compatible format
  * @param jrRun - The ingested test run data
  * @param logger - Optional logging function
@@ -44,6 +71,15 @@ export function parseTestsFromReports(
             title = 'Unable to detect test suite name';
           }
 
+          // Evaluate test.context
+          // In older versions it might have different format, thus such cases should be skipped
+          // e.g.: "context": "\"videos/api/firstCheck.spec.begin.ts.mp4\"",
+          // Expected format to be processed:
+          // "context": "{\n  \"video\": \"videos/graphQL.mfa.customFactor.cy.ts.mp4\",\n  \"tags\": [\n    \"email\",\n    \"mfa\",\n    \"regression\",\n    \"smoke\",\n    \"P1\",\n    \"fallback-template\"\n  ]\n}",
+          // Parse and validate context: ensure correct format and that context contains a Record<string: any>
+          // If valid JSON and proper format, use it; otherwise assign an empty object
+          const metaInfo = parseMeta(testcase.meta);
+
           if (testcase.failures.length > 0) {
             const comment = testcase.failures
               .filter((failure) => failure && failure.text) // Filter out undefined failures
@@ -63,6 +99,7 @@ export function parseTestsFromReports(
 
             return {
               comment,
+              meta: metaInfo,
               section,
               status,
               steps: testcase.steps,
@@ -82,6 +119,7 @@ export function parseTestsFromReports(
             }
 
             return {
+              meta: metaInfo,
               section,
               status: 'SKIP' as const,
               steps: testcase.steps,
@@ -95,6 +133,7 @@ export function parseTestsFromReports(
           }
 
           return {
+            meta: metaInfo,
             section,
             status: 'PASS' as const,
             steps: testcase.steps,

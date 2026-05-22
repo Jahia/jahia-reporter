@@ -4,6 +4,7 @@ export interface JRTestfailure {
 
 export interface JRTestcase {
   failures: JRTestfailure[];
+  meta?: string | undefined;
   name: string;
   status: string;
   steps?: string;
