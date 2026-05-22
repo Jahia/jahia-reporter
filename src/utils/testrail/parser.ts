@@ -3,11 +3,11 @@ import type { JRRun, TestWithStatus } from '../../types/index.js';
 /**
  * Safely parses and validates test context from JSON string
  * @param {string | undefined} metaJson - JSON string containing context metadata
- * @returns Valid context object or empty object if parsing fails
+ * @returns Valid context object or empty one when context is absent/invalid
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseMeta(metaJson: string | undefined): Record<string, any> {
-  // Undefined, empty string, or whitespace-only JSON - return empty object
+  // Undefined, empty string, or whitespace-only JSON
   if (!metaJson || metaJson.trim() === '') {
     return {};
   }
@@ -16,13 +16,13 @@ function parseMeta(metaJson: string | undefined): Record<string, any> {
     const parsed = JSON.parse(metaJson);
     // Ensure it's a valid object (Record<string, any>)
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-      return parsed;
+      return {meta: parsed};
     }
 
-    // Return empty object if "context" has unexpected format
+    // Ignore unexpected non-object JSON payloads
     return {};
   } catch {
-    // Invalid JSON or improper format - return empty object
+    // Invalid JSON or improper format
     return {};
   }
 }
@@ -77,7 +77,7 @@ export function parseTestsFromReports(
           // Expected format to be processed:
           // "context": "{\n  \"video\": \"videos/graphQL.mfa.customFactor.cy.ts.mp4\",\n  \"tags\": [\n    \"email\",\n    \"mfa\",\n    \"regression\",\n    \"smoke\",\n    \"P1\",\n    \"fallback-template\"\n  ]\n}",
           // Parse and validate context: ensure correct format and that context contains a Record<string: any>
-          // If valid JSON and proper format, use it; otherwise assign an empty object
+          // If valid JSON and proper format, use it; otherwise use an empty object and skip adding it going forward.
           const metaInfo = parseMeta(testcase.meta);
 
           if (testcase.failures.length > 0) {
@@ -99,7 +99,7 @@ export function parseTestsFromReports(
 
             return {
               comment,
-              meta: metaInfo,
+              ...metaInfo,
               section,
               status,
               steps: testcase.steps,
@@ -119,7 +119,7 @@ export function parseTestsFromReports(
             }
 
             return {
-              meta: metaInfo,
+              ...metaInfo,
               section,
               status: 'SKIP' as const,
               steps: testcase.steps,
@@ -133,7 +133,7 @@ export function parseTestsFromReports(
           }
 
           return {
-            meta: metaInfo,
+            ...metaInfo,
             section,
             status: 'PASS' as const,
             steps: testcase.steps,

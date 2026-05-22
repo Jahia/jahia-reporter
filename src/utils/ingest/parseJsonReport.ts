@@ -113,10 +113,16 @@ const mochaParser = (rawReports: any[]): JRRun => {
               // Some TestRail responses contain "context" attribute, containing TestRail specific data, e.g.:
               // "configs":[{"context":{"is_global":true,"project_ids":[24,20,29,7,6,4 ...] ...
               // thus use separate attribute "meta: test.context", for manipulations with
-              // test result's context and to avoid confusion with those
+              // test result's context and to avoid confusion with those.
+              // Add meta ONLY if data exists to avoid breaking other cases.
+              const metaInfo =
+                test.context !== undefined && test.context !== null
+                  ? { meta: test.context }
+                  : {};
+
               return {
                 failures: [{ text: test.err.estack }],
-                meta: test.context,
+                ...metaInfo,
                 name: test.title,
                 status,
                 steps: test.code,
