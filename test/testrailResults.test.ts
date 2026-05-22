@@ -1,6 +1,6 @@
-import type { TestRailConfig, TestRailResult } from '../src/types/index.js';
+import type { TestRailConfig, TestRailResult, UpdateCase } from '../src/types/index.js';
 
-import { addTestrailResults } from '../src/utils/testrail/results.js';
+import { addTestrailResults, updateTestCase } from '../src/utils/testrail/results.js';
 import { sendRequest } from '../src/utils/testrail/client.js';
 
 // Mock the client module
@@ -93,6 +93,38 @@ describe('TestRail Results', () => {
         'POST',
         'add_results_for_cases/12345',
         expect.any(Object),
+      );
+    });
+  });
+
+  describe('updateTestCase', () => {
+    it('should call sendRequest with correct endpoint and body', async () => {
+      const body: UpdateCase = { title: 'Updated title', steps: 'Step 1' };
+      const mockResponse = [{ case_id: 42, status_id: 1 }];
+      mockSendRequest.mockReturnValue(mockResponse);
+
+      const result = await updateTestCase(mockConfig, 42, body);
+
+      expect(mockSendRequest).toHaveBeenCalledWith(
+        mockConfig,
+        'POST',
+        'update_case/42',
+        body,
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should pass partial update body', async () => {
+      const body: UpdateCase = { comment: 'needs review' };
+      mockSendRequest.mockReturnValue([]);
+
+      await updateTestCase(mockConfig, 7, body);
+
+      expect(mockSendRequest).toHaveBeenCalledWith(
+        mockConfig,
+        'POST',
+        'update_case/7',
+        body,
       );
     });
   });
