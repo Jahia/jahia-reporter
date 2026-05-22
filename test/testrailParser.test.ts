@@ -656,6 +656,192 @@ describe('parseTestsFromReports', () => {
     });
   });
 
+  describe('meta parsing', () => {
+    it('should include meta when testcase meta is valid JSON object', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  meta: '{"tags":["smoke"],"video":"run.mp4"}',
+                  name: 'test with meta',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0]).toMatchObject({
+        meta: { tags: ['smoke'], video: 'run.mp4' },
+      });
+    });
+
+    it('should ignore testcase meta when JSON is invalid', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  meta: '{invalid-json',
+                  name: 'test with invalid meta',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0]).not.toHaveProperty('meta');
+    });
+
+    it('should ignore testcase meta when JSON is not an object', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  meta: '["tag1","tag2"]',
+                  name: 'test with array meta',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0]).not.toHaveProperty('meta');
+    });
+  });
+
+  describe('title edge cases', () => {
+    it('should trim test title to the last 240 characters when too long', () => {
+      const longTitle = `prefix-${'x'.repeat(300)}`;
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  name: longTitle,
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0].title).toHaveLength(240);
+      expect(result[0].title).toBe(longTitle.slice(-240));
+    });
+
+    it('should use fallback title when title is empty after section removal', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Login',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  name: 'Login',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0].title).toBe('Unable to detect test suite name');
+    });
+  });
+
   describe('status variations', () => {
     it('should handle skipped status in failures array', () => {
       const jrRun = createJRRun([
