@@ -114,12 +114,8 @@ const mochaParser = (rawReports: any[]): JRRun => {
               // "configs":[{"context":{"is_global":true,"project_ids":[24,20,29,7,6,4 ...] ...
               // thus use separate attribute "meta: test.context", for manipulations with
               // test result's context and to avoid confusion with those.
-              // Keep context only when it is a plain object; ignore malformed formats.
               const metaInfo =
-                test.context !== undefined &&
-                test.context !== null &&
-                typeof test.context === 'object' &&
-                !Array.isArray(test.context)
+                test.context !== undefined && test.context !== null
                   ? { meta: test.context }
                   : {};
 

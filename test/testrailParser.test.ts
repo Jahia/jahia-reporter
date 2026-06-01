@@ -657,7 +657,7 @@ describe('parseTestsFromReports', () => {
   });
 
   describe('meta parsing', () => {
-    it('should include meta when testcase meta is valid JSON object', () => {
+    it('should ignore testcase meta when JSON is a plain object', () => {
       const jrRun = createJRRun([
         {
           failures: 0,
@@ -690,9 +690,7 @@ describe('parseTestsFromReports', () => {
 
       const result = parseTestsFromReports(jrRun);
 
-      expect(result[0]).toMatchObject({
-        meta: { tags: ['smoke'], video: 'run.mp4' },
-      });
+      expect(result[0]).not.toHaveProperty('meta');
     });
 
     it('should ignore testcase meta when JSON is invalid', () => {
@@ -731,7 +729,7 @@ describe('parseTestsFromReports', () => {
       expect(result[0]).not.toHaveProperty('meta');
     });
 
-    it('should ignore testcase meta when JSON is not an object', () => {
+    it('should reformat testcase meta when JSON is an array of title/value pairs', () => {
       const jrRun = createJRRun([
         {
           failures: 0,
@@ -748,8 +746,82 @@ describe('parseTestsFromReports', () => {
               tests: [
                 {
                   failures: [],
-                  meta: '["tag1","tag2"]',
+                  meta: '[{"title":"video","value":"run.mp4"},{"title":"tags","value":["smoke","p1"]}]',
                   name: 'test with array meta',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0]).toMatchObject({
+        meta: { tags: ['smoke', 'p1'], video: 'run.mp4' },
+      });
+    });
+
+    it('should ignore testcase meta when JSON array does not contain valid title/value pairs', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  meta: '[{"title":"","value":"ignored"},{"value":"missing-title"},42]',
+                  name: 'test with invalid array meta',
+                  status: 'PASS',
+                  time: 10,
+                },
+              ],
+              time: 10,
+              timestamp: '2024-01-01T00:00:00Z',
+            },
+          ],
+          time: 10,
+        },
+      ]);
+
+      const result = parseTestsFromReports(jrRun);
+
+      expect(result[0]).not.toHaveProperty('meta');
+    });
+
+    it('should ignore testcase meta when JSON is a primitive value', () => {
+      const jrRun = createJRRun([
+        {
+          failures: 0,
+          name: 'Report',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 0,
+              name: 'Suite',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  failures: [],
+                  meta: '"legacy-string-context"',
+                  name: 'test with primitive meta',
                   status: 'PASS',
                   time: 10,
                 },

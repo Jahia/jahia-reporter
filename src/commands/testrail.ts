@@ -347,7 +347,7 @@ static override flags = {
       );
 
       // debug info, to be removed
-      // this.log('CONTEXT: ' + JSON.stringify(test.meta));
+      // this.log('META: ' + JSON.stringify(test.meta));
       // this.log('TAGS: ' + [...testCaseTags].join(', '));
 
       if (flags.skip) {

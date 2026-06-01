@@ -1,6 +1,28 @@
 import type { JRRun, TestWithStatus } from '../../types/index.js';
 
 /**
+ * Meta-data entry type
+ */
+type MetaEntry = {
+  title: string;
+  value: unknown;
+};
+
+/**
+ * Ensures the entry has a proper type
+ * @param entry meta-data entry
+ */
+function isMetaEntry(entry: unknown): entry is MetaEntry {
+  return Boolean(
+    entry &&
+      typeof entry === 'object' &&
+      'title' in entry &&
+      typeof (entry as { title: unknown }).title === 'string' &&
+      'value' in entry
+  );
+}
+
+/**
  * Safely parses and validates test context from JSON string
  * @param {string | undefined} metaJson - JSON string containing context metadata
  * @returns Valid context object or empty one when context is absent/invalid
@@ -13,10 +35,34 @@ function parseMeta(metaJson: string | undefined): Record<string, any> {
   }
 
   try {
-    const parsed = JSON.parse(metaJson);
-    // Ensure it's a valid object (Record<string, any>)
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-      return {meta: parsed};
+    let parsed = JSON.parse(metaJson);
+
+    // handle case when meta info can contain just one meta entry
+    // in such case it won't be an array but a single object, e.g.:
+    // "context": "{\n  \"title\": \"video\",\n  \"value\": \"videos/graphQL.mfa.errors.cy.ts.mp4\"\n}"
+    if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+      parsed = [parsed];
+    }
+
+    // Expected format to be processed:
+    // "context": "[\n  {\n    \"title\": \"video\",\n    \"value\": \"videos/graphQL.mfa.customFactor.cy.ts.mp4\"\n  },\n  {\n    \"title\": \"tags\",\n    \"value\": [\n      \"email\",\n      \"mfa\",\n      \"regression\",\n      \"smoke\",\n      \"P1\",\n      \"fallback-template\"\n    ]\n  }\n]",
+    // skip older entries, like:
+    // "context": "\"videos/api/firstCheck.spec.begin.ts.mp4\""
+    // Parse and validate context: ensure correct format and that context contains a Record<string: any>
+    // If valid JSON and proper format, use it; otherwise use an empty object and skip adding it going forward.
+    if (Array.isArray(parsed)) {
+      const mapped: Record<string, unknown> = {};
+
+      for (const item of parsed) {
+        if (!isMetaEntry(item) || item.title.trim() === '') {
+          continue;
+        }
+
+        // Reformat [{title:<title1>, value:<value1>}, ...] to {title1: value1, ...}
+        mapped[item.title] = item.value;
+      }
+
+      return Object.keys(mapped).length > 0 ? { meta: mapped } : {};
     }
 
     // Ignore unexpected non-object JSON payloads
@@ -71,13 +117,9 @@ export function parseTestsFromReports(
             title = 'Unable to detect test suite name';
           }
 
-          // Evaluate test.context
-          // In older versions it might have different format, thus such cases should be skipped
-          // e.g.: "context": "\"videos/api/firstCheck.spec.begin.ts.mp4\"",
-          // Expected format to be processed:
-          // "context": "{\n  \"video\": \"videos/graphQL.mfa.customFactor.cy.ts.mp4\",\n  \"tags\": [\n    \"email\",\n    \"mfa\",\n    \"regression\",\n    \"smoke\",\n    \"P1\",\n    \"fallback-template\"\n  ]\n}",
-          // Parse and validate context: ensure correct format and that context contains a Record<string: any>
-          // If valid JSON and proper format, use it; otherwise use an empty object and skip adding it going forward.
+          // Evaluate test.context,
+          // which was assigned to 'meta' attribute in src/utils/ingest/parseJsonReport.ts
+          // to avoid confusion with TestRail's 'context' attribute
           const metaInfo = parseMeta(testcase.meta);
 
           if (testcase.failures.length > 0) {
