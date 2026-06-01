@@ -755,8 +755,8 @@ describe('parseJsonReport', () => {
 
       const result = parseJson(rawReports);
 
-      expect(result.reports[0].testsuites[0].tests[0]).not.toHaveProperty('meta');
-      expect(result.reports[0].testsuites[0].tests[1]).not.toHaveProperty('meta');
+      expect(result.reports[0].testsuites[0].tests[0]).toMatchObject({meta: 'raw-context-string'});
+      expect(result.reports[0].testsuites[0].tests[1]).toMatchObject({meta: ['tagA', 'tagB']});
     });
 
     it('should handle mixed report validity (some valid, some invalid)', () => {
