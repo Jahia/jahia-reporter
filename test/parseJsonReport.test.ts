@@ -654,6 +654,51 @@ describe('parseJsonReport', () => {
       });
     });
 
+    it('should preserve testcase context in meta when it contains mixed entities', () => {
+      const rawReports = [
+        {
+          filepath: '/path/to/report.json',
+          content: {
+            stats: {
+              failures: 0,
+              pending: 0,
+              skipped: 0,
+              tests: 1,
+              duration: 200,
+              start: '2024-01-01T10:00:00.000Z',
+            },
+            results: [
+              {
+                uuid: 'suite-1',
+                title: 'Suite',
+                tests: [
+                  {
+                    title: 'test with context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: ['raw-string', { tags: ['regression'], video: 'run.mp4' }],
+                    err: { estack: '' },
+                  },
+                ],
+                suites: [],
+                failures: [],
+                pending: [],
+                skipped: [],
+              },
+            ],
+          },
+        },
+      ];
+
+      const result = parseJson(rawReports);
+
+      expect(result.reports[0].testsuites[0].tests[0]).toMatchObject({
+        meta: ['raw-string', { tags: ['regression'], video: 'run.mp4' }],
+      });
+    });
+
     it('should not include meta when testcase context is absent or null', () => {
       const rawReports = [
         {
