@@ -609,6 +609,201 @@ describe('parseJsonReport', () => {
       expect(result.reports[0].testsuites[0].tests[0].steps).toBe(testCode);
     });
 
+    it('should preserve testcase context in meta when provided', () => {
+      const rawReports = [
+        {
+          filepath: '/path/to/report.json',
+          content: {
+            stats: {
+              failures: 0,
+              pending: 0,
+              skipped: 0,
+              tests: 1,
+              duration: 200,
+              start: '2024-01-01T10:00:00.000Z',
+            },
+            results: [
+              {
+                uuid: 'suite-1',
+                title: 'Suite',
+                tests: [
+                  {
+                    title: 'test with context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: { tags: ['regression'], video: 'run.mp4' },
+                    err: { estack: '' },
+                  },
+                ],
+                suites: [],
+                failures: [],
+                pending: [],
+                skipped: [],
+              },
+            ],
+          },
+        },
+      ];
+
+      const result = parseJson(rawReports);
+
+      expect(result.reports[0].testsuites[0].tests[0]).toMatchObject({
+        meta: { tags: ['regression'], video: 'run.mp4' },
+      });
+    });
+
+    it('should preserve testcase context in meta when it contains mixed entities', () => {
+      const rawReports = [
+        {
+          filepath: '/path/to/report.json',
+          content: {
+            stats: {
+              failures: 0,
+              pending: 0,
+              skipped: 0,
+              tests: 1,
+              duration: 200,
+              start: '2024-01-01T10:00:00.000Z',
+            },
+            results: [
+              {
+                uuid: 'suite-1',
+                title: 'Suite',
+                tests: [
+                  {
+                    title: 'test with context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: ['raw-string', { tags: ['regression'], video: 'run.mp4' }],
+                    err: { estack: '' },
+                  },
+                ],
+                suites: [],
+                failures: [],
+                pending: [],
+                skipped: [],
+              },
+            ],
+          },
+        },
+      ];
+
+      const result = parseJson(rawReports);
+
+      expect(result.reports[0].testsuites[0].tests[0]).toMatchObject({
+        meta: ['raw-string', { tags: ['regression'], video: 'run.mp4' }],
+      });
+    });
+
+    it('should not include meta when testcase context is absent or null', () => {
+      const rawReports = [
+        {
+          filepath: '/path/to/report.json',
+          content: {
+            stats: {
+              failures: 0,
+              pending: 0,
+              skipped: 0,
+              tests: 2,
+              duration: 250,
+              start: '2024-01-01T10:00:00.000Z',
+            },
+            results: [
+              {
+                uuid: 'suite-1',
+                title: 'Suite',
+                tests: [
+                  {
+                    title: 'test without context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    err: { estack: '' },
+                  },
+                  {
+                    title: 'test with null context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: null,
+                    err: { estack: '' },
+                  },
+                ],
+                suites: [],
+                failures: [],
+                pending: [],
+                skipped: [],
+              },
+            ],
+          },
+        },
+      ];
+
+      const result = parseJson(rawReports);
+
+      expect(result.reports[0].testsuites[0].tests[0]).not.toHaveProperty('meta');
+      expect(result.reports[0].testsuites[0].tests[1]).not.toHaveProperty('meta');
+    });
+
+    it('should ignore meta when testcase context has an improper format', () => {
+      const rawReports = [
+        {
+          filepath: '/path/to/report.json',
+          content: {
+            stats: {
+              failures: 0,
+              pending: 0,
+              skipped: 0,
+              tests: 2,
+              duration: 250,
+              start: '2024-01-01T10:00:00.000Z',
+            },
+            results: [
+              {
+                uuid: 'suite-1',
+                title: 'Suite',
+                tests: [
+                  {
+                    title: 'test with string context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: 'raw-context-string',
+                    err: { estack: '' },
+                  },
+                  {
+                    title: 'test with array context',
+                    duration: 100,
+                    fail: false,
+                    pending: false,
+                    code: '',
+                    context: ['tagA', 'tagB'],
+                    err: { estack: '' },
+                  },
+                ],
+                suites: [],
+                failures: [],
+                pending: [],
+                skipped: [],
+              },
+            ],
+          },
+        },
+      ];
+
+      const result = parseJson(rawReports);
+
+      expect(result.reports[0].testsuites[0].tests[0]).toMatchObject({meta: 'raw-context-string'});
+      expect(result.reports[0].testsuites[0].tests[1]).toMatchObject({meta: ['tagA', 'tagB']});
+    });
+
     it('should handle mixed report validity (some valid, some invalid)', () => {
       const rawReports = [
         {

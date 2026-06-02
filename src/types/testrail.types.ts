@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface TestRailConfig {
   base: string;
   enableRateLimiting?: boolean;
@@ -20,7 +22,6 @@ export enum Status {
 }
 
 export interface TestRailResult {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any; // Allow custom fields
   case_id: number;
   comment?: string;
@@ -126,9 +127,23 @@ export interface PaginatedTests {
   size: number;
 }
 
+export interface TestRailLabel {
+  created_by: number;
+  created_on: number;
+  id: number;
+  title: string;
+}
+
+/**
+ * Interface is used in both cases - for test-case from cypress report and from TestRail.
+ * Thus use both - 'meta' (containing meta-info from cypress report, along with labels
+ * and 'labels' attributes (both optional to handle both cases).
+ */
 export interface Test {
   comment?: string;
   id?: number;
+  labels?: Array<TestRailLabel>;
+  meta?: any;
   section: string;
   section_id?: string;
   steps?: string;
@@ -142,10 +157,22 @@ export interface TestWithStatus extends Test {
 
 export interface AddCase {
   custom_status: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   custom_steps_separated?: any[];
   custom_version: number[];
+  labels?: string[];
   title: string;
+}
+
+// Same with <Test> but all fields are optional
+export interface UpdateCase {
+  comment?: string;
+  id?: number;
+  labels?: string[];
+  section?: string;
+  section_id?: string;
+  steps?: string;
+  time?: string;
+  title?: string;
 }
 
 export interface Run {

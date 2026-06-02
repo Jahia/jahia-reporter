@@ -34,6 +34,7 @@ import {
   getTestrailSections,
   getTestrailSuite,
   parseTestsFromReports,
+  updateTestCase,
 } from '../utils/testrail/index.js';
 
 export default class TestrailCommand extends Command {
@@ -133,18 +134,13 @@ static override flags = {
     if (flags.runName === 'AE - ') {
       const date = new Date();
       const format = 'YYYY-MM-DD HH:mm:ss [GMT]Z (z)';
-      const runDate = formatToTimeZone(date, format, {
-        timeZone: 'Europe/Paris',
-      });
+      const runDate = formatToTimeZone(date, format, {timeZone: 'Europe/Paris'});
       const profile = flags.profile.trim();
       const runSource =
-        profile !== ''
-          ? profile
-          : flags.parentSection === ''
-            ? flags.projectName
-            : flags.parentSection;
-      flags.runName +=
-        `${runSource}-${runDate}`;
+        profile === '' ?
+          (flags.parentSection === '' ? flags.projectName : flags.parentSection) :
+          profile;
+      flags.runName += `${runSource}-${runDate}`;
     }
 
     this.log(`Will be creating a Testrail run with name: ${flags.runName}`);
@@ -324,6 +320,7 @@ static override flags = {
     // Make sure all test cases exist in TestRail
     // First get all test cases from TestRail, by section
     const testCasesInTestrail: Record<string, Test[]> = {};
+    const testCasesToUpdate: Array<{ caseId: number; tags: string[] }> = [];
     for (const executedSection of executedSections) {
       if (!flags.skip) {
         ux.action.start(
@@ -343,6 +340,16 @@ static override flags = {
 
     // Go over the executed tests and make sure they all exist in the list we just got from TestRail
     for (const test of tests) {
+      // Collect all unique non-empty tags from the test-case results
+      const testCaseTags = new Set((test.meta?.tags ?? [])
+          .map((tag: string) => tag.trim())
+          .filter((str: string) => str !== ''),
+      );
+
+      // debug info, to be removed
+      // this.log('META: ' + JSON.stringify(test.meta));
+      // this.log('TAGS: ' + [...testCaseTags].join(', '));
+
       if (flags.skip) {
         this.log(`Get test data ${JSON.stringify(test)}`);
       } else {
@@ -350,6 +357,7 @@ static override flags = {
         const foundTestCaseInTestRail = testCasesInTestrail[test.section].find(
           (t) => t.title === test.title,
         );
+
         // if it's not found we are creating it
         if (foundTestCaseInTestRail === undefined) {
           ux.action.start(
@@ -362,16 +370,20 @@ static override flags = {
             'Complete',
           );
 
-          // Search for the ID corrsponding to the provided Jahia version
+          // Search for the ID corresponding to the provided Jahia version
           const customVersion = await getTestrailCustomVersion(
             testrailCaseFields,
             '8.0.1.0',
           );
+
+          // Compose new TEST-CASE data
           const newTestCase: AddCase = {
             custom_status: customStatus,
             custom_version: customVersion,
+            labels: [...testCaseTags] as string[],
             title: test.title,
           };
+
           // Only Cypress reports at the moment are expected to have the steps field
           if (test.steps !== undefined) {
             newTestCase.custom_steps_separated = [
@@ -391,6 +403,7 @@ static override flags = {
               `Something unexpected happened. Section ${test.section} was not found and not created.`,
             );
           } else {
+            // Add new TEST-CASE to TestRail
             const createdCase = await addTestrailCase(
               testrailConfig,
               section.id,
@@ -402,6 +415,29 @@ static override flags = {
         } else {
           // the test exists in TestRail, so we'll just keep the ID
           test.id = foundTestCaseInTestRail.id;
+
+          // Compare LABELS from the TestRail and TAGS from test results
+          // If expected and existing ones are equal (doesn't matter - emtpy or not) then skip updating.
+          // Otherwise, update TESTRAIL LABELS with expected TAGS, overriding all existing ones.
+
+          // Filter non-empty unique "existing" labels from the TestRail results
+          const testRailLabels = new Set((foundTestCaseInTestRail.labels ?? [])
+              .map((label) => label.title.trim())
+              .filter((title) => title !== '')
+          );
+
+          // Compare TestRail labels with test-case result's tags
+          const labelsAreEqual =
+            testRailLabels.size === testCaseTags.size &&
+            [...testCaseTags].every((tag) => testRailLabels.has(tag as string));
+
+          // If there is any difference - store new ("expected") labels in the queue for further update
+          if (!labelsAreEqual) {
+            testCasesToUpdate.push({
+              caseId: test.id as number,
+              tags: [...testCaseTags] as string[]
+            });
+          }
         }
       }
     }
@@ -439,7 +475,7 @@ static override flags = {
     for (const test of tests) {
       if (test.id === undefined) {
         this.error(
-          `Something unexpected happened. Test ${test.title} does not have an ID.`,
+          `Something unexpected happened. Test [${test.title}] does not have an ID.`,
         );
       } else {
         // If there's a comment argument on the object it means the test failed.
@@ -482,8 +518,19 @@ static override flags = {
     this.log(`Updating test run in batch for ${results.length} results`);
     if (flags.skip) {
       this.log(`Results: ${JSON.stringify(results)}`);
+      this.log(`Will update labels for ${testCasesToUpdate.length} existing case(s) if any`);
     } else {
+      // Add TEST-CASE execution's result
       await addTestrailResults(testrailConfig, run.id, results);
+
+      // Update TEST-CASE labels in TestRail (if any)
+      if (testCasesToUpdate.length > 0) {
+        this.log(`Updating labels for ${testCasesToUpdate.length} existing case(s)`);
+        for (const testcase of testCasesToUpdate) {
+          await updateTestCase(testrailConfig, testcase.caseId, {labels: testcase.tags});
+          this.log(`Updated labels for case ${testcase.caseId}: [${testcase.tags.join(', ')}]`);
+        }
+      }
     }
 
     this.log('Closing test run');
