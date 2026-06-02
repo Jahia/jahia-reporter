@@ -420,16 +420,19 @@ static override flags = {
           // If expected and existing ones are equal (doesn't matter - emtpy or not) then skip updating.
           // Otherwise, update TESTRAIL LABELS with expected TAGS, overriding all existing ones.
 
-          // Filter non-empty unique "existing" labels from the TestRail results
+          // Filter non-empty unique "existing" labels from the TestRail results.
+          // Make all of them lower-cased to avoid false-positives, since TestRail doesn't allow
+          // to have two labels with the same name but in different cases. That said,
+          // comparison going forward should be case-insensitive.
           const testRailLabels = new Set((foundTestCaseInTestRail.labels ?? [])
-              .map((label) => label.title.trim())
+              .map((label) => label.title.trim().toLowerCase())
               .filter((title) => title !== '')
           );
 
-          // Compare TestRail labels with test-case result's tags
+          // Compare (case-insensitive) TestRail labels with test-case result's tags
           const labelsAreEqual =
             testRailLabels.size === testCaseTags.size &&
-            [...testCaseTags].every((tag) => testRailLabels.has(tag as string));
+            [...testCaseTags].every((tag) => testRailLabels.has(String(tag).toLowerCase()));
 
           // If there is any difference - store new ("expected") labels in the queue for further update
           if (!labelsAreEqual) {
