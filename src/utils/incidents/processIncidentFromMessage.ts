@@ -7,10 +7,12 @@ import { Incident } from '../../types/index.js';
 // This is an alternative to processing from a test report, it is especially useful
 // for non-test related incidents (performance, build, sonar, ...)
 export const processIncidentFromMessage = async ({
+  dedupKeyMessage = '',
   incidentDetailsPath,
   message,
   service,
 }: {
+  dedupKeyMessage?: string;
   incidentDetailsPath: string;
   message: string;
   service: string;
@@ -20,8 +22,10 @@ export const processIncidentFromMessage = async ({
 
   const incidentTitle = `${service} - ${incidentMessage}`;
 
+  // The dedup key can be made from another message than the one reported, so that the run
+  // reporting a recovery, with its own message, matches the issue of the failure
   const dedupKey = uuidv5(
-    incidentTitle,
+    dedupKeyMessage === '' ? incidentTitle : `${service} - ${dedupKeyMessage}`,
     '92ca6951-5785-4d62-9f33-3512aaa91a9b',
   );
 

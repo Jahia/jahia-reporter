@@ -108,6 +108,48 @@ describe('processIncidentFromMessage', () => {
     });
   });
 
+  describe('dedupKeyMessage', () => {
+    it('should make the dedupKey from dedupKeyMessage and keep the message', async () => {
+      mockExistsSync.mockReturnValue(false);
+
+      const failure = await processIncidentFromMessage({
+        incidentDetailsPath: '',
+        message: 'Error logs during upgrade',
+        service: 'test-service',
+      });
+      const recovery = await processIncidentFromMessage({
+        dedupKeyMessage: 'Error logs during upgrade',
+        incidentDetailsPath: '',
+        message: 'No more error logs during upgrade',
+        service: 'test-service',
+      });
+
+      expect(recovery.dedupKey).toBe(failure.dedupKey);
+      expect(recovery.description).toBe('No more error logs during upgrade');
+      expect(recovery.title).toBe(
+        'test-service - No more error logs during upgrade',
+      );
+    });
+
+    it('should make the dedupKey from the message when dedupKeyMessage is empty', async () => {
+      mockExistsSync.mockReturnValue(false);
+
+      const withEmpty = await processIncidentFromMessage({
+        dedupKeyMessage: '',
+        incidentDetailsPath: '',
+        message: 'Error logs during upgrade',
+        service: 'test-service',
+      });
+      const without = await processIncidentFromMessage({
+        incidentDetailsPath: '',
+        message: 'Error logs during upgrade',
+        service: 'test-service',
+      });
+
+      expect(withEmpty.dedupKey).toBe(without.dedupKey);
+    });
+  });
+
   describe('incident details file handling', () => {
     it('should append file content when incidentDetailsPath exists', async () => {
       mockExistsSync.mockReturnValue(true);

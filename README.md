@@ -90,7 +90,7 @@ With `--matchDedupKey`, the command only acts on the issues carrying the dedup k
 - If there are no failures, it closes only the OPEN GitHub Issues matching the dedup key
 - If failures are present, only an OPEN GitHub Issue matching the dedup key leaves the incident as it is
 
-For an incident built from `--incidentMessage`, the dedup key comes from the service and the message, so the run reporting the success has to pass the same message as the run reporting the failure.
+For an incident built from `--incidentMessage`, the dedup key comes from the service and the message. A run reporting the success with a message of its own passes the failure's message as `--dedupKeyMessage`, so that its key matches the failure's issue.
 
 Finally, if an issue was created or re-opened, it will be updated on a GitHub Project board based on the configuration specified in the google spreadsheet.
 

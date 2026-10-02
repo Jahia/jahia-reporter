@@ -23,6 +23,11 @@ import {
 class JahiaGitHubIncident extends Command {
   static description = 'Handles the creation of issues when incidents arise';
   static flags = {
+    dedupKeyMessage: Flags.string({
+      default: '',
+      description:
+        'The message the dedup key is made from, instead of incidentMessage. Lets a run reporting a recovery post its own message and still match the issue of the failure',
+    }),
     dryRun: Flags.boolean({
       default: false,
       description: 'Do not send the data but only print it to console',
@@ -131,6 +136,7 @@ class JahiaGitHubIncident extends Command {
 
     incidentContent = await (flags.sourcePath === ''
       ? processIncidentFromMessage({
+          dedupKeyMessage: flags.dedupKeyMessage,
           incidentDetailsPath: flags.incidentDetailsPath,
           message: flags.incidentMessage,
           service: flags.incidentService,
