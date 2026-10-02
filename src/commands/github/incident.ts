@@ -11,7 +11,6 @@ import {
   searchForIssues,
 } from '../../utils/github/index.js';
 import {
-  getIssuesInScope,
   processIncidentFromMessage,
   processIncidentFromTestReport,
 } from '../../utils/incidents/index.js';
@@ -274,11 +273,10 @@ class JahiaGitHubIncident extends Command {
     // This to avoid getting in the list issues unrelated to incidents
     issues = issues.filter((i) => i.body && i.body.includes('Dedup Key'));
 
-    const issuesInScope = getIssuesInScope(
-      issues,
-      incidentContent.dedupKey,
-      flags.matchDedupKey,
+    const matchingIssues = issues.filter((i) =>
+      i.body.includes(incidentContent?.dedupKey),
     );
+    const issuesInScope = flags.matchDedupKey ? matchingIssues : issues;
 
     let currentIssue = null;
     if (issues.length === 0) {
@@ -323,9 +321,6 @@ class JahiaGitHubIncident extends Command {
       } else if (incidentContent.counts.fail > 0) {
         // If tests are failing and issues exist, we need to determine if they need to be re-opened or if a new issue is required
         // We are only re-opening one issue per dedup key
-        const matchingIssues = issues.filter((i) =>
-          i.body.includes(incidentContent?.dedupKey),
-        );
         this.log(
           `Number of issues referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
         );
