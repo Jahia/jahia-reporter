@@ -11,6 +11,7 @@ import {
   searchForIssues,
 } from '../../utils/github/index.js';
 import {
+  getIssuesInScope,
   processIncidentFromMessage,
   processIncidentFromTestReport,
 } from '../../utils/incidents/index.js';
@@ -91,6 +92,11 @@ class JahiaGitHubIncident extends Command {
     incidentService: Flags.string({
       default: '',
       description: 'A string used to identify a unique incident service',
+    }),
+    matchDedupKey: Flags.boolean({
+      default: false,
+      description:
+        'Only act on the issues carrying the dedup key of this incident: a success closes only those, and a failure is held back only by an open one. Without it, a success closes every open issue of the service, and any open issue of the service holds a failure back',
     }),
     sourcePath: Flags.string({
       default: '',
@@ -262,6 +268,12 @@ class JahiaGitHubIncident extends Command {
     // This to avoid getting in the list issues unrelated to incidents
     issues = issues.filter((i) => i.body && i.body.includes('Dedup Key'));
 
+    const issuesInScope = getIssuesInScope(
+      issues,
+      incidentContent.dedupKey,
+      flags.matchDedupKey,
+    );
+
     let currentIssue = null;
     if (issues.length === 0) {
       if (incidentContent.counts.fail > 0) {
@@ -283,8 +295,8 @@ class JahiaGitHubIncident extends Command {
       );
       if (incidentContent.counts.fail === 0) {
         // If there are no failures, any open issues will be closed
-        // The dedup key is not relevant at that point
-        const openedIssues = issues.filter((i) => i.state === 'OPEN');
+        // The dedup key is not relevant at that point, unless matchDedupKey is set
+        const openedIssues = issuesInScope.filter((i) => i.state === 'OPEN');
         if (openedIssues.length === 0) {
           this.log(
             `No open issues found for service ${flags.incidentService}, nothing to be done.`,
@@ -312,7 +324,7 @@ class JahiaGitHubIncident extends Command {
           `Number of issues referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
         );
 
-        const openIssues = issues.filter((i) => i.state === 'OPEN');
+        const openIssues = issuesInScope.filter((i) => i.state === 'OPEN');
 
         // const matchingOpenIssues = matchingIssues.filter(
         //   (i) => i.state === 'OPEN',
