@@ -22,6 +22,11 @@ import {
 class JahiaGitHubIncident extends Command {
   static description = 'Handles the creation of issues when incidents arise';
   static flags = {
+    dedupKeyMessage: Flags.string({
+      default: '',
+      description:
+        'The message the dedup key is made from, instead of incidentMessage. Lets a run reporting a recovery post its own message and still match the issue of the failure',
+    }),
     dryRun: Flags.boolean({
       default: false,
       description: 'Do not send the data but only print it to console',
@@ -92,6 +97,11 @@ class JahiaGitHubIncident extends Command {
       default: '',
       description: 'A string used to identify a unique incident service',
     }),
+    matchDedupKey: Flags.boolean({
+      default: false,
+      description:
+        'Only act on the issues carrying the dedup key of this incident: a success closes only those, and a failure is held back only by an open one. Without it, a success closes every open issue of the service, and any open issue of the service holds a failure back',
+    }),
     sourcePath: Flags.string({
       default: '',
       description:
@@ -125,6 +135,7 @@ class JahiaGitHubIncident extends Command {
 
     incidentContent = await (flags.sourcePath === ''
       ? processIncidentFromMessage({
+          dedupKeyMessage: flags.dedupKeyMessage,
           incidentDetailsPath: flags.incidentDetailsPath,
           message: flags.incidentMessage,
           service: flags.incidentService,
@@ -262,6 +273,11 @@ class JahiaGitHubIncident extends Command {
     // This to avoid getting in the list issues unrelated to incidents
     issues = issues.filter((i) => i.body && i.body.includes('Dedup Key'));
 
+    const matchingIssues = issues.filter((i) =>
+      i.body.includes(incidentContent?.dedupKey),
+    );
+    const issuesInScope = flags.matchDedupKey ? matchingIssues : issues;
+
     let currentIssue = null;
     if (issues.length === 0) {
       if (incidentContent.counts.fail > 0) {
@@ -283,8 +299,8 @@ class JahiaGitHubIncident extends Command {
       );
       if (incidentContent.counts.fail === 0) {
         // If there are no failures, any open issues will be closed
-        // The dedup key is not relevant at that point
-        const openedIssues = issues.filter((i) => i.state === 'OPEN');
+        // The dedup key is not relevant at that point, unless matchDedupKey is set
+        const openedIssues = issuesInScope.filter((i) => i.state === 'OPEN');
         if (openedIssues.length === 0) {
           this.log(
             `No open issues found for service ${flags.incidentService}, nothing to be done.`,
@@ -305,14 +321,11 @@ class JahiaGitHubIncident extends Command {
       } else if (incidentContent.counts.fail > 0) {
         // If tests are failing and issues exist, we need to determine if they need to be re-opened or if a new issue is required
         // We are only re-opening one issue per dedup key
-        const matchingIssues = issues.filter((i) =>
-          i.body.includes(incidentContent?.dedupKey),
-        );
         this.log(
           `Number of issues referencing dedupKey ${incidentContent?.dedupKey}: ${matchingIssues.length}`,
         );
 
-        const openIssues = issues.filter((i) => i.state === 'OPEN');
+        const openIssues = issuesInScope.filter((i) => i.state === 'OPEN');
 
         // const matchingOpenIssues = matchingIssues.filter(
         //   (i) => i.state === 'OPEN',
