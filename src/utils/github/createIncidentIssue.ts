@@ -1,6 +1,7 @@
 import { Octokit } from 'octokit';
 
 import { Incident } from '../../types/index.js';
+import { writeFailingParts } from '../incidents/failingParts.js';
 
 // Based on the received incident content, this method builds a default issue description
 const buildDefaultIssueDescription = ({
@@ -69,12 +70,14 @@ The Dedup key is generated from the list of failed test cases sorted alphabetica
 // This creates a GitHub issue for the given incident
 // The issue description is built using a separate method.
 export const createIncidentIssue = async ({
+  failingParts,
   githubToken,
   incidentContent,
   issueLabel,
   log,
   repository,
 }: {
+  failingParts?: string[];
   githubToken: string;
   incidentContent: Incident;
   issueLabel: string;
@@ -85,14 +88,18 @@ export const createIncidentIssue = async ({
 
   const [owner, repo] = repository.split('/');
 
+  const defaultBody = buildDefaultIssueDescription({
+    dedupKey: incidentContent.dedupKey,
+    description: incidentContent.description,
+    service: incidentContent.service,
+    sourceUrl: incidentContent.sourceUrl,
+  });
+
   const payload = {
     assignees: [incidentContent.assignee],
-    body: buildDefaultIssueDescription({
-      dedupKey: incidentContent.dedupKey,
-      description: incidentContent.description,
-      service: incidentContent.service,
-      sourceUrl: incidentContent.sourceUrl,
-    }),
+    body: failingParts
+      ? writeFailingParts(defaultBody, failingParts)
+      : defaultBody,
     headers: {
       'X-GitHub-Api-Version': '2022-11-28',
     },

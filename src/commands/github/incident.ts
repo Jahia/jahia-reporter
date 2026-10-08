@@ -9,10 +9,13 @@ import {
   getProjectByNumber,
   reopenIncidentIssue,
   searchForIssues,
+  updateIncidentIssueParts,
 } from '../../utils/github/index.js';
 import {
+  nextFailingParts,
   processIncidentFromMessage,
   processIncidentFromTestReport,
+  readFailingParts,
 } from '../../utils/incidents/index.js';
 import {
   getWorksheetByName,
@@ -93,6 +96,11 @@ class JahiaGitHubIncident extends Command {
       description:
         'A string containing a short incident message, this is used to generate the dedup key when a such message cannot be obtained from a test report',
     }),
+    incidentPart: Flags.string({
+      default: '',
+      description:
+        'The part of the run that reports, such as a lane of a matrix, when several parts report the same incident on their own. The issue records the failing parts and closes only when the last one passes again. Requires matchDedupKey',
+    }),
     incidentService: Flags.string({
       default: '',
       description: 'A string used to identify a unique incident service',
@@ -123,6 +131,12 @@ class JahiaGitHubIncident extends Command {
   // eslint-disable-next-line complexity
   async run() {
     const { flags } = await this.parse(JahiaGitHubIncident);
+    if (flags.incidentPart !== '' && !flags.matchDedupKey) {
+      this.error(
+        'incidentPart requires matchDedupKey: the parts are tracked on the issue of the dedup key',
+      );
+    }
+
     this.log(`About to process test run for service: ${flags.incidentService}`);
 
     // Begin by collecting as much data as possible about the trigger
@@ -278,6 +292,7 @@ class JahiaGitHubIncident extends Command {
     );
     const issuesInScope = flags.matchDedupKey ? matchingIssues : issues;
 
+    const part = flags.incidentPart;
     let currentIssue = null;
     if (issues.length === 0) {
       if (incidentContent.counts.fail > 0) {
@@ -286,6 +301,7 @@ class JahiaGitHubIncident extends Command {
           `No existing issues found for service ${flags.incidentService}, creating a new one`,
         );
         currentIssue = await createIncidentIssue({
+          failingParts: part === '' ? undefined : [part],
           githubToken: flags.githubToken,
           incidentContent,
           issueLabel: flags.githubIssueLabel,
@@ -310,12 +326,35 @@ class JahiaGitHubIncident extends Command {
             `Found ${openedIssues.length} open issues for service ${flags.incidentService}, will proceed to close them.`,
           );
           for (const issue of openedIssues) {
-            await closeIncidentIssue({
-              githubToken: flags.githubToken,
-              incidentContent,
-              issue,
-              log: this.log.bind(this),
-            });
+            // With incidentPart, the issue closes only when no other part is still failing.
+            // An issue without the record of its parts closes as before
+            const parts = part === '' ? null : readFailingParts(issue.body);
+            const remaining =
+              parts === null
+                ? []
+                : nextFailingParts({ failed: false, part, parts });
+            if (remaining.length === 0) {
+              await closeIncidentIssue({
+                githubToken: flags.githubToken,
+                incidentContent,
+                issue,
+                log: this.log.bind(this),
+              });
+            } else if (parts !== null && remaining.length < parts.length) {
+              await updateIncidentIssueParts({
+                comment: `✅ ${part} passes again, the issue stays open for the parts still failing.`,
+                githubToken: flags.githubToken,
+                incidentContent,
+                issue,
+                log: this.log.bind(this),
+                parts: remaining,
+                repository: flags.githubRepository,
+              });
+            } else {
+              this.log(
+                `${part} was not failing on ${issue.url}, still failing: ${remaining.join(', ')}`,
+              );
+            }
           }
         }
       } else if (incidentContent.counts.fail > 0) {
@@ -337,6 +376,19 @@ class JahiaGitHubIncident extends Command {
           );
           // Setting it to null to indicate no changes should be made (such as changing the project status)
           currentIssue = null;
+          // With incidentPart, a part failing while the issue is open is added to its record
+          const parts = readFailingParts(openIssues[0].body) ?? [];
+          if (part !== '' && !parts.includes(part)) {
+            await updateIncidentIssueParts({
+              comment: `❌ ${part} fails as well.`,
+              githubToken: flags.githubToken,
+              incidentContent,
+              issue: openIssues[0],
+              log: this.log.bind(this),
+              parts: nextFailingParts({ failed: true, part, parts }),
+              repository: flags.githubRepository,
+            });
+          }
           // } else if (
           //   matchingOpenIssues.length > 0 &&
           //   matchingOpenIssues[0].state === 'OPEN'
@@ -363,6 +415,16 @@ class JahiaGitHubIncident extends Command {
             issue: matchingIssues[0],
             log: this.log.bind(this),
           });
+          if (part !== '') {
+            await updateIncidentIssueParts({
+              githubToken: flags.githubToken,
+              incidentContent,
+              issue: matchingIssues[0],
+              log: this.log.bind(this),
+              parts: [part],
+              repository: flags.githubRepository,
+            });
+          }
 
           currentIssue = matchingIssues[0];
         } else {
@@ -370,6 +432,7 @@ class JahiaGitHubIncident extends Command {
             `No matching closed issues found for dedupKey ${incidentContent?.dedupKey}, creating a new issue`,
           );
           currentIssue = await createIncidentIssue({
+            failingParts: part === '' ? undefined : [part],
             githubToken: flags.githubToken,
             incidentContent,
             issueLabel: flags.githubIssueLabel,

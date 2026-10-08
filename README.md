@@ -92,6 +92,14 @@ With `--matchDedupKey`, the command only acts on the issues carrying the dedup k
 
 For an incident built from `--incidentMessage`, the dedup key comes from the service and the message. A run reporting the success with a message of its own passes the failure's message as `--dedupKeyMessage`, so that its key matches the failure's issue.
 
+When several parts of a run report the same incident on their own, such as the lanes of a matrix, each passes its name as `--incidentPart` (with `--matchDedupKey`). The issue records the parts currently failing, in a hidden marker of its body, and stays open until the last of them passes again:
+
+- A failing part creates or re-opens the issue, or is added to the record of the issue already open, with a comment
+- A passing part is removed from the record, with a comment, and the issue is closed once no part is left
+- An issue without a record, created without `--incidentPart`, is closed by any passing part, as before
+
+Two parts reporting at the very same moment can each overwrite the other's update of the record.
+
 Finally, if an issue was created or re-opened, it will be updated on a GitHub Project board based on the configuration specified in the google spreadsheet.
 
 ### github-incident Example

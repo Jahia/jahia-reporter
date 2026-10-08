@@ -5,3 +5,4 @@ export * from './getAssigneeFromCustomProperties.js';
 export * from './getProjectByNumber.js';
 export * from './reopenIncidentIssue.js';
 export * from './searchForIssues.js';
+export * from './updateIncidentIssueParts.js';
