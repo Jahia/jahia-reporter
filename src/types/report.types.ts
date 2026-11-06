@@ -9,6 +9,9 @@ export interface JRTesterror {
 }
 
 export interface JRTestcase {
+  // The classname attribute of a testcase of an XML report, which mocha-junit-reporter fills with
+  // the title of the test alone
+  classname?: string;
   error?: JRTesterror;
   failures: JRTestfailure[];
   meta?: string | undefined;

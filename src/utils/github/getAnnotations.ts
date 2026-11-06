@@ -50,10 +50,13 @@ export const getAnnotations = ({
           message:
             test.error?.message ||
             'The report gives no error message for this test',
-          // mocha-junit-reporter names a test by its full title, which starts with the name of its suite
-          title: test.name.startsWith(suite.name)
-            ? test.name
-            : `${suite.name} > ${test.name}`,
+          // mocha-junit-reporter names a test by its full title, which ends with the title of the test
+          // that it puts in the classname, and names a suite by its inner describe alone
+          title:
+            test.classname !== undefined &&
+            test.name.endsWith(` ${test.classname}`)
+              ? test.name
+              : `${suite.name} > ${test.name}`,
         });
       }
     }

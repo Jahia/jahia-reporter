@@ -1,5 +1,6 @@
 import * as path from 'node:path';
 
+import { JRRun } from '../src/types/index.js';
 import ingestReport from '../src/utils/ingest/index.js';
 import {
   formatAnnotation,
@@ -56,6 +57,63 @@ describe('getAnnotations', () => {
       message: expect.stringMatching(/^CypressError: `cy.task\('listFiles'\)` failed/),
       title: 'profile export in csv > export a set of profiles in csv',
     });
+  });
+
+  it('keeps the full title of a test of a nested describe of mocha-junit-reporter', async () => {
+    const report = await ingestReport(
+      'xml',
+      path.resolve(__dirname, './assets/mocha-junit-nested'),
+      log,
+    );
+
+    expect(
+      getAnnotations({ maxAnnotations: 10, report, testsPath: '' }).map(
+        (annotation) => annotation.title,
+      ),
+    ).toEqual(['Search tests from jcontent searches the current folder']);
+  });
+
+  it('names the suite of a mochawesome test whose title starts with the name of the suite', () => {
+    const report: JRRun = {
+      failures: 1,
+      pending: 0,
+      reports: [
+        {
+          failures: 1,
+          name: 'report.json',
+          pending: 0,
+          skipped: 0,
+          tests: 1,
+          testsuites: [
+            {
+              failures: 1,
+              name: 'Picker',
+              pending: 0,
+              skipped: 0,
+              tests: [
+                {
+                  error: { message: 'boom', stack: '' },
+                  failures: [],
+                  name: 'Picker opens the dialog',
+                  status: 'FAIL',
+                  time: 1,
+                },
+              ],
+              time: 1,
+              timestamp: '',
+            },
+          ],
+          time: 1,
+        },
+      ],
+      skipped: 0,
+      tests: 1,
+      time: 1,
+    };
+
+    expect(
+      getAnnotations({ maxAnnotations: 10, report, testsPath: '' })[0].title,
+    ).toBe('Picker > Picker opens the dialog');
   });
 
   it('says that the report gives no error message, and gives no line, for a failed test whose error is empty', async () => {
