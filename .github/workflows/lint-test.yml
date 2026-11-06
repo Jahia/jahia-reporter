@@ -39,8 +39,9 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          # Excluding since these files are synced globally global
-          FILTER_REGEX_EXCLUDE: '.*\.github/ISSUE_TEMPLATE/.*'
+          # Excluding since these files are synced globally global.
+          # A changelog fragment of chachalog holds a note with no heading, which markdownlint refuses.
+          FILTER_REGEX_EXCLUDE: '(.*\.github/ISSUE_TEMPLATE/.*|.*\.chachalog/.*)'
 
           # Only run these specific linters (ESLint is handled by lint-test.yml)
           VALIDATE_JSON: true
