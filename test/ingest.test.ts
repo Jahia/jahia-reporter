@@ -91,6 +91,11 @@ describe('Spec file and error of a failed test', () => {
     ])
   })
 
+  it('reads as skipped a JUnit testcase that holds a skipped element after its output', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit-output-then-skipped'), log)
+    expect(jrRun.reports[0].testsuites[0].tests.map((test) => test.status)).toEqual(['SKIP'])
+  })
+
   it('reads the error of a failed test of a JUnit report that names no spec file', async () => {
     const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit/TEST-org.jahia.modules.forms.library.tests.FormResultsTest.xml'), log)
     const suite = jrRun.reports[0].testsuites[0]

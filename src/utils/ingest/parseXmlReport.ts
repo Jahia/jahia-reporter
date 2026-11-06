@@ -30,27 +30,16 @@ const buildError = (elements: any[]) => {
 const buildTest = (xmlTests: any) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   xmlTests.map((t: any) => {
-    let status = t.elements?.some(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (e: any) => e.name === 'failure' || e.name === 'error',
-    )
-      ? 'FAIL'
-      : 'PASS';
-    if (
-      t.elements !== undefined &&
-      t.elements.length > 0 &&
-      t.elements[0].name !== undefined &&
-      t.elements[0].name === 'skipped'
-    ) {
+    // The children of a testcase give its status, whatever their order
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const children = new Set((t.elements ?? []).map((e: any) => e.name));
+    let status =
+      children.has('failure') || children.has('error') ? 'FAIL' : 'PASS';
+    if (children.has('skipped')) {
       status = 'SKIP';
     }
 
-    if (
-      t.elements !== undefined &&
-      t.elements.length > 0 &&
-      t.elements[0].name !== undefined &&
-      t.elements[0].name === 'pending'
-    ) {
+    if (children.has('pending')) {
       status = 'PENDING';
     }
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.jahia.OutputThenSkippedTest" tests="1" failures="0" errors="0" skipped="1" time="0.0">
+  <testcase name="skipsAfterSystemOut" classname="org.jahia.OutputThenSkippedTest" time="0.0">
+    <system-out><![CDATA[A line that a tool attached to the pending test]]></system-out>
+    <skipped/>
+  </testcase>
+</testsuite>
