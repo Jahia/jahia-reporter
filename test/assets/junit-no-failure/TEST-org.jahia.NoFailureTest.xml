@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.jahia.NoFailureTest" tests="2" failures="0" errors="0" skipped="0" time="0.2">
+  <testcase name="passesWithSystemErr" classname="org.jahia.NoFailureTest" time="0.1">
+    <system-err><![CDATA[A warning that the test wrote]]></system-err>
+  </testcase>
+  <testcase name="passesWithProperties" classname="org.jahia.NoFailureTest" time="0.1">
+    <properties>
+      <property name="key" value="value"/>
+    </properties>
+  </testcase>
+</testsuite>

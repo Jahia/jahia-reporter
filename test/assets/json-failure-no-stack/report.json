@@ -1,0 +1,46 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "skipped": 0,
+    "start": "2026-11-06T10:00:00.000Z",
+    "duration": 1000
+  },
+  "results": [
+    {
+      "uuid": "root",
+      "title": "",
+      "file": "cypress/e2e/gamma.cy.ts",
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "gamma",
+          "title": "Gamma",
+          "file": "",
+          "tests": [
+            {
+              "title": "fails with no error",
+              "duration": 1,
+              "fail": true,
+              "pending": false,
+              "code": "",
+              "err": {}
+            }
+          ],
+          "suites": [],
+          "failures": ["fails with no error"],
+          "pending": [],
+          "skipped": [],
+          "duration": 1
+        }
+      ],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0
+    }
+  ]
+}

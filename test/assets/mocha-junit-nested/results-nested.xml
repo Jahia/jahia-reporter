@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="1.000" tests="1" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-11-06T10:00:00" tests="0" file="cypress/e2e/search.cy.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Search tests" timestamp="2026-11-06T10:00:00" tests="0" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="from jcontent" timestamp="2026-11-06T10:00:00" tests="1" time="1.000" failures="1">
+    <testcase name="Search tests from jcontent searches the current folder" time="1.000" classname="searches the current folder">
+      <failure message="boom" type="Error"><![CDATA[Error: boom
+    at Context.eval (webpack://nested/./cypress/e2e/search.cy.ts:30:5)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

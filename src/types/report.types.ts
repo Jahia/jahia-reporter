@@ -2,7 +2,17 @@ export interface JRTestfailure {
   text: string;
 }
 
+// The error of a failed test, as its test framework reports it
+export interface JRTesterror {
+  message: string;
+  stack: string;
+}
+
 export interface JRTestcase {
+  // The classname attribute of a testcase of an XML report, which mocha-junit-reporter fills with
+  // the title of the test alone
+  classname?: string;
+  error?: JRTesterror;
   failures: JRTestfailure[];
   meta?: string | undefined;
   name: string;
@@ -14,6 +24,8 @@ export interface JRTestcase {
 export interface JRTestsuite {
   errors?: number;
   failures: number;
+  // The spec file of the suite, relative to the root of the test project
+  file?: string;
   name: string;
   pending: number;
   skipped: number;

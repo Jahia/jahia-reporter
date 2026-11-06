@@ -7,6 +7,7 @@ interface MochaJSONTest {
   duration: number;
   err: {
     estack: string;
+    message: string;
   };
   fail: boolean;
   pending: boolean;
@@ -15,6 +16,8 @@ interface MochaJSONTest {
 
 interface MochaJSONSuite {
   failures: string[];
+  // The spec file, which mochawesome names on the root suite of each spec
+  file?: string;
   pending: string[];
   skipped: string[];
   suites: MochaJSONSuite[];
@@ -82,7 +85,10 @@ const mochaParser = (rawReports: any[]): JRRun => {
     // Create a flat list of suites with concatenated names to represent the hierarchy, instead of nested suites
     let testSuites: MochaJSONSuite[] = [];
     for (const testSpec of rawContent.content.results) {
-      const specSuites = processTestSuite('', testSpec, []);
+      const specSuites = processTestSuite('', testSpec, []).map((suite) => ({
+        ...suite,
+        file: testSpec.file,
+      }));
       testSuites = [...testSuites, ...specSuites];
     }
 
@@ -97,6 +103,7 @@ const mochaParser = (rawReports: any[]): JRRun => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (suite: any) => ({
           failures: suite.failures.length,
+          ...(suite.file ? { file: suite.file } : {}),
           name: suite.title,
           pending: suite.pending.length,
           skipped: suite.skipped.length,
@@ -119,7 +126,20 @@ const mochaParser = (rawReports: any[]): JRRun => {
                   ? { meta: test.context }
                   : {};
 
+              const errorInfo =
+                status === 'FAIL'
+                  ? {
+                      // mochawesome writes err: {} for a failed test with no error, and no
+                      // estack for an error with no stack
+                      error: {
+                        message: test.err.message ?? '',
+                        stack: test.err.estack ?? '',
+                      },
+                    }
+                  : {};
+
               return {
+                ...errorInfo,
                 failures: [{ text: test.err.estack }],
                 ...metaInfo,
                 name: test.title,

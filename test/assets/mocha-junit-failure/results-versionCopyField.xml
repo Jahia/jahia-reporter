@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="462.282" tests="3" failures="2">
+  <testsuite name="Root Suite" timestamp="2026-10-29T10:12:31" tests="0" file="cypress/e2e/jcontent/versionCopyField.cy.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Version history" timestamp="2026-10-29T10:12:31" tests="3" time="462.282" failures="2">
+    <testcase name="Version history offers the arrow" time="0.000" classname="offers the arrow">
+      <failure message="Timed out retrying after 10000ms: Expected to find element: `[data-sel-role=&quot;right-column&quot;]`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 10000ms: Expected to find element: `[data-sel-role="right-column"]`, but never found it.
+    at copyArrow (webpack://content-versioning-cypress/./cypress/e2e/jcontent/versionCopyField.cy.ts:36:13)
+    at Context.eval (webpack://content-versioning-cypress/./cypress/e2e/jcontent/versionCopyField.cy.ts:128:8)]]></failure>
+    </testcase>
+    <testcase name="Version history keeps the arrow out" time="42.777" classname="keeps the arrow out">
+    </testcase>
+    <testcase name="Version history copies a datetime" time="0.000" classname="copies a datetime">
+      <failure message="`cy.task('unzipArtifact')` failed with the following error:" type="CypressError"><![CDATA[CypressError: `cy.task('unzipArtifact')` failed with the following error:
+    at ensureIsDescendent (http://jahia:8080/__cypress/runner/cypress_runner.js:115346:68)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
