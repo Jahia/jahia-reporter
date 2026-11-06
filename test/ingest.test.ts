@@ -83,6 +83,14 @@ describe('Spec file and error of a failed test', () => {
     expect(jrRun.reports[0].testsuites[0].tests.map((test) => test.status)).toEqual(['PASS', 'PASS'])
   })
 
+  it('reads as failed a JUnit testcase that holds a failure after its output', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit-output-then-failure'), log)
+    expect(jrRun.reports[0].testsuites[0].tests.map((test) => [test.status, test.error?.message])).toEqual([
+      ['FAIL', 'expected 1 to equal 2'],
+      ['FAIL', 'expected 3 to equal 4'],
+    ])
+  })
+
   it('reads the error of a failed test of a JUnit report that names no spec file', async () => {
     const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit/TEST-org.jahia.modules.forms.library.tests.FormResultsTest.xml'), log)
     const suite = jrRun.reports[0].testsuites[0]
