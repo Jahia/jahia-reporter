@@ -30,7 +30,12 @@ const buildError = (elements: any[]) => {
 const buildTest = (xmlTests: any) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   xmlTests.map((t: any) => {
-    let status = t.elements === undefined ? 'PASS' : 'FAIL';
+    let status = t.elements?.some(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (e: any) => e.name === 'failure' || e.name === 'error',
+    )
+      ? 'FAIL'
+      : 'PASS';
     if (
       t.elements !== undefined &&
       t.elements.length > 0 &&
