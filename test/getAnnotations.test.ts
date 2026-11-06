@@ -1,6 +1,6 @@
 import * as path from 'node:path';
 
-import { JRRun } from '../src/types/index.js';
+import { JRRun, JRTestcase } from '../src/types/index.js';
 import ingestReport from '../src/utils/ingest/index.js';
 import {
   formatAnnotation,
@@ -10,6 +10,50 @@ import {
 const log = (msg: string) => {
   console.log(msg);
 };
+
+// A run of one report with one suite that holds one failed test
+const runOf = (
+  suiteName: string,
+  test: Pick<JRTestcase, 'classname' | 'name'>,
+): JRRun => ({
+  failures: 1,
+  pending: 0,
+  reports: [
+    {
+      failures: 1,
+      name: 'report',
+      pending: 0,
+      skipped: 0,
+      tests: 1,
+      testsuites: [
+        {
+          failures: 1,
+          name: suiteName,
+          pending: 0,
+          skipped: 0,
+          tests: [
+            {
+              ...test,
+              error: { message: 'boom', stack: '' },
+              failures: [],
+              status: 'FAIL',
+              time: 1,
+            },
+          ],
+          time: 1,
+          timestamp: '',
+        },
+      ],
+      time: 1,
+    },
+  ],
+  skipped: 0,
+  tests: 1,
+  time: 1,
+});
+
+const titleOf = (report: JRRun): string =>
+  getAnnotations({ maxAnnotations: 10, report, testsPath: '' })[0].title;
 
 describe('getAnnotations', () => {
   it('gives each failed test its message, its spec file under the tests path and the line of the test', async () => {
@@ -54,7 +98,9 @@ describe('getAnnotations', () => {
       file: 'cypress/integration/ui/profileCsvExport.spec.ts',
       // The frames of this stack name the bundle that Cypress serves, and no line of the spec
       line: undefined,
-      message: expect.stringMatching(/^CypressError: `cy.task\('listFiles'\)` failed/),
+      message: expect.stringMatching(
+        /^CypressError: `cy.task\('listFiles'\)` failed/,
+      ),
       title: 'profile export in csv > export a set of profiles in csv',
     });
   });
@@ -73,47 +119,36 @@ describe('getAnnotations', () => {
     ).toEqual(['Search tests from jcontent searches the current folder']);
   });
 
-  it('names the suite of a mochawesome test whose title starts with the name of the suite', () => {
-    const report: JRRun = {
-      failures: 1,
-      pending: 0,
-      reports: [
-        {
-          failures: 1,
-          name: 'report.json',
-          pending: 0,
-          skipped: 0,
-          tests: 1,
-          testsuites: [
-            {
-              failures: 1,
-              name: 'Picker',
-              pending: 0,
-              skipped: 0,
-              tests: [
-                {
-                  error: { message: 'boom', stack: '' },
-                  failures: [],
-                  name: 'Picker opens the dialog',
-                  status: 'FAIL',
-                  time: 1,
-                },
-              ],
-              time: 1,
-              timestamp: '',
-            },
-          ],
-          time: 1,
-        },
-      ],
-      skipped: 0,
-      tests: 1,
-      time: 1,
-    };
-
-    expect(
-      getAnnotations({ maxAnnotations: 10, report, testsPath: '' })[0].title,
-    ).toBe('Picker > Picker opens the dialog');
+  it.each([
+    {
+      expected: 'Picker > Picker opens the dialog',
+      suite: 'Picker',
+      test: { name: 'Picker opens the dialog' },
+      why: 'a mochawesome test whose title starts with the name of its suite',
+    },
+    {
+      expected: 'opens the dialog',
+      suite: '',
+      test: { name: 'opens the dialog' },
+      why: 'a mochawesome test outside any describe',
+    },
+    {
+      expected: 'Picker opens the dialog',
+      suite: 'Picker',
+      test: {
+        classname: 'Picker opens the dialog',
+        name: 'Picker opens the dialog',
+      },
+      why: 'a jest-junit test, whose name and classname are its full title',
+    },
+    {
+      expected: 'org.jahia.FormTest > testSubmit',
+      suite: 'org.jahia.FormTest',
+      test: { classname: 'org.jahia.FormTest', name: 'testSubmit' },
+      why: 'a surefire test, whose classname is its Java class',
+    },
+  ])('titles $why', ({ expected, suite, test }) => {
+    expect(titleOf(runOf(suite, test))).toBe(expected);
   });
 
   it('says that the report gives no error message, and gives no line, for a failed test whose error is empty', async () => {

@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { JRRun } from '../../types/index.js';
+import { JRRun, JRTestcase } from '../../types/index.js';
 
 // An error annotation of a step of GitHub Actions
 export interface Annotation {
@@ -21,6 +21,18 @@ const getLine = (stack: string, file: string): number | undefined => {
     ),
   ];
   return frames.length > 0 ? Number(frames.at(-1)?.[1]) : undefined;
+};
+
+// The title of a failed test. mocha-junit-reporter names a test by its full title, which ends with the
+// title of the test that it puts in the classname, and jest-junit puts the full title in both. A test
+// outside any describe has a suite with no name.
+const getTitle = (suiteName: string, test: JRTestcase): string => {
+  const isFullTitle =
+    test.classname !== undefined &&
+    (test.name === test.classname || test.name.endsWith(` ${test.classname}`));
+  return isFullTitle || suiteName === ''
+    ? test.name
+    : `${suiteName} > ${test.name}`;
 };
 
 // One annotation for each failed test. GitHub keeps a fixed number of error annotations for each
@@ -50,13 +62,7 @@ export const getAnnotations = ({
           message:
             test.error?.message ||
             'The report gives no error message for this test',
-          // mocha-junit-reporter names a test by its full title, which ends with the title of the test
-          // that it puts in the classname, and names a suite by its inner describe alone
-          title:
-            test.classname !== undefined &&
-            test.name.endsWith(` ${test.classname}`)
-              ? test.name
-              : `${suite.name} > ${test.name}`,
+          title: getTitle(suite.name, test),
         });
       }
     }
