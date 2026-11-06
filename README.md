@@ -76,7 +76,7 @@ The `github:annotations` command writes an error annotation of GitHub Actions fo
 Each annotation carries these items:
 
 - the title of the failed test, with the name of its suite
-- the error message of the test
+- the error message of the test, or a line that says the report gives none
 - the spec file, after the path that `--testsPath` gives
 - the line of the test in the spec file, when the stack of the error names that line
 

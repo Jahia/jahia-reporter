@@ -49,10 +49,32 @@ describe('getAnnotations', () => {
       testsPath: '',
     });
 
-    expect(annotation.title).toMatch(/ > export a set of profiles in csv$/);
-    expect(annotation.file).toBe(
-      'cypress/integration/ui/profileCsvExport.spec.ts',
+    expect(annotation).toEqual({
+      file: 'cypress/integration/ui/profileCsvExport.spec.ts',
+      // The frames of this stack name the bundle that Cypress serves, and no line of the spec
+      line: undefined,
+      message: expect.stringMatching(/^CypressError: `cy.task\('listFiles'\)` failed/),
+      title: 'profile export in csv > export a set of profiles in csv',
+    });
+  });
+
+  it('says that the report gives no error message, and gives no line, for a failed test whose error is empty', async () => {
+    const report = await ingestReport(
+      'json',
+      path.resolve(__dirname, './assets/json-failure-no-stack'),
+      log,
     );
+
+    expect(
+      getAnnotations({ maxAnnotations: 10, report, testsPath: '' }),
+    ).toEqual([
+      {
+        file: 'cypress/e2e/gamma.cy.ts',
+        line: undefined,
+        message: 'The report gives no error message for this test',
+        title: 'Gamma > fails with no error',
+      },
+    ]);
   });
 
   it('keeps the last annotation to count the failed tests beyond the maximum', async () => {
@@ -86,8 +108,13 @@ describe('getAnnotations', () => {
     );
 
     expect(
-      getAnnotations({ maxAnnotations: 2, report, testsPath: '' }),
-    ).toHaveLength(2);
+      getAnnotations({ maxAnnotations: 2, report, testsPath: '' }).map(
+        (annotation) => annotation.title,
+      ),
+    ).toEqual([
+      'Version history offers the arrow',
+      'Version history copies a datetime',
+    ]);
   });
 });
 

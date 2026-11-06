@@ -19,7 +19,7 @@ const buildError = (elements: any[]) => {
     .join('');
   return {
     error: {
-      message: failure.attributes?.message ?? stack.split('\n')[0],
+      message: failure.attributes?.message || stack.trim().split('\n')[0],
       stack,
     },
   };
@@ -74,37 +74,40 @@ const buildTest = (xmlTests: any) =>
 // Format individual test suites
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const buildSuites = (xmlSuites: any, testFilename: string) => {
-  // mocha-junit-reporter names the spec file on the root suite alone, which holds no test
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const file = xmlSuites.find((s: any) => s.attributes?.file)?.attributes.file;
+  // mocha-junit-reporter names the spec file on the root suite alone, which holds no test and comes
+  // before the suites of its spec. A merged report holds one root suite for each spec.
+  let file: string | undefined;
   return (
     xmlSuites
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((s: any) => ({
-        ...s.attributes,
-        ...(file === undefined ? {} : { file }),
-        // Some of the existing testsuites have 'null' (as a string) instead of
-        // a name, if this is the case, we replace null by the name of the file
-        errors: Math.round(s.attributes.errors),
-        failures: Math.max(Math.round(s.attributes.failures), 0),
-        // which is more informative
-        name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
-        pending:
-          s.attributes.pending === undefined
-            ? 0
-            : Math.round(s.attributes.pending),
-        skipped:
-          s.attributes.skipped === undefined
-            ? 0
-            : Math.round(s.attributes.skipped),
-        tests:
-          s.elements === undefined
-            ? []
-            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
-        testsCount: Math.round(s.attributes.tests),
-        time: Math.round(s.attributes.time),
-      }))
+      .map((s: any) => {
+        file = s.attributes?.file || file;
+        return {
+          ...s.attributes,
+          ...(file === undefined ? {} : { file }),
+          // Some of the existing testsuites have 'null' (as a string) instead of
+          // a name, if this is the case, we replace null by the name of the file
+          errors: Math.round(s.attributes.errors),
+          failures: Math.max(Math.round(s.attributes.failures), 0),
+          // which is more informative
+          name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
+          pending:
+            s.attributes.pending === undefined
+              ? 0
+              : Math.round(s.attributes.pending),
+          skipped:
+            s.attributes.skipped === undefined
+              ? 0
+              : Math.round(s.attributes.skipped),
+          tests:
+            s.elements === undefined
+              ? []
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
+          testsCount: Math.round(s.attributes.tests),
+          time: Math.round(s.attributes.time),
+        };
+      })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .filter((s: any) => s.testsCount > 0)
   );
@@ -139,8 +142,7 @@ export const parseXML = (rawReports: any[]): JRRun => {
             : buildSuites(i.elements, basename(rawContent.filepath));
         const report = {
           ...i.attributes,
-          failures:
-            Math.max(Math.round(i.attributes.failures), 0),
+          failures: Math.max(Math.round(i.attributes.failures), 0),
           name:
             i.attributes.name === 'null'
               ? basename(rawContent.filepath)

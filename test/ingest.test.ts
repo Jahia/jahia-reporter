@@ -57,6 +57,27 @@ describe('Spec file and error of a failed test', () => {
     expect(passed.error).toBeUndefined()
   })
 
+  it('gives each suite of a merged report the spec file of the root suite before it', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit-merged'), log)
+    expect(jrRun.reports[0].testsuites.map((suite) => [suite.name, suite.file])).toEqual([
+      ['Alpha', 'cypress/e2e/alpha.cy.ts'],
+      ['Beta', 'cypress/e2e/beta.cy.ts'],
+    ])
+  })
+
+  it('takes the message of a failure that has none from the first line of its stack', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit-merged'), log)
+    expect(jrRun.reports[0].testsuites.map((suite) => suite.tests[0].error?.message)).toEqual([
+      'Error: boom',
+      'AssertionError: expected 1 to equal 2',
+    ])
+  })
+
+  it('gives an empty message and an empty stack to a failed mochawesome test whose error has neither', async () => {
+    const jrRun = await ingestReport('json', path.resolve(__dirname, './assets/json-failure-no-stack'), log)
+    expect(jrRun.reports[0].testsuites[0].tests[0].error).toEqual({ message: '', stack: '' })
+  })
+
   it('reads the error of a failed test of a JUnit report that names no spec file', async () => {
     const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit/TEST-org.jahia.modules.forms.library.tests.FormResultsTest.xml'), log)
     const suite = jrRun.reports[0].testsuites[0]

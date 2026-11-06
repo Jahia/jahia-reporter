@@ -129,9 +129,11 @@ const mochaParser = (rawReports: any[]): JRRun => {
               const errorInfo =
                 status === 'FAIL'
                   ? {
+                      // mochawesome writes err: {} for a failed test with no error, and no
+                      // estack for an error with no stack
                       error: {
-                        message: test.err.message,
-                        stack: test.err.estack,
+                        message: test.err.message ?? '',
+                        stack: test.err.estack ?? '',
                       },
                     }
                   : {};

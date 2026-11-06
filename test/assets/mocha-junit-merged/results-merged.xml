@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="2.000" tests="2" failures="2">
+  <testsuite name="Root Suite" timestamp="2026-11-06T10:00:00" tests="0" file="cypress/e2e/alpha.cy.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Alpha" timestamp="2026-11-06T10:00:00" tests="1" time="1.000" failures="1">
+    <testcase name="Alpha fails with an empty message" time="1.000" classname="fails with an empty message">
+      <failure message="" type="Error"><![CDATA[
+Error: boom
+    at Context.eval (webpack://merged/./cypress/e2e/alpha.cy.ts:5:3)]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Root Suite" timestamp="2026-11-06T10:00:01" tests="0" file="cypress/e2e/beta.cy.ts" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Beta" timestamp="2026-11-06T10:00:01" tests="1" time="1.000" failures="1">
+    <testcase name="Beta fails with no message" time="1.000" classname="fails with no message">
+      <failure type="AssertionError"><![CDATA[AssertionError: expected 1 to equal 2
+    at Context.eval (webpack://merged/./cypress/e2e/beta.cy.ts:9:7)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

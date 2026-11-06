@@ -10,10 +10,16 @@ export interface Annotation {
   title: string;
 }
 
-// The line of the last frame in the spec file, which is the line of the test itself
+// The line of the last frame in the spec file, which is the line of the test itself. The lookbehind
+// keeps a frame whose path reaches the spec file at a path boundary, and leaves out the bundle that
+// Cypress serves at __cypress/tests?p=<spec file>.
 const getLine = (stack: string, file: string): number | undefined => {
   const escaped = file.replaceAll(/[$()*+.?[\\\]^{|}]/g, String.raw`\$&`);
-  const frames = [...stack.matchAll(new RegExp(`${escaped}:(\\d+):\\d+`, 'g'))];
+  const frames = [
+    ...stack.matchAll(
+      new RegExp(String.raw`(?<![^\s(/])${escaped}:(\d+):\d+`, 'g'),
+    ),
+  ];
   return frames.length > 0 ? Number(frames.at(-1)?.[1]) : undefined;
 };
 
@@ -41,7 +47,9 @@ export const getAnnotations = ({
             suite.file === undefined || test.error === undefined
               ? undefined
               : getLine(test.error.stack, suite.file),
-          message: test.error?.message ?? '',
+          message:
+            test.error?.message ||
+            'The report gives no error message for this test',
           // mocha-junit-reporter names a test by its full title, which starts with the name of its suite
           title: test.name.startsWith(suite.name)
             ? test.name
