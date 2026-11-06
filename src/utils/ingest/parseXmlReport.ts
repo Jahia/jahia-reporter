@@ -2,6 +2,29 @@ import { basename } from 'node:path';
 
 import { JRReport, JRRun } from '../../types/index.js';
 
+// The first failure or error of a test, with its message and its stack
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const buildError = (elements: any[]) => {
+  const failure = elements.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (e: any) => e.name === 'failure' || e.name === 'error',
+  );
+  if (failure === undefined) {
+    return {};
+  }
+
+  const stack: string = (failure.elements ?? [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((e: any) => e.cdata ?? e.text ?? '')
+    .join('');
+  return {
+    error: {
+      message: failure.attributes?.message ?? stack.split('\n')[0],
+      stack,
+    },
+  };
+};
+
 // Format individual test cases
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const buildTest = (xmlTests: any) =>
@@ -37,6 +60,7 @@ const buildTest = (xmlTests: any) =>
 
     return {
       ...t.attributes,
+      ...(status === 'FAIL' ? buildError(t.elements) : {}),
       failures:
         t.elements === undefined
           ? []
@@ -49,36 +73,42 @@ const buildTest = (xmlTests: any) =>
 
 // Format individual test suites
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const buildSuites = (xmlSuites: any, testFilename: string) =>
-  xmlSuites
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .map((s: any) => ({
-      ...s.attributes,
-      // Some of the existing testsuites have 'null' (as a string) instead of
-      // a name, if this is the case, we replace null by the name of the file
-      errors: Math.round(s.attributes.errors),
-      failures:
-        Math.max(Math.round(s.attributes.failures), 0),
-      // which is more informative
-      name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
-      pending:
-        s.attributes.pending === undefined
-          ? 0
-          : Math.round(s.attributes.pending),
-      skipped:
-        s.attributes.skipped === undefined
-          ? 0
-          : Math.round(s.attributes.skipped),
-      tests:
-        s.elements === undefined
-          ? []
-          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
-      testsCount: Math.round(s.attributes.tests),
-      time: Math.round(s.attributes.time),
-    }))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((s: any) => s.testsCount > 0);
+const buildSuites = (xmlSuites: any, testFilename: string) => {
+  // mocha-junit-reporter names the spec file on the root suite alone, which holds no test
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const file = xmlSuites.find((s: any) => s.attributes?.file)?.attributes.file;
+  return (
+    xmlSuites
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((s: any) => ({
+        ...s.attributes,
+        ...(file === undefined ? {} : { file }),
+        // Some of the existing testsuites have 'null' (as a string) instead of
+        // a name, if this is the case, we replace null by the name of the file
+        errors: Math.round(s.attributes.errors),
+        failures: Math.max(Math.round(s.attributes.failures), 0),
+        // which is more informative
+        name: s.attributes.name === 'null' ? testFilename : s.attributes.name,
+        pending:
+          s.attributes.pending === undefined
+            ? 0
+            : Math.round(s.attributes.pending),
+        skipped:
+          s.attributes.skipped === undefined
+            ? 0
+            : Math.round(s.attributes.skipped),
+        tests:
+          s.elements === undefined
+            ? []
+            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              buildTest(s.elements.filter((t: any) => t.name === 'testcase')),
+        testsCount: Math.round(s.attributes.tests),
+        time: Math.round(s.attributes.time),
+      }))
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .filter((s: any) => s.testsCount > 0)
+  );
+};
 
 // Take an array of junit xml files, return a javascript representation of the files content
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

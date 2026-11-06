@@ -2,7 +2,14 @@ export interface JRTestfailure {
   text: string;
 }
 
+// The error of a failed test, as its test framework reports it
+export interface JRTesterror {
+  message: string;
+  stack: string;
+}
+
 export interface JRTestcase {
+  error?: JRTesterror;
   failures: JRTestfailure[];
   meta?: string | undefined;
   name: string;
@@ -14,6 +21,8 @@ export interface JRTestcase {
 export interface JRTestsuite {
   errors?: number;
   failures: number;
+  // The spec file of the suite, relative to the root of the test project
+  file?: string;
   name: string;
   pending: number;
   skipped: number;

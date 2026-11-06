@@ -12,6 +12,7 @@ Using Mocha JSON or JEST/JUNIT XML as input, jahia-reporter is a CLI tool built 
 - [Application Design](#application-design)
 - [Data Model](#data-model)
 - [Available Commands](#available-commands)
+  - [github-annotations](#github-annotations)
   - [github-incident](#github-incident)
   - [pagerduty-incident](#pagerduty-incident)
   - [perfs-submit](#perfs-submit)
@@ -51,8 +52,8 @@ The model is composed of the following levels:
 
 - **JRRun**: A Jahia Reporter run, composed of multiple reports
 - **JRReport**: A report is composed of multiple test suites
-- **JRTestsuite**: A test suite is composed of multiple test cases
-- **JRTestcase**: A test case is composed of 0 or more failures
+- **JRTestsuite**: A test suite is composed of multiple test cases. A suite can name its spec file.
+- **JRTestcase**: A test case is composed of 0 or more failures. A failed test case also holds its error, with its message and its stack.
 - **JRTestfailure**: Failure in one of the test
 
 The most important piece of analysis is **JRTestcase** which is an individual test that has the status `PASS` or `FAIL` depending of the presence of failures. From that point on, all metrics are bubbled-up all the way to JRRun.
@@ -66,6 +67,33 @@ More details can be obtained about all of the commands by using `--help` with th
 
 ```bash
 ./bin/run.mjs --help
+```
+
+## github-annotations
+
+The `github:annotations` command writes an error annotation of GitHub Actions for each failed test of the reports. The step that runs the command shows these annotations, and so do the checks of the pull request.
+
+Each annotation carries these items:
+
+- the title of the failed test, with the name of its suite
+- the error message of the test
+- the spec file, after the path that `--testsPath` gives
+- the line of the test in the spec file, when the stack of the error names that line
+
+GitHub Actions keeps 10 error annotations for each step. When more tests fail than `--maxAnnotations` allows, the last annotation counts the failed tests that have no annotation.
+
+The spec file comes from the root suite of a `mocha-junit-reporter` report, or from a mochawesome report. A JUnit report that names no spec file gives annotations without a file.
+
+### github-annotations Example
+
+```bash
+./bin/run.mjs github:annotations \
+  --sourcePath="./tests/artifacts/results/xml_reports" \
+  --testsPath="tests" \
+  --maxAnnotations=9 \
+  -s
+
+::error file=tests/cypress/e2e/jcontent/versionCopyField.cy.ts,line=128,title=Version history offers the arrow::Timed out retrying after 10000ms: Expected to find element: `[data-sel-role="right-column"]`, but never found it.
 ```
 
 ## github-incident

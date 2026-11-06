@@ -38,3 +38,39 @@ describe('Test report ingestion', () => {
     expect(jrRun).toMatchSnapshot()
   })
 })
+
+// The spec file of a suite and the error of a failed test, which the annotations of a GitHub step need
+describe('Spec file and error of a failed test', () => {
+  it('reads the spec file from the root suite of a mocha-junit-reporter report', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit-failure'), log)
+    const [suite] = jrRun.reports[0].testsuites
+    expect(suite.file).toBe('cypress/e2e/jcontent/versionCopyField.cy.ts')
+  })
+
+  it('reads the message and the stack of a failed test of an XML report', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/mocha-junit-failure'), log)
+    const [failed, passed] = jrRun.reports[0].testsuites[0].tests
+    expect(failed.error?.message).toBe(
+      'Timed out retrying after 10000ms: Expected to find element: `[data-sel-role="right-column"]`, but never found it.',
+    )
+    expect(failed.error?.stack).toContain('versionCopyField.cy.ts:128:8')
+    expect(passed.error).toBeUndefined()
+  })
+
+  it('reads the error of a failed test of a JUnit report that names no spec file', async () => {
+    const jrRun = await ingestReport('xml', path.resolve(__dirname, './assets/junit/TEST-org.jahia.modules.forms.library.tests.FormResultsTest.xml'), log)
+    const suite = jrRun.reports[0].testsuites[0]
+    const failed = suite.tests.find((test) => test.status === 'FAIL')
+    expect(suite.file).toBeUndefined()
+    expect(failed?.error?.message).toMatch(/^No \.csv files found in the Downloads folder/)
+  })
+
+  it('reads the spec file and the error of a failed test of a mochawesome report', async () => {
+    const jrRun = await ingestReport('json', path.resolve(__dirname, './assets/single-json-failure'), log)
+    const suite = jrRun.reports[0].testsuites.find((s) => s.failures > 0)
+    const failed = suite?.tests.find((test) => test.status === 'FAIL')
+    expect(suite?.file).toBe('cypress/integration/ui/profileCsvExport.spec.ts')
+    expect(failed?.error?.message).toMatch(/^CypressError: `cy.task\('listFiles'\)` failed/)
+    expect(failed?.error?.stack).toContain('cypress_runner.js')
+  })
+})
