@@ -29,9 +29,13 @@ describe('updateServiceRow', () => {
 
   const createMockWorksheet = (
     rows: Array<ReturnType<typeof createMockRow>> = [],
+    headerValues: string[] = ['Test Service', 'Repository'],
   ) => ({
     getRows: jest.fn().mockResolvedValue(rows),
     addRow: jest.fn().mockResolvedValue({ rowNumber: 10 }),
+    headerValues,
+    sheetId: 42,
+    _makeSingleUpdateRequest: jest.fn().mockResolvedValue(undefined),
   });
 
   beforeEach(() => {
@@ -174,6 +178,61 @@ describe('updateServiceRow', () => {
     expect(mockLog).toHaveBeenCalledWith(
       'Found service my-service at row number: 7',
     );
+  });
+
+  it('should sort the worksheet by Test Service after creating a row', async () => {
+    const mockWorksheet = createMockWorksheet(
+      [],
+      ['Repository', 'Test Service'],
+    );
+
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'new-service',
+      incidentContent: createMockIncident(),
+      repository: 'my-repo',
+      log: mockLog,
+    });
+
+    expect(mockWorksheet._makeSingleUpdateRequest).toHaveBeenCalledWith(
+      'sortRange',
+      {
+        range: { sheetId: 42, startRowIndex: 1 },
+        sortSpecs: [{ dimensionIndex: 1, sortOrder: 'ASCENDING' }],
+      },
+    );
+  });
+
+  it('should not sort the worksheet when updating an existing row', async () => {
+    const mockRow = createMockRow();
+    mockRow.get.mockImplementation((key: string) =>
+      key === 'Test Service' ? 'my-service' : undefined,
+    );
+    const mockWorksheet = createMockWorksheet([mockRow]);
+
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'my-service',
+      incidentContent: createMockIncident(),
+      repository: 'my-repo',
+      log: mockLog,
+    });
+
+    expect(mockWorksheet._makeSingleUpdateRequest).not.toHaveBeenCalled();
+  });
+
+  it('should not sort the worksheet without a Test Service column', async () => {
+    const mockWorksheet = createMockWorksheet([], ['Repository']);
+
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'new-service',
+      incidentContent: createMockIncident(),
+      repository: 'my-repo',
+      log: mockLog,
+    });
+
+    expect(mockWorksheet._makeSingleUpdateRequest).not.toHaveBeenCalled();
   });
 
   it('should log when searching for service', async () => {

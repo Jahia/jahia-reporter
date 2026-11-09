@@ -21,6 +21,27 @@ const getServiceRow = async (
   return null;
 };
 
+// Sort the data rows (below the header row) by the 'Test Service' column.
+// google-spreadsheet's worksheet.sortRange() is an empty stub, so the
+// sortRange request of the Sheets API is sent directly.
+const sortByService = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  worksheet: any,
+  log: (message: string) => void,
+) => {
+  const serviceColumn = worksheet.headerValues.indexOf('Test Service');
+  if (serviceColumn === -1) {
+    log('No Test Service column found, the worksheet is not sorted');
+    return;
+  }
+
+  await worksheet._makeSingleUpdateRequest('sortRange', {
+    range: { sheetId: worksheet.sheetId, startRowIndex: 1 },
+    sortSpecs: [{ dimensionIndex: serviceColumn, sortOrder: 'ASCENDING' }],
+  });
+  log('Sorted the worksheet by Test Service');
+};
+
 export const updateServiceRow = async ({
   incidentContent,
   log,
@@ -61,5 +82,6 @@ export const updateServiceRow = async ({
   log(
     `Created new row for service ${service} located at row number: ${newRow.rowNumber}`,
   );
+  await sortByService(worksheet, log);
   return newRow;
 };
