@@ -110,6 +110,8 @@ describe('updateServiceRow', () => {
       Failures: 2,
       Repository: 'my-repo',
       Link: 'https://ci.example.com/run/123',
+      'Project Priority': 'Now',
+      'Project Status': 'In Progress',
       State: 'FAILED',
       'Test Service': 'new-service',
       Total: 10,
@@ -117,6 +119,9 @@ describe('updateServiceRow', () => {
     });
     expect(mockLog).toHaveBeenCalledWith(
       'No existing row for service new-service',
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      'No other row of repository my-repo names an assignee',
     );
     expect(mockLog).toHaveBeenCalledWith(
       'Created new row for service new-service located at row number: 10',
@@ -208,5 +213,91 @@ describe('updateServiceRow', () => {
     expect(mockLog).toHaveBeenCalledWith(
       'No service row found for: missing-service',
     );
+  });
+
+  const createRowWith = (values: Record<string, string>, rowNumber = 3) => {
+    const row = createMockRow();
+    row.get.mockImplementation((key: string) => values[key]);
+    row.rowNumber = rowNumber;
+    return row;
+  };
+
+  it('should copy assignee and project fields from a row of the same repository', async () => {
+    const otherRepoRow = createRowWith({
+      Assignee: 'someone',
+      'Project Number': '12',
+      'Project Team': 'Other Team',
+      Repository: 'other-repo',
+      'Test Service': 'other-service',
+    });
+    const noAssigneeRow = createRowWith({
+      'Project Number': '99',
+      Repository: 'my-repo',
+      'Test Service': 'my-repo-unassigned',
+    });
+    const sameRepoRow = createRowWith(
+      {
+        Assignee: '[Champion]',
+        'Project Number': '50',
+        'Project Priority': 'Later',
+        'Project Status': 'Todo',
+        'Project Team': 'Bug Busters',
+        Repository: 'my-repo',
+        'Test Service': 'my-repo-jahia-ee:8',
+      },
+      8,
+    );
+
+    const mockWorksheet = createMockWorksheet([
+      otherRepoRow,
+      noAssigneeRow,
+      sameRepoRow,
+    ]);
+
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'my-repo-jahia-ee-dev:8-SNAPSHOT',
+      incidentContent: createMockIncident(),
+      repository: 'my-repo',
+      log: mockLog,
+    });
+
+    expect(mockWorksheet.addRow).toHaveBeenCalledWith(
+      expect.objectContaining({
+        Assignee: '[Champion]',
+        'Project Number': '50',
+        'Project Priority': 'Now',
+        'Project Status': 'In Progress',
+        'Project Team': 'Bug Busters',
+        Repository: 'my-repo',
+        'Test Service': 'my-repo-jahia-ee-dev:8-SNAPSHOT',
+      }),
+    );
+    expect(mockLog).toHaveBeenCalledWith(
+      'Copied Assignee, Project Number, Project Team from row number 8 of repository my-repo',
+    );
+  });
+
+  it('should not copy an empty column from the repository row', async () => {
+    const sameRepoRow = createRowWith({
+      Assignee: 'someone',
+      'Project Number': '',
+      Repository: 'my-repo',
+      'Test Service': 'my-service',
+    });
+    const mockWorksheet = createMockWorksheet([sameRepoRow]);
+
+    await updateServiceRow({
+      worksheet: mockWorksheet,
+      service: 'new-service',
+      incidentContent: createMockIncident(),
+      repository: 'my-repo',
+      log: mockLog,
+    });
+
+    const added = mockWorksheet.addRow.mock.calls[0][0];
+    expect(added.Assignee).toBe('someone');
+    expect(added).not.toHaveProperty('Project Number');
+    expect(added).not.toHaveProperty('Project Team');
   });
 });
