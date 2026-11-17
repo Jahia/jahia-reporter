@@ -15,6 +15,8 @@ import {
   processIncidentFromTestReport,
 } from '../../utils/incidents/index.js';
 import {
+  DEFAULT_PROJECT_PRIORITY,
+  DEFAULT_PROJECT_STATUS,
   getWorksheetByName,
   updateServiceRow,
 } from '../../utils/spreadsheet/index.js';
@@ -374,9 +376,11 @@ class JahiaGitHubIncident extends Command {
     // configuration in the spreadsheet
     // If an issue was already open, we don't modify its status
     if (currentIssue !== null && githubProject !== null) {
-      const githubProjectStatus = serviceRow.get('Project Status');
+      const githubProjectStatus =
+        serviceRow.get('Project Status') || DEFAULT_PROJECT_STATUS;
       const githubProjectTeam = serviceRow.get('Project Team');
-      const githubProjectPriority = serviceRow.get('Project Priority');
+      const githubProjectPriority =
+        serviceRow.get('Project Priority') || DEFAULT_PROJECT_PRIORITY;
       await addIssueToProject({
         githubProject,
         githubProjectPriority,
