@@ -29,8 +29,19 @@ jobs:
     container:
       image: node:lts-alpine
 
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+
     steps:
-      - run: npm -g install @jahia/jahia-reporter@${{ github.event.release.tag_name }}
+      # The registry lists a new version, then serves its tarball, minutes
+      # after the publish succeeds
+      - name: Install the version once the npm registry serves it
+        timeout-minutes: 20
+        run: |
+          until npm -g install "@jahia/jahia-reporter@${VERSION}" --prefer-online; do
+            echo "@jahia/jahia-reporter@${VERSION} cannot be installed from the npm registry yet, retrying in 30s"
+            sleep 30
+          done
       - run: jahia-reporter --help
 
   docker:
